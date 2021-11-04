@@ -1,0 +1,27 @@
+{
+    "name": "Taconet",
+    "chainId": "minter-taco-1",
+    "networkId": 4,
+    "initialHeight": 3278787,
+    "totalSlashed": 0,
+    "blockMaxGas": 100000,
+    "blockTimeIotaMs": 1000,
+    "blockMaxBytes": 10000000,
+    "url": "https://github.com/MinterTeam/minter-go-node",
+    "comment": "",
+    "genesis": {
+        "hash": "",
+        "time": "",
+        "height": "",
+        "proposer": "",
+        "blockReward": ""
+    },
+    "bootstrapNodes": [
+        {
+            "id": "",
+            "ip": "",
+            "port": "26656",
+            "comment": ""
+        }
+    ]
+}
