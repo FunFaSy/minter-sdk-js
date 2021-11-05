@@ -1,19 +1,68 @@
 import {Buffer} from 'buffer';
-import {defineProperties, ecsign, publicToAddress, toBuffer} from '../util';
-import {Assignable} from '../util/types';
-import {MultiSignature, Signature, SignatureType, SingleSignature} from './signature';
-import Chain from '../util/chain';
-import {BufferLike} from '../util/functions/serialize';
+import {defineProperties, ecsign, ethPublicToAddress, toBuffer} from '../util';
+import {Assignable, BufferLike} from '../util/types';
+import {MultiSignature, TransactionSignature as Signature, SignatureType, SingleSignature} from './signature';
 import * as rlp from 'rlp';
-import {rlphash} from 'ethereumjs-util/dist/hash';
-import {bufferToInt} from 'ethereumjs-util/dist/bytes';
-import {ecrecover} from 'ethereumjs-util/dist/signature';
-import TxData from 'minterjs-tx/src/tx-data';
+import {rlphash} from 'ethereumjs-util/src/hash';
+import {bufferToInt} from 'ethereumjs-util/src/bytes';
+import Chain from '../chain';
+
+export enum TransactionType {
+    SEND                      = '0x01',
+    SELL                      = '0x02',
+    SELL_ALL                  = '0x03',
+    BUY                       = '0x04',
+    CREATE_COIN               = '0x05',
+    DECLARE_CANDIDACY         = '0x06',
+    DELEGATE                  = '0x07',
+    UNBOND                    = '0x08',
+    REDEEM_CHECK              = '0x09',
+    SET_CANDIDATE_ON          = '0x0A',
+    SET_CANDIDATE_OFF         = '0x0B',
+    CREATE_MULTISIG           = '0x0C',
+    MULTISEND                 = '0x0D',
+    EDIT_CANDIDATE            = '0x0E',
+    SET_HALT_BLOCK            = '0x0F',
+    RECREATE_COIN             = '0x10',
+    EDIT_TICKER_OWNER         = '0x11',
+    EDIT_MULTISIG             = '0x12',
+    PRICE_VOTE                = '0x13',
+    EDIT_CANDIDATE_PUBLIC_KEY = '0x14',
+    ADD_LIQUIDITY             = '0x15',
+    REMOVE_LIQUIDITY          = '0x16',
+    SELL_SWAP_POOL            = '0x17',
+    BUY_SWAP_POOL             = '0x18',
+    SELL_ALL_SWAP_POOL        = '0x19',
+    EDIT_CANDIDATE_COMMISSION = '0x1A',
+    MOVE_STAKE                = '0x1B',
+    MINT_TOKEN                = '0x1C',
+    BURN_TOKEN                = '0x1D',
+    CREATE_TOKEN              = '0x1E',
+    RECREATE_TOKEN            = '0x1F',
+    VOTE_COMMISSION           = '0x20',
+    VOTE_UPDATE               = '0x21',
+    CREATE_SWAP_POOL          = '0x22',
+}
 
 /**
- * An Minter transaction.
+ *
  */
-export default  abstract class Transaction {
+export interface TransactionOptions {
+    /**
+     * A Common object defining the chain a transaction belongs to.
+     */
+    chain?: Chain;
+
+    /**
+     * The chain of the transaction, default: 'mainnet'
+     */
+    chainId?: number | string;
+}
+
+/**
+ * Minter transaction.
+ */
+export class Transaction {
     public raw!: Buffer[];
 
     public nonce!: Buffer;
@@ -21,18 +70,19 @@ export default  abstract class Transaction {
     public gasPrice!: Buffer;
     public gasCoin!: Buffer;
     public type!: Buffer;
+    public data: Buffer;
     public payload!: Buffer;
     public serviceData!: Buffer;
 
     public signatureType!: Buffer;
     public signatureData!: Buffer;
-    protected _signature: Signature;
+    protected signature: Signature;
 
     protected _from?: Buffer;
     protected _senderPublicKey?: Buffer;
     protected _chain: Chain;
 
-    constructor(data: BufferLike, opts: TransactionOptions = {}) {
+    constructor(data: BufferLike | object | undefined = undefined, opts: TransactionOptions = {}) {
 
         if (opts.chain) {
             this._chain = opts.chain;
@@ -51,7 +101,7 @@ export default  abstract class Transaction {
             {
                 name   : 'chainId',
                 length : 1,
-                default: toBuffer([this._chain.id()]),
+                default: toBuffer([this._chain.networkId()]),
             },
             {
                 name     : 'gasPrice',
@@ -63,7 +113,7 @@ export default  abstract class Transaction {
                 name     : 'gasCoin',
                 length   : 4,
                 allowLess: true,
-                default  : toBuffer([]),
+                default  : toBuffer([this._chain.gasCoin()]),
             },
             {
                 name   : 'type',
@@ -111,10 +161,10 @@ export default  abstract class Transaction {
             get         : this.getSenderAddress.bind(this),
         });
 
-        if (this.signatureType == toBuffer(SignatureType.Single)) {
-            this._signature = new SingleSignature(this.signatureData);
-        } else {
-            this._signature = new MultiSignature(this.signatureData);
+        if (this.isSignatureTypeSingle()) {
+            this.signature = new SingleSignature(this.signatureData);
+        } else if (this.isSignatureTypeMulti()) {
+            this.signature = new MultiSignature(this.signatureData);
         }
 
     }
@@ -126,6 +176,8 @@ export default  abstract class Transaction {
     isSignatureTypeMulti(): boolean {
         return bufferToInt(this.signatureType) == SignatureType.Multi;
     }
+
+    getRaw(): Buffer[] {return this.raw;}
 
     /**
      * Computes a sha3-256 hash of the serialized tx
@@ -162,13 +214,13 @@ export default  abstract class Transaction {
         }
 
         if (this.isSignatureTypeMulti()) {
-            const multiSignature = this._signature as MultiSignature;
+            const multiSignature = this.signature as MultiSignature;
             this._from = toBuffer(multiSignature.getRaw()[0]);// "multisig" field
             return this._from;
         }
 
         const publicKey = this.getSenderPublicKey();
-        this._from = publicToAddress(publicKey);
+        this._from = ethPublicToAddress(publicKey);
         return this._from;
     }
 
@@ -202,14 +254,15 @@ export default  abstract class Transaction {
         const hash = this.hash(false);
         const vrsSig = ecsign(hash, privateKeyBuffer);
 
-        return new SignedTransaction({transaction: this, signature: new SingleSignature(vrsSig), hash});
+        const signature = new SingleSignature(vrsSig);
+        return new SignedTransaction({transaction: this, signature});
     }
 
     /**
      * returns chain ID
      */
     getChainId(): number {
-        return this._chain.id();
+        return bufferToInt(this.chainId);
     }
 
     /**
@@ -238,14 +291,13 @@ export default  abstract class Transaction {
      */
     verifySignature(): boolean {
         const messageHash = this.hash(false);
-        const isValidSig = this._signature.isValid(messageHash);
+        const isValidSig = this.signature.isValid(messageHash);
 
         if (isValidSig && this.isSignatureTypeSingle()) {
+
             if (!this._senderPublicKey || !this._senderPublicKey.length) {
                 try {
-                    const vrsRaw = this._signature.getRaw();
-                    const v = bufferToInt(vrsRaw[0]);
-                    this._senderPublicKey = ecrecover(messageHash, v, vrsRaw[1], vrsRaw[2]);
+                    this._senderPublicKey = this.signature.pubKey(messageHash)[0];
                 }
                 catch (error) {
                     return false;
@@ -277,132 +329,30 @@ export default  abstract class Transaction {
         return {};
     }
 
-}
+    isSigned() {
+        return this.signature instanceof Signature;
+    }
 
-/**
- *
- */
-export interface TransactionOptions {
-    /**
-     * A Common object defining the chain a transaction belongs to.
-     */
-    chain?: Chain;
-
-    /**
-     * The chain of the transaction, default: 'mainnet'
-     */
-    chainId?: number | string;
+    getSignature(): Signature | undefined {
+        if (!this.isSigned()) {return undefined;}
+        return this.signature;
+    }
 }
 
 export class SignedTransaction extends Assignable {
     transaction: Transaction;
-    hash: Buffer;
     signature: Signature;
 
     encode(): Buffer {
-        return Buffer.from([]);
+        return rlp.encode(Buffer.concat([...this.transaction.getRaw(), ...this.signature.getRaw()]));
     }
 
     static decode(bytes: Buffer): SignedTransaction {
+        const tx = new Transaction(bytes);
         return new SignedTransaction({
-            transaction: null,
-            signature  : null,
+            transaction: tx,
+            signature  : tx.getSignature(),
         });
     }
 }
 
-
-interface TransactionParams {
-     nonce: Buffer;
-     chainId: Buffer;
-     gasPrice: Buffer;
-     gasCoin: Buffer;
-     type: Buffer;
-     payload: Buffer; // TxData
-     serviceData: Buffer;
-     signatureType: Buffer;
-     signatureData: Buffer;
-}
-
-interface SendTransactionParams extends TransactionParams{
-    data: {
-        to: 'Mx7633980c000139dd3bd24a3f54e06474fa941e16',
-        value: 10,
-        coin: 0, // coin id
-    }
-}
-
-export class SendTransaction extends Transaction{
-    static fromParams(txParams): Transaction {
-
-        const txData = TxData();
-        return new Transaction(Buffer.from([]));
-    }
-}
-
-
-
-/**
- *
- */
-
-export class TransactionData extends Assignable {}
-
-// export class Send extends Transaction {
-//     value: BN;
-//     to: Buffer;
-//     coin: Coin;
-// }
-//
-// export class MultiSend extends Transaction {list: Send[];}
-//
-// export class Buy extends Transaction {
-//     coinToSell: Coin;
-//     coinToBuy: Coin;
-//     valueToBuy: BN;
-//     maximumValueToSell?: BN; // optional, 10^15 by default
-// }
-//
-// export class Sell extends Transaction {
-//     coinToSell: Coin;
-//     coinToBuy: Coin;
-//     valueToSell: BN;
-//     minimumValueToBuy?: BN; // optional, 0 by default
-// }
-//
-// export class SellAll extends Transaction {
-//     coinToSell: Coin;
-//     coinToBuy: Coin;
-//     minimumValueToBuy?: BN;// optional, 0 by default
-// }
-//
-// export class BuyFromSwapPool extends Transaction {
-//     coins: Coin[]; // route of coin from spent to received
-//     valueToBuy: BN;
-//     maximumValueToSell?: BN; // optional, 10^15 by default
-// }
-//
-// export class SellFromSwapPool extends Transaction {
-//     coins: Coin[]; // route of coin from spent to received
-//     coinToSell: BN;
-//     minimumValueToBuy?: BN; // optional, 10^15 by default
-// }
-//
-// export interface TransactionResponse {
-//     hash: string;
-//     raw_tx: string;
-//     height: string | number;
-//     index: string | number;
-//     from: string;
-//     nonce: string | number;
-//     gas: string | number;
-//     gas_price: string | number;
-//     gas_coin: ICoin;
-//     type: string | number;
-//     data: any;
-//     payload: string;
-//     tags: { [key: string]: any };
-//     code: string | number;
-//     log: string;
-// }
-//

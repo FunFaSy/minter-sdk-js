@@ -3,8 +3,12 @@ env:
     node: true
 extends:
     - 'eslint:recommended'
+    - 'plugin:@typescript-eslint/eslint-recommended'
+    - 'plugin:@typescript-eslint/recommended'
+parser: '@typescript-eslint/parser'
 parserOptions:
     ecmaVersion: 2018
+    sourceType: module
 rules:
     indent:
         - error
@@ -19,8 +23,15 @@ rules:
         - error
         - always
     no-console: off
+    no-inner-declarations: off
+    '@typescript-eslint/no-explicit-any': off
+    # TODO: Clean-up code and enable following rules
+    '@typescript-eslint/camelcase': off
+    '@typescript-eslint/explicit-function-return-type': off
+    '@typescript-eslint/no-use-before-define': off
 globals:
     window: true
     fetch: true
     Headers: true
     document: true
+

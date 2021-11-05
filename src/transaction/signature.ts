@@ -1,7 +1,8 @@
 // secp256k1n/2
-import {BN, bufferToInt, defineProperties, rlp, toBuffer} from '../util';
 import {Buffer} from 'buffer';
-import {ECDSASignature, ECDSASignatureBuffer, ecrecover} from 'ethereumjs-util/dist/signature';
+import {ECDSASignature, ECDSASignatureBuffer, ecrecover} from 'ethereumjs-util/src/signature';
+import {BufferLike} from '../util/types';
+import {BN,  bufferToInt, defineProperties, rlp, toBuffer} from '../util';
 
 const N_DIV_2 = new BN('7fffffffffffffffffffffffffffffff5d576e7357a4501ddfe92f46681b20a0', 16);
 
@@ -10,17 +11,20 @@ export enum SignatureType {
     Multi  = 2
 }
 
-export interface Signature {
-    getRaw(): Buffer[];
-
-    serialize(): Buffer;
-
-    pubKey(messageHash: Buffer): Buffer;
-
-    isValid(messageHash: Buffer): boolean;
+/**
+ *
+ */
+export abstract class TransactionSignature {
+    abstract getRaw(): Buffer[];
+    abstract serialize(): Buffer;
+    abstract pubKey(messageHash: Buffer): Buffer[];
+    abstract isValid(messageHash: Buffer): boolean;
 }
 
-export class SingleSignature implements Signature {
+/**
+ *
+ */
+export class SingleSignature extends TransactionSignature {
     protected raw!: Buffer[];
     // ECDSA data fields
     public v!: Buffer;
@@ -31,7 +35,8 @@ export class SingleSignature implements Signature {
      *
      * @param data RLP encoded vrs
      */
-    constructor(data: Buffer | ECDSASignature | ECDSASignatureBuffer) {
+    constructor(data: BufferLike | ECDSASignature | ECDSASignatureBuffer) {
+        super();
         // Define Properties
         const rlpSchema = [
             {
@@ -63,29 +68,44 @@ export class SingleSignature implements Signature {
         this._overrideVSetterWithValidation();
     }
 
-    serialize(): Buffer {
-        // Note: This never gets executed, defineProperties overwrites it.
-        return rlp.encode(this.raw);
+    /**
+     *
+     */
+    getRaw(): Buffer[] {
+        return this.raw;
     }
 
+    /**
+     *
+     * @param messageHash
+     */
     isValid(messageHash: Buffer): boolean {
         // const vrs = rlp.decode(this.raw);
         return SingleSignature.verify(messageHash, [this.v, this.r, this.s]);
     }
 
-    pubKey(messageHash): Buffer {
+    /**
+     *
+     * @param messageHash
+     */
+    pubKey(messageHash): Buffer[] {
         try {
             const v = bufferToInt(this.v);
-            return ecrecover(messageHash, v, this.r, this.s);
+            return [ecrecover(messageHash, v, this.r, this.s)];
         }
         catch (error) {
-            return Buffer.from([]);
+            return [];
         }
     }
 
-    getRaw(): Buffer[] {
-        return this.raw;
+    /**
+     *
+     */
+    serialize(): Buffer {
+        // Note: This never gets executed, defineProperties overwrites it.
+        return rlp.encode(this.raw);
     }
+
 
     private _validateV(v?: Buffer): void {
         if (v === undefined || v.length === 0) {
@@ -113,6 +133,11 @@ export class SingleSignature implements Signature {
         });
     }
 
+    /**
+     *
+     * @param messageHash
+     * @param vrs
+     */
     public static verify(messageHash: Buffer, vrs): boolean {
         // All transaction signatures whose s-value is greater than secp256k1n/2 are considered invalid.
         if (new BN(vrs[2]).cmp(N_DIV_2) === 1) {
@@ -131,18 +156,23 @@ export class SingleSignature implements Signature {
 
 }
 
-export class MultiSignature implements Signature {
+/**
+ *
+ */
+export class MultiSignature extends TransactionSignature {
     protected raw!: Buffer[];
     // Signature data
-    public multisig!: Buffer;
-    public signatures!: Buffer[];
+    public multisig!: Buffer; // multisig Address
+    public signatures!: Buffer[]; // array of signatures
     protected _signatures!: SingleSignature[];
 
     /**
      *
-     * @param data RLP encoded multisig struct
+     * @param data RLP encoded multisig data
      */
-    constructor(data: Buffer) {
+    constructor(data: BufferLike | { multisig: BufferLike;signatures: BufferLike[] }) {
+        super();
+
         // Define Properties
         const rlpSchema = [
             {
@@ -173,19 +203,32 @@ export class MultiSignature implements Signature {
         });
     }
 
-    isValid(messageHash: Buffer): boolean {
-        const invalid = this._signatures.filter((vrsSig) => {
-            return !vrsSig.isValid(messageHash);
-        });
-        return invalid.length == 0;
-    }
-
+    /**
+     *
+     */
     getRaw(): Buffer[] {
         return this.raw;
     }
 
-    pubKey(messageHash: Buffer): Buffer {
-        return Buffer.from([]);
+    /**
+     *
+     * @param messageHash
+     */
+    isValid(messageHash: Buffer): boolean {
+        return this._signatures.every((vrsSig) => {
+            return vrsSig.isValid(messageHash);
+        });
+    }
+
+    /**
+     *
+     * @param messageHash
+     */
+    pubKey(messageHash: Buffer): Buffer[] {
+        return this._signatures.reduce((res,sig)=>{
+            res.push(sig.pubKey(messageHash).pop());
+            return res;
+        },[] as Buffer[]);
     }
 
     serialize(): Buffer {

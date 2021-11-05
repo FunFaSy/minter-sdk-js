@@ -21,37 +21,37 @@ for (let i = 0, offset = new BN(5); i < BIP_NOMINATION_EXP; i++, offset = offset
  * Convert value from PIP units to BIP. 1 BIP is defined by {@link BIP_NOMINATION}.
  * Effectively this divides given amount by {@link BIP_NOMINATION}.
  *
- * @param balance decimal string representing balance in smallest non-divisible PIP units (as specified by {@link BIP_NOMINATION})
+ * @param pipAmt decimal string representing balance in smallest non-divisible PIP units (as specified by {@link BIP_NOMINATION})
  * @param fracDigits number of fractional digits to preserve in formatted string. Balance is rounded to match given number of digits.
  * @returns Value in human readable BIP units
  */
-export function formatBipAmount(balance: string, fracDigits: number = BIP_NOMINATION_EXP): string {
-    const balanceBN = new BN(balance, 10);
+export function formatBipAmount(pipAmt: string | BN, fracDigits: number = BIP_NOMINATION_EXP): string {
+    const amtBN = new BN(pipAmt, 10);
     if (fracDigits !== BIP_NOMINATION_EXP) {
         // Adjust balance for rounding at given number of digits
         const roundingExp = BIP_NOMINATION_EXP - fracDigits - 1;
         if (roundingExp > 0) {
-            balanceBN.iadd(ROUNDING_OFFSETS[roundingExp]);
+            amtBN.iadd(ROUNDING_OFFSETS[roundingExp]);
         }
     }
 
-    balance = balanceBN.toString();
-    const wholeStr = balance.substring(0, balance.length - BIP_NOMINATION_EXP) || '0';
-    const fractionStr = balance.substring(balance.length - BIP_NOMINATION_EXP).
+    pipAmt = amtBN.toString();
+    const wholeStr = pipAmt.substring(0, pipAmt.length - BIP_NOMINATION_EXP) || '0';
+    const fractionStr = pipAmt.substring(pipAmt.length - BIP_NOMINATION_EXP).
         padStart(BIP_NOMINATION_EXP, '0').
         substring(0, fracDigits);
 
-    return trimTrailingZeroes(`${formatWithCommas(wholeStr)}.${fractionStr}`);
+    return trimTrailingZeroes(`${wholeStr}.${fractionStr}`);
 }
 
 /**
  * Alias to formatBipAmount
  *
- * @param amt
+ * @param pipAmt
  * @param fracDigits
  */
-export function convertFromPip(amt: string, fracDigits: number = BIP_NOMINATION_EXP): string {
-    return formatBipAmount(amt, fracDigits);
+export function convertToBip(pipAmt: string | BN,  fracDigits: number = BIP_NOMINATION_EXP): string {
+    return formatBipAmount(pipAmt, fracDigits);
 }
 
 /**

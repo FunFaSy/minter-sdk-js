@@ -1,4 +1,4 @@
-import {privateToAddress as ethPrivateToAddress} from 'ethereumjs-util/dist/account';
+import {ethPrivateToAddress} from '../external';
 import {toBuffer} from './encode';
 
 export enum Prefix {

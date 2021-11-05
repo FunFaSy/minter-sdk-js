@@ -1,18 +1,9 @@
 'use strict';
 
-import CryptoJS from 'crypto-js';
-import qs from 'qs';
-import BN from 'bn.js';
-import {toBuffer as ethToBuffer} from 'ethereumjs-util/dist/bytes';
+import {BN, bs58check, CryptoJS, ethToBuffer, qs} from '../external';
 import {isMinterPrefixed, mPrefixStrip} from './prefix';
-import {isHexString} from 'ethereumjs-util';
 
 /*  ------------------------------------------------------------------------ */
-
-// global vars for base58 encoding
-const base58Alphabet = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
-let base58Decoder = null;
-let base58Encoder = null;
 
 const byteArrayToWordArray = (ba) => {
     const wa = [];
@@ -61,50 +52,8 @@ const json                     = (data, params = undefined) => JSON.stringify(da
         return byteArrayToWordArray(hexArray);
     }
 
-    , base58ToBinary           = (string) => {
-        if (!base58Decoder) {
-            base58Decoder = {};
-            base58Encoder = {};
-            for (let i = 0; i < 58; i++) {
-                const c = base58Alphabet[i];
-                const bigNum = new BN(i);
-                base58Decoder[c] = bigNum;
-                base58Encoder[bigNum] = c;
-            }
-        }
-        const result = new BN(0);
-        const base = new BN(58);
-        for (let i = 0; i < string.length; i++) {
-            const character = string[i];
-            result.imul(base);
-            result.iadd(base58Decoder[character]);
-        }
-        return byteArrayToWordArray(result.toArray('be'));
-    }
-
-    , binaryToBase58           = (wordArray) => {
-        if (!base58Encoder) {
-            base58Decoder = {};
-            base58Encoder = {};
-            for (let i = 0; i < 58; i++) {
-                const c = base58Alphabet[i];
-                const bigNum = new BN(i);
-                base58Decoder[c] = bigNum;
-                base58Encoder[bigNum] = c;
-            }
-        }
-        const base = new BN(58);
-        // hex is only compatible encoding between cryptojs and BN
-        const hexString = wordArray.toString(CryptoJS.enc.Hex);
-        let result = new BN(hexString, 16);
-        const string = [];
-        while (!result.isZero()) {
-            const {div, mod} = result.divmod(base);
-            result = div;
-            string.push(base58Encoder[mod]);
-        }
-        return string.reverse().join('');
-    }
+    , base58ToBuffer           = (s: string): Buffer => { return bs58check.decode(s); }
+    , bufferToBase58           = (buf: Buffer): string => { return bs58check.encode(buf); }
     /**
        * Attempts to turn a value into a `Buffer`.
        * Supports Minter prefixed hex strings.
@@ -115,12 +64,6 @@ const json                     = (data, params = undefined) => JSON.stringify(da
     , toBuffer                 = (value) => {
         if (typeof value === 'string' && isMinterPrefixed(value)) {
             return mToBuffer(value);
-        }
-
-        if (typeof value === 'string' && !isHexString(value, 0)) {
-            // eslint-disable-next-line unicorn/prefer-type-error
-            throw new Error(
-                'Cannot convert string to buffer. toBuffer only supports Minter-prefixed or 0x-prefixed hex strings. You can pass buffer instead of string.');
         }
 
         return ethToBuffer(value);
@@ -168,9 +111,9 @@ export {
     , urlencodeBase64
     , numberToLE
     , numberToBE
-    , base58ToBinary
-    , binaryToBase58
+    , base58ToBuffer
+    , bufferToBase58
     , byteArrayToWordArray
-    , toBuffer
+    , toBuffer,
 };
 

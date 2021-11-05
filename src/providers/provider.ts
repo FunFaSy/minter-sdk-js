@@ -3,7 +3,6 @@
  * @module
  */
 
-import {AuthenticationError} from '../base/errors';
 type BlockHash = string;
 type BlockHeight = number;
 export type BlockId = BlockHash | BlockHeight;
@@ -21,8 +20,27 @@ export interface Coin {
     symbol: string;
 }
 
-throw new AuthenticationError('Test');
 // RPC Entities
+
+//
+
+export interface TransactionResponse {
+    hash: string;
+    raw_tx: string;
+    height: string;
+    index: string;
+    from: string;
+    nonce: string;
+    gas: string;
+    gas_price: string;
+    gas_coin: string;
+    type: string;
+    data: any;
+    payload: string;
+    tags: { [key: string]: any };
+    code: string;
+    log: string;
+}
 
 /** @hidden (@link https://github.com/MinterTeam/node-grpc-gateway/blob/master/api.proto)*/
 export abstract class Provider {
@@ -67,3 +85,4 @@ export abstract class Provider {
 //     }
 //     return null;
 // }
+

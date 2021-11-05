@@ -1,0 +1,49 @@
+{
+    "name": "Testnet",
+    "chainId": "minter-test-1",
+    "networkId": 2,
+    "initialHeight": 3278787,
+    "totalSlashed": 0,
+    "blockMaxGas": 100000,
+    "blockTimeIotaMs": 1000,
+    "blockMaxBytes": 10000000,
+    "gasCoin": 0,
+    "comment": "",
+    "urls": {
+        "www": "https://minter.org/",
+        "doc": "https:/#",
+        "console": "https://#",
+        "explorer": "https:/#",
+        "api": {
+            "node": {
+                "http": [
+                    "https://test.mnt.funfasy.dev/v2"
+                ],
+                "ws": []
+            },
+            "gate": {
+                "http": [],
+                "ws": []
+            },
+            "explorer": {
+                "http": [],
+                "ws": []
+            }
+        }
+    },
+    "genesis": {
+        "hash": "",
+        "time": "",
+        "height": "",
+        "proposer": "",
+        "blockReward": ""
+    },
+    "bootstrapNodes": [
+        {
+            "id": "",
+            "ip": "",
+            "port": "26656",
+            "comment": ""
+        }
+    ]
+}

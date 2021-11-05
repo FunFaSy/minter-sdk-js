@@ -1,10 +1,8 @@
-import * as secp256k1Shim from 'ethereum-cryptography/shims/hdkey-secp256k1v3';
-import * as secp256k1 from 'ethereum-cryptography/secp256k1';
-import {privateToPublic, publicToAddress} from 'ethereumjs-util/dist/account';
-import {toBuffer as ethToBuffer} from 'ethereumjs-util/dist/bytes';
-import nacl from 'tweetnacl';
-import {base_decode, base_encode} from '../utils/serialize';
-import {Assignable, Prefixes} from './enums';
+import {base_decode, base_encode} from '../util/functions/serialize';
+import {Assignable} from '../util/types';
+import {Prefix,  toBuffer, ethPrivateToPublic, ethPublicToAddress} from '../util';
+import {nacl,secp256k1,secp256k1Shim} from '../util/external';
+
 
 export type Arrayish = string | ArrayLike<number>;
 
@@ -38,76 +36,6 @@ function str2KeyType(keyType: string): KeyType {
         return KeyType.SECP256K1;
     default:
         throw new Error(`Unknown key type ${keyType}`);
-    }
-}
-
-/**
- * PublicKey representation that has type and bytes of the key.
- */
-export class PublicKey extends Assignable {
-    keyType: KeyType;
-    data: Buffer;
-    protected address: Address;
-
-    static from(value: string | PublicKey): PublicKey {
-        if (typeof value === 'string') {
-            return PublicKey.fromString(value);
-        }
-        return value;
-    }
-
-    /**
-     * It's generally assumed that these are encoded in base58check.
-     * @param {string} encodedKey
-     */
-    static fromString(encodedKey: string): PublicKey {
-        const parts = encodedKey.split(':');
-        if (parts.length === 1) {
-            return new PublicKey({keyType: KeyType.SECP256K1, data: base_decode(parts[0])});
-        } else if (parts.length === 2) {
-            return new PublicKey({keyType: str2KeyType(parts[0]), data: base_decode(parts[1])});
-        } else {
-            throw new Error('Invalid encoded key format, must be <curve>:<encoded key>');
-        }
-    }
-
-    toString(): string {
-        return `${keyType2Str(this.keyType)}:${base_encode(this.data)}`;
-    }
-
-    verify(message: Buffer, signature: Buffer): boolean {
-        switch (this.keyType) {
-        case KeyType.ED25519:
-            return nacl.sign.detached.verify(message, signature, this.data);
-        case KeyType.SECP256K1:
-            return secp256k1Shim.verify(message, signature, this.data);
-        default:
-            throw new Error(`Unknown key type ${this.keyType}`);
-        }
-    }
-
-    getAddress(): Address {
-        if (!(this.address instanceof Address)) {
-            this.address = Address.fromPublicKey(this);
-        }
-        return this.address;
-    }
-}
-
-export class Address extends Assignable {
-    publicKey: PublicKey;
-    data: Buffer;
-
-    static fromPublicKey(publicKey: PublicKey): Address {
-        return new Address({publicKey, data: publicToAddress(publicKey.data)});
-    }
-
-    toString(): string {
-        return `${Prefixes.ADDRESS}${this.data.toString('hex')}`;
-    }
-
-    getPublicKey(): PublicKey {
-        return this.publicKey;
     }
 }
 
@@ -197,7 +125,7 @@ export class KeyPairEd25519 extends KeyPair {
     }
 
     sign(message: Buffer): Signature {
-        const signature = ethToBuffer(nacl.sign.detached(message, base_decode(this.secretKey)));
+        const signature = toBuffer(nacl.sign.detached(message, base_decode(this.secretKey)));
         return {signature, publicKey: this.publicKey};
     }
 
@@ -218,7 +146,7 @@ export class KeyPairSecp256k1 extends KeyPair {
      * @param {string} secretKey
      */
     constructor(secretKey: string) {
-        const publicKey = privateToPublic(base_decode(secretKey));
+        const publicKey = ethPrivateToPublic(base_decode(secretKey));
         super(new PublicKey({keyType: KeyType.SECP256K1, data: publicKey}), secretKey);
     }
 
@@ -244,5 +172,78 @@ export class KeyPairSecp256k1 extends KeyPair {
 
     verify(message: Buffer, signature: Buffer): boolean {
         return this.publicKey.verify(message, signature);
+    }
+}
+
+/**
+ * PublicKey representation that has type and bytes of the key.
+ */
+export class PublicKey extends Assignable {
+    keyType: KeyType;
+    data: Buffer;
+    protected address: Address;
+
+    static from(value: string | PublicKey): PublicKey {
+        if (typeof value === 'string') {
+            return PublicKey.fromString(value);
+        }
+        return value;
+    }
+
+    /**
+     * It's generally assumed that these are encoded in base58check.
+     * @param {string} encodedKey
+     */
+    static fromString(encodedKey: string): PublicKey {
+        const parts = encodedKey.split(':');
+        if (parts.length === 1) {
+            return new PublicKey({keyType: KeyType.SECP256K1, data: base_decode(parts[0])});
+        } else if (parts.length === 2) {
+            return new PublicKey({keyType: str2KeyType(parts[0]), data: base_decode(parts[1])});
+        } else {
+            throw new Error('Invalid encoded key format, must be <curve>:<encoded key>');
+        }
+    }
+
+    toString(): string {
+        return `${keyType2Str(this.keyType)}:${base_encode(this.data)}`;
+    }
+
+    verify(message: Buffer, signature: Buffer): boolean {
+        switch (this.keyType) {
+        case KeyType.ED25519:
+            return nacl.sign.detached.verify(message, signature, this.data);
+        case KeyType.SECP256K1:
+            return secp256k1Shim.verify(message, signature, this.data);
+        default:
+            throw new Error(`Unknown key type ${this.keyType}`);
+        }
+    }
+
+    getAddress(): Address {
+        if (!(this.address instanceof Address)) {
+            this.address = Address.fromPublicKey(this);
+        }
+        return this.address;
+    }
+}
+
+/**
+ *
+ */
+export class Address extends Assignable {
+    publicKey: PublicKey;
+    data: Buffer;
+
+    static fromPublicKey(publicKey: PublicKey): Address {
+        return new Address({publicKey, data: ethPublicToAddress(publicKey.data)});
+    }
+
+    toString(): string {
+        return `${Prefix.ADDRESS}${this.data.toString('hex')}`;
+    }
+
+    getPublicKey(): PublicKey {
+        return this.publicKey;
     }
 }

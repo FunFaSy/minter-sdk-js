@@ -1,3 +1,4 @@
+import {BNLike, BufferLike} from './util/types';
 
 export interface AccountData {
     nonce?: BNLike;
@@ -9,5 +10,5 @@ export interface AccountData {
 }
 
 export class Account {
-    
+
 }

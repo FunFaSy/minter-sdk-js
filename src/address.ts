@@ -1,14 +1,6 @@
-import assert from 'assert';
-import BN from 'bn.js';
-import { toBuffer, zeros } from './bytes';
-import {
-    isValidAddress,
-    pubToAddress,
-    privateToAddress,
-    generateAddress,
-    generateAddress2,
-} from './account';
-
+import {assert, BN, zeros} from './util/external';
+import {isValidAddress, toBuffer} from './util';
+import {generateAddress, generateAddress2, privateToAddress, pubToAddress} from 'ethereumjs-util';
 
 export class Address {
     public readonly buf: Buffer
