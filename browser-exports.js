@@ -1,2 +1,3 @@
-window.nearApi = require('./lib/browser-index');
+window.minterApi = require('./lib/browser-index');
 window.Buffer = Buffer;
+

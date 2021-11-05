@@ -1,6 +1,5 @@
 {
-    "theme": "./node_modules/typedoc-neo-theme/bin/default",
-    "plugin": "./node_modules/typedoc-neo-theme",
+
     "exclude": "**/*index.ts",
     "links": [
         { "label": "Minter Docs", "url": "https://#" },

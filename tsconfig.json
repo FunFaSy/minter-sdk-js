@@ -21,10 +21,14 @@
         "noImplicitReturns": true,
         "noUnusedLocals": true,
         "experimentalDecorators": true,
-        "resolveJsonModule": true
+        "resolveJsonModule": true,
+        "skipLibCheck": true
     },
     "files": [
         "src/index.ts",
         "src/browser-index.ts"
+    ],
+    "exclude": [
+        "node_modules"
     ]
 }
