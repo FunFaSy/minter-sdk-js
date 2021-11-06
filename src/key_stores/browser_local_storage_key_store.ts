@@ -1,5 +1,5 @@
 import { KeyStore } from './keystore';
-import {KeyPair} from '..';
+import {KeyPair} from './key_pair';
 
 const LOCAL_STORAGE_KEY_PREFIX = 'minter-api-js:keystore:';
 

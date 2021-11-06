@@ -1,4 +1,4 @@
-import {KeyPair} from '..';
+import {KeyPair} from './key_pair';
 
 /**
  * KeyStores are passed to {@link Minter} via {@link MinterConfig}

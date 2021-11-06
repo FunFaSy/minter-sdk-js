@@ -1,11 +1,10 @@
-import {BN, defineProperties, rlp} from '../util';
+import {defineProperties, rlp} from '../util';
 import {Buffer} from 'buffer';
 
 export abstract class Action {
     public raw!: Buffer;
 
     constructor(data) {
-
         /**
          * Returns the rlp encoding of the transaction
          * @method serialize
@@ -51,36 +50,36 @@ export class SendAction extends Action {
     }
 }
 
-export class MultiSendAction extends Action {list: SendAction[];}
-
-export class BuyAction extends Action {
-    coinToSell: Buffer;
-    coinToBuy: Buffer;
-    valueToBuy: BN;
-    maximumValueToSell?: BN; // optional, 10^15 by default
-}
-
-export class SellAction extends Action {
-    coinToSell: Buffer;
-    coinToBuy: Buffer;
-    valueToSell: BN;
-    minimumValueToBuy?: BN; // optional, 0 by default
-}
-
-export class SellAllAction extends Action {
-    coinToSell: Buffer;
-    coinToBuy: Buffer;
-    minimumValueToBuy?: BN;// optional, 0 by default
-}
-
-export class BuyFromSwapPoolAction extends Action {
-    coins: Buffer[]; // route of coin from spent to received
-    valueToBuy: BN;
-    maximumValueToSell?: BN; // optional, 10^15 by default
-}
-
-export class SellFromSwapPoolAction extends Action {
-    coins: Buffer[]; // route of coin from spent to received
-    coinToSell: BN;
-    minimumValueToBuy?: BN; // optional, 10^15 by default
-}
+// export class MultiSendAction extends Action {list: SendAction[];}
+//
+// export class BuyAction extends Action {
+//     coinToSell: Buffer;
+//     coinToBuy: Buffer;
+//     valueToBuy: BN;
+//     maximumValueToSell?: BN; // optional, 10^15 by default
+// }
+//
+// export class SellAction extends Action {
+//     coinToSell: Buffer;
+//     coinToBuy: Buffer;
+//     valueToSell: BN;
+//     minimumValueToBuy?: BN; // optional, 0 by default
+// }
+//
+// export class SellAllAction extends Action {
+//     coinToSell: Buffer;
+//     coinToBuy: Buffer;
+//     minimumValueToBuy?: BN;// optional, 0 by default
+// }
+//
+// export class BuyFromSwapPoolAction extends Action {
+//     coins: Buffer[]; // route of coin from spent to received
+//     valueToBuy: BN;
+//     maximumValueToSell?: BN; // optional, 10^15 by default
+// }
+//
+// export class SellFromSwapPoolAction extends Action {
+//     coins: Buffer[]; // route of coin from spent to received
+//     coinToSell: BN;
+//     minimumValueToBuy?: BN; // optional, 10^15 by default
+// }

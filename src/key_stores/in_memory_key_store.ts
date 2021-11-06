@@ -1,5 +1,5 @@
 import { KeyStore } from './keystore';
-import {KeyPair} from '..';
+import {KeyPair} from './key_pair';
 
 /**
  * Simple in-memory keystore for mainly for testing purposes.

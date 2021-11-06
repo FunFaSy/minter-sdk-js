@@ -1,11 +1,9 @@
 import {Buffer} from 'buffer';
-import {defineProperties, ecsign, ethPublicToAddress, toBuffer} from '../util';
+import {bufferToInt, defineProperties, ecsign, ethPublicToAddress, rlp, rlphash, toBuffer} from '../util';
 import {Assignable, BufferLike} from '../util/types';
-import {MultiSignature, TransactionSignature as Signature, SignatureType, SingleSignature} from './signature';
-import * as rlp from 'rlp';
-import {rlphash} from 'ethereumjs-util/src/hash';
-import {bufferToInt} from 'ethereumjs-util/src/bytes';
+import {MultiSignature, SignatureType, SingleSignature, TransactionSignature as Signature} from './signature';
 import Chain from '../chain';
+
 
 export enum TransactionType {
     SEND                      = '0x01',

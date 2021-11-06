@@ -1,6 +1,6 @@
 // secp256k1n/2
 import {Buffer} from 'buffer';
-import {ECDSASignature, ECDSASignatureBuffer, ecrecover} from 'ethereumjs-util/src/signature';
+import {ECDSASignature, ECDSASignatureBuffer, ecrecover} from 'ethereumjs-util';
 import {BufferLike} from '../util/types';
 import {BN,  bufferToInt, defineProperties, rlp, toBuffer} from '../util';
 
