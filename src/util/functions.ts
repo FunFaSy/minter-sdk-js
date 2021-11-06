@@ -1,19 +1,12 @@
 'use strict';
-import {unCamelCase} from './functions/string';
 
-/*  ------------------------------------------------------------------------ */
-
-const unCamelCasePropertyNames = x => {
-    for (const k in x) x[unCamelCase(k)] = x[k]; // camel_case_method = camelCaseMethod
-    return x;
-};
-
-const fn = unCamelCasePropertyNames(Object.assign({}
-
-    , import ('./functions/string')
-    , import ('./functions/type')
-    , import ('./functions/time')
-));
-
-export default fn;
+export * from './functions/string';
+export * from './functions/encode';
+export * from './functions/generic';
+export * from './functions/type';
+export * from './functions/time';
+export * from './functions/crypto';
+export * from './functions/format';
+export * from './functions/prefix';
+export * from './functions/serialize';
 

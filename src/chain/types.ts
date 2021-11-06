@@ -1,13 +1,13 @@
 
 export interface ChainParams {
     name: string;// Mainnet
-    chainId: number; // minter-mainnet-4
-    networkId: number; // 1
+    chainId:  string; // minter-mainnet-4
+    networkId:  number; // 1
     initialHeight: number;
     totalSlashed: number;
     blockMaxGas: number;
     blockMaxBytes: number;
-    gasCoin: number;
+    gasCoinId: number;
     comment?: string;
     urls: { [key: string]: any };
     genesis: GenesisBlock;

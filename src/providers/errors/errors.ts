@@ -1,8 +1,5 @@
 import * as errorHierarchy from './errorHierarchy';
-import {Assignable} from '../common/types';
-//import {Assignable} from './enums';
-
-/*  ------------------------------------------------------------------------ */
+import {TypedError} from '../../util';
 
 function subclass(BaseClass, classes, namespace = {}) {
 
@@ -44,23 +41,9 @@ function subclass(BaseClass, classes, namespace = {}) {
     return namespace;
 }
 
-/*  ------------------------------------------------------------------------ */
-
-export class TypedError extends Error {
-    type: string;
-    context?: ErrorContext;
-    constructor(message?: string, type?: string, context?: ErrorContext) {
-        super(message);
-        this.type = type || 'UntypedError';
-        this.context = context;
-    }
-}
-export class ErrorContext extends Assignable {}
-
-
 export default subclass(
     // Root class
-    Error,
+    TypedError,
     // Derived class hierarchy
-    errorHierarchy
+    errorHierarchy,
 );

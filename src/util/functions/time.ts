@@ -57,6 +57,7 @@ class TimedOut extends Error {
         const message = 'timed out';
         super(message);
         this.constructor = TimedOut;
+        // @ts-ignore
         this.__proto__ = TimedOut.prototype;
         this.message = message;
     }
@@ -138,33 +139,33 @@ const rfc2616 = (timestamp = undefined) => {
 const mdy = (timestamp, infix = '-') => {
     infix = infix || '';
     const date = new Date(timestamp);
-    const Y = date.getUTCFullYear().toString();
-    let m = date.getUTCMonth() + 1;
-    let d = date.getUTCDate();
-    m = m < 10 ? ('0' + m) : m.toString();
-    d = d < 10 ? ('0' + d) : d.toString();
-    return m + infix + d + infix + Y;
+    const Y: number|string  = date.getUTCFullYear().toString();
+    let m: number|string  = date.getUTCMonth() + 1;
+    let d: number|string  = date.getUTCDate();
+    m = m < 10 ? ('0' + m) : m;
+    d = d < 10 ? ('0' + d) : d;
+    return m.toString() + infix + d.toString() + infix + Y;
 };
 
 const ymd = (timestamp, infix = '-') => {
     infix = infix || '';
     const date = new Date(timestamp);
-    const Y = date.getUTCFullYear().toString();
-    let m = date.getUTCMonth() + 1;
-    let d = date.getUTCDate();
-    m = m < 10 ? ('0' + m) : m.toString();
-    d = d < 10 ? ('0' + d) : d.toString();
-    return Y + infix + m + infix + d;
+    const Y: number|string  = date.getUTCFullYear().toString();
+    let m: number|string  = date.getUTCMonth() + 1;
+    let d: number|string  = date.getUTCDate();
+    m = m < 10 ? ('0' + m) : m;
+    d = d < 10 ? ('0' + d) : d;
+    return Y + infix + m.toString() + infix + d.toString();
 };
 
 const ymdhms = (timestamp, infix = ' ') => {
     const date = new Date(timestamp);
     const Y = date.getUTCFullYear();
-    let m = date.getUTCMonth() + 1;
-    let d = date.getUTCDate();
-    let H = date.getUTCHours();
-    let M = date.getUTCMinutes();
-    let S = date.getUTCSeconds();
+    let m: number|string = date.getUTCMonth() + 1;
+    let d: number|string  = date.getUTCDate();
+    let H: number|string  = date.getUTCHours();
+    let M:  number|string = date.getUTCMinutes();
+    let S: number|string  = date.getUTCSeconds();
     m = m < 10 ? ('0' + m) : m;
     d = d < 10 ? ('0' + d) : d;
     H = H < 10 ? ('0' + H) : H;

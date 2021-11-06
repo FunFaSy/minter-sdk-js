@@ -1,7 +1,7 @@
-export default async function exponentialBackoff(startWaitTime, retryNumber, waitBackoff, getResult) {
+export default async function exponentialBackoff(startWaitTime, retryNumber, waitBackoff, fetchResult) {
     let waitTime = startWaitTime;
     for (let i = 0; i < retryNumber; i++) {
-        const result = await getResult();
+        const result = await fetchResult();
         if (result) {
             return result;
         }

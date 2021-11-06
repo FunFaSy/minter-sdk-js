@@ -12,7 +12,7 @@ export const errorHierarchy = {
             'BadRequest'       : {
                 'BadSymbol': {},
             },
-            'BadResponse'      : {
+            'BadActionResponse'      : {
                 'NullResponse': {},
             },
             'InsufficientFunds': {},
@@ -30,7 +30,11 @@ export const errorHierarchy = {
             'InvalidNonce'     : {},
             'NotSupported'     : {},
         },
+        'QueryError':{
+            'BadQueryResponse':{}
+        },
         'NetworkError' : {
+            'BadResponse':{},
             'DDoSProtection'  : {
                 'RateLimitExceeded': {},
             },
@@ -42,20 +46,3 @@ export const errorHierarchy = {
     },
 };
 
-
-// export class ArgumentTypeError extends Error {
-//     constructor(argName: string, argType: string, argValue: any) {
-//         super(`Expected ${argType} for '${argName}' argument, but got '${JSON.stringify(argValue)}'`);
-//     }
-// }
-//
-
-//
-// export declare class ExchangeError extends TypedError {}
-//
-// export declare class NetworkError extends TypedError {}
-//
-// export declare class DDoSProtection extends NetworkError {}
-//
-// export declare class InvalidNonce extends NetworkError {}
-//

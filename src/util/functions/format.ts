@@ -119,7 +119,7 @@ function trimLeadingZeroes(value: string): string {
  * @param value A value that may not contain commas
  * @returns string A value with commas
  */
-function formatWithCommas(value: string): string {
+export function formatWithCommas(value: string): string {
     const pattern = /(-?\d+)(\d{3})/;
     while (pattern.test(value)) {
         value = value.replace(pattern, '$1,$2');

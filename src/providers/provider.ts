@@ -2,6 +2,7 @@
  * MINTER RPC API request types and responses
  * @module
  */
+import {NodeStatusResult} from './types';
 
 type BlockHash = string;
 type BlockHeight = number;
@@ -50,9 +51,9 @@ export abstract class Provider {
     // // Blockchain
     //
     // abstract netInfo(): Promise<NodeNetInfoResult>;
-    //
-    // abstract status(): Promise<NodeStatusResult>;
-    //
+
+    abstract status(): Promise<NodeStatusResult>;
+
     // abstract block(params: BlockRequest): Promise<NodeStatusResult>;
     //
     // // WebSockets

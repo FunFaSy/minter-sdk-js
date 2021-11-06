@@ -131,7 +131,7 @@ export class Chain {
      * Returns the Id of current chain
      * @returns chain Id
      */
-    chainId(): number {
+    chainId(): string {
         return this.chainParams.chainId;
     }
 
@@ -148,7 +148,7 @@ export class Chain {
      * @returns gasCoin Id
      */
     gasCoin(): number {
-        return this.chainParams.gasCoin;
+        return this.chainParams.gasCoinId;
     }
 
     /**
