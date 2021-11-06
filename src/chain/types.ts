@@ -1,5 +1,5 @@
 
-export interface ChainInitialParams {
+export interface ChainParams {
     name: string;// Mainnet
     chainId: number; // minter-mainnet-4
     networkId: number; // 1
@@ -7,6 +7,7 @@ export interface ChainInitialParams {
     totalSlashed: number;
     blockMaxGas: number;
     blockMaxBytes: number;
+    gasCoin: number;
     comment?: string;
     urls: { [key: string]: any };
     genesis: GenesisBlock;

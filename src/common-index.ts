@@ -3,6 +3,7 @@ import * as providers from './providers';
 import * as utils from './util';
 import {KeyPair, KeyPairSecp256k1} from './key_pair';
 // import { Connection } from './connection';
+import {Chain} from './chain';
 import {Account} from './account';
 import * as transactions from './transaction';
 import {InMemorySigner, Signer} from './signer';
@@ -15,9 +16,11 @@ export {
     , providers
     , transactions
 
-    , Account
+    , Chain
     , KeyPair
     , KeyPairSecp256k1
+
+    , Account
     , Signer
     , InMemorySigner
 

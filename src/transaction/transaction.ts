@@ -2,7 +2,7 @@ import {Buffer} from 'buffer';
 import {bufferToInt, defineProperties, ecsign, ethPublicToAddress, rlp, rlphash, toBuffer} from '../util';
 import {Assignable, BufferLike} from '../util/types';
 import {MultiSignature, SignatureType, SingleSignature, TransactionSignature as Signature} from './signature';
-import Chain from '../chain';
+import {Chain} from '../chain';
 
 
 export enum TransactionType {

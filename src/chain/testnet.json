@@ -12,6 +12,7 @@
         "www": "https://minter.org/",
         "doc": "https:/#",
         "console": "https://#",
+        "wallet": "https://#",
         "explorer": "https:/#",
         "api": {
             "node": {

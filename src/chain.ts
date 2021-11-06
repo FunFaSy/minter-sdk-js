@@ -1,57 +1,45 @@
-import {BootstrapNode, ChainInitialParams, GenesisBlock} from './chain/types';
+import {BootstrapNode, ChainParams, GenesisBlock} from './chain/types';
 import * as mainNetParams from './chain/mainnet.json';
 import * as tacoNetParams from './chain/taconet.json';
 import * as testNetParams from './chain/testnet.json';
 
 import {deepExtend} from './util';
-import {Assignable} from './util/types';
-import {isNumber, isString} from './util/functions/type';
+import {isNumber, isObject, isString} from './util/functions/type';
 
 export * from './chain/types';
-
-export class ChainParams extends Assignable implements ChainInitialParams {
-    bootstrapNodes: BootstrapNode[];
-    chainId: number;
-    comment: string;
-    genesis: GenesisBlock;
-    name: string;
-    networkId: number;
-    gasCoin: number;
-    blockMaxBytes: number;
-    blockMaxGas: number;
-    blockTimeIotaMs: number;
-    initialHeight: number;
-    totalSlashed: number;
-    urls: { [p: string]: any };
-}
 
 /**
  * Chain class to access chain parameters
  */
-export default class Chain {
-    private _chainParams: ChainParams;
+export class Chain {
+    private chainParams: ChainParams;
 
+    /**
+     *
+     */
     describe() {
-        return this._chainParams;
+        return JSON.parse(JSON.stringify(this));
     }
 
     /**
-     * Creates a Common object for a custom chain, based on a standard one. It uses all the [[Chain]]
-     * params from [[baseChain]] except the ones overridden in [[customChainParams]].
+     * Creates a Chain object for a custom chain, based on a standard one. It uses all the [[ChainParams]]
+     * params from [[baseChain]] except the ones overridden in [[userConfig]].
      *
      * @param baseChain The name (`mainnet`) or id (`1`) of a standard chain used to base the custom
      * chain params on.
      * @param userConfig The custom parameters of the chain.
      */
-    static forCustomChain(baseChain: string | number, userConfig: Partial<ChainInitialParams>): Chain {
+    static forCustomChain(baseChain: string | number, userConfig: Partial<ChainParams>): Chain {
         const baseConfig = Chain.getBaseParams(baseChain);
-        const configEntries = deepExtend({}, baseConfig, userConfig);
-        const params = new ChainParams(configEntries);
-
-        return new Chain(params);
+        const config: ChainParams = deepExtend({}, baseConfig, userConfig);
+        return new Chain(config);
     }
 
-    static getBaseParams(chain: string | number | object): ChainParams {
+    /**
+     *  Returns the ChainParams object represents given chain.
+     * @param chain
+     */
+    static getBaseParams(chain: string | number): ChainParams {
         let baseConfig: ChainParams;
 
         if (isString(chain)) {
@@ -85,10 +73,7 @@ export default class Chain {
                 throw new Error(`Unknown networkId ${chain}`);
             }
         }
-        //
-        else if (chain instanceof ChainParams) {
-            baseConfig = chain;
-        }
+
         return baseConfig;
     }
 
@@ -96,18 +81,25 @@ export default class Chain {
      * @constructor
      * @param chain String ('mainnet') or Number (1) or Dictionary with chain params
      */
-    constructor(chain: string | number | object) {
-        this._chainParams =  Chain.getBaseParams(chain);
-
-        const configEntries = Object.entries(this._chainParams);
-        for (let i = 0; i < configEntries.length; i++) {
-            const [property, value] = configEntries[i];
-            if (value && Object.getPrototypeOf(value) === Object.prototype) {
-                this[property] = deepExtend(this[property], value);
-            } else {
-                this[property] = value;
-            }
+    constructor(chain: string | number | ChainParams) {
+        //
+        if (isString(chain)) {
+            this.chainParams = Chain.getBaseParams(chain.toString());
+        } else if (isNumber(chain)) {
+            this.chainParams = Chain.getBaseParams(Number(chain));
+        } else if (isObject(chain)) {
+            this.chainParams = chain as ChainParams;
         }
+
+        // const configEntries = Object.entries(this.chainParams);
+        // for (let i = 0; i < configEntries.length; i++) {
+        //     const [property, value] = configEntries[i];
+        //     if (value && Object.getPrototypeOf(value) === Object.prototype) {
+        //         this[property] = deepExtend(this[property], value);
+        //     } else {
+        //         this[property] = value;
+        //     }
+        // }
 
     }
 
@@ -116,7 +108,7 @@ export default class Chain {
      * @returns Genesis dictionary
      */
     genesis(): GenesisBlock {
-        return this._chainParams.genesis;
+        return this.chainParams.genesis;
     }
 
     /**
@@ -124,7 +116,7 @@ export default class Chain {
      * @returns {Dictionary} Dict with bootstrap nodes
      */
     bootstrapNodes(): BootstrapNode[] {
-        return this._chainParams.bootstrapNodes;
+        return this.chainParams.bootstrapNodes;
     }
 
     /**
@@ -132,15 +124,15 @@ export default class Chain {
      * @returns chain name (lower case)
      */
     name(): string {
-        return this._chainParams.name.toLowerCase();
+        return this.chainParams.name.toLowerCase();
     }
 
     /**
      * Returns the Id of current chain
      * @returns chain Id
      */
-    id(): number {
-        return this._chainParams.chainId;
+    chainId(): number {
+        return this.chainParams.chainId;
     }
 
     /**
@@ -148,7 +140,7 @@ export default class Chain {
      * @returns network Id
      */
     networkId(): number {
-        return this._chainParams.networkId;
+        return this.chainParams.networkId;
     }
 
     /**
@@ -156,6 +148,13 @@ export default class Chain {
      * @returns gasCoin Id
      */
     gasCoin(): number {
-        return this._chainParams.gasCoin;
+        return this.chainParams.gasCoin;
+    }
+
+    /**
+     *
+     */
+    urls(): { [k: string]: any } {
+        return this.chainParams.urls;
     }
 }
