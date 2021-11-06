@@ -1,6 +1,6 @@
 import {KeyStore} from './key_stores/keystore';
 import {InMemoryKeyStore} from './key_stores/in_memory_key_store';
-import {KeyPair, KeyType, PublicKey, Signature} from './key_stores/key_pair';
+import {KeyPair, KeyType, PublicKey, Signature} from './key_pair';
 import {sha256} from './util';
 
 /**

@@ -1,7 +1,7 @@
-import {base_decode, base_encode} from '../util/functions/serialize';
-import {Assignable} from '../util/types';
-import {Prefix,  toBuffer, ethPrivateToPublic, ethPublicToAddress} from '../util';
-import {nacl,secp256k1,secp256k1Shim} from '../util/external';
+import {base_decode, base_encode} from './util/functions/serialize';
+import {Assignable} from './util/types';
+import {Prefix,  toBuffer, ethPrivateToPublic, ethPublicToAddress} from './util';
+import {nacl,secp256k1,secp256k1Shim} from './util/external';
 
 
 export type Arrayish = string | ArrayLike<number>;

@@ -1,5 +1,5 @@
 import { KeyStore } from './keystore';
-import {KeyPair} from './key_pair';
+import {KeyPair} from '../key_pair';
 
 /**
  * Keystore which can be used to merge multiple key stores into one virtual key store.

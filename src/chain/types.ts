@@ -2,14 +2,13 @@
 export interface ChainInitialParams {
     name: string;// Mainnet
     chainId: number; // minter-mainnet-4
-    networkId: number; // 4
+    networkId: number; // 1
     initialHeight: number;
     totalSlashed: number;
     blockMaxGas: number;
-    blockTimeIotaMs: number;
     blockMaxBytes: number;
-    comment: string;
-    url: string;
+    comment?: string;
+    urls: { [key: string]: any };
     genesis: GenesisBlock;
     bootstrapNodes: BootstrapNode[];
 }

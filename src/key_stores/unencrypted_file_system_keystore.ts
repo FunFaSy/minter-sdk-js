@@ -3,7 +3,7 @@ import path from 'path';
 import { promisify as _promisify } from 'util';
 
 import { KeyStore } from './keystore';
-import {KeyPair} from './key_pair';
+import {KeyPair} from '../key_pair';
 
 const promisify = (fn: any) => {
     if (!fn) {

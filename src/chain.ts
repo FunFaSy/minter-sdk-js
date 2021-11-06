@@ -3,7 +3,6 @@ import * as mainNetParams from './chain/mainnet.json';
 import * as tacoNetParams from './chain/taconet.json';
 import * as testNetParams from './chain/testnet.json';
 
-
 import {deepExtend} from './util';
 import {Assignable} from './util/types';
 import {isNumber, isString} from './util/functions/type';
@@ -17,13 +16,13 @@ export class ChainParams extends Assignable implements ChainInitialParams {
     genesis: GenesisBlock;
     name: string;
     networkId: number;
-    url: string;
     gasCoin: number;
     blockMaxBytes: number;
     blockMaxGas: number;
     blockTimeIotaMs: number;
     initialHeight: number;
     totalSlashed: number;
+    urls: { [p: string]: any };
 }
 
 /**
@@ -32,7 +31,7 @@ export class ChainParams extends Assignable implements ChainInitialParams {
 export default class Chain {
     private _chainParams: ChainParams;
 
-    describe(){
+    describe() {
         return this._chainParams;
     }
 
@@ -45,35 +44,14 @@ export default class Chain {
      * @param userConfig The custom parameters of the chain.
      */
     static forCustomChain(baseChain: string | number, userConfig: Partial<ChainInitialParams>): Chain {
-        let baseConfig;
-
-        if (isString(baseChain)) {
-            switch (baseChain) {
-            case 'mainnet':
-                baseConfig = (mainNetParams as undefined) as ChainParams;
-                break;
-            case 'testnet':
-                baseConfig = (testNetParams as undefined) as ChainParams;
-                break;
-            case 'taconet':
-                baseConfig = (tacoNetParams as undefined) as ChainParams;
-                break;
-            default:
-                throw new Error(`Unknown baseChain ${baseChain}`);
-            }
-        }
-
-        const configEntries = deepExtend({},baseConfig,userConfig);
+        const baseConfig = Chain.getBaseParams(baseChain);
+        const configEntries = deepExtend({}, baseConfig, userConfig);
         const params = new ChainParams(configEntries);
 
         return new Chain(params);
     }
 
-    /**
-     * @constructor
-     * @param chain String ('mainnet') or Number (1) or Dictionary with chain params
-     */
-    constructor(chain: string | number | object) {
+    static getBaseParams(chain: string | number | object): ChainParams {
         let baseConfig: ChainParams;
 
         if (isString(chain)) {
@@ -111,13 +89,20 @@ export default class Chain {
         else if (chain instanceof ChainParams) {
             baseConfig = chain;
         }
+        return baseConfig;
+    }
 
-        this._chainParams = baseConfig;
+    /**
+     * @constructor
+     * @param chain String ('mainnet') or Number (1) or Dictionary with chain params
+     */
+    constructor(chain: string | number | object) {
+        this._chainParams =  Chain.getBaseParams(chain);
 
         const configEntries = Object.entries(this._chainParams);
         for (let i = 0; i < configEntries.length; i++) {
             const [property, value] = configEntries[i];
-            if (value && Object.getPrototypeOf (value) === Object.prototype) {
+            if (value && Object.getPrototypeOf(value) === Object.prototype) {
                 this[property] = deepExtend(this[property], value);
             } else {
                 this[property] = value;
@@ -143,19 +128,19 @@ export default class Chain {
     }
 
     /**
+     * Returns the name of current chain
+     * @returns chain name (lower case)
+     */
+    name(): string {
+        return this._chainParams.name.toLowerCase();
+    }
+
+    /**
      * Returns the Id of current chain
      * @returns chain Id
      */
     id(): number {
         return this._chainParams.chainId;
-    }
-
-    /**
-     * Returns the name of current chain
-     * @returns chain name (lower case)
-     */
-    name(): string {
-        return this._chainParams.name;
     }
 
     /**
@@ -166,6 +151,10 @@ export default class Chain {
         return this._chainParams.networkId;
     }
 
+    /**
+     * Returns the Id of gasCoin for current network
+     * @returns gasCoin Id
+     */
     gasCoin(): number {
         return this._chainParams.gasCoin;
     }

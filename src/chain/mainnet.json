@@ -1,11 +1,10 @@
 {
     "name": "Mainnet",
     "chainId": "minter-mainnet-4",
-    "networkId": 0,
+    "networkId": 1,
     "initialHeight": 3278787,
     "totalSlashed": 0,
     "blockMaxGas": 100000,
-    "blockTimeIotaMs": 1000,
     "blockMaxBytes": 10000000,
     "gasCoin": 0,
     "comment": "",
