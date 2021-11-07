@@ -1,9 +1,7 @@
 import createError from 'http-errors';
-
+import axios, {AxiosRequestConfig, AxiosResponse} from 'axios';
 import exponentialBackoff from './exponential-backoff';
 import {deepExtend, isString, logWarning, TypedError} from '.';
-import axios, {AxiosRequestConfig, AxiosResponse} from 'axios';
-import https from 'https';
 
 const START_WAIT_TIME_MS = 500;
 const BACKOFF_MULTIPLIER = 1.5;
@@ -15,18 +13,14 @@ export interface ConnectionInfo extends AxiosRequestConfig {
         username: string;
         password: string;
     };
-    allowInsecure?: boolean;
     timeout?: number;
     headers?: Record<string, string>;
 }
 
-const insecureHttpsAgent = new https.Agent({
-    rejectUnauthorized: false,
-});
-
 const defaultFetcherConfig = {
     headers: {'Content-Type': 'application/json; charset=utf-8'},
 } as AxiosRequestConfig;
+
 
 const parseData = (data) => {
     if (isString(data)) {
@@ -39,6 +33,7 @@ const parseData = (data) => {
     }
     return data;
 };
+
 
 const isValidUrl = (url) => {
     try {
@@ -66,11 +61,6 @@ export async function fetchJson(connection: string | ConnectionInfo, json?: stri
     }
     //
     else {
-        if ((connection as ConnectionInfo).allowInsecure !== undefined
-            && true === (connection as ConnectionInfo).allowInsecure) {
-            config.httpsAgent = insecureHttpsAgent;
-        }
-
         config = deepExtend(config, connection);
     }
 
@@ -132,11 +122,12 @@ export async function fetchJson(connection: string | ConnectionInfo, json?: stri
                      * is an instance of XMLHttpRequest in the browser and an instance
                      * of http.ClientRequest in Node.js
                      */
-                    logWarning(`Retrying HTTP request for ${config.url} because got no response`,error.request);
+                    logWarning(`Retrying HTTP request for ${config.url} because got no response`, error.request);
                     return null;
                 } else {
                     // Something happened in setting up the request and triggered an Error
-                    logWarning(`Something happened in setting up the request ${config.url} and triggered an Error`,error.request);
+                    logWarning(`Something happened in setting up the request ${config.url} and triggered an Error`,
+                        error.request);
                     throw createError(error.status, error.message);
                 }
             });

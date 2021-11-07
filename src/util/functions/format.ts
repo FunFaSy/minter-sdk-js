@@ -1,8 +1,8 @@
-import BN from 'bn.js';
-
 /**
  * Exponent for calculating how many indivisible units (PIP) are there in one BIP. See {@link BIP_NOMINATION}.
  */
+import {BN} from '../external';
+
 export const BIP_NOMINATION_EXP = 18;
 
 /**

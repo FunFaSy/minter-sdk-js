@@ -2,7 +2,7 @@
     "compilerOptions": {
         "esModuleInterop": true,
         "lib": [
-            "es2015",
+            "es2018",
             "esnext",
             "dom"
         ],
@@ -22,13 +22,12 @@
         "noUnusedLocals": true,
         "experimentalDecorators": true,
         "resolveJsonModule": true,
-        "skipLibCheck": true
+        "emitDecoratorMetadata": true,
+        "allowSyntheticDefaultImports": true,
+        "downlevelIteration": true
     },
     "files": [
         "src/index.ts",
         "src/browser-index.ts"
-    ],
-    "exclude": [
-        "node_modules"
     ]
 }

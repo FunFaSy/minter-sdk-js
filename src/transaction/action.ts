@@ -1,5 +1,4 @@
 import {defineProperties, rlp} from '../util';
-import {Buffer} from 'buffer';
 
 export abstract class Action {
     public raw!: Buffer;

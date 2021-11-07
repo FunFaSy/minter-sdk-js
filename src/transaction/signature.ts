@@ -1,8 +1,16 @@
 // secp256k1n/2
-import {Buffer} from 'buffer';
-import {ECDSASignature, ECDSASignatureBuffer, ecrecover} from 'ethereumjs-util';
-import {BufferLike} from '../util/types';
-import {BN,  bufferToInt, defineProperties, rlp, toBuffer} from '../util';
+import {BufferLike} from '../util';
+
+import {
+    BN,
+    bufferToInt,
+    defineProperties,
+    ECDSASignature,
+    ECDSASignatureBuffer,
+    ecrecover,
+    rlp,
+    toBuffer,
+} from '../util';
 
 const N_DIV_2 = new BN('7fffffffffffffffffffffffffffffff5d576e7357a4501ddfe92f46681b20a0', 16);
 

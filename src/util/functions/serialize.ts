@@ -1,7 +1,6 @@
 
 import {toBuffer} from './encode';
-import {bs58check} from '../external';
-import {BufferLike} from '../types';
+import {bs58check, BufferLike} from '../external';
 
 export const baseEncode = (value: BufferLike | string): string => {
     if (typeof (value) === 'string') {

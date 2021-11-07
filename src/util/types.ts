@@ -1,15 +1,12 @@
 /** @hidden @module */
-import {Buffer} from 'buffer';
-import {PrefixedHexString} from 'ethereumjs-util/src/types';
-import {Address} from 'ethereumjs-util/src/address';
 
-export  {BNLike, BufferLike} from 'ethereumjs-util/src/types';
+import {ethAddress, PrefixedHexString} from './external';
 
 /**
  * A type that represents an Address-like value.
  * To convert to address, use `new Address(toBuffer(value))`
  */
-export type AddressLike = Address | Buffer | PrefixedHexString
+export type AddressLike = ethAddress | Buffer | PrefixedHexString
 
 export abstract class Enum {
     enum: string;

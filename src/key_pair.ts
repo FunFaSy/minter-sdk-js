@@ -1,8 +1,13 @@
-import {base_decode, base_encode} from './util/functions/serialize';
-import {Assignable} from './util/types';
-import {Prefix,  toBuffer, ethPrivateToPublic, ethPublicToAddress} from './util';
-import {nacl,secp256k1,secp256k1Shim} from './util/external';
-
+import {
+    Assignable,
+    base_decode,
+    base_encode,
+    ethPrivateToPublic,
+    ethPublicToAddress,
+    Prefix,
+    secp256k1,
+    secp256k1Shim,
+} from './util';
 
 export type Arrayish = string | ArrayLike<number>;
 
@@ -68,8 +73,8 @@ export abstract class KeyPair {
         switch (str2KeyType(curve.toString())) {
         case KeyType.SECP256K1:
             return KeyPairSecp256k1.fromRandom();
-        case KeyType.ED25519:
-            return KeyPairEd25519.fromRandom();
+        // case KeyType.ED25519:
+        //     return KeyPairEd25519.fromRandom();
         default:
             throw new Error(`Unknown curve ${curve}`);
         }
@@ -83,8 +88,8 @@ export abstract class KeyPair {
             switch (str2KeyType(parts[0])) {
             case KeyType.SECP256K1:
                 return new KeyPairSecp256k1(parts[1]);
-            case KeyType.ED25519:
-                return new KeyPairEd25519(parts[1]);
+            // case KeyType.ED25519:
+            //     return new KeyPairEd25519(parts[1]);
             default:
                 throw new Error(`Unknown curve: ${parts[0]}`);
             }
@@ -98,42 +103,42 @@ export abstract class KeyPair {
  * This class provides key pair functionality for Ed25519 curve:
  * generating key pairs, encoding key pairs, signing and verifying.
  */
-export class KeyPairEd25519 extends KeyPair {
-    /**
-     * Construct an instance of key pair given a secret key.
-     * It's generally assumed that these are encoded in base58check.
-     * @param {string} secretKey
-     */
-    constructor(secretKey: string) {
-        const keyPair = nacl.sign.keyPair.fromSecretKey(base_decode(secretKey));
-        super(new PublicKey({keyType: KeyType.ED25519, data: keyPair.publicKey}), secretKey);
-    }
-
-    /**
-     * Generate a new random keypair.
-     * @example
-     * const keyRandom = KeyPair.fromRandom();
-     * keyRandom.publicKey
-     * // returns [PUBLIC_KEY]
-     *
-     * keyRandom.secretKey
-     * // returns [SECRET_KEY]
-     */
-    static fromRandom(): KeyPair {
-        const newKeyPair = nacl.sign.keyPair();
-        return new KeyPairEd25519(base_encode(newKeyPair.secretKey));
-    }
-
-    sign(message: Buffer): Signature {
-        const signature = toBuffer(nacl.sign.detached(message, base_decode(this.secretKey)));
-        return {signature, publicKey: this.publicKey};
-    }
-
-    verify(message: Buffer, signature: Buffer): boolean {
-        return this.publicKey.verify(message, signature);
-    }
-
-}
+// export class KeyPairEd25519 extends KeyPair {
+//     /**
+//      * Construct an instance of key pair given a secret key.
+//      * It's generally assumed that these are encoded in base58check.
+//      * @param {string} secretKey
+//      */
+//     constructor(secretKey: string) {
+//         const keyPair = nacl.sign.keyPair.fromSecretKey(base_decode(secretKey));
+//         super(new PublicKey({keyType: KeyType.ED25519, data: keyPair.publicKey}), secretKey);
+//     }
+//
+//     /**
+//      * Generate a new random keypair.
+//      * @example
+//      * const keyRandom = KeyPair.fromRandom();
+//      * keyRandom.publicKey
+//      * // returns [PUBLIC_KEY]
+//      *
+//      * keyRandom.secretKey
+//      * // returns [SECRET_KEY]
+//      */
+//     static fromRandom(): KeyPair {
+//         const newKeyPair = nacl.sign.keyPair();
+//         return new KeyPairEd25519(base_encode(newKeyPair.secretKey));
+//     }
+//
+//     sign(message: Buffer): Signature {
+//         const signature = toBuffer(nacl.sign.detached(message, base_decode(this.secretKey)));
+//         return {signature, publicKey: this.publicKey};
+//     }
+//
+//     verify(message: Buffer, signature: Buffer): boolean {
+//         return this.publicKey.verify(message, signature);
+//     }
+//
+// }
 
 /**
  * This class provides key pair functionality for Secp256k1 curve:
@@ -211,8 +216,8 @@ export class PublicKey extends Assignable {
 
     verify(message: Buffer, signature: Buffer): boolean {
         switch (this.keyType) {
-        case KeyType.ED25519:
-            return nacl.sign.detached.verify(message, signature, this.data);
+        // case KeyType.ED25519:
+        //     return nacl.sign.detached.verify(message, signature, this.data);
         case KeyType.SECP256K1:
             return secp256k1Shim.verify(message, signature, this.data);
         default:

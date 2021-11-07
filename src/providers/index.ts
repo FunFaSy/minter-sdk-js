@@ -1,4 +1,10 @@
 /** @hidden @module */
-export * from './types';
-export * from './provider';
-export * from './json-rpc-provider';
+import {NodeStatusResult} from './types';
+import {Provider} from './provider';
+import {JsonRpcProvider} from './json-rpc-provider';
+
+export {
+    Provider
+    , JsonRpcProvider
+    , NodeStatusResult,
+};

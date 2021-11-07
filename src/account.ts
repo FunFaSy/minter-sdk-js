@@ -1,8 +1,8 @@
-import {BNLike, BufferLike} from './util/types';
+import {BNLike, BufferLike} from './util';
 
 export interface AccountData {
     nonce?: BNLike;
-    balance?: BufferLike;
+    balance?: BufferLike ;
     delegated?: BufferLike;
     total?: BufferLike;
     transaction_count?: BNLike;

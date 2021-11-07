@@ -1,9 +1,16 @@
-import {Buffer} from 'buffer';
-import {bufferToInt, defineProperties, ecsign, ethPublicToAddress, rlp, rlphash, toBuffer} from '../util';
-import {Assignable, BufferLike} from '../util/types';
+import {
+    Assignable,
+    BufferLike,
+    bufferToInt,
+    defineProperties,
+    ecsign,
+    ethPublicToAddress,
+    rlp,
+    rlphash,
+    toBuffer,
+} from '../util';
 import {MultiSignature, SignatureType, SingleSignature, TransactionSignature as Signature} from './signature';
 import {Chain} from '../chain';
-
 
 export enum TransactionType {
     SEND                      = '0x01',
