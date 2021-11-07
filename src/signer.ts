@@ -1,7 +1,5 @@
-import {KeyStore} from './key_stores/keystore';
 import {InMemoryKeyStore} from './key_stores/in_memory_key_store';
-import {KeyPair, KeyType, PublicKey, Signature} from './key_pair';
-import {sha256} from './util';
+import {KeyPair, KeyPairSignature, KeyType, PublicKey} from './key_pair';
 
 /**
  * General signing interface, can be used for in memory signing, RPC singing, external wallet, HSM, etc.
@@ -11,14 +9,15 @@ export abstract class Signer {
     /**
      * Creates new key and returns public key.
      */
-    abstract createKey(accountId: string, networkId?: string): Promise<PublicKey>;
+    abstract createKey(
+        accountId: string, networkId?: string): Promise<PublicKey>;
 
     /**
      * Returns public key for given account / network.
      * @param accountId accountId to retrieve from.
      * @param networkId The targeted network. (ex. mainnet, testnet, etc…)
      */
-    abstract getPublicKey(accountId?: string, networkId?: string): Promise<PublicKey>;
+    abstract publicKey( accountId?: string, networkId?: string): Promise<PublicKey>;
 
     /**
      * Signs given message, by first hashing with sha256.
@@ -26,16 +25,18 @@ export abstract class Signer {
      * @param accountId accountId to use for signing.
      * @param networkId The targeted network. (ex. mainnet, testnet, etc…)
      */
-    abstract signMessage(message: Uint8Array, accountId?: string, networkId?: string): Promise<Signature>;
+    abstract signMessage(
+        message: Uint8Array, accountId?: string,
+        networkId?: string): Promise<KeyPairSignature>;
 }
 
 /**
  * Signs using in memory key store.
  */
 export class InMemorySigner extends Signer {
-    readonly keyStore: KeyStore;
+    readonly keyStore: InMemoryKeyStore;
 
-    constructor(keyStore: KeyStore) {
+    constructor(keyStore: InMemoryKeyStore) {
         super();
         this.keyStore = keyStore;
     }
@@ -64,7 +65,7 @@ export class InMemorySigner extends Signer {
     async createKey(accountId: string, networkId: string): Promise<PublicKey> {
         const keyPair = KeyPair.fromRandom(KeyType.SECP256K1);
         await this.keyStore.setKey(networkId, accountId, keyPair);
-        return keyPair.getPublicKey();
+        return keyPair.publicKey();
     }
 
     /**
@@ -73,12 +74,12 @@ export class InMemorySigner extends Signer {
      * @param networkId The targeted network. (ex. mainnet, testnet, etc…)
      * @returns {Promise<PublicKey>} Returns the public key or null if not found
      */
-    async getPublicKey(accountId?: string, networkId?: string): Promise<PublicKey> {
+    async publicKey(accountId?: string, networkId?: string): Promise<PublicKey> {
         const keyPair = await this.keyStore.getKey(networkId, accountId);
         if (keyPair === null) {
             return null;
         }
-        return keyPair.getPublicKey();
+        return keyPair.publicKey();
     }
 
     /**
@@ -87,17 +88,15 @@ export class InMemorySigner extends Signer {
      * @param networkId The targeted network. (ex. mainnet, testnet, etc…)
      * @returns {Promise<Signature>}
      */
-    async signMessage(message: Buffer, accountId?: string, networkId?: string): Promise<Signature> {
-        const hash = sha256.sha256(message);
+    async signMessage(message: Buffer, accountId?: string, networkId?: string): Promise<KeyPairSignature> {
         if (!accountId) {
             throw new Error('InMemorySigner requires provided account id');
         }
-
         const keyPair = await this.keyStore.getKey(networkId, accountId);
         if (keyPair === null) {
             throw new Error(`Key for ${accountId} not found in ${networkId}`);
         }
-        return keyPair.sign(hash);
+        return keyPair.sign(message);
     }
 
     toString(): string {

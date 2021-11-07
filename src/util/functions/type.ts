@@ -5,13 +5,18 @@
 const isNumber          = Number.isFinite
     , isInteger         = Number.isInteger
     , isArray           = Array.isArray
+    , isBuffer          = Buffer.isBuffer
     , hasProps          = o => ((o !== undefined) && (o !== null))
     , isString          = s =>                  (typeof s === 'string')
     , isObject          = o => ((o !== null) && (typeof o === 'object'))
     , isRegExp          = o => (o instanceof RegExp)
     , isDictionary      = o => (isObject (o) && (Object.getPrototypeOf (o) === Object.prototype) && !isArray (o) && !isRegExp (o))
-    , isStringCoercible = x => ((hasProps (x) && x.toString) || isNumber (x));
-
+    , isStringCoercible = x => ((hasProps (x) && x.toString) || isNumber (x))
+    , isHexString = (value: string, length?: number): boolean =>{
+        if (typeof value !== 'string' || !value.match(/^0x[0-9A-Fa-f]*$/)) return false;
+        if (length && value.length !== 2 + 2 * length) return false;
+        return true;
+    };
 /*  .............................................   */
 
 const prop = (o, k) => (isObject (o) ? o[k] : undefined)
@@ -49,9 +54,11 @@ export  {
     isNumber
     , isInteger
     , isArray
+    , isBuffer
     , isObject
     , isString
     , isStringCoercible
+    , isHexString
     , isDictionary
 
     , hasProps

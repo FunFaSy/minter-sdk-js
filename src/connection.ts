@@ -1,6 +1,6 @@
 import {JsonRpcProvider, Provider} from './providers';
 import {InMemorySigner, Signer} from './signer';
-import {KeyStore} from './key_stores';
+import {InMemoryKeyStore, KeyStore} from './key_stores';
 
 /**
  * @param config Contains connection info details
@@ -26,7 +26,7 @@ function getSigner(config: { type: string; keyStore: KeyStore }): Signer {
     case undefined:
         return undefined;
     case 'InMemorySigner': {
-        return new InMemorySigner(config.keyStore);
+        return new InMemorySigner(config.keyStore as InMemoryKeyStore);
     }
     default:
         throw new Error(`Unknown signer type ${config.type}`);

@@ -1,7 +1,7 @@
 import {ethPrivateToAddress} from '../external';
 import {toBuffer} from './encode';
 
-export enum Prefix {
+export enum MinterPrefix {
     ADDRESS = 'Mx',
     PUB     = 'Mp',
     TX      = 'Mt',
@@ -9,7 +9,7 @@ export enum Prefix {
     HASH    = 'Mh'
 }
 
-const PrefixStrings =  Object.keys(Prefix).map(k => Prefix[k as any]);
+const PrefixStrings =  Object.keys(MinterPrefix).map(k => MinterPrefix[k as any]);
 
 /**
  * Replace Minter prefixes with hex prefix
@@ -32,12 +32,12 @@ export function mPrefixStrip(value) {
 
 export function addressToString(address) {
     address = toBuffer(address);
-    return `${Prefix.ADDRESS}${address.toString('hex')}`;
+    return `${MinterPrefix.ADDRESS}${address.toString('hex')}`;
 }
 
 export function checkToString(cheque) {
     cheque = toBuffer(cheque);
-    return `${Prefix.CHEQUE}${cheque.toString('hex')}`;
+    return `${MinterPrefix.CHEQUE}${cheque.toString('hex')}`;
 }
 
 /**
@@ -46,7 +46,7 @@ export function checkToString(cheque) {
  * @return {string}
  */
 export function privateToAddressString(privateKey) {
-    return `${Prefix.ADDRESS}${ethPrivateToAddress(privateKey).toString('hex')}`;
+    return `${MinterPrefix.ADDRESS}${ethPrivateToAddress(privateKey).toString('hex')}`;
 }
 
 export function isMinterPrefixed(value) {
@@ -61,21 +61,21 @@ export function isMinterPrefixed(value) {
  * @return {boolean}
  */
 export function isValidPublicKeyString(publicKey) {
-    const pattern = new RegExp('^'+Prefix.PUB+'[0-9a-fA-F]{64}$');
+    const pattern = new RegExp('^'+MinterPrefix.PUB+'[0-9a-fA-F]{64}$');
     return pattern.test(publicKey);
 }
 
 export function isValidAddress(address) {
-    const pattern = new RegExp('^'+Prefix.ADDRESS+'[0-9a-fA-F]{40}$');
+    const pattern = new RegExp('^'+MinterPrefix.ADDRESS+'[0-9a-fA-F]{40}$');
     return pattern.test(address);
 }
 
 export function isValidCheck(cheque) {
-    const pattern = new RegExp('^'+Prefix.CHEQUE+'[0-9a-fA-F]+$');
+    const pattern = new RegExp('^'+MinterPrefix.CHEQUE+'[0-9a-fA-F]+$');
     return pattern.test(cheque);
 }
 
 export function isValidTransaction(tx) {
-    const pattern = new RegExp('^'+Prefix.TX+'[0-9a-fA-F]{64}$');
+    const pattern = new RegExp('^'+MinterPrefix.TX+'[0-9a-fA-F]{64}$');
     return pattern.test(tx);
 }

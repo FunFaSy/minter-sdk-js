@@ -1,19 +1,79 @@
 import {
+    assertIsBuffer,
+    assertIsString,
     Assignable,
     base_decode,
     base_encode,
+    bufferToInt,
+    ecrecover,
+    ecsign,
     ethPrivateToPublic,
     ethPublicToAddress,
-    Prefix,
+    fromRpcSig,
+    MinterPrefix,
     secp256k1,
-    secp256k1Shim,
+    toBuffer,
+    toRpcSig,
 } from './util';
+import {BN} from './util/external';
 
 export type Arrayish = string | ArrayLike<number>;
 
-export interface Signature {
-    signature: Buffer;
-    publicKey: PublicKey;
+/**
+ *
+ */
+export class KeyPairSignature extends Assignable {
+    signature: Buffer[];
+    keyType: KeyType;
+
+    raw(): Buffer[] { return this.signature;}
+
+    /**
+     *
+     */
+    toString(): string {
+        const ethRpcSig = toRpcSig(this.signature[0], this.signature[1], this.signature[2]); // 0x prefixed Hex string
+        return `${keyType2Str(this.keyType)}:${base_encode(ethRpcSig)}`;
+    }
+
+    /**
+     *
+     * @param signature string
+     */
+    static fromString(signature: string): KeyPairSignature {
+        assertIsString(signature);
+
+        const parts = signature.split(':');
+        if (parts.length === 1) {
+            const ethRpcSig = base_decode(parts[0]);// Buffer encoded 0x Prefixed Hex
+            const vrsSig = fromRpcSig(ethRpcSig.toString());
+            return new KeyPairSignature({
+                keyType  : KeyType.SECP256K1,
+                signature: [toBuffer(vrsSig.v), vrsSig.r, vrsSig.s],
+            });
+        }
+        //
+        else if (parts.length === 2) {
+            const keyType = str2KeyType(parts[0]);
+
+            switch (keyType) {
+            case KeyType.SECP256K1: {
+                const ethRpcSig = base_decode(parts[1]);// Buffer encoded 0x Prefixed Hex
+                const vrsSig = fromRpcSig(ethRpcSig.toString()); // 0x Prefixed Hex
+                return new KeyPairSignature({
+                    keyType  : KeyType.SECP256K1,
+                    signature: [toBuffer(vrsSig.v), vrsSig.r, vrsSig.s],
+                });
+            }
+            default:
+                throw new Error(`Unknown curve: ${parts[0]}`);
+            }
+        }
+        //
+        else {
+            throw new Error('Invalid encoded signature format, must be <curve>:<encoded sig>');
+        }
+    }
 }
 
 /** All supported key types */
@@ -22,7 +82,7 @@ export enum KeyType {
     ED25519   = 1, // EdDSA
 }
 
-function keyType2Str(keyType: KeyType): string {
+const keyType2Str = (keyType: KeyType): string => {
     switch (keyType) {
     case KeyType.SECP256K1:
         return 'secp256k1';
@@ -31,9 +91,9 @@ function keyType2Str(keyType: KeyType): string {
     default:
         throw new Error(`Unknown key type ${keyType}`);
     }
-}
+};
 
-function str2KeyType(keyType: string): KeyType {
+const str2KeyType = (keyType: string): KeyType => {
     switch (keyType.toLowerCase()) {
     case 'ed25519':
         return KeyType.ED25519;
@@ -42,27 +102,68 @@ function str2KeyType(keyType: string): KeyType {
     default:
         throw new Error(`Unknown key type ${keyType}`);
     }
-}
+};
+
+/**
+ *
+ * @param message
+ * @param signature
+ */
+const secp256k1PublicKeyFromMessage = (message: Buffer, signature: Buffer[]): Buffer => {
+    assertIsBuffer(signature[0]);
+    assertIsBuffer(signature[1]);
+    assertIsBuffer(signature[2]);
+
+    // secp256k1n/2
+    const N_DIV_2 = new BN('7fffffffffffffffffffffffffffffff5d576e7357a4501ddfe92f46681b20a0', 16);
+
+    const bufV: Buffer = signature[0];
+    const bufR: Buffer = signature[1];
+    const bufS: Buffer = signature[2];
+
+    // All transaction signatures whose s-value is greater than secp256k1n/2 are considered invalid.
+    if (new BN(bufS).cmp(N_DIV_2) === 1) {
+        return Buffer.from([]);
+    }
+
+    try {
+        const v = bufferToInt(bufV);
+        return ecrecover(message, v, bufR, bufS);
+    }
+    catch (error) {
+        return Buffer.from([]);
+    }
+
+};
 
 export abstract class KeyPair {
-    readonly publicKey: PublicKey;
-    readonly secretKey: string;
+    readonly _publicKey: PublicKey;
+    readonly _secretKey: Buffer;
 
-    constructor(publicKey: PublicKey, secretKey: string) {
-        this.publicKey = publicKey;
-        this.secretKey = secretKey;
+    constructor(publicKey: PublicKey, secretKey: Buffer) {
+        this._publicKey = publicKey;
+        this._secretKey = secretKey;
     }
 
-    abstract sign(message: Buffer): Signature;
+    /**
+     *
+     * @param message Sha256 hash of `message`
+     */
+    abstract sign(message: Buffer): KeyPairSignature;
 
-    abstract verify(message: Buffer, signature: Buffer): boolean;
+    /**
+     *
+     * @param message   Buffer Sha256 hash of `message`
+     * @param signature Buffer[]
+     */
+    abstract verify(message: Buffer, signature: Buffer[]): boolean;
 
     toString(): string {
-        return `${keyType2Str(this.publicKey.keyType)}:${this.secretKey}`;
+        return `${keyType2Str(this._publicKey.keyType)}:${this._secretKey}`;
     }
 
-    getPublicKey(): PublicKey {
-        return this.publicKey;
+    publicKey(): PublicKey {
+        return this._publicKey;
     }
 
     /**
@@ -73,8 +174,8 @@ export abstract class KeyPair {
         switch (str2KeyType(curve.toString())) {
         case KeyType.SECP256K1:
             return KeyPairSecp256k1.fromRandom();
-        // case KeyType.ED25519:
-        //     return KeyPairEd25519.fromRandom();
+            // case KeyType.ED25519:
+            //     return KeyPairEd25519.fromRandom();
         default:
             throw new Error(`Unknown curve ${curve}`);
         }
@@ -84,17 +185,22 @@ export abstract class KeyPair {
         const parts = encodedKey.split(':');
         if (parts.length === 1) {
             return new KeyPairSecp256k1(parts[0]);
-        } else if (parts.length === 2) {
+        }
+        //
+        else if (parts.length === 2) {
             switch (str2KeyType(parts[0])) {
             case KeyType.SECP256K1:
                 return new KeyPairSecp256k1(parts[1]);
-            // case KeyType.ED25519:
-            //     return new KeyPairEd25519(parts[1]);
+                // case KeyType.ED25519:
+                //     return new KeyPairEd25519(parts[1]);
             default:
                 throw new Error(`Unknown curve: ${parts[0]}`);
             }
-        } else {
-            throw new Error('Invalid encoded key format, must be <curve>:<encoded key>');
+        }
+        //
+        else {
+            throw new Error(
+                'Invalid encoded key format, must be <curve>:<encoded key>');
         }
     }
 }
@@ -151,8 +257,12 @@ export class KeyPairSecp256k1 extends KeyPair {
      * @param {string} secretKey
      */
     constructor(secretKey: string) {
-        const publicKey = ethPrivateToPublic(base_decode(secretKey));
-        super(new PublicKey({keyType: KeyType.SECP256K1, data: publicKey}), secretKey);
+        assertIsString(secretKey);
+
+        const _secretKey = base_decode(secretKey);
+        const publicKey = ethPrivateToPublic(_secretKey);
+
+        super(new PublicKey({keyType: KeyType.SECP256K1, _publicKey: publicKey}), _secretKey);
     }
 
     /**
@@ -170,13 +280,28 @@ export class KeyPairSecp256k1 extends KeyPair {
         return new KeyPairSecp256k1(base_encode(secretKey));
     }
 
-    sign(message: Buffer): Signature {
-        const signature = secp256k1Shim.sign(message, base_decode(this.secretKey)).signature;
-        return {signature, publicKey: this.publicKey};
+    /**
+     * Ethereum like signing method to make ECDSASignature
+     *
+     * @param message Buffer Sha256 hash of `message`
+     */
+    sign(message: Buffer): KeyPairSignature {
+        assertIsBuffer(message);
+
+        const vrsSig = ecsign(message, this._secretKey);
+
+        return new KeyPairSignature(
+            {signature: [toBuffer(vrsSig.v), vrsSig.r, vrsSig.s], keyType: this._publicKey.keyType});
     }
 
-    verify(message: Buffer, signature: Buffer): boolean {
-        return this.publicKey.verify(message, signature);
+    /**
+     * Check if signature for message hash is valid
+     *
+     * @param message Sha256 hash of `message`
+     * @param signature Buffer [v,r,s] from Ethereum ECDSASignature
+     */
+    verify(message: Buffer, signature: Buffer[]): boolean {
+        return !!secp256k1PublicKeyFromMessage(message, signature);
     }
 }
 
@@ -185,8 +310,8 @@ export class KeyPairSecp256k1 extends KeyPair {
  */
 export class PublicKey extends Assignable {
     keyType: KeyType;
-    data: Buffer;
-    protected address: Address;
+    protected _publicKey: Buffer;
+    protected _address: PublicKeyAddress;
 
     static from(value: string | PublicKey): PublicKey {
         if (typeof value === 'string') {
@@ -200,55 +325,84 @@ export class PublicKey extends Assignable {
      * @param {string} encodedKey
      */
     static fromString(encodedKey: string): PublicKey {
+        assertIsString(encodedKey);
+
         const parts = encodedKey.split(':');
         if (parts.length === 1) {
-            return new PublicKey({keyType: KeyType.SECP256K1, data: base_decode(parts[0])});
-        } else if (parts.length === 2) {
-            return new PublicKey({keyType: str2KeyType(parts[0]), data: base_decode(parts[1])});
-        } else {
+            return new PublicKey({keyType: KeyType.SECP256K1, _publicKey: base_decode(parts[0])});
+        }
+        //
+        else if (parts.length === 2) {
+            return new PublicKey({keyType: str2KeyType(parts[0]), _publicKey: base_decode(parts[1])});
+        }
+        //
+        else {
             throw new Error('Invalid encoded key format, must be <curve>:<encoded key>');
         }
     }
 
+    /**
+     *
+     */
     toString(): string {
-        return `${keyType2Str(this.keyType)}:${base_encode(this.data)}`;
+        return `${keyType2Str(this.keyType)}:${base_encode(this._publicKey)}`;
     }
 
-    verify(message: Buffer, signature: Buffer): boolean {
+    /**
+     * Check if message signed by current public key owner
+     *
+     * @param message Sha256 hash of `message`
+     * @param signature Buffer [v,r,s] from Ethereum ECDSASignature
+     */
+    verify(message: Buffer, signature: Buffer[]): boolean {
         switch (this.keyType) {
         // case KeyType.ED25519:
         //     return nacl.sign.detached.verify(message, signature, this.data);
-        case KeyType.SECP256K1:
-            return secp256k1Shim.verify(message, signature, this.data);
+        case KeyType.SECP256K1: {
+            const publicKey = secp256k1PublicKeyFromMessage(message, signature);
+            return publicKey && this._publicKey.equals(publicKey);
+        }
+        //
         default:
             throw new Error(`Unknown key type ${this.keyType}`);
         }
     }
 
-    getAddress(): Address {
-        if (!(this.address instanceof Address)) {
-            this.address = Address.fromPublicKey(this);
+    /**
+     *
+     */
+    raw(): Buffer {return Buffer.from(this._publicKey);}
+
+    /**
+     *
+     */
+    address(): PublicKeyAddress {
+        if (this._address instanceof PublicKeyAddress) {
+            return this._address;
         }
-        return this.address;
+
+        this._address = PublicKeyAddress.fromPublicKey(this);
+
+        return this._address;
     }
 }
 
 /**
  *
  */
-export class Address extends Assignable {
-    publicKey: PublicKey;
-    data: Buffer;
+export class PublicKeyAddress extends Assignable {
+    protected publicKey: PublicKey;
+    protected address: Buffer;
 
-    static fromPublicKey(publicKey: PublicKey): Address {
-        return new Address({publicKey, data: ethPublicToAddress(publicKey.data)});
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    static fromPublicKey(publicKey: PublicKey): PublicKeyAddress {
+        return new PublicKeyAddress({
+            publicKey: publicKey,
+            address  : ethPublicToAddress(publicKey.raw()),
+        });
     }
 
     toString(): string {
-        return `${Prefix.ADDRESS}${this.data.toString('hex')}`;
-    }
-
-    getPublicKey(): PublicKey {
-        return this.publicKey;
+        return `${MinterPrefix.ADDRESS}${this.address.toString('hex')}`;
     }
 }

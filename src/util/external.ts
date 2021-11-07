@@ -4,10 +4,8 @@
 //import nacl from 'tweetnacl';
 import BN from 'bn.js';
 import bs58check from 'bs58check';
-import * as secp256k1Shim from 'ethereum-cryptography/shims/hdkey-secp256k1v3';
 import * as secp256k1 from 'ethereum-cryptography/secp256k1';
-import * as sha256 from 'ethereum-cryptography/sha256';
-
+import {sha256}  from 'ethereum-cryptography/sha256';
 import assert from 'assert';
 
 export {
@@ -15,6 +13,8 @@ export {
     , defineProperties
     , ecrecover
     , ecsign
+    , fromRpcSig
+    , toRpcSig
     , rlp
     , rlphash
     , zeros
@@ -27,17 +27,13 @@ export {
     , PrefixedHexString
     , Address as ethAddress
     , BNLike
-    , BufferLike,
+    , BufferLike
 } from 'ethereumjs-util';
 
 export {
-    //CryptoJS
-    //, nacl
     bs58check
     , secp256k1
-    , secp256k1Shim
     , sha256
-    //, qs
     , BN
     , assert,
 };

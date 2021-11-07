@@ -122,3 +122,22 @@ account.signAndSendTransaction(tx)
   .catch(err=>console.error);
 
 ```
+```typescript
+/**/
+const sha256 = minterApi.utils.sha256;
+const accountId = 'primary_account';
+const networkId = 'mainnet';
+
+/* Blockchain general configuration info*/
+const chain = new minterApi.Chain(networkId);
+
+let secretKey1 = 'secp256k1:2bWofE5FJW7owdxijxBBwDQbgJkMBCxSGWeEdGcNgKxeTJcA5P';
+let keyPair1 = minterApi.KeyPairSecp256k1.fromString(secretKey1)
+
+let msg = Buffer.from("Test");
+let sigMsg1 = keyPair1.sign(sha256(msg));
+
+sigMsg1.toString()
+
+let signer = await minterApi.InMemorySigner.fromKeyPair(networkId,accountId,keyPair1)
+```
