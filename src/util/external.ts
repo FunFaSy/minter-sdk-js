@@ -9,8 +9,7 @@ import {sha256}  from 'ethereum-cryptography/sha256';
 import assert from 'assert';
 
 export {
-    bufferToInt
-    , defineProperties
+    defineProperties
     , ecrecover
     , ecsign
     , fromRpcSig
@@ -18,10 +17,12 @@ export {
     , rlp
     , rlphash
     , zeros
-    , publicToAddress as ethPublicToAddress
-    , privateToAddress as ethPrivateToAddress
     , privateToPublic as ethPrivateToPublic
+    , privateToAddress as ethPrivateToAddress
+    , publicToAddress as ethPublicToAddress
+    , isValidPublic as ethIsValidPublic
     , toBuffer as ethToBuffer
+    , bufferToInt
     , ECDSASignature
     , ECDSASignatureBuffer
     , PrefixedHexString

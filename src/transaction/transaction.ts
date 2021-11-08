@@ -1,16 +1,8 @@
-import {
-    Assignable,
-    BufferLike,
-    bufferToInt,
-    defineProperties,
-    ecsign,
-    ethPublicToAddress,
-    rlp,
-    rlphash,
-    toBuffer,
-} from '../util';
+import {Assignable, bufferToInt, defineProperties, rlp, rlphash, toBuffer} from '../util';
 import {MultiSignature, SignatureType, SingleSignature, TransactionSignature as Signature} from './signature';
 import {Chain} from '../chain';
+import {Address, KeyPair, PublicKey} from '../key_pair';
+import {assert} from '../util/external';
 
 export enum TransactionType {
     SEND                      = '0x01',
@@ -70,24 +62,23 @@ export interface TransactionOptions {
 export class Transaction {
     public raw!: Buffer[];
 
-    public nonce!: Buffer;
-    public chainId!: Buffer;
-    public gasPrice!: Buffer;
-    public gasCoin!: Buffer;
-    public type!: Buffer;
-    public data: Buffer;
-    public payload!: Buffer;
-    public serviceData!: Buffer;
+    public nonce!: Buffer;  // Hex Int
+    public chainId!: Buffer; // Hex Int
+    public gasPrice!: Buffer; // Hex Int
+    public gasCoin!: Buffer; // Hex Int
+    public type!: Buffer; // Hex Int
+    public data!: Buffer; // RLP Encoded Tx Action
+    public payload!: Buffer; // Buffer
+    public serviceData!: Buffer; // Buffer
+    public signatureType!: Buffer; //  Hex Int
+    public signatureData!: Buffer;// RLP encoded ECDSASignature or MultiSignature
 
-    public signatureType!: Buffer;
-    public signatureData!: Buffer;
     protected signature: Signature;
-
-    protected _from?: Buffer;
-    protected _senderPublicKey?: Buffer;
+    protected _from?: Address;
+    protected _senderPublicKey?: PublicKey;
     protected _chain: Chain;
 
-    constructor(data: BufferLike | object | undefined = undefined, opts: TransactionOptions = {}) {
+    constructor(data: Buffer | object | undefined = undefined, opts: TransactionOptions = {}) {
 
         if (opts.chain) {
             this._chain = opts.chain;
@@ -123,7 +114,7 @@ export class Transaction {
             {
                 name   : 'type',
                 length : 1,
-                default: toBuffer([]),
+                default: toBuffer([SignatureType.Single]),
             },
             {
                 name   : 'data',
@@ -150,7 +141,8 @@ export class Transaction {
             {
                 name   : 'signatureData',
                 default: toBuffer([]),
-            }];
+            },
+        ];
 
         // attached serialize
         defineProperties(this, rlpSchema, data);
@@ -168,7 +160,9 @@ export class Transaction {
 
         if (this.isSignatureTypeSingle()) {
             this.signature = new SingleSignature(this.signatureData);
-        } else if (this.isSignatureTypeMulti()) {
+        }
+        //
+        else if (this.isSignatureTypeMulti()) {
             this.signature = new MultiSignature(this.signatureData);
         }
 
@@ -182,7 +176,16 @@ export class Transaction {
         return bufferToInt(this.signatureType) == SignatureType.Multi;
     }
 
-    getRaw(): Buffer[] {return this.raw;}
+    getRaw(): Buffer[] {
+        return this.raw;
+    }
+
+    /**
+     * returns chain ID
+     */
+    getChainId(): number {
+        return bufferToInt(this.chainId);
+    }
 
     /**
      * Computes a sha3-256 hash of the serialized tx
@@ -200,7 +203,9 @@ export class Transaction {
         let items;
         if (includeSignature) {
             items = this.raw;
-        } else {
+        }
+        //
+        else {
             // hash everything except signatureData
             items = this.raw.slice(0, this.raw.length - 1);
         }
@@ -210,22 +215,26 @@ export class Transaction {
     }
 
     /**
-     * returns the sender's address
-     * @return {Buffer}
+     * Returns the sender's address
+     * @return {Address}
      */
-    getSenderAddress() {
+    getSenderAddress(): Address {
         if (this._from) {
             return this._from;
         }
 
+        if (!this.isValidSignature()) {
+            throw new Error('Invalid Signature');
+        }
+
         if (this.isSignatureTypeMulti()) {
             const multiSignature = this.signature as MultiSignature;
-            this._from = toBuffer(multiSignature.getRaw()[0]);// "multisig" field
+            this._from = new Address({address: multiSignature.multisig});// "multisig" field
             return this._from;
         }
 
-        const publicKey = this.getSenderPublicKey();
-        this._from = ethPublicToAddress(publicKey);
+        this._from = this.getSenderPublicKey().address();
+
         return this._from;
     }
 
@@ -233,15 +242,39 @@ export class Transaction {
      * returns the public key of the sender
      * @return {Buffer}
      */
-    getSenderPublicKey() {
-        if (!this.verifySignature()) {
+    getSenderPublicKey(): PublicKey {
+        if (!this.isValidSignature()) {
             throw new Error('Invalid Signature');
         }
 
         return this._senderPublicKey;
     }
 
-    signAsync(keyPair): Promise<SignedTransaction> {
+    /**
+     *
+     * @param keyPair
+     */
+    sign(keyPair: KeyPair): SignedTransaction {
+        assert(
+            this.isSignatureTypeSingle(),
+            `Simple single transaction expected but got type ${this.type}`,
+        );
+
+        const hash = this.hash(false);
+
+        this.signature = new SingleSignature(keyPair.sign(hash)); // Convert Signature to SingleSignature
+        this.signatureData = this.signature.serialize();
+
+        this._senderPublicKey = (this.signature as SingleSignature).publicKey(hash);
+
+        return new SignedTransaction({transaction: this, signature: this.signature});
+    }
+
+    /**
+     *
+     * @param keyPair
+     */
+    signAsync(keyPair: KeyPair): Promise<SignedTransaction> {
         return new Promise<SignedTransaction>((resolve, reject) => {
             try {
                 const signedTxData = this.sign(keyPair);
@@ -254,20 +287,24 @@ export class Transaction {
         });
     }
 
-    sign(privateKey): SignedTransaction {
-        const privateKeyBuffer = toBuffer(privateKey);
-        const hash = this.hash(false);
-        const vrsSig = ecsign(hash, privateKeyBuffer);
-
-        const signature = new SingleSignature(vrsSig);
-        return new SignedTransaction({transaction: this, signature});
-    }
-
     /**
-     * returns chain ID
+     *
+     * @param txMultisig
+     * @param keyPair
      */
-    getChainId(): number {
-        return bufferToInt(this.chainId);
+    static signMulti(txMultisig: Transaction, keyPair: KeyPair): SignedTransaction {
+        assert(
+            txMultisig.isSignatureTypeMulti(),
+            `Multisig transaction expected but got type ${txMultisig.type}`,
+        );
+
+        const hash = txMultisig.hash(false);
+
+        const txSignatures = txMultisig.signature as MultiSignature;
+        const keyPairSign = new SingleSignature(keyPair.sign(hash));
+        txSignatures.addOne(keyPairSign);
+
+        return new SignedTransaction({transaction: txMultisig, signature: keyPairSign});
     }
 
     /**
@@ -278,7 +315,7 @@ export class Transaction {
     validate(stringError: true): string
     validate(stringError = false): boolean | string {
         const errors = [];
-        if (!this.verifySignature()) {
+        if (!this.isValidSignature()) {
             errors.push('Invalid Signature');
         }
 
@@ -294,23 +331,18 @@ export class Transaction {
      * Side effect - setting up _senderPublicKey field
      * @return {Boolean}
      */
-    verifySignature(): boolean {
-        const messageHash = this.hash(false);
-        const isValidSig = this.signature.isValid(messageHash);
+    isValidSignature(): boolean {
+        const isValid = this.signature instanceof Signature && this.signature.valid();
 
-        if (isValidSig && this.isSignatureTypeSingle()) {
+        if (isValid && this.isSignatureTypeSingle()) {
 
-            if (!this._senderPublicKey || !this._senderPublicKey.length) {
-                try {
-                    this._senderPublicKey = this.signature.pubKey(messageHash)[0];
-                }
-                catch (error) {
-                    return false;
-                }
+            if (!(this._senderPublicKey instanceof PublicKey)) {
+                const txHash = this.hash(false);
+                this._senderPublicKey = (this.signature as SingleSignature).publicKey(txHash);
             }
         }
 
-        return isValidSig;
+        return isValid;
     }
 
     /**
@@ -321,6 +353,9 @@ export class Transaction {
         return rlp.encode(this.raw);
     }
 
+    /**
+     *
+     */
     encode(): Buffer {
         return this.serialize();
     }
@@ -349,7 +384,8 @@ export class SignedTransaction extends Assignable {
     signature: Signature;
 
     encode(): Buffer {
-        return rlp.encode(Buffer.concat([...this.transaction.getRaw(), ...this.signature.getRaw()]));
+        this.transaction.signatureData = this.signature.serialize();
+        return this.transaction.serialize();
     }
 
     static decode(bytes: Buffer): SignedTransaction {

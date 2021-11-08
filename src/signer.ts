@@ -1,5 +1,7 @@
 import {InMemoryKeyStore} from './key_stores/in_memory_key_store';
-import {KeyPair, KeyPairSignature, KeyType, PublicKey} from './key_pair';
+import {KeyPair, KeyType, PublicKey, Signature} from './key_pair';
+import {sha256} from './util';
+import {Transaction} from './transaction/transaction';
 
 /**
  * General signing interface, can be used for in memory signing, RPC singing, external wallet, HSM, etc.
@@ -9,15 +11,14 @@ export abstract class Signer {
     /**
      * Creates new key and returns public key.
      */
-    abstract createKey(
-        accountId: string, networkId?: string): Promise<PublicKey>;
+    abstract createKey(        accountId: string, networkId?: string): Promise<PublicKey>;
 
     /**
      * Returns public key for given account / network.
      * @param accountId accountId to retrieve from.
      * @param networkId The targeted network. (ex. mainnet, testnet, etc…)
      */
-    abstract publicKey( accountId?: string, networkId?: string): Promise<PublicKey>;
+    abstract publicKey(accountId?: string, networkId?: string): Promise<PublicKey>;
 
     /**
      * Signs given message, by first hashing with sha256.
@@ -25,9 +26,7 @@ export abstract class Signer {
      * @param accountId accountId to use for signing.
      * @param networkId The targeted network. (ex. mainnet, testnet, etc…)
      */
-    abstract signMessage(
-        message: Uint8Array, accountId?: string,
-        networkId?: string): Promise<KeyPairSignature>;
+    abstract signMessage(message: Uint8Array, accountId?: string, networkId?: string): Promise<Signature>;
 }
 
 /**
@@ -88,15 +87,38 @@ export class InMemorySigner extends Signer {
      * @param networkId The targeted network. (ex. mainnet, testnet, etc…)
      * @returns {Promise<Signature>}
      */
-    async signMessage(message: Buffer, accountId?: string, networkId?: string): Promise<KeyPairSignature> {
+    async signMessage(message: Buffer, accountId?: string, networkId?: string): Promise<Signature> {
         if (!accountId) {
             throw new Error('InMemorySigner requires provided account id');
         }
+
         const keyPair = await this.keyStore.getKey(networkId, accountId);
         if (keyPair === null) {
             throw new Error(`Key for ${accountId} not found in ${networkId}`);
         }
-        return keyPair.sign(message);
+
+        const hash = sha256(message);
+        return keyPair.sign(hash);
+    }
+
+    /**
+     *
+     * @param tx
+     * @param accountId
+     * @param networkId
+     */
+    async signTransaction(tx: Transaction, accountId?: string, networkId?: string): Promise<Signature> {
+        if (!accountId) {
+            throw new Error('InMemorySigner requires provided account id');
+        }
+
+        const keyPair = await this.keyStore.getKey(networkId, accountId);
+        if (keyPair === null) {
+            throw new Error(`Key for ${accountId} not found in ${networkId}`);
+        }
+
+        const hash = tx.hash(false);
+        return keyPair.sign(hash);
     }
 
     toString(): string {
