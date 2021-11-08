@@ -56,6 +56,19 @@ export interface TransactionOptions {
     chainId?: number | string;
 }
 
+export interface TransactionParams {
+    nonce?: number;  // Hex Int
+    chainId?: number; // Hex Int
+    gasPrice?: number; // Hex Int
+    gasCoin?: number; // Hex Int
+    type: TransactionType; // Hex Int
+    data: Buffer; // RLP Encoded Tx Action
+    payload?: string; // Buffer
+    serviceData?: string; // Buffer
+    signatureType: SignatureType; // Hex Int
+    signatureData?: Buffer;// RLP encoded ECDSASignature or MultiSignature
+}
+
 /**
  * Minter transaction.
  */
@@ -78,7 +91,7 @@ export class Transaction {
     protected _senderPublicKey?: PublicKey;
     protected _chain: Chain;
 
-    constructor(data: Buffer | object | undefined = undefined, opts: TransactionOptions = {}) {
+    constructor(data: string | Buffer | TransactionParams | undefined = undefined, opts: TransactionOptions = {}) {
 
         if (opts.chain) {
             this._chain = opts.chain;
@@ -158,12 +171,14 @@ export class Transaction {
             get         : this.getSenderAddress.bind(this),
         });
 
-        if (this.isSignatureTypeSingle()) {
-            this.signature = new SingleSignature(this.signatureData);
-        }
-        //
-        else if (this.isSignatureTypeMulti()) {
-            this.signature = new MultiSignature(this.signatureData);
+        if (this.signatureData.length) {
+            if (this.isSignatureTypeSingle()) {
+                this.signature = new SingleSignature(this.signatureData);
+            }
+            //
+            else if (this.isSignatureTypeMulti()) {
+                this.signature = new MultiSignature(this.signatureData);
+            }
         }
 
     }
@@ -196,10 +211,6 @@ export class Transaction {
             includeSignature = true;
         }
 
-        // EIP155 spec:
-        // when computing the hash of a transaction for purposes of signing or recovering,
-        // instead of hashing only the first six elements (ie. nonce, gasprice, startgas, to, value, data),
-        // hash nine elements, with v replaced by CHAIN_ID, r = 0 and s = 0
         let items;
         if (includeSignature) {
             items = this.raw;
@@ -229,7 +240,7 @@ export class Transaction {
 
         if (this.isSignatureTypeMulti()) {
             const multiSignature = this.signature as MultiSignature;
-            this._from = new Address({address: multiSignature.multisig});// "multisig" field
+            this._from = new Address({raw: multiSignature.multisig});// "multisig" field
             return this._from;
         }
 
@@ -285,26 +296,6 @@ export class Transaction {
             }
 
         });
-    }
-
-    /**
-     *
-     * @param txMultisig
-     * @param keyPair
-     */
-    static signMulti(txMultisig: Transaction, keyPair: KeyPair): SignedTransaction {
-        assert(
-            txMultisig.isSignatureTypeMulti(),
-            `Multisig transaction expected but got type ${txMultisig.type}`,
-        );
-
-        const hash = txMultisig.hash(false);
-
-        const txSignatures = txMultisig.signature as MultiSignature;
-        const keyPairSign = new SingleSignature(keyPair.sign(hash));
-        txSignatures.addOne(keyPairSign);
-
-        return new SignedTransaction({transaction: txMultisig, signature: keyPairSign});
     }
 
     /**
@@ -369,7 +360,10 @@ export class Transaction {
         return {};
     }
 
-    isSigned() {
+    /**
+     *
+     */
+    isSigned(): boolean {
         return this.signature instanceof Signature;
     }
 
@@ -377,8 +371,36 @@ export class Transaction {
         if (!this.isSigned()) {return undefined;}
         return this.signature;
     }
+
+    toString() {
+        return this.serialize().toString('hex');
+    }
+
+    /**
+     *
+     * @param txMultisig
+     * @param keyPair
+     */
+    static signMulti(txMultisig: Transaction, keyPair: KeyPair): SignedTransaction {
+        assert(
+            txMultisig.isSignatureTypeMulti(),
+            `Multisig transaction expected but got type ${txMultisig.type}`,
+        );
+
+        const hash = txMultisig.hash(false);
+
+        const txSignatures = txMultisig.signature as MultiSignature;
+        const keyPairSign = new SingleSignature(keyPair.sign(hash));
+        txSignatures.addOne(keyPairSign);
+
+        return new SignedTransaction({transaction: txMultisig, signature: keyPairSign});
+    }
+
 }
 
+/**
+ *
+ */
 export class SignedTransaction extends Assignable {
     transaction: Transaction;
     signature: Signature;
@@ -386,6 +408,10 @@ export class SignedTransaction extends Assignable {
     encode(): Buffer {
         this.transaction.signatureData = this.signature.serialize();
         return this.transaction.serialize();
+    }
+
+    toString() {
+        return this.transaction.toString();
     }
 
     static decode(bytes: Buffer): SignedTransaction {

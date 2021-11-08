@@ -15,7 +15,7 @@ const MESSAGE ='message';
 const SIGNATURE_FULL = 'ECDSA:0x0281140e76248641800d6bf303fe7c0f883fa7b614e1a8ef3cff1efc09afbc0539dfdf59012d2df0259d246e6947445507043777de33424819aaf7d5e64771961c';
 
 //
-test('KeyPair from secret', async () => {
+test('[KeyPair] KeyPair from secret', async () => {
     const keyPair = new minterApi.KeyPairSecp256k1(SECRET_SECP256K1_FULL);
     expect(keyPair.publicKey().toString()).toEqual(PUBKEY_SECP256K1_FULL);
 
@@ -25,7 +25,7 @@ test('KeyPair from secret', async () => {
 });
 
 //
-test('KeyPair convert to string', async () => {
+test('[KeyPair] KeyPair convert to string', async () => {
     const keyPair = minterApi.KeyPairSecp256k1.fromRandom();
     const newKeyPair = minterApi.KeyPairSecp256k1.fromString(keyPair.toString());
     expect(newKeyPair.toString()).toEqual(keyPair.toString());
@@ -35,7 +35,7 @@ test('KeyPair convert to string', async () => {
 });
 
 //
-test('Sign and verify signature', async () => {
+test('[KeyPair] Sign and verify signature', async () => {
     const keyPair = minterApi.KeyPairSecp256k1.fromString(SECRET_SECP256K1_FULL);
 
     const message = Buffer.from(MESSAGE);
@@ -46,7 +46,7 @@ test('Sign and verify signature', async () => {
 
 
 //
-test('Sign and verify signature with random', async () => {
+test('[KeyPair] Sign and verify signature with random', async () => {
     const keyPair = minterApi.KeyPairSecp256k1.fromRandom();
 
     const message = Buffer.from(MESSAGE);
@@ -61,7 +61,7 @@ test('Sign and verify signature with random', async () => {
 
 
 //
-test('Sign and verify with public key', async () => {
+test('[KeyPair] Sign and verify with public key', async () => {
     const keyPair = minterApi.KeyPairSecp256k1.fromString(SECRET_SECP256K1_FULL);
     const message = Buffer.from(MESSAGE);
     const hash = sha256(message);
@@ -77,7 +77,7 @@ test('Sign and verify with public key', async () => {
 });
 
 //
-test('Restore and verify signer address', async () => {
+test('[KeyPair] Restore and verify signer address', async () => {
     const message = Buffer.from(MESSAGE);
     const hash = sha256(message);
     const signature = Signature.fromString(SIGNATURE_FULL);

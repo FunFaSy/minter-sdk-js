@@ -1,31 +1,20 @@
 /** @hidden @module */
-import * as providers from './providers';
-import * as transactions from './transaction';
 import * as utils from './util';
+import * as providers from './providers';
 
-import {Account} from './account';
-import {KeyPair, KeyPairSecp256k1, Signature,PublicKey,Address} from './key_pair';
-import {Connection} from './connection';
-import {Chain} from './chain';
-import {InMemorySigner, Signer} from './signer';
-import {Minter} from './minter';
+//export {Minter} from './minter';
+export {Account} from './account';
+export {Connection} from './connection';
+export {Chain} from './chain';
+
+export {KeyType,KeyPair, secp256k1PublicKeyFromMessage, KeyPairSecp256k1, PublicKey, Signature as Secp256k1Signature, Address } from './key_pair';
+export {InMemorySigner, Signer} from './signer';
+export {Transaction, TransactionType, SignedTransaction} from './transaction/transaction';
+export {SignatureType, MultiSignature, SingleSignature} from './transaction/signature';
+import * as tx_actions from './transaction/action';
 
 export {
     utils
     , providers
-    , transactions
-
-    , Chain
-    , KeyPair
-    , KeyPairSecp256k1
-    , Signature as Secp256k1Signature
-    , PublicKey
-    , Address
-
-    , Connection
-    , Account
-    , Signer
-    , InMemorySigner
-
-    , Minter,
+    , tx_actions
 };

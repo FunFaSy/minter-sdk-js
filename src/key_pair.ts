@@ -334,22 +334,22 @@ export class PublicKey extends Assignable {
  */
 export class Address extends Assignable {
     protected publicKey: PublicKey;
-    protected address: Buffer;
+    protected raw: Buffer;
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     static fromPublicKey(publicKey: PublicKey): Address {
         return new Address({
             publicKey: publicKey,
-            address  : ethPublicToAddress(publicKey.getRaw()),
+            raw  : ethPublicToAddress(publicKey.getRaw()),
         });
     }
 
     getRaw(): Buffer {
-        return this.address;
+        return this.raw;
     }
 
     toString(): string {
-        return `${MinterPrefix.ADDRESS}${this.address.toString('hex')}`;
+        return `${MinterPrefix.ADDRESS}${this.raw.toString('hex')}`;
     }
 }
 

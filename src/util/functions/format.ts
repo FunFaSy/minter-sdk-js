@@ -50,7 +50,7 @@ export function formatBipAmount(pipAmt: string | BN, fracDigits: number = BIP_NO
  * @param pipAmt
  * @param fracDigits
  */
-export function convertToBip(pipAmt: string | BN,  fracDigits: number = BIP_NOMINATION_EXP): string {
+export function convertPipToBip(pipAmt: string | BN, fracDigits: number = BIP_NOMINATION_EXP): string {
     return formatBipAmount(pipAmt, fracDigits);
 }
 
@@ -61,9 +61,11 @@ export function convertToBip(pipAmt: string | BN,  fracDigits: number = BIP_NOMI
  * @param amt decimal string (potentially fractional) denominated in BIP.
  * @returns The parsed yoctoⓃ {@link https://en.wikipedia.org/wiki/Yocto-} amount or null if no amount was passed in
  */
-export function parseBipAmount(amt?: string): string | null {
+export function parseBipAmount(amt?: string | number): string | null {
     if (!amt) { return null; }
-    amt = cleanupAmount(amt);
+
+    amt = cleanupAmount(amt.toString());
+
     const split = amt.split('.');
     const wholePart = split[0];
     const fracPart = split[1] || '';
@@ -78,10 +80,9 @@ export function parseBipAmount(amt?: string): string | null {
  *
  * @param amt
  */
-export function convertToPip(amt?: string): string | null {
+export function convertBipToPip(amt?: string | number): string | null {
     return parseBipAmount(amt);
 }
-
 
 /**
  * Removes commas from the input
