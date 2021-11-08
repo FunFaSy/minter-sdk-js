@@ -77,15 +77,14 @@ test('Sign and verify with public key', async () => {
 });
 
 //
-test('Verify signer address', async () => {
+test('Restore and verify signer address', async () => {
     const message = Buffer.from(MESSAGE);
     const hash = sha256(message);
     const signature = Signature.fromString(SIGNATURE_FULL);
 
-    const publicKeyBuf = secp256k1PublicKeyFromMessage(hash, signature.getRaw());
-    const publicKey = PublicKey.from(publicKeyBuf);
-    const address = publicKey.address();
+    const signerPublicKeyBuf = secp256k1PublicKeyFromMessage(hash, signature.getRaw());
+    const signerPublicKey = PublicKey.from(signerPublicKeyBuf);
+    const signerAddress = signerPublicKey.address();
 
-    expect(address.toString()).toEqual(ADDRESS);
-
+    expect(signerAddress.toString()).toEqual(ADDRESS);
 });
