@@ -27,6 +27,7 @@
         "@types/bn.js": "^5.1.0",
         "@types/crypto-js": "^4.0.2",
         "@types/http-errors": "^1.6.1",
+        "@types/jest": "^27.0.2",
         "@typescript-eslint/eslint-plugin": "^2.18.0",
         "@typescript-eslint/parser": "^2.18.0",
         "browserify": "^17.0.0",

@@ -4,7 +4,7 @@ import * as transactions from './transaction';
 import * as utils from './util';
 
 import {Account} from './account';
-import {KeyPair, KeyPairSecp256k1, Signature} from './key_pair';
+import {KeyPair, KeyPairSecp256k1, Signature,PublicKey,Address} from './key_pair';
 import {Connection} from './connection';
 import {Chain} from './chain';
 import {InMemorySigner, Signer} from './signer';
@@ -19,6 +19,9 @@ export {
     , KeyPair
     , KeyPairSecp256k1
     , Signature as Secp256k1Signature
+    , PublicKey
+    , Address
+
     , Connection
     , Account
     , Signer

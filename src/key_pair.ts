@@ -11,10 +11,11 @@ import {
     ethIsValidPublic,
     ethPrivateToPublic,
     ethPublicToAddress,
-    fromRpcSig,
+    fromRpcSig, isBuffer,
     isString,
     MinterPrefix,
-    secp256k1, sha256,
+    secp256k1,
+    sha256,
     toBuffer,
     toRpcSig,
 } from './util';
@@ -131,8 +132,13 @@ export abstract class KeyPair {
         }
     }
 
-    static fromString(encodedKey: string): KeyPair {
-        const parts = encodedKey.split(':');
+    /**
+     * Construct an instance of key pair given a secret key.
+     * It's generally assumed that these are encoded in base58check.
+     * @param secretKey
+     */
+    static fromString(secretKey: string): KeyPair {
+        const parts = secretKey.split(':');
         if (parts.length === 1) {
             return new KeyPairSecp256k1(parts[0]);
         }
@@ -167,8 +173,15 @@ export class KeyPairSecp256k1 extends KeyPair {
      */
     constructor(secretKey: string) {
         assertIsString(secretKey);
+        let _secretKey: Buffer;
 
-        const _secretKey = base_decode(secretKey);
+        const parts = secretKey.split(':');
+        if (parts.length < 2) {
+            _secretKey = base_decode(parts[0]);
+        } else {
+            _secretKey = base_decode(parts[1]);
+        }
+
         const publicKey = ethPrivateToPublic(_secretKey);
 
         super(new PublicKey({keyType: KeyType.SECP256K1, raw: publicKey}), _secretKey);
@@ -198,7 +211,7 @@ export class KeyPairSecp256k1 extends KeyPair {
         assertIsBuffer(message);
 
         const vrsSig = ecsign(message, this._secretKey);
-        return  new Signature(toBuffer(vrsSig.v), vrsSig.r, vrsSig.s);
+        return new Signature(toBuffer(vrsSig.v), vrsSig.r, vrsSig.s);
     }
 
     /**
@@ -228,10 +241,16 @@ export class PublicKey extends Assignable {
         }
     }
 
-    static from(value: string | PublicKey): PublicKey {
+    static from(value: string | Buffer | PublicKey): PublicKey {
+
         if (typeof value === 'string') {
             return PublicKey.fromString(value);
         }
+        //
+        else if (isBuffer(value)){
+            return PublicKey.fromBuffer(value);
+        }
+
         return value;
     }
 
@@ -255,6 +274,12 @@ export class PublicKey extends Assignable {
             throw new Error('Invalid encoded key format, must be <curve>:<encoded key>');
         }
     }
+
+    static fromBuffer(buf: Buffer): PublicKey {
+        assertIsBuffer(buf);
+        return new PublicKey({keyType: KeyType.SECP256K1, raw:buf});
+    }
+
 
     /**
      *
@@ -311,7 +336,6 @@ export class Address extends Assignable {
     protected publicKey: PublicKey;
     protected address: Buffer;
 
-
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     static fromPublicKey(publicKey: PublicKey): Address {
         return new Address({
@@ -320,7 +344,7 @@ export class Address extends Assignable {
         });
     }
 
-    getRaw(): Buffer{
+    getRaw(): Buffer {
         return this.address;
     }
 
@@ -339,6 +363,10 @@ export class Signature implements ECDSASignatureBuffer {
         this.type = 'ECDSA';
     }
 
+    getRaw(): Buffer[] {
+        return [this.v, this.r, this.s];
+    }
+
     /**
      *
      */
@@ -354,7 +382,6 @@ export class Signature implements ECDSASignatureBuffer {
         const message = sha256(Buffer.from([]));
         return ethIsValidPublic(secp256k1PublicKeyFromMessage(message, [this.v, this.r, this.s]));
     }
-
 
     /**
      *
