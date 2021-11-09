@@ -143,6 +143,7 @@ test('[TxSingle] Buy transaction type', async () => {
     expect(txMtHash).toEqual(TX_HASH);
 });
 
+
 //
 test('[TxSingle] SellAll transaction type', async () => {
     const TX_RLP_ENCODED = 'f85c05020180038ccb8008888ac7230489e80000808001b845f8431ca08477a18f7fa755f9a2a0a38f813056818aab213f6d52d734b772b81649c3bb63a02d40cb3fa5d44dc15e06aedc8defb8b9ae3a93eee1b121936fabcb63bacc5149';
@@ -201,6 +202,44 @@ test('[TxSingle] AddLiquidity type transaction', async () => {
 
     const txParams = {
         nonce        : 7,                   //
+        chainId      : chain.networkId(),   //
+        gasCoin      : 0,                   //
+        gasPrice     : 1,                   //
+        type         : txAction.type(),     //
+        data         : txAction.serialize(),//
+        signatureType: minterApi.SignatureType.Single,
+    } as TransactionParams;
+
+    const tx = new minterApi.Transaction(txParams);
+    const signedTx = tx.sign(keyPair);
+
+    const txRawBuf = Buffer.from(TX_RLP_ENCODED, 'hex');
+    const txMtHash = 'Mt' + sha256(txRawBuf).toString('hex').toLowerCase();
+
+    expect(signedTx.signature.valid()).toBeTruthy();
+    expect(signedTx.transaction.serialize().toString('hex')).toEqual(TX_RLP_ENCODED);
+    expect(txMtHash).toEqual(TX_HASH);
+});
+
+//
+test('[TxSingle] BuySwap transaction type', async () => {
+    const TX_RLP_ENCODED = 'f869080201801899d8c480820734880de0b6b3a7640000890ad78ebc5ac6200000808001b845f8431ca098c0e06a1a3c0fd309b5887f1f09aff3d3ba41cec52922cde4a316916c7cc741a008786ae1c1072c9c77f34a3b4cbe4aa38b30b1ed61d55e58a1864608ba8691b1';
+    const TX_HASH = 'Mtb4c3b7c9c42eb90917e98e7b73a4e6c8602d2ed1cd5894d2a8c3cf5e553ce60b';
+
+    const convertBipToPip = minterApi.utils.convertBipToPip;
+    const sha256 = minterApi.utils.sha256;
+
+    const chain = new minterApi.Chain('testnet');
+    const keyPair = minterApi.KeyPairSecp256k1.fromBip39Mnemonic(MNEMONIC);
+
+    const txAction = new minterApi.tx_actions.BuySwapAction({
+        coins             : [0, 1844],
+        valueToBuy        : convertBipToPip(1),
+        maximumValueToSell: convertBipToPip(200),
+    });
+
+    const txParams = {
+        nonce        : 8,                   //
         chainId      : chain.networkId(),   //
         gasCoin      : 0,                   //
         gasPrice     : 1,                   //
