@@ -1,0 +1,47 @@
+{
+    "name": "Taconet",
+    "chainId": "minter-taco-1",
+    "networkId": 3,
+    "initialHeight": 3278787,
+    "totalSlashed": 0,
+    "blockMaxGas": 100000,
+    "blockMaxBytes": 10000000,
+    "gasCoin": 0,
+    "comment": "",
+    "urls": {
+        "www": "https://minter.org/",
+        "doc": "https:/#",
+        "console": "https://#",
+        "wallet": "https://#",
+        "explorer": "https:/#",
+        "api": {
+            "node": {
+                "http": [],
+                "ws": []
+            },
+            "gate": {
+                "http": [],
+                "ws": []
+            },
+            "explorer": {
+                "http": [],
+                "ws": []
+            }
+        }
+    },
+    "genesis": {
+        "hash": "",
+        "time": "",
+        "height": "",
+        "proposer": "",
+        "blockReward": ""
+    },
+    "bootstrapNodes": [
+        {
+            "id": "",
+            "ip": "",
+            "port": "26656",
+            "comment": ""
+        }
+    ]
+}

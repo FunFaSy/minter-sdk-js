@@ -15,7 +15,6 @@ export interface SendActionParams {
  *
  */
 export class SendAction extends Action {
-
     coin: Buffer;
     to: Buffer;
     value: Buffer;

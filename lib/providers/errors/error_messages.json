@@ -1,0 +1,7 @@
+{
+    "InvalidNonce": "Transaction nonce {{tx_nonce}} must be larger than nonce of the used access key {{ak_nonce}}",
+    "InvalidChain": "Transaction doesn't belong to the current chain",
+    "InvalidReceiver": "Invalid receiver {{receiver_id}} according to requirements",
+    "Timeout": "Timeout exceeded",
+    "Closed": "Connection closed"
+}

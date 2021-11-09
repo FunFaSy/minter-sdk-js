@@ -81,7 +81,7 @@ const keys        = Object.keys
         }
         return out;
     }
-      /*
+    /*
           Accepts a map/array of objects, a key name and a key value to be used as a filter:
           array = [
               { someKey: 'value1', anotherKey: 'anotherValue1' },
