@@ -22,7 +22,7 @@ const uuidv1 = () => {
 
 const setTimeout_original = setTimeout;
 const setTimeout_safe = (done, ms, setTimeout = setTimeout_original /* overrideable for mocking purposes */,
-                         targetTime           = now() + ms) => {
+    targetTime           = now() + ms) => {
 
     /*  The built-in setTimeout function can fire its callback earlier than specified, so we
         need to ensure that it does not happen: sleep recursively until `targetTime` is reached...   */
