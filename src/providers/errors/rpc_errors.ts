@@ -216,3 +216,33 @@ export function getErrorTypeFromErrorCode(code: string): string {
         return 'UntypedError';
     }
 }
+
+
+/**
+error: {
+    code: "107",
+    message: "Insufficient funds for sender account: Mx0bd4dd45fc7072ce6f1a4b297706174ee2f86910. Wanted 100000000000000000000 USDCE",
+    data: {
+        coin_id: "1844",
+        coin_symbol: "USDCE",
+        needed_value: "100000000000000000000",
+        sender: "Mx0bd4dd45fc7072ce6f1a4b297706174ee2f86910"
+    }
+}
+
+ error: {
+    code: "302",
+    message: "You wanted to buy minimum 1000000000000000000 MNT, but currently you buy only 921393549816831207 MNT",
+    data: {
+        coin_id: "8",
+        coin_symbol: "SHSCOIN",
+        maximum_value_to_sell: "1000000000000000000",
+        needed_spend_value: "921393549816831207"
+    }
+}
+
+
+ 1000000000000000000
+ 921393549816831207
+
+ */
