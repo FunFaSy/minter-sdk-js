@@ -7,6 +7,7 @@ export * from './action/send';
 export * from './action/buy';
 export * from './action/buy-swap';
 export * from './action/sell';
+export * from './action/sell-swap';
 export * from './action/sell-all';
 
 // Coins/Tokens
