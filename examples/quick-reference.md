@@ -49,7 +49,7 @@ const accountId = 'primary_account';
 const chain = new Chain('mainnet');
 
 /* Provider with transport to server side*/
-const rpcProvider = new JsonRpcProvider(chain.urls.api.http[0]);
+const rpcProvider = new JsonRpcProvider(chain.urls().api.node.http[0]);
 
 /**/
 const keyPair = new KeyPairSecp256k1(PRIVATE_KEY);

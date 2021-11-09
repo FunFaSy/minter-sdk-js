@@ -32,7 +32,7 @@ export class SellAction extends Action {
 
         super(_params);
 
-        this.txType = TransactionType.SEND;
+        this.txType = TransactionType.SELL;
     }
 
     rlpSchema(): RlpSchemaField[] {

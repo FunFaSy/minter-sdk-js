@@ -10,7 +10,7 @@ import {
     rlp,
     toBuffer,
 } from '../util';
-import {KeyType, PublicKey, secp256k1PublicKeyFromMessage, Signature} from '../key_pair';
+import {KeyPairSecp256k1, KeyType, PublicKey,  Signature} from '../key_pair';
 
 const N_DIV_2 = new BN('7fffffffffffffffffffffffffffffff5d576e7357a4501ddfe92f46681b20a0', 16);
 
@@ -98,7 +98,7 @@ export class SingleSignature extends TransactionSignature {
      * @param txHash
      */
     publicKey(txHash: Buffer): PublicKey {
-        const rawPubKey = secp256k1PublicKeyFromMessage(txHash, [this.v, this.r, this.s]);
+        const rawPubKey = KeyPairSecp256k1.publicKeyFromMessageBuf(txHash, [this.v, this.r, this.s]);
         return new PublicKey({keyType: KeyType.SECP256K1, raw: rawPubKey});
     }
 

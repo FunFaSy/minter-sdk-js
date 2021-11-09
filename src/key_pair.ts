@@ -1,5 +1,5 @@
 import {
-    assertIsBuffer,
+    assertIsBuffer, assertIsPositiveInt,
     assertIsString,
     Assignable,
     base_decode,
@@ -19,6 +19,10 @@ import {
     toBuffer,
     toRpcSig,
 } from './util';
+import {assert} from './util/external';
+import * as bip39 from 'bip39';
+import {HDKey as hdKey} from 'ethereum-cryptography/hdkey';
+import {MINTER_DERIVATION_PATH} from './constants';
 
 export type Arrayish = string | ArrayLike<number>;
 
@@ -50,28 +54,9 @@ const str2KeyType = (keyType: string): KeyType => {
     }
 };
 
-/**
- *
- * @param message
- * @param signature
- */
-export const secp256k1PublicKeyFromMessage = (message: Buffer, signature: Buffer[]): Buffer => {
-    assertIsBuffer(signature[0]);
-    assertIsBuffer(signature[1]);
-    assertIsBuffer(signature[2]);
-
-    const bufV: Buffer = signature[0];
-    const bufR: Buffer = signature[1];
-    const bufS: Buffer = signature[2];
-
-    try {
-        const v = bufferToInt(bufV);
-        // ecrecover throw error in case invalid signature
-        return ecrecover(message, v, bufR, bufS);
-    }
-    catch (error) {
-        return Buffer.from([]);
-    }
+const isValidMnemonic = (mnemonic) => {
+    return typeof mnemonic === 'string' && mnemonic.trim().split(/\s+/g).length >= 12 &&
+        bip39.validateMnemonic(mnemonic);
 };
 
 export abstract class KeyPair {
@@ -166,6 +151,7 @@ export abstract class KeyPair {
  * generating key pairs, encoding key pairs, signing and verifying.
  */
 export class KeyPairSecp256k1 extends KeyPair {
+
     /**
      * Construct an instance of key pair given a secret key.
      * It's generally assumed that these are encoded in base58check.
@@ -188,18 +174,59 @@ export class KeyPairSecp256k1 extends KeyPair {
     }
 
     /**
-     * Generate a new random keypair.
+     * Generate a new random secp256k1 keypair.
      * @example
-     * const keyRandom = KeyPair.fromRandom();
-     * keyRandom.publicKey
+     * const keyRandom = KeyPairSecp256k1.fromRandom();
+     * keyRandom.publicKey()
      * // returns [PUBLIC_KEY]
      *
-     * keyRandom.secretKey
+     * keyRandom.toString()
      * // returns [SECRET_KEY]
      */
     static fromRandom(): KeyPair {
         const secretKey = secp256k1.createPrivateKeySync();
         return new KeyPairSecp256k1(base_encode(secretKey));
+    }
+
+    /**
+     * Generate a new secp256k1 keypair based on BIP39 mnemonic phrase.
+     * @example
+     *  const keyPair = KeyPairSecp256k1.fromBip39Mnemonic('solar when satoshi champion about zebra ....')
+     * keyRandom.publicKey()
+     * // returns [PUBLIC_KEY]
+     * keyRandom.toString()
+     * // returns [SECRET_KEY]
+     *
+     * @param mnemonic
+     * @param deriveChildId number
+     */
+    static fromBip39Mnemonic(mnemonic: string,deriveChildId= 0): KeyPairSecp256k1{
+        assert(isValidMnemonic(mnemonic), 'Invalid mnemonic phrase');
+        assertIsPositiveInt(deriveChildId);
+
+        const seed = bip39.mnemonicToSeedSync(mnemonic);
+        const secretKey = hdKey.fromMasterSeed(seed).derive(MINTER_DERIVATION_PATH).deriveChild(deriveChildId).privateKey;
+
+        return new KeyPairSecp256k1(base_encode(secretKey));
+    }
+
+    static publicKeyFromMessageBuf(message: Buffer, signature: Buffer[]): Buffer  {
+        assertIsBuffer(signature[0]);
+        assertIsBuffer(signature[1]);
+        assertIsBuffer(signature[2]);
+
+        const bufV: Buffer = signature[0];
+        const bufR: Buffer = signature[1];
+        const bufS: Buffer = signature[2];
+
+        try {
+            const v = bufferToInt(bufV);
+            // ecrecover throw error in case invalid signature
+            return ecrecover(message, v, bufR, bufS);
+        }
+        catch (error) {
+            return Buffer.from([]);
+        }
     }
 
     /**
@@ -299,7 +326,7 @@ export class PublicKey extends Assignable {
         // case KeyType.ED25519:
         //     return nacl.sign.detached.verify(message, signature, this.data);
         case KeyType.SECP256K1: {
-            const publicKey = secp256k1PublicKeyFromMessage(message, signature);
+            const publicKey = KeyPairSecp256k1.publicKeyFromMessageBuf(message, signature);
             return publicKey && this.raw.equals(publicKey as Buffer);
         }
         //
@@ -380,7 +407,7 @@ export class Signature implements ECDSASignatureBuffer {
      */
     valid(): boolean {
         const message = sha256(Buffer.from([]));
-        return ethIsValidPublic(secp256k1PublicKeyFromMessage(message, [this.v, this.r, this.s]));
+        return ethIsValidPublic(KeyPairSecp256k1.publicKeyFromMessageBuf(message, [this.v, this.r, this.s]));
     }
 
     /**
