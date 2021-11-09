@@ -103,3 +103,42 @@ test('[TxSingle] Sell type transaction', async () => {
     expect(signedTx.transaction.serialize().toString('hex')).toEqual(TX_SELL_RLP_ENCODED);
     expect(txMtHash).toEqual(TX_SELL_HASH);
 });
+
+//
+test('[TxSingle] Buy type transaction', async () => {
+    const TX_BUY_RLP_ENCODED = 'f867040201800497d608893635c9adc5dea000008089056bc75e2d63100000808001b845f8431ba0d786b733cb72b0efa4ee997dfd1807e595969d4797c50aaf85b82690971b0c8aa0159f95a0fc63be40ecc9f9e4a21c05dd159d41b85f3cd1b59b84221dd1ec5b17';
+    const TX_BUY_HASH = 'Mt06abf3f26b6092a3237564d50e6e6fdf94f01bbd07249d725bc6f6859f88e4fe';
+
+    const convertBipToPip = minterApi.utils.convertBipToPip;
+    const sha256 = minterApi.utils.sha256;
+
+    const chain = new minterApi.Chain('testnet');
+    const keyPair = minterApi.KeyPairSecp256k1.fromBip39Mnemonic(MNEMONIC);
+
+    const txAction = new minterApi.tx_actions.BuyAction({
+        coinToBuy         : 8,
+        coinToSell        : 0,
+        valueToBuy        : convertBipToPip(1000),
+        maximumValueToSell: convertBipToPip(100),
+    });
+
+    const txParams = {
+        nonce        : 4,                   //
+        chainId      : chain.networkId(),   //
+        gasCoin      : 0,                   //
+        gasPrice     : 1,                   //
+        type         : txAction.type(),     //
+        data         : txAction.serialize(),//
+        signatureType: minterApi.SignatureType.Single,
+    } as TransactionParams;
+
+    const tx = new minterApi.Transaction(txParams);
+    const signedTx = tx.sign(keyPair);
+
+    const txRawBuf = Buffer.from(TX_BUY_RLP_ENCODED, 'hex');
+    const txMtHash = 'Mt' + sha256(txRawBuf).toString('hex').toLowerCase();
+
+    expect(signedTx.signature.valid()).toBeTruthy();
+    expect(signedTx.transaction.serialize().toString('hex')).toEqual(TX_BUY_RLP_ENCODED);
+    expect(txMtHash).toEqual(TX_BUY_HASH);
+});

@@ -107,8 +107,8 @@ export abstract class KeyPair {
         //
         else if (parts.length === 2) {
             switch (str2KeyType(parts[0])) {
-            case KeyType.SECP256K1:
-                return new KeyPairSecp256k1(parts[1]);
+                case KeyType.SECP256K1:
+                    return new KeyPairSecp256k1(parts[1]);
                 // case KeyType.ED25519:
                 //     return new KeyPairEd25519(parts[1]);
                 default:
@@ -411,9 +411,9 @@ export class Signature implements ECDSASignatureBuffer {
             const type = parts[0];
 
             switch (type) {
-            case 'ECDSA': {
-                return Signature.fromString(parts[1]);
-            }
+                case 'ECDSA': {
+                    return Signature.fromString(parts[1]);
+                }
                 default:
                     throw new Error(`Unknown signature type: ${type}`);
             }

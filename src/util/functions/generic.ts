@@ -52,7 +52,7 @@ const keys        = Object.keys
 
         return out;
     }
-      /*
+    /*
         Accepts a map/array of objects and a key name to be used as a grouping parameter:
         array = [
             { someKey: 'value1', anotherKey: 'anotherValue1' },
@@ -82,19 +82,19 @@ const keys        = Object.keys
         return out;
     }
       /*
-        Accepts a map/array of objects, a key name and a key value to be used as a filter:
-        array = [
-            { someKey: 'value1', anotherKey: 'anotherValue1' },
-            { someKey: 'value2', anotherKey: 'anotherValue2' },
-            { someKey: 'value3', anotherKey: 'anotherValue3' },
-        ]
-        key = 'someKey'
-        value = 'value1'
-        Returns an array:
-        [
-            value1: { someKey: 'value1', anotherKey: 'anotherValue1' },
-        ]
-    */
+          Accepts a map/array of objects, a key name and a key value to be used as a filter:
+          array = [
+              { someKey: 'value1', anotherKey: 'anotherValue1' },
+              { someKey: 'value2', anotherKey: 'anotherValue2' },
+              { someKey: 'value3', anotherKey: 'anotherValue3' },
+          ]
+          key = 'someKey'
+          value = 'value1'
+          Returns an array:
+          [
+              value1: { someKey: 'value1', anotherKey: 'anotherValue1' },
+          ]
+      */
     , filterBy    = (x, k, value = undefined, out = []) => {
 
         for (const v of values(x)) {
