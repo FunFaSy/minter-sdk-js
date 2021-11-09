@@ -5,7 +5,7 @@ import {promisify as _promisify} from 'util';
 import {KeyStore} from './keystore';
 import {KeyPair} from '../key_pair';
 
-const promisify = (fn: any) => {
+const promisifyFs = (fn: Function): Function => {
     if (!fn) {
         return () => {
             throw new Error('Trying to use unimplemented function. `fs` module not available in web build?');
@@ -14,12 +14,12 @@ const promisify = (fn: any) => {
     return _promisify(fn);
 };
 
-const exists = promisify(fs.exists);
-const readFile = promisify(fs.readFile);
-const writeFile = promisify(fs.writeFile);
-const unlink = promisify(fs.unlink);
-const readdir = promisify(fs.readdir);
-const mkdir = promisify(fs.mkdir);
+const exists = promisifyFs(fs.exists);
+const readFile = promisifyFs(fs.readFile);
+const writeFile = promisifyFs(fs.writeFile);
+const unlink = promisifyFs(fs.unlink);
+const readdir = promisifyFs(fs.readdir);
+const mkdir = promisifyFs(fs.mkdir);
 
 /**
  * Format of the account stored on disk.
@@ -46,14 +46,15 @@ async function ensureDir(dir: string): Promise<void> {
 }
 
 /** @hidden */
-export async function readKeyFile(filename: string): Promise<[string, KeyPair]> {
-    const accountInfo = await loadJsonFile(filename);
+export async function readKeyFile(filename: string): Promise<{ account_id: string; keyPair: KeyPair }> {
+    const accountInfo: AccountInfo = await loadJsonFile(filename);
     // The private key might be in private_key or secret_key field.
     let privateKey = accountInfo.private_key;
-    if (!privateKey && accountInfo.secret_key) {
-        privateKey = accountInfo.secret_key;
+    if (!privateKey && accountInfo['secret_key']) {
+        privateKey = accountInfo['secret_key'];
     }
-    return [accountInfo.account_id, KeyPair.fromString(privateKey)];
+    return {account_id: accountInfo.account_id, keyPair: KeyPair.fromString(privateKey)};
+
 }
 
 /**
@@ -119,7 +120,7 @@ export class UnencryptedFileSystemKeyStore extends KeyStore {
             return null;
         }
         const accountKeyPair = await readKeyFile(this.getKeyFilePath(networkId, accountId));
-        return accountKeyPair[1];
+        return accountKeyPair.keyPair;
     }
 
     /**
@@ -145,16 +146,12 @@ export class UnencryptedFileSystemKeyStore extends KeyStore {
     }
 
     /**
-     * Get the network(s) from files in `keyDir`
+     * Get the network(s) from subdirectory names in `keyDir`
      * @returns {Promise<string[]>}
      */
     async getNetworks(): Promise<string[]> {
-        const files: string[] = await readdir(this.keyDir);
-        const result = new Array<string>();
-        files.forEach((item) => {
-            result.push(item);
-        });
-        return result;
+        const files: fs.Dirent[] = await readdir(this.keyDir, {withFileTypes: true});
+        return files.filter(item => item.isDirectory()).map(item => item.name);
     }
 
     /**
@@ -166,7 +163,9 @@ export class UnencryptedFileSystemKeyStore extends KeyStore {
         if (!await exists(`${this.keyDir}/${networkId}`)) {
             return [];
         }
+
         const files: string[] = await readdir(`${this.keyDir}/${networkId}`);
+
         return files.filter(file => file.endsWith('.json')).map(file => file.replace(/.json$/, ''));
     }
 
