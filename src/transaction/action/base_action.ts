@@ -1,7 +1,10 @@
 import {TransactionType} from '../transaction';
-import { rlp} from '../../util';
+import {rlp} from '../../util';
 import defineProperties, {RlpSchemaField} from '../../util/define-properties';
 
+/**
+ *
+ */
 export abstract class Action {
     public raw!: Buffer;
     public txType: TransactionType;
@@ -19,6 +22,13 @@ export abstract class Action {
     }
 
     abstract rlpSchema(): RlpSchemaField[] ;
+
+    /**
+     *
+     */
+    getRaw(): Buffer {
+        return this.raw;
+    }
 
     /**
      * Returns the rlp encoding of the action

@@ -220,6 +220,12 @@ export function getErrorTypeFromErrorCode(code: string): string {
 
 /**
 error: {
+    code: "106",
+    message: "rlp: expected input list for transaction.MultisendDataItem, decoding into (transaction.MultisendData).List[0]",
+    data: { }
+}
+
+error: {
     code: "107",
     message: "Insufficient funds for sender account: Mx0bd4dd45fc7072ce6f1a4b297706174ee2f86910. Wanted 100000000000000000000 USDCE",
     data: {
@@ -241,8 +247,5 @@ error: {
     }
 }
 
-
- 1000000000000000000
- 921393549816831207
 
  */

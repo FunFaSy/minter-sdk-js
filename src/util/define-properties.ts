@@ -60,17 +60,17 @@ export default function defineProperties(self, fields: RlpSchemaField[], data) {
         function setter(v) {
             if (field.allowNonBinaryArray && Array.isArray(v)) {
                 if (field.nonBinaryArrayTransform && typeof field.nonBinaryArrayTransform === 'function') {
-                    v = v.map((item) => field.nonBinaryArrayTransform(item));
+                    v = v.map((item: any): Buffer => field.nonBinaryArrayTransform(item));
                 } else {
-                    v = v.map((item) => toBuffer(item));
+                    v = v.map((item: any): Buffer => toBuffer(item));
                 }
 
                 // cast 0x00 to 0x, to represent in RLP as 0x80 instead of 0x00
-                v = v.map((item) => {
+                v = v.map((item: Buffer) => {
                     if (item.toString('hex') === '00' /* && !field.allowZero */) {
                         return Buffer.from([]);
                     }
-                    return item;
+                    return item as Buffer;
                 });
             } else {
                 v = toBuffer(v);

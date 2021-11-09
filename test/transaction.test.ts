@@ -143,7 +143,6 @@ test('[TxSingle] Buy transaction type', async () => {
     expect(txMtHash).toEqual(TX_HASH);
 });
 
-
 //
 test('[TxSingle] SellAll transaction type', async () => {
     const TX_RLP_ENCODED = 'f85c05020180038ccb8008888ac7230489e80000808001b845f8431ca08477a18f7fa755f9a2a0a38f813056818aab213f6d52d734b772b81649c3bb63a02d40cb3fa5d44dc15e06aedc8defb8b9ae3a93eee1b121936fabcb63bacc5149';
@@ -271,9 +270,9 @@ test('[TxSingle] SellSwap transaction type', async () => {
     const keyPair = minterApi.KeyPairSecp256k1.fromBip39Mnemonic(MNEMONIC);
 
     const txAction = new minterApi.tx_actions.SellSwapAction({
-        coins             : [8,0],
-        valueToSell       : convertBipToPip(100),
-        minimumValueToBuy : convertBipToPip(0.1),
+        coins            : [8, 0],
+        valueToSell      : convertBipToPip(100),
+        minimumValueToBuy: convertBipToPip(0.1),
     });
 
     const txParams = {
@@ -297,7 +296,6 @@ test('[TxSingle] SellSwap transaction type', async () => {
     expect(txMtHash).toEqual(TX_HASH);
 });
 
-
 //
 test('[TxSingle] SellAllSwap transaction type', async () => {
     const TX_RLP_ENCODED = 'f85d0a020180198dccc208808806f05b59d3b20000808001b845f8431ca06477a6168fe6903caa0b1752da42fb42a3c1bfcc348965ddac4d08b63a18c73da04f40aa57a2787370303eb571605e0f6733a6ae65191bc6a8183750735ec82e92';
@@ -310,8 +308,8 @@ test('[TxSingle] SellAllSwap transaction type', async () => {
     const keyPair = minterApi.KeyPairSecp256k1.fromBip39Mnemonic(MNEMONIC);
 
     const txAction = new minterApi.tx_actions.SellAllSwapAction({
-        coins             : [8,0],
-        minimumValueToBuy : convertBipToPip(0.5),
+        coins            : [8, 0],
+        minimumValueToBuy: convertBipToPip(0.5),
     });
 
     const txParams = {
@@ -329,6 +327,53 @@ test('[TxSingle] SellAllSwap transaction type', async () => {
 
     const txRawBuf = Buffer.from(TX_RLP_ENCODED, 'hex');
     const txMtHash = 'Mt' + sha256(txRawBuf).toString('hex').toLowerCase();
+
+    expect(signedTx.signature.valid()).toBeTruthy();
+    expect(signedTx.transaction.serialize().toString('hex')).toEqual(TX_RLP_ENCODED);
+    expect(txMtHash).toEqual(TX_HASH);
+});
+
+//
+test('[TxSingle] MultiSend transaction type', async () => {
+    const TX_RLP_ENCODED = 'f8970b0201800db846f844f842e08094eb92ae39b84012968f63b2dd260a94d791fe79bd89056bc75e2d63100000e080940bd4dd45fc7072ce6f1a4b297706174ee2f8691089056bc75e2d63100000808001b845f8431ca0517aa888715c81d21d508fffee4218100893f9ab155ff3929bd70babafea66b6a0343838747fbf52ca57a150025370a1e5d1e2aa8965edf5ef7a88cd12566ff90f';
+    const TX_HASH = 'Mt1cea90c78f69a9a62e6fe1d349470e4d598229aabf71dd9b76ae174c9fb73abe';
+
+    const utils = minterApi.utils;
+    const SendAction = minterApi.tx_actions.SendAction;
+
+    const chain = new minterApi.Chain('testnet');
+    const keyPair = minterApi.KeyPairSecp256k1.fromBip39Mnemonic(MNEMONIC);
+
+    const txAction = new minterApi.tx_actions.MultiSendAction({
+        list:[
+            new SendAction({
+                to   : 'Mxeb92ae39b84012968f63b2dd260a94d791fe79bd',
+                coin : 0,
+                value: utils.convertBipToPip(100),
+            }),
+            new SendAction({
+                to   : 'Mx0bd4dd45fc7072ce6f1a4b297706174ee2f86910',
+                coin : 0,
+                value: utils.convertBipToPip(100),
+            }),
+        ],
+    });
+
+    const txParams = {
+        nonce        : 11,                  //
+        chainId      : chain.networkId(),   //
+        gasCoin      : 0,                   //
+        gasPrice     : 1,                   //
+        type         : txAction.type(),     //
+        data         : txAction.serialize(),//
+        signatureType: minterApi.SignatureType.Single,
+    } as TransactionParams;
+
+    const tx = new minterApi.Transaction(txParams);
+    const signedTx = tx.sign(keyPair);
+
+    const txRawBuf = Buffer.from(TX_RLP_ENCODED, 'hex');
+    const txMtHash = 'Mt' + utils.sha256(txRawBuf).toString('hex').toLowerCase();
 
     expect(signedTx.signature.valid()).toBeTruthy();
     expect(signedTx.transaction.serialize().toString('hex')).toEqual(TX_RLP_ENCODED);
