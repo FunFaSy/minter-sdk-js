@@ -141,6 +141,7 @@ export class SingleSignature extends TransactionSignature {
     }
 
     private _overrideVSetterWithValidation() {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const vDescriptor = Object.getOwnPropertyDescriptor(this, 'v')!;
 
         Object.defineProperty(this, 'v', {

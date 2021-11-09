@@ -13,7 +13,7 @@ import {isMinterPrefixed, mPrefixStrip} from './prefix';
 //     return CryptoJS.lib.WordArray.create(wa, ba.length);
 // };
 
-const json                = (data, params = undefined) => JSON.stringify(data)
+const json                = (data) => JSON.stringify(data)
     , isJsonEncodedObject = object => (
         (typeof object === 'string') &&
           (object.length >= 2) &&

@@ -42,6 +42,7 @@ export abstract class Action {
      * Returns the action in JSON format
      * @see {@link https://github.com/ethereumjs/ethereumjs-util/blob/master/docs/index.md#defineproperties|ethereumjs-util}
      */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     toJSON(labels = false): { [key: string]: string } | string[] {
         // Note: This never gets executed, defineProperties overwrites it.
         return {};
