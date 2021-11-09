@@ -1,4 +1,4 @@
-import { KeyStore } from './keystore';
+import {KeyStore} from './keystore';
 import {KeyPair} from '../key_pair';
 
 /**
@@ -40,15 +40,15 @@ interface MergeKeyStoreOptions {
 }
 
 export class MergeKeyStore extends KeyStore {
-    private options: MergeKeyStoreOptions;
     keyStores: KeyStore[];
+    private options: MergeKeyStoreOptions;
 
     /**
      * @param keyStores read calls are attempted from start to end of array
      * @param options
      * @param options.writeKeyStoreIndex the keystore index that will receive all write calls
      */
-    constructor(keyStores: KeyStore[], options: MergeKeyStoreOptions = { writeKeyStoreIndex: 0 }) {
+    constructor(keyStores: KeyStore[], options: MergeKeyStoreOptions = {writeKeyStoreIndex: 0}) {
         super();
         this.options = options;
         this.keyStores = keyStores;

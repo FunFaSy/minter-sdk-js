@@ -1,4 +1,4 @@
-import {RlpSchemaField, toBuffer,BN} from '../../util';
+import {BN, RlpSchemaField, toBuffer} from '../../util';
 import {TransactionType} from '../transaction';
 import {Action} from './base_action';
 

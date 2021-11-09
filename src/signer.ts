@@ -11,7 +11,7 @@ export abstract class Signer {
     /**
      * Creates new key and returns public key.
      */
-    abstract createKey(        accountId: string, networkId?: string): Promise<PublicKey>;
+    abstract createKey(accountId: string, networkId?: string): Promise<PublicKey>;
 
     /**
      * Returns public key for given account / network.

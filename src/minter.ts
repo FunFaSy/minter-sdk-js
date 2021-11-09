@@ -11,7 +11,6 @@ import {deepExtend} from './util';
 import {KeyStore} from './key_stores';
 import {Signer} from './signer';
 
-
 export interface MinterConfig {
     /** Holds {@link KeyPair | KeyPairs} for signing transactions */
     keyStore?: KeyStore;
@@ -58,10 +57,11 @@ export interface MinterConfig {
  */
 export class Minter {
     readonly config: MinterConfig;
+
     //readonly connection: Connection;
 
     constructor(config: Partial<MinterConfig>) {
-        this.config = deepExtend({},config) as MinterConfig;
+        this.config = deepExtend({}, config) as MinterConfig;
         // this.connection = Connection.fromConfig({
         //     networkId: config.networkId,
         //     provider: { type: 'JsonRpcProvider', args: { url: config.nodeUrl } },

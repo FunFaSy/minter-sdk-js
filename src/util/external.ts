@@ -5,7 +5,7 @@
 import BN from 'bn.js';
 import bs58check from 'bs58check';
 import * as secp256k1 from 'ethereum-cryptography/secp256k1';
-import {sha256}  from 'ethereum-cryptography/sha256';
+import {sha256} from 'ethereum-cryptography/sha256';
 import assert from 'assert';
 
 export {
@@ -28,7 +28,7 @@ export {
     , PrefixedHexString
     , Address as ethAddress
     , BNLike
-    , BufferLike
+    , BufferLike,
 } from 'ethereumjs-util';
 
 export {

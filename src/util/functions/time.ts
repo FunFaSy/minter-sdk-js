@@ -22,7 +22,7 @@ const uuidv1 = () => {
 
 const setTimeout_original = setTimeout;
 const setTimeout_safe = (done, ms, setTimeout = setTimeout_original /* overrideable for mocking purposes */,
-    targetTime = now() + ms) => {
+                         targetTime           = now() + ms) => {
 
     /*  The built-in setTimeout function can fire its callback earlier than specified, so we
         need to ensure that it does not happen: sleep recursively until `targetTime` is reached...   */
@@ -139,9 +139,9 @@ const rfc2616 = (timestamp = undefined) => {
 const mdy = (timestamp, infix = '-') => {
     infix = infix || '';
     const date = new Date(timestamp);
-    const Y: number|string  = date.getUTCFullYear().toString();
-    let m: number|string  = date.getUTCMonth() + 1;
-    let d: number|string  = date.getUTCDate();
+    const Y: number | string = date.getUTCFullYear().toString();
+    let m: number | string = date.getUTCMonth() + 1;
+    let d: number | string = date.getUTCDate();
     m = m < 10 ? ('0' + m) : m;
     d = d < 10 ? ('0' + d) : d;
     return m.toString() + infix + d.toString() + infix + Y;
@@ -150,9 +150,9 @@ const mdy = (timestamp, infix = '-') => {
 const ymd = (timestamp, infix = '-') => {
     infix = infix || '';
     const date = new Date(timestamp);
-    const Y: number|string  = date.getUTCFullYear().toString();
-    let m: number|string  = date.getUTCMonth() + 1;
-    let d: number|string  = date.getUTCDate();
+    const Y: number | string = date.getUTCFullYear().toString();
+    let m: number | string = date.getUTCMonth() + 1;
+    let d: number | string = date.getUTCDate();
     m = m < 10 ? ('0' + m) : m;
     d = d < 10 ? ('0' + d) : d;
     return Y + infix + m.toString() + infix + d.toString();
@@ -161,11 +161,11 @@ const ymd = (timestamp, infix = '-') => {
 const ymdhms = (timestamp, infix = ' ') => {
     const date = new Date(timestamp);
     const Y = date.getUTCFullYear();
-    let m: number|string = date.getUTCMonth() + 1;
-    let d: number|string  = date.getUTCDate();
-    let H: number|string  = date.getUTCHours();
-    let M:  number|string = date.getUTCMinutes();
-    let S: number|string  = date.getUTCSeconds();
+    let m: number | string = date.getUTCMonth() + 1;
+    let d: number | string = date.getUTCDate();
+    let H: number | string = date.getUTCHours();
+    let M: number | string = date.getUTCMinutes();
+    let S: number | string = date.getUTCSeconds();
     m = m < 10 ? ('0' + m) : m;
     d = d < 10 ? ('0' + d) : d;
     H = H < 10 ? ('0' + H) : H;

@@ -15,10 +15,29 @@ export class Chain {
     private chainParams: ChainParams;
 
     /**
-     *
+     * @constructor
+     * @param chain String ('mainnet') or Number (1) or Dictionary with chain params
      */
-    describe() {
-        return JSON.parse(JSON.stringify(this));
+    constructor(chain: string | number | ChainParams) {
+        //
+        if (isString(chain)) {
+            this.chainParams = Chain.getBaseParams(chain.toString());
+        } else if (isNumber(chain)) {
+            this.chainParams = Chain.getBaseParams(Number(chain));
+        } else if (isObject(chain)) {
+            this.chainParams = chain as ChainParams;
+        }
+
+        // const configEntries = Object.entries(this.chainParams);
+        // for (let i = 0; i < configEntries.length; i++) {
+        //     const [property, value] = configEntries[i];
+        //     if (value && Object.getPrototypeOf(value) === Object.prototype) {
+        //         this[property] = deepExtend(this[property], value);
+        //     } else {
+        //         this[property] = value;
+        //     }
+        // }
+
     }
 
     /**
@@ -78,29 +97,10 @@ export class Chain {
     }
 
     /**
-     * @constructor
-     * @param chain String ('mainnet') or Number (1) or Dictionary with chain params
+     *
      */
-    constructor(chain: string | number | ChainParams) {
-        //
-        if (isString(chain)) {
-            this.chainParams = Chain.getBaseParams(chain.toString());
-        } else if (isNumber(chain)) {
-            this.chainParams = Chain.getBaseParams(Number(chain));
-        } else if (isObject(chain)) {
-            this.chainParams = chain as ChainParams;
-        }
-
-        // const configEntries = Object.entries(this.chainParams);
-        // for (let i = 0; i < configEntries.length; i++) {
-        //     const [property, value] = configEntries[i];
-        //     if (value && Object.getPrototypeOf(value) === Object.prototype) {
-        //         this[property] = deepExtend(this[property], value);
-        //     } else {
-        //         this[property] = value;
-        //     }
-        // }
-
+    describe() {
+        return JSON.parse(JSON.stringify(this));
     }
 
     /**

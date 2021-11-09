@@ -59,8 +59,8 @@
         "doc": "typedoc src && touch docs/.nojekyll",
         "build": "yarn compile",
         "test": "jest test",
-        "lint": "eslint test && eslint src/**/*.ts",
-        "fix": "eslint test --fix && eslint src/**/*.ts --fix",
+        "lint": "eslint test/**/*.ts && eslint src/**/*.ts",
+        "fix": "eslint test/**/*.ts --fix && eslint src/**/*.ts --fix",
         "prefuzz": "yarn build",
         "fuzz": "jsfuzz test/fuzz/borsh-roundtrip.js test/fuzz/corpus/"
     },

@@ -183,6 +183,26 @@ export class Transaction {
 
     }
 
+    /**
+     *
+     * @param txMultisig
+     * @param keyPair
+     */
+    static signMulti(txMultisig: Transaction, keyPair: KeyPair): SignedTransaction {
+        assert(
+            txMultisig.isSignatureTypeMulti(),
+            `Multisig transaction expected but got type ${txMultisig.type}`,
+        );
+
+        const hash = txMultisig.hash(false);
+
+        const txSignatures = txMultisig.signature as MultiSignature;
+        const keyPairSign = new SingleSignature(keyPair.sign(hash));
+        txSignatures.addOne(keyPairSign);
+
+        return new SignedTransaction({transaction: txMultisig, signature: keyPairSign});
+    }
+
     isSignatureTypeSingle(): boolean {
         return bufferToInt(this.signatureType) == SignatureType.Single;
     }
@@ -302,8 +322,11 @@ export class Transaction {
      * Validates the signature and checks to see if it has enough gas.
      */
     validate(): boolean
+
     validate(stringError: false): boolean
+
     validate(stringError: true): string
+
     validate(stringError = false): boolean | string {
         const errors = [];
         if (!this.isValidSignature()) {
@@ -376,26 +399,6 @@ export class Transaction {
         return this.serialize().toString('hex');
     }
 
-    /**
-     *
-     * @param txMultisig
-     * @param keyPair
-     */
-    static signMulti(txMultisig: Transaction, keyPair: KeyPair): SignedTransaction {
-        assert(
-            txMultisig.isSignatureTypeMulti(),
-            `Multisig transaction expected but got type ${txMultisig.type}`,
-        );
-
-        const hash = txMultisig.hash(false);
-
-        const txSignatures = txMultisig.signature as MultiSignature;
-        const keyPairSign = new SingleSignature(keyPair.sign(hash));
-        txSignatures.addOne(keyPairSign);
-
-        return new SignedTransaction({transaction: txMultisig, signature: keyPairSign});
-    }
-
 }
 
 /**
@@ -405,6 +408,14 @@ export class SignedTransaction extends Assignable {
     transaction: Transaction;
     signature: Signature;
 
+    static decode(bytes: Buffer): SignedTransaction {
+        const tx = new Transaction(bytes);
+        return new SignedTransaction({
+            transaction: tx,
+            signature  : tx.getSignature(),
+        });
+    }
+
     encode(): Buffer {
         this.transaction.signatureData = this.signature.serialize();
         return this.transaction.serialize();
@@ -412,14 +423,6 @@ export class SignedTransaction extends Assignable {
 
     toString() {
         return this.transaction.toString();
-    }
-
-    static decode(bytes: Buffer): SignedTransaction {
-        const tx = new Transaction(bytes);
-        return new SignedTransaction({
-            transaction: tx,
-            signature  : tx.getSignature(),
-        });
     }
 }
 

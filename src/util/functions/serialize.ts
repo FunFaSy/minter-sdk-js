@@ -1,4 +1,3 @@
-
 import {toBuffer} from './encode';
 import {bs58check, BufferLike} from '../external';
 
@@ -13,8 +12,7 @@ export const baseDecode = (value: string): Buffer => {
     return toBuffer(bs58check.decode(value));
 };
 
-
 export {
-    baseDecode  as base_decode
-    ,baseEncode  as base_encode
+    baseDecode as base_decode
+    , baseEncode as base_encode,
 };

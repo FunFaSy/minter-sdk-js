@@ -1,4 +1,4 @@
-import { KeyStore } from './keystore';
+import {KeyStore} from './keystore';
 import {KeyPair} from '../key_pair';
 
 const LOCAL_STORAGE_KEY_PREFIX = 'minter-api-js:keystore:';
@@ -130,7 +130,7 @@ export class BrowserLocalStorageKeyStore extends KeyStore {
     }
 
     /** @hidden */
-    private *storageKeys(): IterableIterator<string> {
+    private* storageKeys(): IterableIterator<string> {
         for (let i = 0; i < this.localStorage.length; i++) {
             yield this.localStorage.key(i);
         }

@@ -38,9 +38,6 @@ export abstract class Action {
         return this.txType;
     }
 
-
-
-
     /**
      * Returns the action in JSON format
      * @see {@link https://github.com/ethereumjs/ethereumjs-util/blob/master/docs/index.md#defineproperties|ethereumjs-util}

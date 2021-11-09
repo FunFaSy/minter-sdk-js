@@ -1,4 +1,4 @@
-import { KeyStore } from './keystore';
+import {KeyStore} from './keystore';
 import {KeyPair} from '../key_pair';
 
 /**

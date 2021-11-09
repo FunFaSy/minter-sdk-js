@@ -21,7 +21,6 @@ const defaultFetcherConfig = {
     headers: {'Content-Type': 'application/json; charset=utf-8'},
 } as AxiosRequestConfig;
 
-
 const parseData = (data) => {
     if (isString(data)) {
         try {
@@ -33,7 +32,6 @@ const parseData = (data) => {
     }
     return data;
 };
-
 
 const isValidUrl = (url) => {
     try {

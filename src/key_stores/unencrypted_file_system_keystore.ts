@@ -1,8 +1,8 @@
 import fs from 'fs';
 import path from 'path';
-import { promisify as _promisify } from 'util';
+import {promisify as _promisify} from 'util';
 
-import { KeyStore } from './keystore';
+import {KeyStore} from './keystore';
 import {KeyPair} from '../key_pair';
 
 const promisify = (fn: any) => {
@@ -38,8 +38,9 @@ export async function loadJsonFile(filename: string): Promise<any> {
 
 async function ensureDir(dir: string): Promise<void> {
     try {
-        await mkdir(dir, { recursive: true });
-    } catch (err) {
+        await mkdir(dir, {recursive: true});
+    }
+    catch (err) {
         if (err.code !== 'EEXIST') { throw err; }
     }
 }
@@ -98,8 +99,12 @@ export class UnencryptedFileSystemKeyStore extends KeyStore {
      */
     async setKey(networkId: string, accountId: string, keyPair: KeyPair): Promise<void> {
         await ensureDir(`${this.keyDir}/${networkId}`);
-        const content: AccountInfo = { account_id: accountId, public_key: keyPair.publicKey().toString(), private_key: keyPair.toString() };
-        await writeFile(this.getKeyFilePath(networkId, accountId), JSON.stringify(content), { mode: 0o600 });
+        const content: AccountInfo = {
+            account_id : accountId,
+            public_key : keyPair.publicKey().toString(),
+            private_key: keyPair.toString(),
+        };
+        await writeFile(this.getKeyFilePath(networkId, accountId), JSON.stringify(content), {mode: 0o600});
     }
 
     /**
@@ -139,11 +144,6 @@ export class UnencryptedFileSystemKeyStore extends KeyStore {
         }
     }
 
-    /** @hidden */
-    private getKeyFilePath(networkId: string, accountId: string): string {
-        return `${this.keyDir}/${networkId}/${accountId}.json`;
-    }
-
     /**
      * Get the network(s) from files in `keyDir`
      * @returns {Promise<string[]>}
@@ -167,13 +167,16 @@ export class UnencryptedFileSystemKeyStore extends KeyStore {
             return [];
         }
         const files: string[] = await readdir(`${this.keyDir}/${networkId}`);
-        return files
-            .filter(file => file.endsWith('.json'))
-            .map(file => file.replace(/.json$/, ''));
+        return files.filter(file => file.endsWith('.json')).map(file => file.replace(/.json$/, ''));
     }
 
     /** @hidden */
     toString(): string {
         return `UnencryptedFileSystemKeyStore(${this.keyDir})`;
+    }
+
+    /** @hidden */
+    private getKeyFilePath(networkId: string, accountId: string): string {
+        return `${this.keyDir}/${networkId}/${accountId}.json`;
     }
 }

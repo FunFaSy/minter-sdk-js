@@ -12,7 +12,7 @@ export const errorHierarchy = {
             'BadRequest'       : {
                 'BadSymbol': {},
             },
-            'BadActionResponse'      : {
+            'BadActionResponse': {
                 'NullResponse': {},
             },
             'InsufficientFunds': {},
@@ -30,11 +30,11 @@ export const errorHierarchy = {
             'InvalidNonce'     : {},
             'NotSupported'     : {},
         },
-        'QueryError':{
-            'BadQueryResponse':{}
+        'QueryError'   : {
+            'BadQueryResponse': {},
         },
         'NetworkError' : {
-            'BadResponse':{},
+            'BadResponse'     : {},
             'DDoSProtection'  : {
                 'RateLimitExceeded': {},
             },

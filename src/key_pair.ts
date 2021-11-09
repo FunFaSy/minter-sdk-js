@@ -1,5 +1,6 @@
 import {
-    assertIsBuffer, assertIsPositiveInt,
+    assertIsBuffer,
+    assertIsPositiveInt,
     assertIsString,
     Assignable,
     base_decode,
@@ -11,7 +12,8 @@ import {
     ethIsValidPublic,
     ethPrivateToPublic,
     ethPublicToAddress,
-    fromRpcSig, isBuffer,
+    fromRpcSig,
+    isBuffer,
     isString,
     MinterPrefix,
     secp256k1,
@@ -69,31 +71,6 @@ export abstract class KeyPair {
     }
 
     /**
-     *
-     * @param message Sha256 hash of `message`
-     */
-    abstract sign(message: Buffer): Signature;
-
-    /**
-     *
-     * @param message   Buffer Sha256 hash of `message`
-     * @param signature Buffer[]
-     */
-    abstract verify(message: Buffer, signature: Buffer[]): boolean;
-
-    toString(): string {
-        return `${keyType2Str(this._publicKey.keyType)}:${base_encode(this._secretKey)}`;
-    }
-
-    address(): Address {
-        return this._publicKey.address();
-    }
-
-    publicKey(): PublicKey {
-        return this._publicKey;
-    }
-
-    /**
      * @param curve Name of elliptical curve, case-insensitive
      * @returns Random KeyPair based on the curve
      */
@@ -134,8 +111,8 @@ export abstract class KeyPair {
                 return new KeyPairSecp256k1(parts[1]);
                 // case KeyType.ED25519:
                 //     return new KeyPairEd25519(parts[1]);
-            default:
-                throw new Error(`Unknown curve: ${parts[0]}`);
+                default:
+                    throw new Error(`Unknown curve: ${parts[0]}`);
             }
         }
         //
@@ -143,6 +120,31 @@ export abstract class KeyPair {
             throw new Error(
                 'Invalid encoded key format, must be <curve>:<encoded key>');
         }
+    }
+
+    /**
+     *
+     * @param message Sha256 hash of `message`
+     */
+    abstract sign(message: Buffer): Signature;
+
+    /**
+     *
+     * @param message   Buffer Sha256 hash of `message`
+     * @param signature Buffer[]
+     */
+    abstract verify(message: Buffer, signature: Buffer[]): boolean;
+
+    toString(): string {
+        return `${keyType2Str(this._publicKey.keyType)}:${base_encode(this._secretKey)}`;
+    }
+
+    address(): Address {
+        return this._publicKey.address();
+    }
+
+    publicKey(): PublicKey {
+        return this._publicKey;
     }
 }
 
@@ -200,17 +202,19 @@ export class KeyPairSecp256k1 extends KeyPair {
      * @param mnemonic
      * @param deriveChildId number
      */
-    static fromBip39Mnemonic(mnemonic: string,deriveChildId= 0): KeyPairSecp256k1{
+    static fromBip39Mnemonic(mnemonic: string, deriveChildId = 0): KeyPairSecp256k1 {
         assert(isValidMnemonic(mnemonic), 'Invalid mnemonic phrase');
         assertIsPositiveInt(deriveChildId);
 
         const seed = bip39.mnemonicToSeedSync(mnemonic);
-        const secretKey = hdKey.fromMasterSeed(seed).derive(MINTER_DERIVATION_PATH).deriveChild(deriveChildId).privateKey;
+        const secretKey = hdKey.fromMasterSeed(seed).
+            derive(MINTER_DERIVATION_PATH).
+            deriveChild(deriveChildId).privateKey;
 
         return new KeyPairSecp256k1(base_encode(secretKey));
     }
 
-    static publicKeyFromMessageBuf(message: Buffer, signature: Buffer[]): Buffer  {
+    static publicKeyFromMessageBuf(message: Buffer, signature: Buffer[]): Buffer {
         assertIsBuffer(signature[0]);
         assertIsBuffer(signature[1]);
         assertIsBuffer(signature[2]);
@@ -274,7 +278,7 @@ export class PublicKey extends Assignable {
             return PublicKey.fromString(value);
         }
         //
-        else if (isBuffer(value)){
+        else if (isBuffer(value)) {
             return PublicKey.fromBuffer(value);
         }
 
@@ -304,9 +308,8 @@ export class PublicKey extends Assignable {
 
     static fromBuffer(buf: Buffer): PublicKey {
         assertIsBuffer(buf);
-        return new PublicKey({keyType: KeyType.SECP256K1, raw:buf});
+        return new PublicKey({keyType: KeyType.SECP256K1, raw: buf});
     }
-
 
     /**
      *
@@ -367,7 +370,7 @@ export class Address extends Assignable {
     static fromPublicKey(publicKey: PublicKey): Address {
         return new Address({
             publicKey: publicKey,
-            raw  : ethPublicToAddress(publicKey.getRaw()),
+            raw      : ethPublicToAddress(publicKey.getRaw()),
         });
     }
 
@@ -388,26 +391,6 @@ export class Signature implements ECDSASignatureBuffer {
 
     constructor(public v: Buffer, public r: Buffer, public s: Buffer) {
         this.type = 'ECDSA';
-    }
-
-    getRaw(): Buffer[] {
-        return [this.v, this.r, this.s];
-    }
-
-    /**
-     *
-     */
-    toString(): string {
-        const ethRpcSig = toRpcSig(this.v, this.r, this.s); // 0x prefixed Hex string
-        return `${this.type}:${ethRpcSig}`;
-    }
-
-    /**
-     * Determines if the signature is valid ECDSA signature
-     */
-    valid(): boolean {
-        const message = sha256(Buffer.from([]));
-        return ethIsValidPublic(KeyPairSecp256k1.publicKeyFromMessageBuf(message, [this.v, this.r, this.s]));
     }
 
     /**
@@ -431,14 +414,34 @@ export class Signature implements ECDSASignatureBuffer {
             case 'ECDSA': {
                 return Signature.fromString(parts[1]);
             }
-            default:
-                throw new Error(`Unknown signature type: ${type}`);
+                default:
+                    throw new Error(`Unknown signature type: ${type}`);
             }
         }
         //
         else {
             throw new Error('Invalid encoded signature format, must be <curve>:<encoded sig>');
         }
+    }
+
+    getRaw(): Buffer[] {
+        return [this.v, this.r, this.s];
+    }
+
+    /**
+     *
+     */
+    toString(): string {
+        const ethRpcSig = toRpcSig(this.v, this.r, this.s); // 0x prefixed Hex string
+        return `${this.type}:${ethRpcSig}`;
+    }
+
+    /**
+     * Determines if the signature is valid ECDSA signature
+     */
+    valid(): boolean {
+        const message = sha256(Buffer.from([]));
+        return ethIsValidPublic(KeyPairSecp256k1.publicKeyFromMessageBuf(message, [this.v, this.r, this.s]));
     }
 
 }

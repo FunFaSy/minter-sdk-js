@@ -37,11 +37,10 @@ function getSigner(config: { type: string; keyStore: KeyStore }): Signer {
  *
  */
 export interface ConnectionConfig {
-    networkId:  string | number;
-    provider: { type: string; args: any};
+    networkId: string | number;
+    provider: { type: string; args: any };
     signer: { type: string; keyStore: KeyStore };
 }
-
 
 /**
  * Connects an account to a given network via a given provider

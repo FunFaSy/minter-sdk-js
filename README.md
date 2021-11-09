@@ -29,7 +29,7 @@ _(Common use cases / more complex examples)_
 
 2. Run continuous build with:
 
-       yarn build -- -w
+       yarn build -w
 
 
 # Publish
@@ -44,18 +44,8 @@ When publishing to npm use [np](https://github.com/sindresorhus/np).
 
 # Integration Test
 
-Start the node by following instructions from [nearcore](https://github.com/nearprotocol/nearcore), then
-
     yarn test
 
-Tests use sample contract from `near-hello` npm package, see https://github.com/nearprotocol/near-hello
-
-# Update error schema
-
-Follow next steps:
-
-1. Fetch new schema: `node fetch_error_schema.js`
-2. `yarn build` to update `lib/**.js` files
 
 # License
 

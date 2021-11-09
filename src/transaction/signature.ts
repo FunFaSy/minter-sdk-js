@@ -10,7 +10,7 @@ import {
     rlp,
     toBuffer,
 } from '../util';
-import {KeyPairSecp256k1, KeyType, PublicKey,  Signature} from '../key_pair';
+import {KeyPairSecp256k1, KeyType, PublicKey, Signature} from '../key_pair';
 
 const N_DIV_2 = new BN('7fffffffffffffffffffffffffffffff5d576e7357a4501ddfe92f46681b20a0', 16);
 
@@ -72,6 +72,23 @@ export class SingleSignature extends TransactionSignature {
         defineProperties(this, rlpSchema, data);
 
         this._overrideVSetterWithValidation();
+    }
+
+    /**
+     * Determines if the message signed given public key
+     *
+     * @param txHash SHA256 transaction hash without signatureData field
+     * @param rlpVrs RLP encoded ECDSA signature [v,r,s]
+     * @param publicKey
+     */
+    static assertSignature(txHash: Buffer, rlpVrs: Buffer, publicKey: string): boolean {
+        const vrs: Buffer[] = (rlp.decode(rlpVrs) as undefined) as Buffer[];
+        assertIsArray(vrs, `Expect rlp encoded ECDSA signature as array of Buffers, but got ${vrs}`);
+
+        const txSignature = new SingleSignature(rlpVrs);
+        const txPublicKey = base_decode(txSignature.publicKey(txHash).toString().split(':')[1]).toString('utf-8');
+
+        return txSignature.valid() && txPublicKey == publicKey;
     }
 
     /**
@@ -138,34 +155,16 @@ export class SingleSignature extends TransactionSignature {
         });
     }
 
-    /**
-     * Determines if the message signed given public key
-     *
-     * @param txHash SHA256 transaction hash without signatureData field
-     * @param rlpVrs RLP encoded ECDSA signature [v,r,s]
-     * @param publicKey
-     */
-    static assertSignature(txHash: Buffer, rlpVrs: Buffer, publicKey: string): boolean {
-        const vrs: Buffer[] = (rlp.decode(rlpVrs) as undefined) as Buffer[];
-        assertIsArray(vrs, `Expect rlp encoded ECDSA signature as array of Buffers, but got ${vrs}`);
-
-        const txSignature = new SingleSignature(rlpVrs);
-        const txPublicKey = base_decode(txSignature.publicKey(txHash).toString().split(':')[1]).toString('utf-8');
-
-        return txSignature.valid() && txPublicKey == publicKey;
-    }
-
 }
 
 /**
  *
  */
 export class MultiSignature extends TransactionSignature {
-    protected raw!: Buffer[];
-
     // Signature data
     public multisig!: Buffer; // multisig Address
     public signatures!: Buffer[]; // array of single rlp signatures
+    protected raw!: Buffer[];
     protected _signatures!: SingleSignature[];
 
     /**
@@ -204,7 +203,6 @@ export class MultiSignature extends TransactionSignature {
             return new SingleSignature(data);
         });
     }
-
 
     /**
      *
@@ -245,7 +243,7 @@ export class MultiSignature extends TransactionSignature {
      *
      * @param signature
      */
-    addOne(signature: SingleSignature): MultiSignature{
+    addOne(signature: SingleSignature): MultiSignature {
         this._signatures.push(signature);
         this.signatures.push(signature.serialize());
         return this;
@@ -255,7 +253,7 @@ export class MultiSignature extends TransactionSignature {
      *
      * @param multisig
      */
-    setMultisig(multisig: Buffer): void{
+    setMultisig(multisig: Buffer): void {
         this.multisig = multisig;
     }
 }

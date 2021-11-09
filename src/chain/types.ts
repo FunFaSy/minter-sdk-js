@@ -1,8 +1,7 @@
-
 export interface ChainParams {
     name: string;// Mainnet
-    chainId:  string; // minter-mainnet-4
-    networkId:  number; // 1
+    chainId: string; // minter-mainnet-4
+    networkId: number; // 1
     initialHeight: number;
     totalSlashed: number;
     blockMaxGas: number;
