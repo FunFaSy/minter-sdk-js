@@ -1,8 +1,9 @@
-import {Assignable, bufferToInt, defineProperties, rlp, rlphash, toBuffer} from '../util';
+import {Assignable, bufferToInt, rlp, rlphash, toBuffer} from '../util';
 import {MultiSignature, SignatureType, SingleSignature, TransactionSignature as Signature} from './signature';
 import {Chain} from '../chain';
 import {Address, KeyPair, PublicKey} from '../key_pair';
 import {assert} from '../util/external';
+import defineProperties, {RlpSchemaField} from '../util/define-properties';
 
 export enum TransactionType {
     SEND                      = '0x01',
@@ -100,7 +101,7 @@ export class Transaction {
         }
 
         // Define RLP Properties
-        const rlpSchema = [
+        const rlpSchema: RlpSchemaField[] = [
             {
                 name     : 'nonce',
                 length   : 32,

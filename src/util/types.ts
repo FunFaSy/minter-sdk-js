@@ -29,12 +29,3 @@ export abstract class Assignable {
         });
     }
 }
-
-export interface RlpSchemaField {
-    name: string;
-    length: number;
-    alias?: string;
-    allowLess?: boolean;
-    allowZero?: boolean;
-    default?: Buffer;
-}

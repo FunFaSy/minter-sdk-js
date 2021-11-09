@@ -1,6 +1,7 @@
-import {BN, RlpSchemaField, toBuffer} from '../../util';
+import {BN} from '../../util';
 import {TransactionType} from '../transaction';
 import {Action} from './base_action';
+import {RlpSchemaField} from '../../util/define-properties';
 
 /**
  *
@@ -22,9 +23,9 @@ export class SellAllAction extends Action {
     constructor(params: SellAllActionParams) {
         // Convert params to Buffers
         const _params = {
-            coinToSell       : toBuffer(new BN(params.coinToSell)),
-            coinToBuy        : toBuffer(new BN(params.coinToBuy)),
-            minimumValueToBuy: toBuffer(new BN(params.minimumValueToBuy)),
+            coinToSell       : new BN(params.coinToSell),
+            coinToBuy        : new BN(params.coinToBuy),
+            minimumValueToBuy: new BN(params.minimumValueToBuy),
         };
 
         super(_params);

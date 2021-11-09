@@ -1,5 +1,6 @@
 import {TransactionType} from '../transaction';
-import {defineProperties, rlp, RlpSchemaField} from '../../util';
+import { rlp} from '../../util';
+import defineProperties, {RlpSchemaField} from '../../util/define-properties';
 
 export abstract class Action {
     public raw!: Buffer;

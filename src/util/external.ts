@@ -9,11 +9,13 @@ import {sha256} from 'ethereum-cryptography/sha256';
 import assert from 'assert';
 
 export {
-    defineProperties
-    , ecrecover
+    ecrecover
     , ecsign
     , fromRpcSig
     , toRpcSig
+    , baToJSON
+    , unpadBuffer
+    , stripHexPrefix
     , rlp
     , rlphash
     , zeros

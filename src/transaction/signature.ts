@@ -1,16 +1,7 @@
 // secp256k1n/2
-import {
-    assertIsArray,
-    base_decode,
-    BN,
-    BufferLike,
-    bufferToInt,
-    defineProperties,
-    ECDSASignatureBuffer,
-    rlp,
-    toBuffer,
-} from '../util';
+import {assertIsArray, base_decode, BN, bufferToInt, ECDSASignatureBuffer, rlp, toBuffer} from '../util';
 import {KeyPairSecp256k1, KeyType, PublicKey, Signature} from '../key_pair';
+import defineProperties, {RlpSchemaField} from '../util/define-properties';
 
 const N_DIV_2 = new BN('7fffffffffffffffffffffffffffffff5d576e7357a4501ddfe92f46681b20a0', 16);
 
@@ -45,7 +36,7 @@ export class SingleSignature extends TransactionSignature {
     constructor(data: Buffer | ECDSASignatureBuffer) {
         super();
         // Define Properties
-        const rlpSchema = [
+        const rlpSchema: RlpSchemaField[] = [
             {
                 name   : 'v',
                 default: Buffer.from([0x1c]),
@@ -164,7 +155,7 @@ export class SingleSignature extends TransactionSignature {
 export class MultiSignature extends TransactionSignature {
     // Signature data
     public multisig!: Buffer; // multisig Address
-    public signatures!: Buffer[]; // array of single rlp signatures
+    public signatures!: Buffer[]; // array of single RLP ready (raw data) signatures
     protected raw!: Buffer[];
     protected _signatures!: SingleSignature[];
 
@@ -172,11 +163,11 @@ export class MultiSignature extends TransactionSignature {
      *
      * @param data RLP encoded multisig data
      */
-    constructor(data: BufferLike | { multisig: Buffer; signatures: Buffer[] }) {
+    constructor(data: Buffer | { multisig: Buffer; signatures: Buffer[] }) {
         super();
 
         // Define Properties
-        const rlpSchema = [
+        const rlpSchema: RlpSchemaField[] = [
             {
                 name  : 'multisig',
                 length: 20,
@@ -184,8 +175,8 @@ export class MultiSignature extends TransactionSignature {
             {
                 name               : 'signatures',
                 allowNonBinaryArray: true,
-                nonBinaryArrayTransform(rlpVrs) {
-                    return new SingleSignature(rlpVrs).getRaw();
+                nonBinaryArrayTransform(item) {
+                    return new SingleSignature(item).getRaw();// Buffer
                 },
             },
         ];

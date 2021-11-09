@@ -1,12 +1,13 @@
-import {BN, RlpSchemaField, toBuffer} from '../../util';
+import {BN,  toBuffer} from '../../util';
 import {TransactionType} from '../transaction';
 import {Action} from './base_action';
+import {RlpSchemaField} from '../../util/define-properties';
 
 /**
  *
  */
 export interface SendActionParams {
-    to: string;         // Address string
+    to: string;         // Address string Mx or 0x prefixed
     coin: number | BN;  // Coin ID
     value: string | BN; // Pip units string
 }
@@ -22,8 +23,8 @@ export class SendAction extends Action {
     constructor(params: SendActionParams) {
         // Convert params to Buffers
         const _params = {
-            coin : toBuffer(new BN(params.coin)),
-            value: toBuffer(new BN(params.value)),
+            coin : new BN(params.coin),
+            value: new BN(params.value),
             to   : toBuffer(params.to),
         };
 
