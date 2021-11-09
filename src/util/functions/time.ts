@@ -27,7 +27,7 @@ const setTimeout_safe = (done, ms, setTimeout = setTimeout_original /* overridea
     /*  The built-in setTimeout function can fire its callback earlier than specified, so we
         need to ensure that it does not happen: sleep recursively until `targetTime` is reached...   */
 
-    let clearInnerTimeout = () => {};
+    let clearInnerTimeout = (): void => {return;};
     let active = true;
 
     const id = setTimeout(() => {
@@ -57,6 +57,7 @@ class TimedOut extends Error {
         const message = 'timed out';
         super(message);
         this.constructor = TimedOut;
+        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
         // @ts-ignore
         this.__proto__ = TimedOut.prototype;
         this.message = message;
@@ -178,7 +179,7 @@ const sleep = ms => new Promise(resolve => setTimeout_safe(resolve, ms));
 
 const timeout = async (ms, promise) => {
 
-    let clear = () => {};
+    let clear = (): void => {return;};
     const expires = new Promise(resolve => (clear = setTimeout_safe(resolve, ms)));
 
     try {

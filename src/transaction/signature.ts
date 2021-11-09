@@ -145,12 +145,12 @@ export class SingleSignature extends TransactionSignature {
 
         Object.defineProperty(this, 'v', {
             ...vDescriptor,
-            set: v => {
+            set: (v: any) => {
                 if (v !== undefined) {
                     this._validateV(toBuffer(v));
                 }
 
-                vDescriptor.set!(v);
+                vDescriptor.set?.(v);
             },
         });
     }
