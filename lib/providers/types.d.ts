@@ -1,3 +1,4 @@
-export interface NodeStatusResult {
+interface NodeStatusResult {
+    prop: any;
 }
-export {};
+export { NodeStatusResult };

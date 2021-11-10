@@ -3,7 +3,10 @@ import { KeyPair } from '../key_pair';
 /** @hidden */
 export declare function loadJsonFile(filename: string): Promise<any>;
 /** @hidden */
-export declare function readKeyFile(filename: string): Promise<[string, KeyPair]>;
+export declare function readKeyFile(filename: string): Promise<{
+    account_id: string;
+    keyPair: KeyPair;
+}>;
 /**
  * This module contains the {@link UnencryptedFileSystemKeyStore} class which is used to store keys on the file system.
  *
@@ -59,7 +62,7 @@ export declare class UnencryptedFileSystemKeyStore extends KeyStore {
      */
     clear(): Promise<void>;
     /**
-     * Get the network(s) from files in `keyDir`
+     * Get the network(s) from subdirectory names in `keyDir`
      * @returns {Promise<string[]>}
      */
     getNetworks(): Promise<string[]>;

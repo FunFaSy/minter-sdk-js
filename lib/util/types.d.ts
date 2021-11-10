@@ -13,11 +13,3 @@ export declare abstract class Enum {
 export declare abstract class Assignable {
     constructor(properties: any);
 }
-export interface RlpSchemaField {
-    name: string;
-    length: number;
-    alias?: string;
-    allowLess?: boolean;
-    allowZero?: boolean;
-    default?: Buffer;
-}

@@ -1,5 +1,5 @@
 /// <reference types="node" />
-import { BufferLike, ECDSASignatureBuffer } from '../util';
+import { ECDSASignatureBuffer } from '../util';
 import { PublicKey, Signature } from '../key_pair';
 export declare enum SignatureType {
     Single = 1,
@@ -63,7 +63,7 @@ export declare class MultiSignature extends TransactionSignature {
      *
      * @param data RLP encoded multisig data
      */
-    constructor(data: BufferLike | {
+    constructor(data: Buffer | {
         multisig: Buffer;
         signatures: Buffer[];
     });

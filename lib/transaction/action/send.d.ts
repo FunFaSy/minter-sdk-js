@@ -1,7 +1,8 @@
 /// <reference types="bn.js" />
 /// <reference types="node" />
-import { BN, RlpSchemaField } from '../../util';
+import { BN } from '../../util';
 import { Action } from './base_action';
+import { RlpSchemaField } from '../../util/define-properties';
 /**
  *
  */

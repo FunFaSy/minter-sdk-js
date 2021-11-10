@@ -219,9 +219,30 @@ export function getErrorTypeFromErrorCode(code: string): string {
 
 
 /**
+error:{
+    code: "0",
+    log: "",
+    hash: "Mt1cea90c78f69a9a62e6fe1d349470e4d598229aabf71dd9b76ae174c9fb73abe"
+}
+
+error: {
+    code: "101",
+    message: "Unexpected nonce. Expected: 12, got 11.",
+    data: {
+        expected_nonce: "12",
+        got_nonce: "11"
+    }
+}
+
 error: {
     code: "106",
     message: "rlp: expected input list for transaction.MultisendDataItem, decoding into (transaction.MultisendData).List[0]",
+    data: { }
+}
+
+error: {
+    code: "106",
+    message: "rlp: input list has too many elements for transaction.AddLiquidityDataV240",
     data: { }
 }
 
@@ -245,6 +266,12 @@ error: {
         maximum_value_to_sell: "1000000000000000000",
         needed_spend_value: "921393549816831207"
     }
+}
+
+ error: {
+    code: "409",
+    message: "tx already exists in cache",
+    data: { }
 }
 
 

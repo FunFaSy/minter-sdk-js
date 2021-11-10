@@ -44,7 +44,7 @@ export declare enum TransactionType {
  */
 export interface TransactionOptions {
     /**
-     * A Common object defining the chain a transaction belongs to.
+     * A Chain object defining the chain a transaction belongs to.
      */
     chain?: Chain;
     /**
