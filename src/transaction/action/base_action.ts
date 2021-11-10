@@ -6,7 +6,7 @@ import defineProperties, {RlpSchemaField} from '../../util/define-properties';
  *
  */
 export abstract class Action {
-    public raw!: Buffer;
+    public raw!: Buffer[];
     public txType: TransactionType;
 
     constructor(data) {
@@ -23,10 +23,14 @@ export abstract class Action {
 
     abstract rlpSchema(): RlpSchemaField[] ;
 
+    type(): TransactionType {
+        return this.txType;
+    }
+
     /**
      *
      */
-    getRaw(): Buffer {
+    getRaw(): Buffer[] {
         return this.raw;
     }
 
@@ -45,9 +49,14 @@ export abstract class Action {
         return rlp.encode(this.raw);
     }
 
-    type(): TransactionType {
-        return this.txType;
+    /**
+     * Return 0x prefixed hex of `serialise` method result
+     */
+    serializeToString(): string{
+        // Note: This never gets executed, defineProperties overwrites it.
+        return '';
     }
+
 
     /**
      * Returns the action in JSON format

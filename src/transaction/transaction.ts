@@ -47,7 +47,7 @@ export enum TransactionType {
  */
 export interface TransactionOptions {
     /**
-     * A Common object defining the chain a transaction belongs to.
+     * A Chain object defining the chain a transaction belongs to.
      */
     chain?: Chain;
 
@@ -106,7 +106,7 @@ export class Transaction {
                 name     : 'nonce',
                 length   : 32,
                 allowLess: true,
-                default  : toBuffer([]),
+                default  : Buffer.allocUnsafe(0),
             },
             {
                 name   : 'chainId',
@@ -133,17 +133,17 @@ export class Transaction {
             {
                 name   : 'data',
                 alias  : 'input',
-                default: toBuffer([]),
+                default: Buffer.allocUnsafe(0),
             },
             {
                 name     : 'payload',
                 allowZero: true,
-                default  : toBuffer([]),
+                default  : Buffer.allocUnsafe(0),
             },
             {
                 name     : 'serviceData',
                 allowZero: true,
-                default  : toBuffer([]),
+                default  : Buffer.allocUnsafe(0),
             },
             // Signature fields
             {

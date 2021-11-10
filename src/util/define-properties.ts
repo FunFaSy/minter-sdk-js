@@ -29,8 +29,8 @@ export interface RlpSchemaField {
  * @param {*} [data] data to be validated against the definitions
  */
 export default function defineProperties(self, fields: RlpSchemaField[], data) {
-    self.raw = [];
-    self._fields = [];
+    self.raw = [] as  Buffer[];
+    self._fields = [] as string[];
 
     // attach the `toJSON`
     self.toJSON = function (label) {

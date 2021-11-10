@@ -22,7 +22,7 @@ export * from './action/sell-all';
 export * from './action/sell-all-swap';
 
 /**
- *  Coins/Tokens
+ * Coins/Tokens
  * */
 // create-coin
 // create-token
@@ -35,9 +35,10 @@ export * from './action/burn-token';
 /**
  * Pools
  */
-//create-swap-pool
+// create-swap-pool
 export * from './action/add-liquidity';
-//remove-liquidity
+export * from './action/remove-liquidity';
+//
 
 /**
  * Validation
@@ -50,7 +51,7 @@ export * from './action/add-liquidity';
 // edit-candidate-public-key
 // delegate
 // unbond
-// move-stake !Disabled for now https://www.minter.network/docs#move-stake-transaction
+// move-stake [!Disabled for now https://www.minter.network/docs#move-stake-transaction]
 
 /**
  * Governance

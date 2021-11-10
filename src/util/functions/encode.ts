@@ -58,23 +58,24 @@ const json                = (data) => JSON.stringify(data)
     /**
        * Attempts to turn a value into a `Buffer`.
        * Supports Minter prefixed hex strings.
-       * Otherwise use `ethereumjs-util.toBuffer`. As input it supports `Buffer`, `String`, `Number`, null/undefined, `BN` and other objects with a `toArray()` method.
-       * @param {*} value
+       * Otherwise use `ethereumjs-util.toBuffer`. As input it supports `Buffer`, `String`, `Number`,
+       * null/undefined, `BN` and other objects with a `toArray() `toBuffer()` methods.
+       * @param {*} v
        * @return {Buffer}
        */
-    , toBuffer            = (value) => {
-        if (typeof value === 'string' && isMinterPrefixed(value)) {
-            return mToBuffer(value);
+    , toBuffer            = (v): Buffer => {
+        if (typeof v === 'string' && isMinterPrefixed(v)) {
+            return mToBuffer(v);
         }
 
-        return ethToBuffer(value);
+        return ethToBuffer(v);
     }
     /**
        * Converts Minter prefixed hex string to Buffer
        * @param {string} value
        * @return {Buffer}
        */
-    , mToBuffer           = (value) => {
+    , mToBuffer           = (value: string): Buffer => {
         if (typeof value !== 'string') {
             throw new TypeError('Type error: string expected');
         }

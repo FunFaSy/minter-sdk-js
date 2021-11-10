@@ -19,7 +19,7 @@ export class MultiSendAction extends Action {
     constructor(params: MultiSendActionParams) {
         // Convert params to Buffers
         const _params = {
-            list: params.list // Pass values through to nonBinaryArrayTransform encoder function. @see rlpSchema method
+            list: params.list, // Pass values through to nonBinaryArrayTransform encoder function.
         };
 
         super(_params);
