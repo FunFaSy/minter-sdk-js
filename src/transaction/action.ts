@@ -35,7 +35,6 @@ export * from './action/burn-token';
 /**
  * Pools
  */
-// create-swap-pool
 export * from './action/create-swap-pool';
 export * from './action/add-liquidity';
 export * from './action/remove-liquidity';
