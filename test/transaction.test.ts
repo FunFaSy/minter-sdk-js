@@ -421,6 +421,45 @@ test('[TxSingle] RemoveLiquidity transaction type', async () => {
     expect(txMtHash).toEqual(TX_HASH);
 });
 
+//
+test('[TxSingle] CreateSwapPoolAction transaction type', async () => {
+    const TX_RLP_ENCODED = 'f8670d0201802297d68207ab8088016345785d8a0000880de0b6b3a7640000808001b845f8431ba0884a1cadb8f9f23d3694916a1e402cfcc75e51fafb85219ba7acee5b170ef472a03bf237db963c603631a532d5e3837ee7e7856442bc181a06a26669ba081d6d16';
+    const TX_HASH = 'Mta04bd7b8e92d544e24e83c4a032ef3d98693ae05f4dd754c872ac2c2a1a6c546';
+
+    const utils = minterApi.utils;
+    const convertBipToPip = utils.convertBipToPip;
+    const sha256 = utils.sha256;
+
+    const chain = new minterApi.Chain('testnet');
+    const keyPair = minterApi.KeyPairSecp256k1.fromBip39Mnemonic(MNEMONIC);
+
+    const txAction = new minterApi.tx_actions.CreateSwapPoolAction({
+        coin0  : 1963, //
+        coin1  : 0, //
+        volume0: convertBipToPip(0.1),            //
+        volume1: convertBipToPip(1),            //
+    });
+
+    const txParams = {
+        nonce        : 13,                  //
+        chainId      : chain.networkId(),   //
+        gasCoin      : 0,                   //
+        gasPrice     : 1,                   //
+        type         : txAction.type(),     //
+        data         : txAction.serialize(),//
+        signatureType: minterApi.SignatureType.Single,
+    } as TransactionParams;
+
+    const tx = new minterApi.Transaction(txParams);
+    const signedTx = tx.sign(keyPair);
+
+    const txRawBuf = Buffer.from(TX_RLP_ENCODED, 'hex');
+    const txMtHash = 'Mt' + sha256(txRawBuf).toString('hex').toLowerCase();
+
+    expect(signedTx.signature.valid()).toBeTruthy();
+    expect(signedTx.transaction.serialize().toString('hex')).toEqual(TX_RLP_ENCODED);
+    expect(txMtHash).toEqual(TX_HASH);
+});
 
 // //
 // test('[TxSingle] MintTokenAction type transaction', async () => {

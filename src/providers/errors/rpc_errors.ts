@@ -274,5 +274,12 @@ error: {
     data: { }
 }
 
-
+ error: {
+    code: "708",
+    message: "swap pool already exist",
+    data: {
+        coin0: "1844",
+        coin1: "0"
+    }
+}
  */
