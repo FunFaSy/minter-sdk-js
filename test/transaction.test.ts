@@ -1203,39 +1203,85 @@ test('[TxSingle] VoteNetUpdate transaction type', async () => {
 });
 
 //
-// //
-// test('[TxSingle] MintTokenAction type transaction', async () => {
-//     const TX_RLP_ENCODED = '';
-//     const TX_HASH = '';
-//
-//     const convertBipToPip = minterApi.utils.convertBipToPip;
-//     const sha256 = minterApi.utils.sha256;
-//
-//     const chain = new minterApi.Chain('testnet');
-//     const keyPair = minterApi.KeyPairSecp256k1.fromBip39Mnemonic(MNEMONIC);
-//
-//     const txAction = new minterApi.tx_actions.MintTokenAction({
-//         coin : 8,
-//         value: convertBipToPip(10),
-//     });
-//
-//     const txParams = {
-//         nonce        : 7,                   //
-//         chainId      : chain.networkId(),   //
-//         gasCoin      : 0,                   //
-//         gasPrice     : 1,                   //
-//         type         : txAction.type(),     //
-//         data         : txAction.serialize(),//
-//         signatureType: minterApi.SignatureType.Single,
-//     } as TransactionParams;
-//
-//     const tx = new minterApi.Transaction(txParams);
-//     const signedTx = tx.sign(keyPair);
-//
-//     const txRawBuf = Buffer.from(TX_RLP_ENCODED, 'hex');
-//     const txMtHash = 'Mt' + sha256(txRawBuf).toString('hex').toLowerCase();
-//
-//     expect(signedTx.signature.valid()).toBeTruthy();
-//     expect(signedTx.transaction.serialize().toString('hex')).toEqual(TX_RLP_ENCODED);
-//     expect(txMtHash).toEqual(TX_HASH);
-// });
+test('[TxSingle] VoteCommissionUpdate transaction type', async () => {
+    const TX_RLP_ENCODED = 'f902222102018020b901d0f901cda0aaaaa16ebd6af229b4cfc02c3ab40bd25c1051c3aa2120f07d08c1bd01777778835ff9c90889056bc75e2d6310000089056bc75e2d6310000089056bc75e2d6310000089056bc75e2d6310000089056bc75e2d6310000089056bc75e2d6310000089056bc75e2d6310000089056bc75e2d6310000089056bc75e2d6310000089056bc75e2d6310000089056bc75e2d6310000089056bc75e2d6310000089056bc75e2d6310000089056bc75e2d6310000089056bc75e2d6310000089056bc75e2d6310000089056bc75e2d6310000089056bc75e2d6310000089056bc75e2d6310000089056bc75e2d6310000089056bc75e2d6310000089056bc75e2d6310000089056bc75e2d6310000089056bc75e2d6310000089056bc75e2d6310000089056bc75e2d6310000089056bc75e2d6310000089056bc75e2d6310000089056bc75e2d6310000089056bc75e2d6310000089056bc75e2d6310000089056bc75e2d6310000089056bc75e2d6310000089056bc75e2d6310000089056bc75e2d6310000089056bc75e2d6310000089056bc75e2d6310000089056bc75e2d6310000089056bc75e2d6310000089056bc75e2d6310000089056bc75e2d6310000089056bc75e2d63100000808080808001b845f8431ca0dc6223b211eef152924e5a383193e15c5270d6face32709b50dc23e085302161a03e5eec9259d0b8894face66bbd41c6117fdaa7fb6e8075bb87e862af483636fc';
+    const TX_HASH = 'Mtc5187f88e6163016effa368fb98b7453f5a0b7d49214bd461a1b5db8b9044df9';
+
+    const utils = minterApi.utils;
+    const sha256 = utils.sha256;
+    const convertBipToPip = utils.convertBipToPip;
+
+    const chain = new minterApi.Chain('testnet');
+    const keyPair = minterApi.KeyPairSecp256k1.fromBip39Mnemonic(MNEMONIC);
+
+    const txAction = new minterApi.tx_actions.VoteCommissionUpdateAction({
+        publicKey              : 'Mpaaaaa16ebd6af229b4cfc02c3ab40bd25c1051c3aa2120f07d08c1bd01777778', // Validator node pub key Mp.............
+        height                 : 6289865,   // Block height
+        coin                   : 8,      // Commission coin Id
+        addLiquidity           : convertBipToPip(100),  // New Price
+        burnToken              : convertBipToPip(100),  // New Price
+        buyBancor              : convertBipToPip(100),  // New Price
+        buyPoolBase            : convertBipToPip(100),  // New Price
+        buyPoolDelta           : convertBipToPip(100),  // New Price
+        createCoin             : convertBipToPip(100),  // New Price
+        createMultisig         : convertBipToPip(100),  // New Price
+        createSwapPool         : convertBipToPip(100),  // New Price
+        createTicker3          : convertBipToPip(100),  // New Price
+        createTicker4          : convertBipToPip(100),  // New Price
+        createTicker5          : convertBipToPip(100),  // New Price
+        createTicker6          : convertBipToPip(100),  // New Price
+        createTicker7to10      : convertBipToPip(100),  // New Price
+        createToken            : convertBipToPip(100),  // New Price
+        declareCandidacy       : convertBipToPip(100),  // New Price
+        delegate               : convertBipToPip(100),  // New Price
+        editCandidate          : convertBipToPip(100),  // New Price
+        editCandidateCommission: convertBipToPip(100),  // New Price
+        editCandidatePublicKey : convertBipToPip(100),  // New Price
+        editMultisig           : convertBipToPip(100),  // New Price
+        editTickerOwner        : convertBipToPip(100),  // New Price
+        mintToken              : convertBipToPip(100),  // New Price
+        multisendBase          : convertBipToPip(100),  // New Price
+        multisendDelta         : convertBipToPip(100),  // New Price
+        payloadByte            : convertBipToPip(100),  // New Price
+        recreateCoin           : convertBipToPip(100),  // New Price
+        recreateToken          : convertBipToPip(100),  // New Price
+        redeemCheck            : convertBipToPip(100),  // New Price
+        removeLiquidity        : convertBipToPip(100),  // New Price
+        sellAllBancor          : convertBipToPip(100),  // New Price
+        sellAllPoolBase        : convertBipToPip(100),  // New Price
+        sellAllPoolDelta       : convertBipToPip(100),  // New Price
+        sellBancor             : convertBipToPip(100),  // New Price
+        sellPoolBase           : convertBipToPip(100),  // New Price
+        sellPoolDelta          : convertBipToPip(100),  // New Price
+        send                   : convertBipToPip(100),  // New Price
+        setCandidateOff        : convertBipToPip(100),  // New Price
+        setCandidateOn         : convertBipToPip(100),  // New Price
+        setHaltBlock           : convertBipToPip(100),  // New Price
+        unbond                 : convertBipToPip(100),  // New Price
+        voteCommission         : convertBipToPip(100),  // New Price
+        voteUpdate             : convertBipToPip(100),  // New Price
+        failedTx               : undefined, // Default 0
+        addLimitOrder          : undefined, // Default 0
+        removeLimitOrder       : undefined, // Default 0
+    });
+
+    const txParams = {
+        nonce        : 33,                              //
+        chainId      : chain.networkId(),               //
+        gasCoin      : 0,                               //
+        gasPrice     : 1,                               //
+        type         : txAction.type(),                 //
+        data         : txAction.serialize(),            //
+        signatureType: minterApi.SignatureType.Single,  //
+    };
+
+    const tx = new minterApi.Transaction(txParams);
+    const signedTx = tx.sign(keyPair);
+
+    const txRawBuf = Buffer.from(TX_RLP_ENCODED, 'hex');
+    const txMtHash = 'Mt' + sha256(txRawBuf).toString('hex').toLowerCase();
+
+    expect(signedTx.signature.valid()).toBeTruthy();
+    expect(signedTx.transaction.serialize().toString('hex')).toEqual(TX_RLP_ENCODED);
+    expect(txMtHash).toEqual(TX_HASH);
+});
