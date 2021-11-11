@@ -478,12 +478,53 @@ test('[TxSingle] CreateCoin transaction type', async () => {
         symbol              : 'SUPERPUPER',                  // Max 10 chars
         initialAmount       : convertBipToPip(1000000), //
         initialReserve      : convertBipToPip(10000),   //
-        constantReserveRatio: 100,                           // 1 - 100 %
+        constantReserveRatio: 100,                           // 10 - 100 %
         maxSupply           : convertBipToPip(10000000) //
     });
 
     const txParams = {
         nonce        : 14,                  //
+        chainId      : chain.networkId(),   //
+        gasCoin      : 0,                   //
+        gasPrice     : 1,                   //
+        type         : txAction.type(),     //
+        data         : txAction.serialize(),//
+        signatureType: minterApi.SignatureType.Single,
+    };
+
+    const tx = new minterApi.Transaction(txParams);
+    const signedTx = tx.sign(keyPair);
+
+    const txRawBuf = Buffer.from(TX_RLP_ENCODED, 'hex');
+    const txMtHash = 'Mt' + sha256(txRawBuf).toString('hex').toLowerCase();
+
+    expect(signedTx.signature.valid()).toBeTruthy();
+    expect(signedTx.transaction.serialize().toString('hex')).toEqual(TX_RLP_ENCODED);
+    expect(txMtHash).toEqual(TX_HASH);
+});
+
+test('[TxSingle] ReCreateCoin transaction type', async () => {
+    const TX_RLP_ENCODED = 'f8950f02018010b844f842944e657720737570657220707570657220636f696e8a535550455250555045528a021e19e0c9bab24000008a021e19e0c9bab24000000a8ad3c21bcecceda1000000808001b845f8431ca0dd8c7e72ed40ca573c0704f27b7f3fa8b904b5063134c6052ac3a1564e5dfd97a05448534ec00b642fa664796afd68f78538272b9d21429ee916396e898cb2fbff';
+    const TX_HASH = 'Mt49b1dc621fbdabe11d6e92c18ed4ed0bc1e343253aa0fb98c341a251481c281b';
+
+    const utils = minterApi.utils;
+    const convertBipToPip = utils.convertBipToPip;
+    const sha256 = utils.sha256;
+
+    const chain = new minterApi.Chain('testnet');
+    const keyPair = minterApi.KeyPairSecp256k1.fromBip39Mnemonic(MNEMONIC);
+
+    const txAction = new minterApi.tx_actions.ReCreateCoinAction({
+        name                : 'New super puper coin',            //
+        symbol              : 'SUPERPUPER',                      // Max 10 chars
+        initialAmount       : convertBipToPip(10_000),      //
+        initialReserve      : convertBipToPip(10_000),      //
+        constantReserveRatio: 10,                                // 10 - 100 %
+        maxSupply           : convertBipToPip(1_000_000)    //
+    });
+
+    const txParams = {
+        nonce        : 15,                  //
         chainId      : chain.networkId(),   //
         gasCoin      : 0,                   //
         gasPrice     : 1,                   //

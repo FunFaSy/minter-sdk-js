@@ -6,7 +6,7 @@ import {RlpSchemaField} from '../../util/define-properties';
 /**
  *
  */
-export interface CreateCoinActionParams {
+export interface ReCreateCoinActionParams {
     name: string;                           // Human readable Coin Name
     symbol: string;                         // Coin Symbol aka Ticker
     initialAmount: string | BN;             // Pip units
@@ -18,7 +18,7 @@ export interface CreateCoinActionParams {
 /**
  *
  */
-export class CreateCoinAction extends Action {
+export class ReCreateCoinAction extends Action {
     name: Buffer;
     symbol: Buffer;
     initialAmount: Buffer;
@@ -30,7 +30,7 @@ export class CreateCoinAction extends Action {
      *
      * @param params
      */
-    constructor(params: CreateCoinActionParams) {
+    constructor(params: ReCreateCoinActionParams) {
         // Convert params to Buffers
         const _params = {
             name                : Buffer.from(params.name, 'utf8'),
@@ -43,7 +43,7 @@ export class CreateCoinAction extends Action {
 
         super(_params);
 
-        this.txType = TransactionType.CREATE_COIN;
+        this.txType = TransactionType.RECREATE_COIN;
     }
 
     /**

@@ -256,6 +256,28 @@ error: {
         sender: "Mx0bd4dd45fc7072ce6f1a4b297706174ee2f86910"
     }
 }
+ error: {
+    code: "202",
+    message: "Constant Reserve Ratio should be between 10 and 100",
+    data: {
+        got_crr: "0",
+        max_crr: "100",
+        min_crr: "10"
+    }
+}
+
+ error: {
+    code: "205",
+    message: "Coin supply should be between 1000000000000000000 and 1000000000000000000000000",
+    data: {
+        current_coin_supply: "1000000000000000000000000",
+        current_initial_amount: "2000000000000000000000000",
+        current_initial_reserve: "10000000000000000000000",
+        max_coin_supply: "1000000000000000000000000000000000",
+        min_coin_supply: "1000000000000000000",
+        min_initial_reserve: "10000000000000000000000"
+    }
+}
 
  error: {
     code: "302",
