@@ -10,10 +10,10 @@
     "comment": "",
     "urls": {
         "www": "https://minter.org/",
-        "doc": "https:/#",
-        "console": "https://#",
-        "wallet": "https://#",
-        "explorer": "https:/#",
+        "doc": "https://www.minter.network/docs",
+        "console": "https://console.minter.network",
+        "wallet": "https://console.minter.network/wallet",
+        "explorer": "https://explorer.minter.network/",
         "api": {
             "node": {
                 "http": [
@@ -26,7 +26,9 @@
                 "ws": []
             },
             "explorer": {
-                "http": [],
+                "http": [
+                    "https://explorer-api.minter.network/api/v2/"
+                ],
                 "ws": []
             }
         }
