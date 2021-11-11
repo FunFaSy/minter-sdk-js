@@ -51,11 +51,9 @@ export * from './action/edit-candidate-commission';
 export * from './action/delagate';
 export * from './action/unbond';
 export * from './action/move-stake';
-// set-candidate-off
-// set-candidate-on
-// delegate
-// unbond
-// move-stake [!Disabled for now https://www.minter.network/docs#move-stake-transaction]
+export * from './action/set-candidate-off';
+export * from './action/set-candidate-on';
+
 
 /**
  * Governance
