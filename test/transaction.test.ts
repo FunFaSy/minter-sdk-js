@@ -342,6 +342,46 @@ test('[TxSingle] SellAllSwap transaction type', async () => {
 });
 
 //
+test('[TxSingle] CreateSwapPoolAction transaction type', async () => {
+    const TX_RLP_ENCODED = 'f8670d0201802297d68207ab8088016345785d8a0000880de0b6b3a7640000808001b845f8431ba0884a1cadb8f9f23d3694916a1e402cfcc75e51fafb85219ba7acee5b170ef472a03bf237db963c603631a532d5e3837ee7e7856442bc181a06a26669ba081d6d16';
+    const TX_HASH = 'Mta04bd7b8e92d544e24e83c4a032ef3d98693ae05f4dd754c872ac2c2a1a6c546';
+
+    const utils = minterApi.utils;
+    const convertBipToPip = utils.convertBipToPip;
+    const sha256 = utils.sha256;
+
+    const chain = new minterApi.Chain('testnet');
+    const keyPair = minterApi.KeyPairSecp256k1.fromBip39Mnemonic(MNEMONIC);
+
+    const txAction = new minterApi.tx_actions.CreateSwapPoolAction({
+        coin0  : 1963, //
+        coin1  : 0, //
+        volume0: convertBipToPip(0.1),            //
+        volume1: convertBipToPip(1),            //
+    });
+
+    const txParams = {
+        nonce        : 13,                  //
+        chainId      : chain.networkId(),   //
+        gasCoin      : 0,                   //
+        gasPrice     : 1,                   //
+        type         : txAction.type(),     //
+        data         : txAction.serialize(),//
+        signatureType: minterApi.SignatureType.Single,
+    } as TransactionParams;
+
+    const tx = new minterApi.Transaction(txParams);
+    const signedTx = tx.sign(keyPair);
+
+    const txRawBuf = Buffer.from(TX_RLP_ENCODED, 'hex');
+    const txMtHash = 'Mt' + sha256(txRawBuf).toString('hex').toLowerCase();
+
+    expect(signedTx.signature.valid()).toBeTruthy();
+    expect(signedTx.transaction.serialize().toString('hex')).toEqual(TX_RLP_ENCODED);
+    expect(txMtHash).toEqual(TX_HASH);
+});
+
+//
 test('[TxSingle] AddLiquidity type transaction', async () => {
     const TX_RLP_ENCODED = 'f865070201801595d40880888ac7230489e80000888ac7230489e80000808001b845f8431ca0bdb3df820c35383470c86b3c07e1bf35ad1c91addc916fa42baa0f8d43486650a036d0f627093476edefed192c4edfdef6ed5634f363bb07e9f0e8e6f64780a8d8';
     const TX_HASH = 'Mt579aa8c32559c09c071f277886f0a6b0f0ef3316bb8d95ef5048a91587da7bf2';
@@ -408,7 +448,7 @@ test('[TxSingle] RemoveLiquidity transaction type', async () => {
         type         : txAction.type(),     //
         data         : txAction.serialize(),//
         signatureType: minterApi.SignatureType.Single,
-    } as TransactionParams;
+    };
 
     const tx = new minterApi.Transaction(txParams);
     const signedTx = tx.sign(keyPair);
@@ -422,9 +462,9 @@ test('[TxSingle] RemoveLiquidity transaction type', async () => {
 });
 
 //
-test('[TxSingle] CreateSwapPoolAction transaction type', async () => {
-    const TX_RLP_ENCODED = 'f8670d0201802297d68207ab8088016345785d8a0000880de0b6b3a7640000808001b845f8431ba0884a1cadb8f9f23d3694916a1e402cfcc75e51fafb85219ba7acee5b170ef472a03bf237db963c603631a532d5e3837ee7e7856442bc181a06a26669ba081d6d16';
-    const TX_HASH = 'Mta04bd7b8e92d544e24e83c4a032ef3d98693ae05f4dd754c872ac2c2a1a6c546';
+test('[TxSingle] CreateCoin transaction type', async () => {
+    const TX_RLP_ENCODED = 'f8960e02018005b845f843944e657720737570657220707570657220636f696e8a535550455250555045528ad3c21bcecceda10000008a021e19e0c9bab2400000648b084595161401484a000000808001b845f8431ba06bb38dc30b794d8349b6fc4fc49d17c8a8082ae3cee7263fa3171e284d9628f9a06b4e9e2f5e6b86b3e1596d30a6ebe3fcbaba64cf503aad2bef8d7328c0596b2b';
+    const TX_HASH = 'Mt6b8bdfca91d9ab88021696fbbdf51b9300ee62dfb8cf823125fba58da6c17dc2';
 
     const utils = minterApi.utils;
     const convertBipToPip = utils.convertBipToPip;
@@ -433,22 +473,24 @@ test('[TxSingle] CreateSwapPoolAction transaction type', async () => {
     const chain = new minterApi.Chain('testnet');
     const keyPair = minterApi.KeyPairSecp256k1.fromBip39Mnemonic(MNEMONIC);
 
-    const txAction = new minterApi.tx_actions.CreateSwapPoolAction({
-        coin0  : 1963, //
-        coin1  : 0, //
-        volume0: convertBipToPip(0.1),            //
-        volume1: convertBipToPip(1),            //
+    const txAction = new minterApi.tx_actions.CreateCoinAction({
+        name                : 'New super puper coin',        //
+        symbol              : 'SUPERPUPER',                  // Max 10 chars
+        initialAmount       : convertBipToPip(1000000), //
+        initialReserve      : convertBipToPip(10000),   //
+        constantReserveRatio: 100,                           // 1 - 100 %
+        maxSupply           : convertBipToPip(10000000) //
     });
 
     const txParams = {
-        nonce        : 13,                  //
+        nonce        : 14,                  //
         chainId      : chain.networkId(),   //
         gasCoin      : 0,                   //
         gasPrice     : 1,                   //
         type         : txAction.type(),     //
         data         : txAction.serialize(),//
         signatureType: minterApi.SignatureType.Single,
-    } as TransactionParams;
+    };
 
     const tx = new minterApi.Transaction(txParams);
     const signedTx = tx.sign(keyPair);

@@ -24,7 +24,7 @@ export * from './action/sell-all-swap';
 /**
  * Coins/Tokens
  * */
-// create-coin
+export * from './action/create-coin';
 // create-token
 export * from './action/mint-token';
 export * from './action/burn-token';
