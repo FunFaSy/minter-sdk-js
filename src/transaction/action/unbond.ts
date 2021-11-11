@@ -33,7 +33,7 @@ export class UnbondAction extends Action {
 
         super(_params);
 
-        this.txType = TransactionType.DELEGATE;
+        this.txType = TransactionType.UNBOND;
     }
 
     rlpSchema(): RlpSchemaField[] {
