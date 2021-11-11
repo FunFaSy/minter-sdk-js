@@ -47,11 +47,9 @@ export * from './action/remove-liquidity';
 export * from './action/declare-candidacy';
 export * from './action/edit-candidate';
 export * from './action/edit-candidate-pubkey';
+export * from './action/edit-candidate-commission';
 // set-candidate-off
 // set-candidate-on
-// edit-candidate
-// edit-candidate-commission
-// edit-candidate-public-key
 // delegate
 // unbond
 // move-stake [!Disabled for now https://www.minter.network/docs#move-stake-transaction]

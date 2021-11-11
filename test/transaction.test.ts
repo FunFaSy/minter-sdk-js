@@ -901,6 +901,43 @@ test('[TxSingle] EditCandidatePubKey transaction type', async () => {
 });
 
 //
+test('[TxSingle] EditCandidateCommission transaction type', async () => {
+    const TX_RLP_ENCODED = 'f873190201801aa3e2a0aaaaa16ebd6af229b4cfc02c3ab40bd25c1051c3aa2120f07d08c1bd0177777805808001b845f8431ba07672a88d5346065860302fa4f1a0f9c64d76fabdf7e167b62ae8d5c25a588754a029c722696325bbdd5e0c4323a42b75ca233a61cc943931965388e0b59312270b';
+    const TX_HASH = 'Mt629fd4a701aaf451cffe91b7365261427988fdd887e96be34d62bdf4be608e53';
+
+    const utils = minterApi.utils;
+    const sha256 = utils.sha256;
+
+    const chain = new minterApi.Chain('testnet');
+    const keyPair = minterApi.KeyPairSecp256k1.fromBip39Mnemonic(MNEMONIC);
+
+    const txAction = new minterApi.tx_actions.EditCandidateCommissionAction({
+        publicKey   : 'Mpaaaaa16ebd6af229b4cfc02c3ab40bd25c1051c3aa2120f07d08c1bd01777778', // Validator node pub key Mp.............
+        commission: 5, //  0-100 %
+    });
+
+    const txParams = {
+        nonce        : 25,                  //
+        chainId      : chain.networkId(),   //
+        gasCoin      : 0,                   //
+        gasPrice     : 1,                   //
+        type         : txAction.type(),     //
+        data         : txAction.serialize(),//
+        signatureType: minterApi.SignatureType.Single,
+    };
+
+    const tx = new minterApi.Transaction(txParams);
+    const signedTx = tx.sign(keyPair);
+
+    const txRawBuf = Buffer.from(TX_RLP_ENCODED, 'hex');
+    const txMtHash = 'Mt' + sha256(txRawBuf).toString('hex').toLowerCase();
+
+    expect(signedTx.signature.valid()).toBeTruthy();
+    expect(signedTx.transaction.serialize().toString('hex')).toEqual(TX_RLP_ENCODED);
+    expect(txMtHash).toEqual(TX_HASH);
+});
+
+//
 // //
 // test('[TxSingle] MintTokenAction type transaction', async () => {
 //     const TX_RLP_ENCODED = '';
