@@ -1,22 +1,22 @@
 import {toBuffer} from '../../util';
 import {TransactionType} from '../transaction';
-import {Action} from './base_action';
+import {Action} from './action';
 import {RlpSchemaField} from '../../util/define-properties';
 
 /**
  *
  */
-export interface SetCandidateOffActionParams {
+export interface SetCandidateOnActionParams {
     publicKey: string;         // Validator pub key Mp.............
 }
 
 /**
  *
  */
-export class SetCandidateOffAction extends Action {
+export class SetCandidateOnAction extends Action {
     publicKey: Buffer;
 
-    constructor(params: SetCandidateOffActionParams) {
+    constructor(params: SetCandidateOnActionParams) {
         // Convert params to Buffers
         const _params = {
             publicKey: toBuffer(params.publicKey),
@@ -26,7 +26,7 @@ export class SetCandidateOffAction extends Action {
 
         super(_params);
 
-        this.txType = TransactionType.SET_CANDIDATE_OFF;
+        this.txType = TransactionType.SET_CANDIDATE_ON;
     }
 
     rlpSchema(): RlpSchemaField[] {

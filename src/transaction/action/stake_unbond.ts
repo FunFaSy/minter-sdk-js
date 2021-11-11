@@ -1,6 +1,6 @@
 import {toBuffer} from '../../util';
 import {TransactionType} from '../transaction';
-import {Action} from './base_action';
+import {Action} from './action';
 import {RlpSchemaField} from '../../util/define-properties';
 import {BN} from '../../util/external';
 

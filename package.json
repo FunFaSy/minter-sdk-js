@@ -1,8 +1,8 @@
 {
-    "name": "minter-api-js",
+    "name": "minter-js-sdk",
     "description": "JavaScript library to interact with Minter Protocol via RPC API",
-    "version": "0.0.1",
-    "homepage": "https://github.com/FunFaSy/minter-api-js",
+    "version": "0.1.0",
+    "homepage": "https://github.com/FunFaSy/minter-js-sdk",
     "author": "FunFaSy Team",
     "main": "lib/index.js",
     "browser": "lib/browser-index.js",
@@ -51,7 +51,7 @@
     "license": "(MIT AND Apache-2.0)",
     "scripts": {
         "dist": "yarn browserify && yarn doc",
-        "browserify": "browserify browser-exports.js -i node-fetch -i http -i https -o dist/minter-api-js.js && terser dist/minter-api-js.js --comments false -c -o dist/minter-api-js.min.js",
+        "browserify": "browserify browser-exports.js -i node-fetch -i http -i https -o dist/minter-js-sdk.js && terser dist/minter-js-sdk.js --comments false -c -o dist/minter-js-sdk.min.js",
         "prebrowserify": "yarn build",
         "prepublish": "not-in-install && (yarn build && yarn browserify) || in-install",
         "compile": "tsc -p ./tsconfig.json",
@@ -67,7 +67,7 @@
     "bundlewatch": {
         "files": [
             {
-                "path": "dist/minter-api-js.min.js",
+                "path": "dist/minter-js-sdk.min.js",
                 "maxSize": "105kB"
             }
         ]

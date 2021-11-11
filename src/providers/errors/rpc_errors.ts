@@ -255,6 +255,12 @@ error: {
     message: "tx type 30783162 is not registered",
     data: { }
 }
+ error: {
+    code: "106",
+    message: "More or less parameters than expected",
+    data: { }
+}
+
 error: {
     code: "107",
     message: "Insufficient funds for sender account: Mx0bd4dd45fc7072ce6f1a4b297706174ee2f86910. Wanted 100000000000000000000 USDCE",
@@ -365,6 +371,16 @@ error: {
         public_key: "Mp6787a7adfed250d13cd089db516e274d71f105f4e6a0639e0f9521985ea6c201"
     }
 }
+
+ error: {
+    code: "701",
+    message: "swap pool not found",
+    data: {
+    coin0: "2010",
+    coin1: "0"
+    }
+}
+
  error: {
     code: "708",
     message: "swap pool already exist",

@@ -1,5 +1,5 @@
 import {Check, IssueCheckParams} from './check';
-import {RedeemCheckAction} from '../transaction/action/redeem-check';
+import {RedeemCheckAction} from '../transaction/action/check_redeem';
 
 export class Checkbook {
     issue(params: IssueCheckParams): Check {

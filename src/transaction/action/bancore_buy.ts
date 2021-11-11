@@ -1,13 +1,14 @@
 import {BN} from '../../util';
 import {TransactionType} from '../transaction';
-import {Action} from './base_action';
+import {Action} from './action';
 import {RlpSchemaField} from '../../util/define-properties';
 
 /**
  *
  */
-export interface BuySwapActionParams {
-    coins: number[] | BN[];          // Coin ID array as swap route
+export interface BuyActionParams {
+    coinToBuy: number | BN;           // Coin ID
+    coinToSell: number | BN;          // Coin ID
     valueToBuy: string | BN;          // Pip units
     maximumValueToSell?: string | BN; // Pip units
 }
@@ -15,36 +16,42 @@ export interface BuySwapActionParams {
 /**
  *
  */
-export class BuySwapAction extends Action {
-    coins: Buffer[];
+export class BuyAction extends Action {
+    coinToBuy: Buffer;
     valueToBuy: Buffer;
+    coinToSell: Buffer;
     maximumValueToSell: Buffer;
 
-    constructor(params: BuySwapActionParams) {
-
+    constructor(params: BuyActionParams) {
         // Convert params to Buffers
         const _params = {
-            coins             : params.coins.map(item => new BN(item)),
+            coinToBuy         : new BN(params.coinToBuy),
             valueToBuy        : new BN(params.valueToBuy),
+            coinToSell        : new BN(params.coinToSell),
             maximumValueToSell: new BN(params.maximumValueToSell),
         };
 
         super(_params);
 
-        this.txType = TransactionType.BUY_SWAP_POOL;
+        this.txType = TransactionType.BUY;
 
     }
 
     rlpSchema(): RlpSchemaField[] {
         return [
             {
-                name               : 'coins',
-                allowZero          : false,
-                allowNonBinaryArray: true,
+                name     : 'coinToBuy',
+                length   : 4,
+                allowLess: true,
             },
             {
                 name     : 'valueToBuy',
                 length   : 32,
+                allowLess: true,
+            },
+            {
+                name     : 'coinToSell',
+                length   : 4,
                 allowLess: true,
             },
             {

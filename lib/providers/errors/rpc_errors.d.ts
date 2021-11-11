@@ -107,10 +107,25 @@ error: {
     message: "rlp: expected input list for transaction.MultisendDataItem, decoding into (transaction.MultisendData).List[0]",
     data: { }
 }
+ error: {
+    code: "106",
+    message: "rlp: input string too long for types.CoinSymbol, decoding into (transaction.CreateTokenData).Symbol",
+    data: { }
+}
 
 error: {
     code: "106",
     message: "rlp: input list has too many elements for transaction.AddLiquidityDataV240",
+    data: { }
+}
+ error: {
+    code: "106",
+    message: "tx type 30783162 is not registered",
+    data: { }
+}
+ error: {
+    code: "106",
+    message: "More or less parameters than expected",
     data: { }
 }
 
@@ -124,6 +139,22 @@ error: {
         sender: "Mx0bd4dd45fc7072ce6f1a4b297706174ee2f86910"
     }
 }
+
+ error: {
+    code: "120",
+    message: "Halt height should be equal or bigger than current: 6284865",
+    data: {
+    block: "200000",
+    current_block: "Mpaaaaa16ebd6af229b4cfc02c3ab40bd25c1051c3aa2120f07d08c1bd01777778"
+    }
+}
+
+ error: {
+    code: "122",
+    message: "wrong version name",
+    data: { }
+}
+
  error: {
     code: "202",
     message: "Constant Reserve Ratio should be between 10 and 100",
@@ -181,12 +212,33 @@ error: {
     }
 }
 
+error: {
+    code: "400",
+    message: "encoding/hex: invalid byte: U+0027 '''",
+    data: { }
+}
+
+ error: {
+    code: "401",
+    message: "Candidate with such public key (Mpaaaaa16ebd6af229b4cfc02c3ab40bd25c1051c3aa2120f07d08c1bd01777777) already exists",
+    data: {
+        public_key: "Mpaaaaa16ebd6af229b4cfc02c3ab40bd25c1051c3aa2120f07d08c1bd01777777"
+    }
+}
+
  error: {
     code: "409",
     message: "tx already exists in cache",
     data: { }
 }
-
+ error: {
+    code: "411",
+    message: "Current public key (Mp6787a7adfed250d13cd089db516e274d71f105f4e6a0639e0f9521985ea6c201) equals new public key (Mp6787a7adfed250d13cd089db516e274d71f105f4e6a0639e0f9521985ea6c201)",
+    data: {
+        new_public_key: "Mp6787a7adfed250d13cd089db516e274d71f105f4e6a0639e0f9521985ea6c201",
+        public_key: "Mp6787a7adfed250d13cd089db516e274d71f105f4e6a0639e0f9521985ea6c201"
+    }
+}
  error: {
     code: "708",
     message: "swap pool already exist",
@@ -195,4 +247,14 @@ error: {
         coin1: "0"
     }
 }
+
+ error: {
+    code: "802",
+        message: "Coin not burnable",
+        data: {
+        coin_id: "2010",
+        coin_symbol: "SUPERTOKEN"
+    }
+}
+
  */

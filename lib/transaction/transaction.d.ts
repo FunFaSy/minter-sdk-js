@@ -37,7 +37,9 @@ export declare enum TransactionType {
     RECREATE_TOKEN = "0x1F",
     VOTE_COMMISSION = "0x20",
     VOTE_UPDATE = "0x21",
-    CREATE_SWAP_POOL = "0x22"
+    CREATE_SWAP_POOL = "0x22",
+    ADD_LIMIT_ORDER = "0x23",
+    REMOVE_LIMIT_ORDER = "0x24"
 }
 /**
  *

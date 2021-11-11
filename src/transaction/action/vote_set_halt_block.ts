@@ -1,46 +1,40 @@
 import {toBuffer} from '../../util';
 import {TransactionType} from '../transaction';
-import {Action} from './base_action';
+import {Action} from './action';
 import {RlpSchemaField} from '../../util/define-properties';
 import {BN} from '../../util/external';
 
 /**
  *
  */
-export interface VoteNetUpdateActionParams {
+export interface VoteHaltBlockActionParams {
     publicKey: string;   // Validator pub key Mp.............
     height: number | BN; // Block Height
-    version: string ;    // Version @example 'v2_1'
 }
 
 /**
  *
  */
-export class VoteNetUpdateAction extends Action {
+export class VoteHaltBlockAction extends Action {
     publicKey: Buffer;
     height: Buffer;
-    version: Buffer;
 
-    constructor(params: VoteNetUpdateActionParams) {
+    constructor(params: VoteHaltBlockActionParams) {
         // Convert params to Buffers
         const _params = {
             publicKey: toBuffer(params.publicKey),
-            version: Buffer.from(params.version,'utf8'),
             height: new BN(params.height),
         };
 
         // TODO: Validation
-        // version regexp("^[a-zA-Z0-9_]{1,20}$")
+
         super(_params);
 
-        this.txType = TransactionType.VOTE_UPDATE;
+        this.txType = TransactionType.SET_HALT_BLOCK;
     }
 
     rlpSchema(): RlpSchemaField[] {
         return [
-            {
-                name: 'version',
-            },
             {
                 name: 'publicKey',
                 length: 32,
