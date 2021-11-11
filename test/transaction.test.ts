@@ -784,6 +784,86 @@ test('[TxSingle] DeclareCandidacy transaction type', async () => {
 });
 
 //
+test('[TxSingle] DeclareCandidacy transaction type', async () => {
+    const TX_RLP_ENCODED = 'f8961602018006b845f843940bd4dd45fc7072ce6f1a4b297706174ee2f86910a06787a7adfed250d13cd089db516e274d71f105f4e6a0639e0f9521985ea6c2010f808a152d02c7e14af6800000808001b845f8431ba01817f26876111249856a94b9bee59840f959a871dd3c4b623eb425d785e08ff2a07272ad227ecf062763b28b557b82f1237f1a1d5f799cc0c2280cb58c9bd26a2d';
+    const TX_HASH = 'Mt2047a7d0121f9d3d95b79fdf0d516cde06b5f9daaa81860e7585b76029593b2f';
+
+    const utils = minterApi.utils;
+    const sha256 = utils.sha256;
+    const convertBipToPip = utils.convertBipToPip;
+
+    const chain = new minterApi.Chain('testnet');
+    const keyPair = minterApi.KeyPairSecp256k1.fromBip39Mnemonic(MNEMONIC);
+
+    const txAction = new minterApi.tx_actions.DeclareCandidacyAction({
+        address   : 'Mx0bd4dd45fc7072ce6f1a4b297706174ee2f86910', // Validator owner  address Mx.............
+        publicKey : 'Mp6787a7adfed250d13cd089db516e274d71f105f4e6a0639e0f9521985ea6c201', // Validator node pub key Mp.............
+        commission: 15, // 0-100 %
+        coin      : 0, // Coin ID .Initial self bonded Stake coin
+        stake     : convertBipToPip(100_000), // PIP units Stake value
+    });
+
+    const txParams = {
+        nonce        : 22,                  //
+        chainId      : chain.networkId(),   //
+        gasCoin      : 0,                   //
+        gasPrice     : 1,                   //
+        type         : txAction.type(),     //
+        data         : txAction.serialize(),//
+        signatureType: minterApi.SignatureType.Single,
+    };
+
+    const tx = new minterApi.Transaction(txParams);
+    const signedTx = tx.sign(keyPair);
+
+    const txRawBuf = Buffer.from(TX_RLP_ENCODED, 'hex');
+    const txMtHash = 'Mt' + sha256(txRawBuf).toString('hex').toLowerCase();
+
+    expect(signedTx.signature.valid()).toBeTruthy();
+    expect(signedTx.transaction.serialize().toString('hex')).toEqual(TX_RLP_ENCODED);
+    expect(txMtHash).toEqual(TX_HASH);
+});
+
+//
+test('[TxSingle] EditCandidate transaction type', async () => {
+    const TX_RLP_ENCODED = 'f8b3170201800eb862f860a06787a7adfed250d13cd089db516e274d71f105f4e6a0639e0f9521985ea6c20194eb92ae39b84012968f63b2dd260a94d791fe79bd940bd4dd45fc7072ce6f1a4b297706174ee2f8691094eb92ae39b84012968f63b2dd260a94d791fe79bd808001b845f8431ca03f668ca5c7d3b46448bc360cc963621dce777401064ba9ec19cfd5be8816ee3ba04f51215a0bd3bf87abcc1ccc887d92031861c4c38012bdaa5190c8c6a38a2f8b';
+    const TX_HASH = 'Mt3a92f9c7d56d51d78f62529d7ddb625d3833a3ebf8879d421fae0ef79fbd4422';
+
+    const utils = minterApi.utils;
+    const sha256 = utils.sha256;
+
+    const chain = new minterApi.Chain('testnet');
+    const keyPair = minterApi.KeyPairSecp256k1.fromBip39Mnemonic(MNEMONIC);
+
+    const txAction = new minterApi.tx_actions.EditCandidateAction({
+        ownerAddress  : 'Mx0bd4dd45fc7072ce6f1a4b297706174ee2f86910', // Validator owner  address Mx.............
+        controlAddress: 'Mxeb92ae39b84012968f63b2dd260a94d791fe79bd', // Validator owner  address Mx.............
+        rewardAddress : 'Mxeb92ae39b84012968f63b2dd260a94d791fe79bd', // Validator owner  address Mx.............
+        publicKey     : 'Mp6787a7adfed250d13cd089db516e274d71f105f4e6a0639e0f9521985ea6c201', // Validator node pub key Mp.............
+    });
+
+    const txParams = {
+        nonce        : 23,                  //
+        chainId      : chain.networkId(),   //
+        gasCoin      : 0,                   //
+        gasPrice     : 1,                   //
+        type         : txAction.type(),     //
+        data         : txAction.serialize(),//
+        signatureType: minterApi.SignatureType.Single,
+    };
+
+    const tx = new minterApi.Transaction(txParams);
+    const signedTx = tx.sign(keyPair);
+
+    const txRawBuf = Buffer.from(TX_RLP_ENCODED, 'hex');
+    const txMtHash = 'Mt' + sha256(txRawBuf).toString('hex').toLowerCase();
+
+    expect(signedTx.signature.valid()).toBeTruthy();
+    expect(signedTx.transaction.serialize().toString('hex')).toEqual(TX_RLP_ENCODED);
+    expect(txMtHash).toEqual(TX_HASH);
+});
+
+//
 // //
 // test('[TxSingle] MintTokenAction type transaction', async () => {
 //     const TX_RLP_ENCODED = '';

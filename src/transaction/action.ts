@@ -45,6 +45,7 @@ export * from './action/remove-liquidity';
  */
 // declare-candidacy
 export * from './action/declare-candidacy';
+export * from './action/edit-candidate';
 // set-candidate-off
 // set-candidate-on
 // edit-candidate
