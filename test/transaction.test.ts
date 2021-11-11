@@ -479,7 +479,7 @@ test('[TxSingle] CreateCoin transaction type', async () => {
         initialAmount       : convertBipToPip(1000000), //
         initialReserve      : convertBipToPip(10000),   //
         constantReserveRatio: 100,                           // 10 - 100 %
-        maxSupply           : convertBipToPip(10000000) //
+        maxSupply           : convertBipToPip(10000000), //
     });
 
     const txParams = {
@@ -521,7 +521,7 @@ test('[TxSingle] ReCreateCoin transaction type', async () => {
         initialAmount       : convertBipToPip(10_000),      //
         initialReserve      : convertBipToPip(10_000),      //
         constantReserveRatio: 10,                                // 10 - 100 %
-        maxSupply           : convertBipToPip(1_000_000)    //
+        maxSupply           : convertBipToPip(1_000_000),    //
     });
 
     const txParams = {
@@ -558,12 +558,12 @@ test('[TxSingle] CreateToken transaction type', async () => {
     const keyPair = minterApi.KeyPairSecp256k1.fromBip39Mnemonic(MNEMONIC);
 
     const txAction = new minterApi.tx_actions.CreateTokenAction({
-        name                : 'New super puper TOKEN',          //
-        symbol              : 'SUPERTOKEN',                     // Max 10 chars
-        initialAmount       : convertBipToPip(100_000),    //
-        maxSupply           : convertBipToPip(1_000_000),  // Default: 10^15 PIP
-        mintable: true,
-        burnable: false,
+        name         : 'New super puper TOKEN',          //
+        symbol       : 'SUPERTOKEN',                     // Max 10 chars
+        initialAmount: convertBipToPip(100_000),    //
+        maxSupply    : convertBipToPip(1_000_000),  // Default: 10^15 PIP
+        mintable     : true,
+        burnable     : false,
     });
 
     const txParams = {
@@ -600,16 +600,53 @@ test('[TxSingle] ReCreateToken transaction type', async () => {
     const keyPair = minterApi.KeyPairSecp256k1.fromBip39Mnemonic(MNEMONIC);
 
     const txAction = new minterApi.tx_actions.ReCreateTokenAction({
-        name                : 'New super puper TOKEN',          //
-        symbol              : 'SUPERTOKEN',                     // Max 10 chars
-        initialAmount       : convertBipToPip(200_000),    //
-        maxSupply           : convertBipToPip(2_000_000),  // Default: 10^15 PIP
-        mintable: true,
-        burnable: false,
+        name         : 'New super puper TOKEN',          //
+        symbol       : 'SUPERTOKEN',                     // Max 10 chars
+        initialAmount: convertBipToPip(200_000),    //
+        maxSupply    : convertBipToPip(2_000_000),  // Default: 10^15 PIP
+        mintable     : true,
+        burnable     : false,
     });
 
     const txParams = {
         nonce        : 17,                  //
+        chainId      : chain.networkId(),   //
+        gasCoin      : 0,                   //
+        gasPrice     : 1,                   //
+        type         : txAction.type(),     //
+        data         : txAction.serialize(),//
+        signatureType: minterApi.SignatureType.Single,
+    };
+
+    const tx = new minterApi.Transaction(txParams);
+    const signedTx = tx.sign(keyPair);
+
+    const txRawBuf = Buffer.from(TX_RLP_ENCODED, 'hex');
+    const txMtHash = 'Mt' + sha256(txRawBuf).toString('hex').toLowerCase();
+
+    expect(signedTx.signature.valid()).toBeTruthy();
+    expect(signedTx.transaction.serialize().toString('hex')).toEqual(TX_RLP_ENCODED);
+    expect(txMtHash).toEqual(TX_HASH);
+});
+
+//
+test('[TxSingle] EditTickerOwner transaction type', async () => {
+    const TX_RLP_ENCODED = 'f8711202018011a1e08a5355504552544f4b454e94eb92ae39b84012968f63b2dd260a94d791fe79bd808001b845f8431ba0fce9525cccd9eb9de9d94172036b3c0d29c86b9f10ed1789e1b0394c1d0e82a1a0754361f9ae5784306945cb3ce12d0c135e419edc121a8ad7fbd6c89d4e1ca119';
+    const TX_HASH = 'Mt376dfa10e916c7a04defb8db06a00321a7aae25f5ca4d6c3e60dcc2a3ef87e6f';
+
+    const utils = minterApi.utils;
+    const sha256 = utils.sha256;
+
+    const chain = new minterApi.Chain('testnet');
+    const keyPair = minterApi.KeyPairSecp256k1.fromBip39Mnemonic(MNEMONIC);
+
+    const txAction = new minterApi.tx_actions.EditTickerOwnerAction({
+        newOwner: 'Mxeb92ae39b84012968f63b2dd260a94d791fe79bd', //
+        symbol  : 'SUPERTOKEN',                                 // Max 10 chars
+    });
+
+    const txParams = {
+        nonce        : 18,                  //
         chainId      : chain.networkId(),   //
         gasCoin      : 0,                   //
         gasPrice     : 1,                   //

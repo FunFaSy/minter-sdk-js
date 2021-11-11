@@ -239,6 +239,11 @@ error: {
     message: "rlp: expected input list for transaction.MultisendDataItem, decoding into (transaction.MultisendData).List[0]",
     data: { }
 }
+ error: {
+    code: "106",
+    message: "rlp: input string too long for types.CoinSymbol, decoding into (transaction.CreateTokenData).Symbol",
+    data: { }
+}
 
 error: {
     code: "106",
