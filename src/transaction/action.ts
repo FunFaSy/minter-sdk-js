@@ -44,6 +44,7 @@ export * from './action/remove-liquidity';
  * Validation
  */
 // declare-candidacy
+export * from './action/declare-candidacy';
 // set-candidate-off
 // set-candidate-on
 // edit-candidate
