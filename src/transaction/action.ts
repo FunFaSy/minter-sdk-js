@@ -48,6 +48,7 @@ export * from './action/declare-candidacy';
 export * from './action/edit-candidate';
 export * from './action/edit-candidate-pubkey';
 export * from './action/edit-candidate-commission';
+export * from './action/delagate';
 // set-candidate-off
 // set-candidate-on
 // delegate
