@@ -10,7 +10,7 @@ import {BN} from '../../util/external';
 export interface VoteNetUpdateActionParams {
     publicKey: string;   // Validator pub key Mp.............
     height: number | BN; // Block Height
-    version: string ;    // Version @example 'v2.1'
+    version: string ;    // Version @example 'v2_1'
 }
 
 /**

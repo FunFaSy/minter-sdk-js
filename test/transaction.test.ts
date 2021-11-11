@@ -1178,7 +1178,7 @@ test('[TxSingle] VoteNetUpdate transaction type', async () => {
     const txAction = new minterApi.tx_actions.VoteNetUpdateAction({
         publicKey: 'Mpaaaaa16ebd6af229b4cfc02c3ab40bd25c1051c3aa2120f07d08c1bd01777778', // Validator node pub key Mp.............
         height   : 6285865, // Block height
-        version  : 'v2_5', // New version update to ("/^[a-zA-Z0-9_]{1,20}$/")
+        version  : 'v2_5',  // New version update to ("/^[a-zA-Z0-9_]{1,20}$/")
     });
 
     const txParams = {
