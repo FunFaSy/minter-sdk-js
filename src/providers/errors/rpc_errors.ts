@@ -278,6 +278,29 @@ error: {
         min_initial_reserve: "10000000000000000000000"
     }
 }
+error: {
+    code: "205",
+    message: "Coin supply should be between 1000000000000000000 and 1",
+        data: {
+        current_coin_supply: "1",
+        current_initial_amount: "1000000000000000000000000",
+        current_initial_reserve: "10000000000000000000000000",
+        max_coin_supply: "1000000000000000000000000000000000",
+        min_coin_supply: "1000000000000000000",
+        min_initial_reserve: "10000000000000000000000"
+    }
+}
+
+ error: {
+    code: "205",
+    message: "Maximum supply cannot be more than the initial amount, if the token is not mintable",
+    data: {
+        current_coin_supply: "1000000000000000000000000",
+        current_initial_amount: "100000000000000000000000",
+        max_coin_supply: "1000000000000000000000000000000000",
+        min_coin_supply: "1"
+    }
+}
 
  error: {
     code: "302",

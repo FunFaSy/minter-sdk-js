@@ -25,12 +25,12 @@ export * from './action/sell-all-swap';
  * Coins/Tokens
  * */
 export * from './action/create-coin';
-// create-token
+export * from './action/create-token';
+
 export * from './action/mint-token';
 export * from './action/burn-token';
 // edit-ticker-owner
 export * from './action/recreate-coin';
-// recreate-coin
 // recreate-token
 
 /**
