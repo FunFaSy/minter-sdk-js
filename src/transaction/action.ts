@@ -31,7 +31,7 @@ export * from './action/mint-token';
 export * from './action/burn-token';
 // edit-ticker-owner
 export * from './action/recreate-coin';
-// recreate-token
+export * from './action/recreate-token';
 
 /**
  * Pools

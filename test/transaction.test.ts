@@ -587,6 +587,47 @@ test('[TxSingle] CreateToken transaction type', async () => {
     expect(txMtHash).toEqual(TX_HASH);
 });
 
+//
+test('[TxSingle] ReCreateToken transaction type', async () => {
+    const TX_RLP_ENCODED = 'f88d110201801fb83cf83a954e657720737570657220707570657220544f4b454e8a5355504552544f4b454e8a2a5a058fc295ed0000008b01a784379d99db420000000180808001b845f8431ba07d77377fd182698f0ba81213b7f0a98b4c3dfbd4a6f6afdab65988438a9e598da0798d3244892091a9cb0053c1bb3b6c3b9a738e2ca7209dd35392334621f5cf1b';
+    const TX_HASH = 'Mt45c936459010d707e8dcc61a68a8d05f7435413c797e116656868a3e75015c91';
+
+    const utils = minterApi.utils;
+    const convertBipToPip = utils.convertBipToPip;
+    const sha256 = utils.sha256;
+
+    const chain = new minterApi.Chain('testnet');
+    const keyPair = minterApi.KeyPairSecp256k1.fromBip39Mnemonic(MNEMONIC);
+
+    const txAction = new minterApi.tx_actions.ReCreateTokenAction({
+        name                : 'New super puper TOKEN',          //
+        symbol              : 'SUPERTOKEN',                     // Max 10 chars
+        initialAmount       : convertBipToPip(200_000),    //
+        maxSupply           : convertBipToPip(2_000_000),  // Default: 10^15 PIP
+        mintable: true,
+        burnable: false,
+    });
+
+    const txParams = {
+        nonce        : 17,                  //
+        chainId      : chain.networkId(),   //
+        gasCoin      : 0,                   //
+        gasPrice     : 1,                   //
+        type         : txAction.type(),     //
+        data         : txAction.serialize(),//
+        signatureType: minterApi.SignatureType.Single,
+    };
+
+    const tx = new minterApi.Transaction(txParams);
+    const signedTx = tx.sign(keyPair);
+
+    const txRawBuf = Buffer.from(TX_RLP_ENCODED, 'hex');
+    const txMtHash = 'Mt' + sha256(txRawBuf).toString('hex').toLowerCase();
+
+    expect(signedTx.signature.valid()).toBeTruthy();
+    expect(signedTx.transaction.serialize().toString('hex')).toEqual(TX_RLP_ENCODED);
+    expect(txMtHash).toEqual(TX_HASH);
+});
 
 // //
 // test('[TxSingle] MintTokenAction type transaction', async () => {
