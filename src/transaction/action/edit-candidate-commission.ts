@@ -23,7 +23,7 @@ export class EditCandidateCommissionAction extends Action {
         // Convert params to Buffers
         const _params = {
             publicKey : toBuffer(params.publicKey),
-            commission: toBuffer(params.commission),
+            commission: new BN(params.commission),
         };
 
         // TODO: Validation

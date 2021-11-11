@@ -11,7 +11,7 @@ export interface DeclareCandidacyActionParams {
     publicKey: string ;          // Validator pub key Mp.............
     commission: number | BN;    // 0-100 %
     coin: number | BN;          // Coin ID .Initial self bonded Stake coin
-    stake: string | BN;         // PIP units Stake value
+    stake: string | BN;         // PIP units to Stake value
 }
 
 /**
