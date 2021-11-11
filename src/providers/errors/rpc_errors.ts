@@ -325,11 +325,26 @@ error: {
 }
 
  error: {
+    code: "401",
+    message: "Candidate with such public key (Mpaaaaa16ebd6af229b4cfc02c3ab40bd25c1051c3aa2120f07d08c1bd01777777) already exists",
+    data: {
+        public_key: "Mpaaaaa16ebd6af229b4cfc02c3ab40bd25c1051c3aa2120f07d08c1bd01777777"
+    }
+}
+
+ error: {
     code: "409",
     message: "tx already exists in cache",
     data: { }
 }
-
+ error: {
+    code: "411",
+    message: "Current public key (Mp6787a7adfed250d13cd089db516e274d71f105f4e6a0639e0f9521985ea6c201) equals new public key (Mp6787a7adfed250d13cd089db516e274d71f105f4e6a0639e0f9521985ea6c201)",
+    data: {
+        new_public_key: "Mp6787a7adfed250d13cd089db516e274d71f105f4e6a0639e0f9521985ea6c201",
+        public_key: "Mp6787a7adfed250d13cd089db516e274d71f105f4e6a0639e0f9521985ea6c201"
+    }
+}
  error: {
     code: "708",
     message: "swap pool already exist",
