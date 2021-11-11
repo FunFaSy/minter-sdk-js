@@ -318,6 +318,12 @@ error: {
     }
 }
 
+error: {
+    code: "400",
+    message: "encoding/hex: invalid byte: U+0027 '''",
+    data: { }
+}
+
  error: {
     code: "409",
     message: "tx already exists in cache",
@@ -332,4 +338,14 @@ error: {
         coin1: "0"
     }
 }
+
+ error: {
+    code: "802",
+        message: "Coin not burnable",
+        data: {
+        coin_id: "2010",
+        coin_symbol: "SUPERTOKEN"
+    }
+}
+
  */
