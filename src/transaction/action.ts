@@ -50,6 +50,7 @@ export * from './action/edit-candidate-pubkey';
 export * from './action/edit-candidate-commission';
 export * from './action/delagate';
 export * from './action/unbond';
+export * from './action/move-stake';
 // set-candidate-off
 // set-candidate-on
 // delegate

@@ -250,7 +250,11 @@ error: {
     message: "rlp: input list has too many elements for transaction.AddLiquidityDataV240",
     data: { }
 }
-
+ error: {
+    code: "106",
+    message: "tx type 30783162 is not registered",
+    data: { }
+}
 error: {
     code: "107",
     message: "Insufficient funds for sender account: Mx0bd4dd45fc7072ce6f1a4b297706174ee2f86910. Wanted 100000000000000000000 USDCE",
