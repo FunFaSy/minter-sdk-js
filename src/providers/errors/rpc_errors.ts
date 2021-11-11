@@ -265,6 +265,15 @@ error: {
         sender: "Mx0bd4dd45fc7072ce6f1a4b297706174ee2f86910"
     }
 }
+
+ error: {
+    code: "120",
+    message: "Halt height should be equal or bigger than current: 6284865",
+    data: {
+    block: "200000",
+    current_block: "Mpaaaaa16ebd6af229b4cfc02c3ab40bd25c1051c3aa2120f07d08c1bd01777778"
+    }
+}
  error: {
     code: "202",
     message: "Constant Reserve Ratio should be between 10 and 100",

@@ -1128,6 +1128,43 @@ test('[TxSingle] SetCandidateOff transaction type', async () => {
 });
 
 //
+test('[TxSingle] VoteHaltBlock transaction type', async () => {
+    const TX_RLP_ENCODED = 'f8761f0201800fa6e5a0aaaaa16ebd6af229b4cfc02c3ab40bd25c1051c3aa2120f07d08c1bd01777778835fea29808001b845f8431ba0597f0111554a56c69cc57c59ee9f471de1fea8a9e767fa2b6329a61cc21a4419a048cfcc13cabcf4a0e1437dcaab6988c76dc7cdc9099ef4fdbe79a894cf00a542';
+    const TX_HASH = 'Mt5c2aa9c2ad4df7c7f998fe3b76ebce5eeb8896c99d3ce2aea0fcdc3068fb79ee';
+
+    const utils = minterApi.utils;
+    const sha256 = utils.sha256;
+
+    const chain = new minterApi.Chain('testnet');
+    const keyPair = minterApi.KeyPairSecp256k1.fromBip39Mnemonic(MNEMONIC);
+
+    const txAction = new minterApi.tx_actions.VoteHaltBlockAction({
+        publicKey: 'Mpaaaaa16ebd6af229b4cfc02c3ab40bd25c1051c3aa2120f07d08c1bd01777778', // Validator node pub key Mp.............
+        height   : 6285865, // Block height
+    });
+
+    const txParams = {
+        nonce        : 31,                              //
+        chainId      : chain.networkId(),               //
+        gasCoin      : 0,                               //
+        gasPrice     : 1,                               //
+        type         : txAction.type(),                 //
+        data         : txAction.serialize(),            //
+        signatureType: minterApi.SignatureType.Single,  //
+    };
+
+    const tx = new minterApi.Transaction(txParams);
+    const signedTx = tx.sign(keyPair);
+
+    const txRawBuf = Buffer.from(TX_RLP_ENCODED, 'hex');
+    const txMtHash = 'Mt' + sha256(txRawBuf).toString('hex').toLowerCase();
+
+    expect(signedTx.signature.valid()).toBeTruthy();
+    expect(signedTx.transaction.serialize().toString('hex')).toEqual(TX_RLP_ENCODED);
+    expect(txMtHash).toEqual(TX_HASH);
+});
+
+//
 // //
 // test('[TxSingle] MintTokenAction type transaction', async () => {
 //     const TX_RLP_ENCODED = '';

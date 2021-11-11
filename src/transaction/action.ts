@@ -1,9 +1,5 @@
 export * from './action/base_action';
 
-// Accounts
-// create-multisig
-// edit-multisig
-
 /**
  * Transfer
  */
@@ -43,7 +39,6 @@ export * from './action/remove-liquidity';
 /**
  * Validation
  */
-// declare-candidacy
 export * from './action/declare-candidacy';
 export * from './action/edit-candidate';
 export * from './action/edit-candidate-pubkey';
@@ -54,12 +49,18 @@ export * from './action/move-stake';
 export * from './action/set-candidate-off';
 export * from './action/set-candidate-on';
 
+/**
+ * Multisig Account
+ */
+// create-multisig
+// edit-multisig
+
 
 /**
  * Governance
  */
 // vote-commission
-// vote-halt-block
+export * from './action/vote-halt-block';
 // vote-price
 // vote-update
 
