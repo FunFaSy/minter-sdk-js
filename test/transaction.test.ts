@@ -977,6 +977,45 @@ test('[TxSingle] Delegate transaction type', async () => {
 });
 
 //
+test('[TxSingle] Unbond transaction type', async () => {
+    const TX_RLP_ENCODED = 'f87e1b02018007aeeda0aaaaa16ebd6af229b4cfc02c3ab40bd25c1051c3aa2120f07d08c1bd01777778808a01e7e4171bf4d3a00000808001b845f8431ca050598ab3046c70a948c25fbaefb7fec47a8224fe90df571594cc90b23d46b58aa00ae01f44b889a4958cf7df8bc07277fc0eca33d42ca47cb5c3efd2a75a5e28f7';
+    const TX_HASH = 'Mtda0fb0f4f572eb71ce0a83573821b05dc7c7736831848fff7b27b987a9b3f8af';
+
+    const utils = minterApi.utils;
+    const sha256 = utils.sha256;
+    const convertBipToPip = utils.convertBipToPip;
+
+    const chain = new minterApi.Chain('testnet');
+    const keyPair = minterApi.KeyPairSecp256k1.fromBip39Mnemonic(MNEMONIC);
+
+    const txAction = new minterApi.tx_actions.UnbondAction({
+        publicKey: 'Mpaaaaa16ebd6af229b4cfc02c3ab40bd25c1051c3aa2120f07d08c1bd01777778', // Validator node pub key Mp.............
+        coin     : 0, //  Coin ID
+        stake    : convertBipToPip(9_000), // PIP units to Stake value
+    });
+
+    const txParams = {
+        nonce        : 27,                              //
+        chainId      : chain.networkId(),               //
+        gasCoin      : 0,                               //
+        gasPrice     : 1,                               //
+        type         : txAction.type(),                 //
+        data         : txAction.serialize(),            //
+        signatureType: minterApi.SignatureType.Single,  //
+    };
+
+    const tx = new minterApi.Transaction(txParams);
+    const signedTx = tx.sign(keyPair);
+
+    const txRawBuf = Buffer.from(TX_RLP_ENCODED, 'hex');
+    const txMtHash = 'Mt' + sha256(txRawBuf).toString('hex').toLowerCase();
+
+    expect(signedTx.signature.valid()).toBeTruthy();
+    expect(signedTx.transaction.serialize().toString('hex')).toEqual(TX_RLP_ENCODED);
+    expect(txMtHash).toEqual(TX_HASH);
+});
+
+//
 // //
 // test('[TxSingle] MintTokenAction type transaction', async () => {
 //     const TX_RLP_ENCODED = '';
