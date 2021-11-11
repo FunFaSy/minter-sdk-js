@@ -61,6 +61,7 @@ export * from './action/set-candidate-on';
  */
 // vote-commission
 export * from './action/vote-halt-block';
+export * from './action/vote-net-update';
 // vote-price
-// vote-update
+
 

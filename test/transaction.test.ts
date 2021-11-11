@@ -1165,6 +1165,44 @@ test('[TxSingle] VoteHaltBlock transaction type', async () => {
 });
 
 //
+test('[TxSingle] VoteNetUpdate transaction type', async () => {
+    const TX_RLP_ENCODED = 'f87b2002018021abea8476325f35a0aaaaa16ebd6af229b4cfc02c3ab40bd25c1051c3aa2120f07d08c1bd01777778835fea29808001b845f8431ca0e062ec3c503e64ae06d85efe9ddf7f323cd2ce41548325644fc3722ec9e19469a076861579176fa9b54c05951a128585c39d0bbde9871b0d25524aed1bece6e30a';
+    const TX_HASH = 'Mt573909ba46082ae61014ab57392aa8af46c936c854c946d8dbd5101d30ae9df1';
+
+    const utils = minterApi.utils;
+    const sha256 = utils.sha256;
+
+    const chain = new minterApi.Chain('testnet');
+    const keyPair = minterApi.KeyPairSecp256k1.fromBip39Mnemonic(MNEMONIC);
+
+    const txAction = new minterApi.tx_actions.VoteNetUpdateAction({
+        publicKey: 'Mpaaaaa16ebd6af229b4cfc02c3ab40bd25c1051c3aa2120f07d08c1bd01777778', // Validator node pub key Mp.............
+        height   : 6285865, // Block height
+        version  : 'v2_5', // New version update to ("/^[a-zA-Z0-9_]{1,20}$/")
+    });
+
+    const txParams = {
+        nonce        : 32,                              //
+        chainId      : chain.networkId(),               //
+        gasCoin      : 0,                               //
+        gasPrice     : 1,                               //
+        type         : txAction.type(),                 //
+        data         : txAction.serialize(),            //
+        signatureType: minterApi.SignatureType.Single,  //
+    };
+
+    const tx = new minterApi.Transaction(txParams);
+    const signedTx = tx.sign(keyPair);
+
+    const txRawBuf = Buffer.from(TX_RLP_ENCODED, 'hex');
+    const txMtHash = 'Mt' + sha256(txRawBuf).toString('hex').toLowerCase();
+
+    expect(signedTx.signature.valid()).toBeTruthy();
+    expect(signedTx.transaction.serialize().toString('hex')).toEqual(TX_RLP_ENCODED);
+    expect(txMtHash).toEqual(TX_HASH);
+});
+
+//
 // //
 // test('[TxSingle] MintTokenAction type transaction', async () => {
 //     const TX_RLP_ENCODED = '';

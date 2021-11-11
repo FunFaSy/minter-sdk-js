@@ -274,6 +274,13 @@ error: {
     current_block: "Mpaaaaa16ebd6af229b4cfc02c3ab40bd25c1051c3aa2120f07d08c1bd01777778"
     }
 }
+
+ error: {
+    code: "122",
+    message: "wrong version name",
+    data: { }
+}
+
  error: {
     code: "202",
     message: "Constant Reserve Ratio should be between 10 and 100",
