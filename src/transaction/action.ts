@@ -53,11 +53,10 @@ export * from './action/candidate_set_off';
 export * from './action/candidate_set_on';
 
 /**
- * Multisig Account
+ * MultiSig Account
  */
-// create-multisig
-// edit-multisig
-
+export * from './action/multisig_create';
+export * from './action/multisig_edit';
 
 /**
  * Governance
