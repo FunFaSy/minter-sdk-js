@@ -1,7 +1,10 @@
-# minter-api-js
+[![Version](https://img.shields.io/github/tag/MinterTeam/minter-go-node.svg)](https://github.com/FunFaSy/minter-js-sdk/releases/latest)
+[![Build Status](https://travis-ci.com/FunFaSy/minter-sdk-js.svg?branch=master)](https://travis-ci.com/FunFaSy/minter-sdk-js)
+[![Last-commit](https://img.shields.io/github/last-commit/FunFaSy/minter-sdk-js)](https://travis-ci.com/FunFaSy/minter-sdk-js)
+[![License](https://img.shields.io/github/license/FunFaSy/minter-js-sdk)](https://github.com/FunFaSy/minter-sdk-js/blob/master/LICENSE)
+[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/FunFaSy/minter-js-sdk) 
 
-[![Build Status](https://travis-ci.com/FunFaSy/minter-api-js.svg?branch=master)](https://travis-ci.com/FunFaSy/minter-api-js)
-[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/FunFaSy/minter-api-js) 
+# minter-sdk-js
 
 A JavaScript/TypeScript library for development of DApps on the Minter platform
 
@@ -13,10 +16,10 @@ A JavaScript/TypeScript library for development of DApps on the Minter platform
 
 # Examples
 
-## [Quick Reference](https://github.com/FunFaSy/minter-api-js/blob/master/examples/quick-reference.md)
+## [Quick Reference](https://github.com/FunFaSy/minter-js-sdk/blob/master/examples/quick-reference.md)
 _(Cheat sheet / quick reference)_
 
-## [Cookbook](https://github.com/FunFaSy/minter-api-js/blob/master/examples/cookbook/README.md)
+## [Cookbook](https://github.com/FunFaSy/minter-js-sdk/blob/master/examples/cookbook/README.md)
 _(Common use cases / more complex examples)_
 
 ---

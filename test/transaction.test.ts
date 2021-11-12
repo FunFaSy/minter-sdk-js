@@ -1285,3 +1285,43 @@ test('[TxSingle] VoteCommissionUpdate transaction type', async () => {
     expect(signedTx.transaction.serialize().toString('hex')).toEqual(TX_RLP_ENCODED);
     expect(txMtHash).toEqual(TX_HASH);
 });
+
+//
+test('[TxSingle] AddLimitOrderAction transaction type', async () => {
+    const TX_RLP_ENCODED = '';
+    const TX_HASH = '';
+
+    const utils = minterApi.utils;
+    const sha256 = utils.sha256;
+    const convertBipToPip = utils.convertBipToPip;
+
+    const chain = new minterApi.Chain('testnet');
+    const keyPair = minterApi.KeyPairSecp256k1.fromBip39Mnemonic(MNEMONIC);
+
+    const txAction = new minterApi.tx_actions.AddLimitOrderAction({
+        coinToBuy  : 8,      // Commission coin Id
+        valueToBuy : convertBipToPip(100),
+        coinToSell : 0,      // Commission coin Id
+        valueToSell: convertBipToPip(100),
+    });
+
+    const txParams = {
+        nonce        : 33,                              //
+        chainId      : chain.networkId(),               //
+        gasCoin      : 0,                               //
+        gasPrice     : 1,                               //
+        type         : txAction.type(),                 //
+        data         : txAction.serialize(),            //
+        signatureType: minterApi.SignatureType.Single,  //
+    };
+
+    const tx = new minterApi.Transaction(txParams);
+    const signedTx = tx.sign(keyPair);
+
+    const txRawBuf = Buffer.from(TX_RLP_ENCODED, 'hex');
+    const txMtHash = 'Mt' + sha256(txRawBuf).toString('hex').toLowerCase();
+
+    expect(signedTx.signature.valid()).toBeTruthy();
+    expect(signedTx.transaction.serialize().toString('hex')).toEqual(TX_RLP_ENCODED);
+    expect(txMtHash).toEqual(TX_HASH);
+});
