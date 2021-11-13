@@ -26,7 +26,6 @@ export class CreateMultiSigAction extends Action {
             threshold: new BN(params.threshold),// Should be less or equal than Weights Sum
             weights  : params.weights, // Should be greater or equal than threshold
             addresses: params.addresses,
-
         };
 
         // TODO: Validation

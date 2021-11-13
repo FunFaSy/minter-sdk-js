@@ -1286,6 +1286,110 @@ test('[TxSingle] VoteCommissionUpdate transaction type', async () => {
     expect(txMtHash).toEqual(TX_HASH);
 });
 
+//
+test('[TxSingle] CreateMultiSig transaction type', async () => {
+    const TX_RLP_ENCODED = 'f880220201800cb0ef3cc23c28ea940bd4dd45fc7072ce6f1a4b297706174ee2f86910940bd4dd45fc7072ce6f1a4b297706174ee2f86911808001b845f8431ca0ed80638f4af808bc9dd69b9ad9de141ac7e9d3b55bda0ac7daac3efcdbe85282a027f60a177970f02f56361c6aa9ed6f6812d33c4b4c4a4ed59d466e00d30cf4ed';
+    const TX_HASH = 'Mtff54f45a31aa302f3fccb7e3c3d7c83538e736b8441f4ee875dae2ad4480d5b6';
+
+    const utils = minterApi.utils;
+    const sha256 = utils.sha256;
+
+    const chain = new minterApi.Chain('testnet');
+    const keyPair = minterApi.KeyPairSecp256k1.fromBip39Mnemonic(MNEMONIC);
+
+    const txAction = new minterApi.tx_actions.CreateMultiSigAction({
+        addresses: [
+            'Mx0bd4dd45fc7072ce6f1a4b297706174ee2f86910',
+            'Mx0bd4dd45fc7072ce6f1a4b297706174ee2f86911',
+        ],
+        weights  : [60, 40],
+        threshold: 60,
+    });
+
+    const txParams = {
+        nonce        : 34,                              //
+        chainId      : chain.networkId(),               //
+        gasCoin      : 0,                               //
+        gasPrice     : 1,                               //
+        type         : txAction.type(),                 //
+        data         : txAction.serialize(),            //
+        signatureType: minterApi.SignatureType.Single,  //
+    };
+
+    const tx = new minterApi.Transaction(txParams);
+    const signedTx = tx.sign(keyPair);
+
+    const txRawBuf = Buffer.from(TX_RLP_ENCODED, 'hex');
+    const txMtHash = 'Mt' + sha256(txRawBuf).toString('hex').toLowerCase();
+
+    expect(signedTx.signature.valid()).toBeTruthy();
+    expect(signedTx.transaction.serialize().toString('hex')).toEqual(TX_RLP_ENCODED);
+    expect(txMtHash).toEqual(TX_HASH);
+});
+
+
+//
+// //
+// test('[TxSingle] EditMultiSig transaction type', async () => {
+//     const TX_RLP_ENCODED = '';
+//     const ACC_PRIV_KEY= 'secp256k1:oYHhCijezmKqxduKENqWnkMYCuAeYZugduz3WusG1SjBVVQia';
+//     const ACC_PRIV_KEY_1 = 'secp256k1:sBhbNEFES9F3onTAqHLsUjSNusVLCyHb7J4RC2q6Ve8b3i9qc';
+//     const TX_SIG_ACC = '';
+//     const TX_SIG_ACC_1 = '';
+//
+//     const utils = minterApi.utils;
+//     const sha256 = utils.sha256;
+//
+//     const chain = new minterApi.Chain('testnet');
+//     const keyPair = minterApi.KeyPairSecp256k1.fromString(ACC_PRIV_KEY);
+//     const keyPair1 = minterApi.KeyPairSecp256k1.fromString(ACC_PRIV_KEY_1);
+//
+//     // TODO: Создаем транзу редактирования мультисига на кошкльке A
+//     // TODO: Создаем транзу редактирования мультисига на кошкльке B ( транзы 1 и2 полностью совпадают)
+//     // TODO: Создаем транзу мультисига с 2-мя подписями!
+//     const txAction = new minterApi.tx_actions.EditMultiSigAction({
+//         addresses: [
+//             'Mx0bd4dd45fc7072ce6f1a4b297706174ee2f86910',
+//             'Mxf6b410929fc83721c0ce6bc7263ee6d9f8f3ffe7',
+//         ],
+//         weights  : [50, 40],
+//         threshold: 50,
+//     });
+//
+//     const txParams = {
+//         nonce        : 35,                              //
+//         chainId      : chain.networkId(),               //
+//         gasCoin      : 0,                               //
+//         gasPrice     : 1,                               //
+//         type         : txAction.type(),                 //
+//         data         : txAction.serialize(),            //
+//         signatureType: minterApi.SignatureType.Single,  //
+//     };
+//
+//     const tx = new minterApi.Transaction(txParams);
+//     const signedTx = tx.sign(keyPair);
+//     const signedTx1 = tx.sign(keyPair1);
+//
+//     const txParams = {
+//         nonce        : 35,                              //
+//         chainId      : chain.networkId(),               //
+//         gasCoin      : 0,                               //
+//         gasPrice     : 1,                               //
+//         type         : txAction.type(),                 //
+//         data         : txAction.serialize(),            //
+//         signatureType: minterApi.SignatureType.Multi,  //
+//     };
+//
+//     const txRawBuf = Buffer.from(TX_RLP_ENCODED, 'hex');
+//     const txMtHash = 'Mt' + sha256(txRawBuf).toString('hex').toLowerCase();
+//
+//
+//     expect(signedTx.signature.valid()).toBeTruthy();
+//     expect(signedTx.signature.valid()).toBeTruthy();
+//     expect(signedTx.transaction.serialize().toString('hex')).toEqual(TX_RLP_ENCODED);
+//     expect(txMtHash).toEqual(TX_HASH);
+// });
+
 // //
 // test('[TxSingle] AddLimitOrder transaction type', async () => {
 //     const TX_RLP_ENCODED = '';

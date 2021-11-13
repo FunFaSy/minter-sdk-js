@@ -67,5 +67,6 @@ export abstract class Action {
         // Note: This never gets executed, defineProperties overwrites it.
         return {};
     }
+
 }
 
