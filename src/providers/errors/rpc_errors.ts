@@ -373,6 +373,15 @@ error: {
 }
 
  error: {
+    code: "609",
+    message: "Not enough multisig votes. Needed 70, has 60",
+    data: {
+        got_votes: "60",
+        needed_votes: "70"
+    }
+}
+
+ error: {
     code: "701",
     message: "swap pool not found",
     data: {
