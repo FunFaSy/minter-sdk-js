@@ -5,7 +5,7 @@ export * from './action/action';
  */
 export * from './action/send';
 export * from './action/send_multi';
-// redeem-check
+export * from './action/check_redeem';
 
 /**
  * Sell/Buy/Swap

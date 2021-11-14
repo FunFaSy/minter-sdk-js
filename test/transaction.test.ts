@@ -2,9 +2,6 @@ import {TransactionParams} from '../src/transaction/transaction';
 import * as minterSdk from '../src';
 
 const MNEMONIC = 'solar when satoshi champion about zebra crop solution leopard senior ability vocal';
-// const ACC_PRIV_KEY = 'secp256k1:oYHhCijezmKqxduKENqWnkMYCuAeYZugduz3WusG1SjBVVQia'
-// const ACC_PUB_KEY =  'secp256k1:WWjcQcvUjNi9AC5Y6zQGLYQy64mL1C3dnZgGZ3HfC28B9R22WFuuNpj8d14dUDJ1MsCSUkPbPrpExXh8vMbt5Vo9TtmC9';
-// const ACC_ADDRESS =  'Mx0bd4dd45fc7072ce6f1a4b297706174ee2f86910';
 
 //
 test('[Tx] Transaction from encoded string', async () => {
@@ -113,6 +110,45 @@ test('[TxSingle] MultiSend transaction type', async () => {
 
     expect(signedTx.signature.valid()).toBeTruthy();
     expect(signedTx.transaction.serialize().toString('hex')).toEqual(TX_RLP_ENCODED);
+    expect(txMtHash).toEqual(TX_HASH);
+});
+
+//
+test('[TxSingle] RedeemCheck transaction type', async () => {
+    const CHECK_ENCODED = 'Mcf8993102843b9ac9ff80893635c9adc5dea0000080b841ecdb48f068fbb9329cc0e00508c163e09401b1365c4729aace9d4aabe244f28258341363d4a5c21e108db26a825b9685608345725e45adcc653f5c6683dc7ef3001ba0c85de3074022bdb453165a89d9ab7a2ed3be1e1782e6ed7ec846aa0df7a360b5a0712b180bc166009ec3b48bbdc50892b35289fa3191ee48ca7b14d3483b73282b';
+    const CHECK_PASSWD = '123456';
+    const REDEEMER_ADDRESS = 'Mx0bd4dd45fc7072ce6f1a4b297706174ee2f86910';
+    const TX_RLP_ENCODED = '0xf901332602018009b8e2f8e0b89bf8993102843b9ac9ff80893635c9adc5dea0000080b841ecdb48f068fbb9329cc0e00508c163e09401b1365c4729aace9d4aabe244f28258341363d4a5c21e108db26a825b9685608345725e45adcc653f5c6683dc7ef3001ba0c85de3074022bdb453165a89d9ab7a2ed3be1e1782e6ed7ec846aa0df7a360b5a0712b180bc166009ec3b48bbdc50892b35289fa3191ee48ca7b14d3483b73282bb841d4e0f800d8b7ece6c66a1453c8633e6d62ba55b946fa380fd320c8a9ddee2db64b99a31cedde75eec2c9ed1300bb01af249f4732e31d64420dff23c30c152f7400808001b845f8431ca0d8f1a85db398a2c202e5cb46382288dcdab35a16f431f0239a35670b4d60a857a042c8fa545dee96644f2f34a4fee3a453328da8fe0708ee596f089486f46a832d';
+    const TX_HASH = 'Mtccc5d8c6b098f15bf90c86a1a47c208a0bc8b6c3e8307759863caa5a5ba02911';
+
+    const utils = minterSdk.utils;
+
+    const chain = new minterSdk.Chain('testnet');
+    const keyPair = minterSdk.KeyPairSecp256k1.fromBip39Mnemonic(MNEMONIC);
+
+    const check = new minterSdk.Check(CHECK_ENCODED);
+    const proof = minterSdk.Check.getProof(CHECK_PASSWD, REDEEMER_ADDRESS);
+
+    const txAction = new minterSdk.tx_actions.RedeemCheckAction({check, proof});
+
+    const txParams = {
+        nonce        : 38,                  //
+        chainId      : chain.networkId(),   //
+        gasCoin      : 0,                   //
+        gasPrice     : 1,                   //
+        type         : txAction.type(),     //
+        data         : txAction.serialize(),//
+        signatureType: minterSdk.SignatureType.Single,
+    } as TransactionParams;
+
+    const tx = new minterSdk.Transaction(txParams);
+    const signedTx = tx.sign(keyPair);
+
+    const txRawBuf = utils.toBuffer(TX_RLP_ENCODED);
+    const txMtHash = 'Mt' + utils.sha256(txRawBuf).toString('hex').toLowerCase();
+
+    expect(signedTx.signature.valid()).toBeTruthy();
+    expect(signedTx.toString()).toEqual(TX_RLP_ENCODED);
     expect(txMtHash).toEqual(TX_HASH);
 });
 
@@ -1403,7 +1439,7 @@ test('[TxSingle] RemoveLimitOrder transaction type', async () => {
     const keyPair = minterSdk.KeyPairSecp256k1.fromBip39Mnemonic(MNEMONIC);
 
     const txAction = new minterSdk.tx_actions.RemoveLimitOrderAction({
-        orderId  : 1161218,      //
+        orderId: 1161218,      //
     });
 
     const txParams = {

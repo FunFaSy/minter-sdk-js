@@ -2,13 +2,14 @@ import {TransactionType} from '../transaction';
 import {Action} from './action';
 import {RlpSchemaField} from '../../util/define-properties';
 import {Check} from '../../check/check';
+import {toBuffer} from '../../util';
 
 /**
  *
  */
 export interface RedeemCheckActionParams {
-    check: Check;           //
-    proof: Buffer;          //
+    check: string | Check;  //
+    proof: string | Buffer; //
 }
 
 /**
@@ -21,8 +22,8 @@ export class RedeemCheckAction extends Action {
     constructor(params: RedeemCheckActionParams) {
         // Convert params to Buffers
         const _params = {
-            check: params.check.raw,
-            proof: params.proof,
+            check: (typeof params.check == 'string') ? (new Check(params.check)).serialize() : params.check.serialize(),
+            proof: (typeof params.proof == 'string') ? toBuffer(params.proof): params.proof,
         };
 
         super(_params);
