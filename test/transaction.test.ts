@@ -6,35 +6,39 @@ const MNEMONIC = 'solar when satoshi champion about zebra crop solution leopard 
 // const ACC_PUB_KEY =  'secp256k1:WWjcQcvUjNi9AC5Y6zQGLYQy64mL1C3dnZgGZ3HfC28B9R22WFuuNpj8d14dUDJ1MsCSUkPbPrpExXh8vMbt5Vo9TtmC9';
 // const ACC_ADDRESS =  'Mx0bd4dd45fc7072ce6f1a4b297706174ee2f86910';
 
-const TX_SEND_RLP_ENCODED = 'f8710202018001a1e08094eb92ae39b84012968f63b2dd260a94d791fe79bd89056bc75e2d63100000000001b845f8431ba0384e5516462774e67c1efc016458af86e68f3780fadcb27c3587389dd36056e8a003b0f7547aee983bdcdcf76334d169dee271ffd96e9cb2284a68cfb1e54cedb0';
-const TX_SEND_FROM = 'Mx0bd4dd45fc7072ce6f1a4b297706174ee2f86910';
-const TX_SEND_HASH = 'Mt4aa02f046af4d129529da272b259ffa9002893cbd88c66293d30bcdee788002d';
-
 //
 test('[Tx] Transaction from encoded string', async () => {
+    const TX_RLP_ENCODED = 'f8710202018001a1e08094eb92ae39b84012968f63b2dd260a94d791fe79bd89056bc75e2d63100000000001b845f8431ba0384e5516462774e67c1efc016458af86e68f3780fadcb27c3587389dd36056e8a003b0f7547aee983bdcdcf76334d169dee271ffd96e9cb2284a68cfb1e54cedb0';
+    const TX_FROM = 'Mx0bd4dd45fc7072ce6f1a4b297706174ee2f86910';
 
-    const tx = new minterSdk.Transaction(`0x${TX_SEND_RLP_ENCODED}`);
+    const tx = new minterSdk.Transaction(`0x${TX_RLP_ENCODED}`);
     const address = tx.getSenderAddress();
-    expect(address.toString()).toEqual(TX_SEND_FROM);
+    expect(address.toString()).toEqual(TX_FROM);
 });
 
 //
 test('[Tx] Validate transaction signature', async () => {
-    const txRawBuf = Buffer.from(TX_SEND_RLP_ENCODED, 'hex');
+    const TX_RLP_ENCODED = 'f8710202018001a1e08094eb92ae39b84012968f63b2dd260a94d791fe79bd89056bc75e2d63100000000001b845f8431ba0384e5516462774e67c1efc016458af86e68f3780fadcb27c3587389dd36056e8a003b0f7547aee983bdcdcf76334d169dee271ffd96e9cb2284a68cfb1e54cedb0';
+
+    const txRawBuf = Buffer.from(TX_RLP_ENCODED, 'hex');
     const tx = new minterSdk.Transaction(txRawBuf);
     expect(tx.isValidSignature()).toBeTruthy();
 });
 
 //
 test('[Tx] Validate transaction hash', async () => {
+    const TX_RLP_ENCODED = 'f8710202018001a1e08094eb92ae39b84012968f63b2dd260a94d791fe79bd89056bc75e2d63100000000001b845f8431ba0384e5516462774e67c1efc016458af86e68f3780fadcb27c3587389dd36056e8a003b0f7547aee983bdcdcf76334d169dee271ffd96e9cb2284a68cfb1e54cedb0';
+    const TX_HASH = 'Mt4aa02f046af4d129529da272b259ffa9002893cbd88c66293d30bcdee788002d';
+
     const sha256 = minterSdk.utils.sha256;
-    const txRawBuf = Buffer.from(TX_SEND_RLP_ENCODED, 'hex');
+    const txRawBuf = Buffer.from(TX_RLP_ENCODED, 'hex');
     const txMtHash = 'Mt' + sha256(txRawBuf).toString('hex').toLowerCase();
-    expect(txMtHash).toEqual(TX_SEND_HASH);
+    expect(txMtHash).toEqual(TX_HASH);
 });
 
 //
 test('[TxSingle] Send transaction type', async () => {
+    const TX_RLP_ENCODED = 'f8710202018001a1e08094eb92ae39b84012968f63b2dd260a94d791fe79bd89056bc75e2d63100000000001b845f8431ba0384e5516462774e67c1efc016458af86e68f3780fadcb27c3587389dd36056e8a003b0f7547aee983bdcdcf76334d169dee271ffd96e9cb2284a68cfb1e54cedb0';
 
     const chain = new minterSdk.Chain('testnet');
     const keyPair = minterSdk.KeyPairSecp256k1.fromBip39Mnemonic(MNEMONIC);
@@ -61,7 +65,7 @@ test('[TxSingle] Send transaction type', async () => {
     const signedTx = tx.sign(keyPair);
 
     expect(signedTx.signature.valid()).toBeTruthy();
-    expect(signedTx.transaction.serialize().toString('hex')).toEqual(TX_SEND_RLP_ENCODED);
+    expect(signedTx.transaction.serialize().toString('hex')).toEqual(TX_RLP_ENCODED);
 
 });
 
@@ -1337,88 +1341,88 @@ test('[TxMulti] EditMultiSig transaction type', async () => {
 
     //------------------- STAGE 2 - collect signatures and send tx to BlockChain
 
-    const sigAcc1 = minterSdk.SingleSignature.fromString(accSigStr1);
+    const sigAcc1 = minterSdk.SingleSignature.fromString(accSigStr1);// == signedTx1
     (signedTx.signature as minterSdk.MultiSignature).addOne(sigAcc1);
 
     const txRawBuf = utils.toBuffer(TX_RLP_RESULT);
     const txMtHash = 'Mt' + sha256(txRawBuf).toString('hex').toLowerCase();
 
-    expect(signedTx.toString()).toEqual('0x' + TX_RLP_RESULT);
+    expect(signedTx.toString()).toEqual(TX_RLP_RESULT);
     expect(txMtHash).toEqual(TX_HASH);
 });
 
-// //
-// test('[TxSingle] AddLimitOrder transaction type', async () => {
-//     const TX_RLP_ENCODED = '';
-//     const TX_HASH = '';
 //
-//     const utils = minterSdk.utils;
-//     const sha256 = utils.sha256;
-//     const convertBipToPip = utils.convertBipToPip;
-//
-//     const chain = new minterSdk.Chain('testnet');
-//     const keyPair = minterSdk.KeyPairSecp256k1.fromBip39Mnemonic(MNEMONIC);
-//
-//     const txAction = new minterSdk.tx_actions.AddLimitOrderAction({
-//         coinToBuy  : 8,      // Commission coin Id
-//         valueToBuy : convertBipToPip(100),
-//         coinToSell : 0,      // Commission coin Id
-//         valueToSell: convertBipToPip(100),
-//     });
-//
-//     const txParams = {
-//         nonce        : 34,                              //
-//         chainId      : chain.networkId(),               //
-//         gasCoin      : 0,                               //
-//         gasPrice     : 1,                               //
-//         type         : txAction.type(),                 //
-//         data         : txAction.serialize(),            //
-//         signatureType: minterSdk.SignatureType.Single,  //
-//     };
-//
-//     const tx = new minterSdk.Transaction(txParams);
-//     const signedTx = tx.sign(keyPair);
-//
-//     const txRawBuf = Buffer.from(TX_RLP_ENCODED, 'hex');
-//     const txMtHash = 'Mt' + sha256(txRawBuf).toString('hex').toLowerCase();
-//
-//     expect(signedTx.signature.valid()).toBeTruthy();
-//     expect(signedTx.transaction.serialize().toString('hex')).toEqual(TX_RLP_ENCODED);
-//     expect(txMtHash).toEqual(TX_HASH);
-// });
+test('[TxSingle] AddLimitOrder transaction type', async () => {
+    const TX_RLP_ENCODED = '0xf869010201802399d88089056bc75e2d63100000821ab48921e19e0c9bab240000808001b845f8431ba073521592b574eaded651350083d541c7ec2cd3a6dbda2ed84844106fd1bc982aa01cd4d1ee4964ff0ae1beb633192489892f478113b25a40b8938bed912a588315';
+    const TX_HASH = 'Mt2de2e9626f5444172614eac8fc9390d0c7ab92ad044f055c0a896316d83c7de5';
 
-// //
-// test('[TxSingle] RemoveLimitOrder transaction type', async () => {
-//     const TX_RLP_ENCODED = '';
-//     const TX_HASH = '';
+    const utils = minterSdk.utils;
+    const sha256 = utils.sha256;
+    const convertBipToPip = utils.convertBipToPip;
+
+    const chain = new minterSdk.Chain('taconet');
+    const keyPair = minterSdk.KeyPairSecp256k1.fromBip39Mnemonic(MNEMONIC);
+
+    const txAction = new minterSdk.tx_actions.AddLimitOrderAction({
+        coinToBuy  : 6836,      // Commission coin Id
+        valueToBuy : convertBipToPip(625),
+        coinToSell : 0,      // Commission coin Id
+        valueToSell: convertBipToPip(100),
+    });
+
+    const txParams = {
+        nonce        : 1,                               //
+        chainId      : chain.networkId(),               // #2 taco and test net the same!
+        gasCoin      : 0,                               //
+        gasPrice     : 1,                               //
+        type         : txAction.type(),                 //
+        data         : txAction.serialize(),            //
+        signatureType: minterSdk.SignatureType.Single,  //
+    };
+
+    const tx = new minterSdk.Transaction(txParams);
+    const signedTx = tx.sign(keyPair);
+
+    const txRawBuf = utils.toBuffer(TX_RLP_ENCODED);
+    const txMtHash = 'Mt' + sha256(txRawBuf).toString('hex').toLowerCase();
+
+    expect(signedTx.signature.valid()).toBeTruthy();
+    expect(signedTx.toString()).toEqual(TX_RLP_ENCODED);
+    expect(txMtHash).toEqual(TX_HASH);
+});
+
 //
-//     const utils = minterSdk.utils;
-//     const sha256 = utils.sha256;
-//
-//     const chain = new minterSdk.Chain('testnet');
-//     const keyPair = minterSdk.KeyPairSecp256k1.fromBip39Mnemonic(MNEMONIC);
-//
-//     const txAction = new minterSdk.tx_actions.RemoveLimitOrderAction({
-//         orderId  : 8,      //
-//     });
-//
-//     const txParams = {
-//         nonce        : 35,                              //
-//         chainId      : chain.networkId(),               //
-//         gasCoin      : 0,                               //
-//         gasPrice     : 1,                               //
-//         type         : txAction.type(),                 //
-//         data         : txAction.serialize(),            //
-//         signatureType: minterSdk.SignatureType.Single,  //
-//     };
-//
-//     const tx = new minterSdk.Transaction(txParams);
-//     const signedTx = tx.sign(keyPair);
-//
-//     const txRawBuf = Buffer.from(TX_RLP_ENCODED, 'hex');
-//     const txMtHash = 'Mt' + sha256(txRawBuf).toString('hex').toLowerCase();
-//
-//     expect(signedTx.signature.valid()).toBeTruthy();
-//     expect(signedTx.transaction.serialize().toString('hex')).toEqual(TX_RLP_ENCODED);
-//     expect(txMtHash).toEqual(TX_HASH);
-// });
+test('[TxSingle] RemoveLimitOrder transaction type', async () => {
+    const TX_RLP_ENCODED = '0xf855020201802485c48311b802808001b845f8431ba0fae4362ed3b77e2051da267bf66c4b377eedab0ccbd976522ec9dd4865115471a05db6682c8c4f64f1399038873152c50a75f32653d0be384db4f86cadb7a1271b';
+    const TX_HASH = 'Mtd8fc509cb0b45758dff9c8b5a4e62cfe0d16cc0cd8989dc73d0f635bbe28584b';
+
+    const utils = minterSdk.utils;
+    const sha256 = utils.sha256;
+
+    const chain = new minterSdk.Chain('taconet');
+    const keyPair = minterSdk.KeyPairSecp256k1.fromBip39Mnemonic(MNEMONIC);
+
+    const txAction = new minterSdk.tx_actions.RemoveLimitOrderAction({
+        orderId  : 1161218,      //
+    });
+
+    const txParams = {
+        nonce        : 2,                              //
+        chainId      : chain.networkId(),               // #2 taco and test net the same!
+        gasCoin      : 0,                               //
+        gasPrice     : 1,                               //
+        type         : txAction.type(),                 //
+        data         : txAction.serialize(),            //
+        signatureType: minterSdk.SignatureType.Single,  //
+    };
+
+    const tx = new minterSdk.Transaction(txParams);
+    const signedTx = tx.sign(keyPair);
+
+    const txRawBuf = utils.toBuffer(TX_RLP_ENCODED);
+    const txMtHash = 'Mt' + sha256(txRawBuf).toString('hex').toLowerCase();
+
+    expect(signedTx.signature.valid()).toBeTruthy();
+    expect(signedTx.toString()).toEqual(TX_RLP_ENCODED);
+    expect(txMtHash).toEqual(TX_HASH);
+});

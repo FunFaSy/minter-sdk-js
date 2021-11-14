@@ -273,6 +273,15 @@ error: {
 }
 
  error: {
+    code: "115",
+    message: "Wrong chain id",
+    data: {
+        current_chain_id: "2",
+        got_chain_id: "3"
+    }
+}
+
+ error: {
     code: "120",
     message: "Halt height should be equal or bigger than current: 6284865",
     data: {
@@ -396,6 +405,16 @@ error: {
     data: {
         coin0: "1844",
         coin1: "0"
+    }
+}
+
+ error: {
+    code: "713",
+    message: "order price is 1.0000000000000000000000000000000000, but must not exceed 0.7588197427709223431894510718659565 and more than 0.1517639485541844686378902143731913",
+    data: {
+        max_price: "0.1517639485541844686378902143731913",
+        min_price: "0.7588197427709223431894510718659565",
+        order_price: "1.0000000000000000000000000000000000"
     }
 }
 
