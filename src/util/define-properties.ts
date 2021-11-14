@@ -1,9 +1,13 @@
 import {toBuffer} from './functions/encode';
-import {assert, baToJSON, rlp, stripHexPrefix, unpadBuffer} from './external';
+import {assert, baToJSON, rlp, unpadBuffer} from './external';
 
-
-const _typeof = typeof Symbol === 'function' && typeof Symbol.iterator === 'symbol' ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === 'function' && obj.constructor === Symbol && obj !== Symbol.prototype ? 'symbol' : typeof obj; };
-
+const _typeof = typeof Symbol === 'function' && typeof Symbol.iterator === 'symbol'
+    ? function(obj) { return typeof obj; }
+    : function(obj) {
+        return obj && typeof Symbol === 'function' && obj.constructor === Symbol && obj !== Symbol.prototype
+            ? 'symbol'
+            : typeof obj;
+    };
 
 export interface RlpSchemaField {
     name: string;
@@ -29,11 +33,11 @@ export interface RlpSchemaField {
  * @param {*} [data] data to be validated against the definitions
  */
 export default function defineProperties(self, fields: RlpSchemaField[], data) {
-    self.raw = [] as  Buffer[];
+    self.raw = [] as Buffer[];
     self._fields = [] as string[];
 
     // attach the `toJSON`
-    self.toJSON = function (label) {
+    self.toJSON = function(label) {
         if (label) {
             const obj = {};
             self._fields.forEach((field) => {
@@ -54,9 +58,11 @@ export default function defineProperties(self, fields: RlpSchemaField[], data) {
 
     fields.forEach((field, i) => {
         self._fields.push(field.name);
+
         function getter() {
             return self.raw[i];
         }
+
         function setter(v) {
             if (field.allowNonBinaryArray && Array.isArray(v)) {
                 if (field.nonBinaryArrayTransform && typeof field.nonBinaryArrayTransform === 'function') {
@@ -81,9 +87,11 @@ export default function defineProperties(self, fields: RlpSchemaField[], data) {
 
                 if (field.allowLess && field.length > 0) {
                     v = unpadBuffer(v);
-                    assert(field.length >= v.length, `The field ${field.name} must not have more ${field.length} bytes`);
+                    assert(field.length >= v.length,
+                        `The field ${field.name} must not have more ${field.length} bytes`);
                 } else if (!(field.allowZero && v.length === 0) && field.length > 0) {
-                    assert(field.length === v.length, `The field ${field.name} must have byte length of ${field.length}`);
+                    assert(field.length === v.length,
+                        `The field ${field.name} must have byte length of ${field.length}`);
                 }
             }
 
@@ -91,10 +99,10 @@ export default function defineProperties(self, fields: RlpSchemaField[], data) {
         }
 
         Object.defineProperty(self, field.name, {
-            enumerable: true,
+            enumerable  : true,
             configurable: true,
-            get: getter,
-            set: setter,
+            get         : getter,
+            set         : setter,
         });
 
         if (field.default) {
@@ -104,10 +112,10 @@ export default function defineProperties(self, fields: RlpSchemaField[], data) {
         // attach alias
         if (field.alias) {
             Object.defineProperty(self, field.alias, {
-                enumerable: false,
+                enumerable  : false,
                 configurable: true,
-                set: setter,
-                get: getter,
+                set         : setter,
+                get         : getter,
             });
         }
     });
@@ -115,7 +123,7 @@ export default function defineProperties(self, fields: RlpSchemaField[], data) {
     // if the constuctor is passed data
     if (data) {
         if (typeof data === 'string') {
-            data = Buffer.from(stripHexPrefix(data), 'hex');
+            data = toBuffer(data);
         }
 
         if (Buffer.isBuffer(data)) {

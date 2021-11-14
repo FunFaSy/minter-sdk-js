@@ -100,75 +100,21 @@ export class Transaction {
     public payload!: Buffer; // Buffer
     public serviceData!: Buffer; // Buffer
     public signatureType!: Buffer; //  Hex Int
-    public signatureData!: Buffer;// RLP encoded ECDSASignature or MultiSignature
+    public signatureData!: Buffer;// RLP encoded TransactionSignature
 
-    protected signature: TransactionSignature;
+    public signature: TransactionSignature;
     protected _from?: Address;
     protected _senderPublicKey?: PublicKey;
     protected _chain: Chain;
 
     constructor(data: string | Buffer | TransactionParams | undefined = undefined, opts: TransactionOptions = {}) {
 
-        // Define RLP Properties
-        const rlpSchema: RlpSchemaField[] = [
-            {
-                name     : 'nonce',
-                length   : 32,
-                allowLess: true,
-                default  : Buffer.allocUnsafe(0),
-            },
-            {
-                name   : 'chainId',
-                length : 1,
-                default: undefined,
-            },
-            {
-                name     : 'gasPrice',
-                length   : 32,
-                allowLess: true,
-                default  : toBuffer(1),
-            },
-            {
-                name     : 'gasCoin',
-                length   : 4,
-                allowLess: true,
-                default  : undefined,
-            },
-            {
-                name   : 'type',
-                length : 1,
-                default: toBuffer([SignatureType.Single]),
-            },
-            {
-                name   : 'data',
-                alias  : 'input',
-                default: Buffer.allocUnsafe(0),
-            },
-            {
-                name     : 'payload',
-                allowZero: true,
-                default  : Buffer.allocUnsafe(0),
-            },
-            {
-                name     : 'serviceData',
-                allowZero: true,
-                default  : Buffer.allocUnsafe(0),
-            },
-            // Signature fields
-            {
-                name     : 'signatureType',
-                length   : 1,
-                allowLess: true,
-                default  : toBuffer(SignatureType.Single),
-            },
-            {
-                name   : 'signatureData',
-                default: toBuffer([]),
-            },
-        ];
+        if (typeof data == 'object') {
+            // TODO: Prepare params .
+        }
 
-        // attached serialize
-        defineProperties(this, rlpSchema, data);
+        // Define RLP Properties
+        defineProperties(this, Transaction.rlpSchema(), data);
 
         if (opts.chain) {
             this._chain = opts.chain;
@@ -183,7 +129,6 @@ export class Transaction {
             this._chain = new Chain('mainnet');
             this.chainId = toBuffer(this._chain.networkId());
         }
-
 
         if (!this.gasCoin.length) {
             this.gasCoin = toBuffer([this._chain.gasCoin()]);
@@ -220,6 +165,69 @@ export class Transaction {
         });
     }
 
+    /**
+     *
+     */
+    static rlpSchema(): RlpSchemaField[]{
+        return  [
+            {
+                name     : 'nonce',
+                length   : 32,
+                allowLess: true,
+                default  : Buffer.allocUnsafe(0),
+            },
+            {
+                name   : 'chainId',
+                length : 1,
+                allowZero: true,
+                default: Buffer.from([0]),
+            },
+            {
+                name     : 'gasPrice',
+                length   : 32,
+                allowLess: true,
+                default  : toBuffer(1),
+            },
+            {
+                name     : 'gasCoin',
+                length   : 4,
+                allowLess: true,
+                default  : Buffer.allocUnsafe(0),
+            },
+            {
+                name   : 'type',
+                length : 1,
+                default: toBuffer([SignatureType.Single]),
+            },
+            {
+                name   : 'data',
+                alias  : 'input',
+                default: Buffer.allocUnsafe(0),
+            },
+            {
+                name     : 'payload',
+                allowZero: true,
+                default  : Buffer.allocUnsafe(0),
+            },
+            {
+                name     : 'serviceData',
+                allowZero: true,
+                default  : Buffer.allocUnsafe(0),
+            },
+            // Signature fields
+            {
+                name     : 'signatureType',
+                length   : 1,
+                allowLess: true,
+                default  : toBuffer(SignatureType.Single),
+            },
+            {
+                name   : 'signatureData',
+                default: Buffer.allocUnsafe(0),
+            },
+        ];
+    }
+
     isSignatureTypeSingle(): boolean {
         return bufferToInt(this.signatureType) == SignatureType.Single;
     }
@@ -229,7 +237,6 @@ export class Transaction {
     }
 
     getRaw(): Buffer[] {
-        this.signatureData = this.signature.serialize();
         return this.raw;
     }
 
@@ -412,13 +419,6 @@ export class Transaction {
     }
 
     /**
-     *
-     */
-    encode(): Buffer {
-        return this.serialize();
-    }
-
-    /**
      * Returns the transaction in JSON format
      * @see {@link https://github.com/ethereumjs/ethereumjs-util/blob/master/docs/index.md#defineproperties|ethereumjs-util}
      */
@@ -443,7 +443,6 @@ export class Transaction {
     toString() {
         return '0x' + this.serialize().toString('hex');
     }
-
 }
 
 /**
@@ -461,7 +460,7 @@ export class SignedTransaction extends Assignable {
         });
     }
 
-    encode(): Buffer {
+    serialize(): Buffer {
         return this.transaction.serialize();
     }
 
