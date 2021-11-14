@@ -12,19 +12,22 @@ import {
     ethIsValidPublic,
     ethPrivateToPublic,
     ethPublicToAddress,
-    fromRpcSig,
     isBuffer,
     isString,
     MinterPrefix,
+    rlp,
     secp256k1,
     sha256,
     toBuffer,
-    toRpcSig,
 } from './util';
 import {assert} from './util/external';
 import * as bip39 from 'bip39';
 import {HDKey as hdKey} from 'ethereum-cryptography/hdkey';
 import {MINTER_DERIVATION_PATH} from './constants';
+import BN from 'bn.js';
+import {List} from 'rlp/src/types';
+
+type Input = Buffer | string | number | bigint | Uint8Array | BN | List | null
 
 export type Arrayish = string | ArrayLike<number>;
 
@@ -402,9 +405,10 @@ export class Signature implements ECDSASignatureBuffer {
 
         const parts = signature.split(':');
         if (parts.length === 1) {
-            const ethRpcSig = parts[0];// Buffer encoded 0x Prefixed Hex
-            const vrsSig = fromRpcSig(ethRpcSig.toString());
-            return new Signature(toBuffer(vrsSig.v), vrsSig.r, vrsSig.s);
+            const encodedSig = parts[0];// Buffer encoded 0x Prefixed Hex
+            // const vrsSig = fromRpcSig(encodedSig.toString());
+            const vrsSig = rlp.decode(toBuffer(encodedSig) as Input);
+            return new Signature(toBuffer(vrsSig[0]), vrsSig[1], vrsSig[2]);
         }
         //
         else if (parts.length === 2) {
@@ -432,8 +436,16 @@ export class Signature implements ECDSASignatureBuffer {
      *
      */
     toString(): string {
-        const ethRpcSig = toRpcSig(this.v, this.r, this.s); // 0x prefixed Hex string
-        return `${this.type}:${ethRpcSig}`;
+
+        if (this.valid()) {
+            // ETH serialization/
+            // const sigEncoded = toRpcSig(this.v, this.r, this.s); // 0x prefixed Hex string
+            // Minter serialization
+            const sigEncoded = rlp.encode([this.v, this.r, this.s]).toString('hex');
+            return `${this.type}:0x${sigEncoded}`;
+        }
+        throw new Error('Invalid signature');
+
     }
 
     /**

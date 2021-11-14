@@ -53,7 +53,7 @@ export class EditMultiSigAction extends Action {
                 nonBinaryArrayTransform(weight) {
                     return toBuffer(new BN(weight));
                 },
-                default            : Buffer.from([]),
+                default            :undefined,
             }, {
                 name               : 'addresses',
                 allowZero          : false,
@@ -61,7 +61,7 @@ export class EditMultiSigAction extends Action {
                 nonBinaryArrayTransform(address) {
                     return toBuffer(address);
                 },
-                default            : Buffer.from([]),
+                default            :  undefined,
             }];
     }
 }

@@ -63,7 +63,7 @@ const json                = (data) => JSON.stringify(data)
        * @param {*} v
        * @return {Buffer}
        */
-    , toBuffer            = (v): Buffer => {
+    , toBuffer            = (v): Buffer=> {
         if (typeof v === 'string' && isMinterPrefixed(v)) {
             return mToBuffer(v);
         }

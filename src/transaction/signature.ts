@@ -1,7 +1,8 @@
 // secp256k1n/2
-import {assertIsArray, base_decode, BN, bufferToInt, ECDSASignatureBuffer, rlp, toBuffer} from '../util';
+import {assertIsArray, base_decode, BN, bufferToInt, ECDSASignatureBuffer, rlp, sha256, toBuffer} from '../util';
 import {KeyPairSecp256k1, KeyType, PublicKey, Signature} from '../key_pair';
 import defineProperties, {RlpSchemaField} from '../util/define-properties';
+import {Transaction} from './transaction';
 
 const N_DIV_2 = new BN('7fffffffffffffffffffffffffffffff5d576e7357a4501ddfe92f46681b20a0', 16);
 
@@ -14,27 +15,66 @@ export enum SignatureType {
  *
  */
 export abstract class TransactionSignature extends Signature {
-    constructor() {
+    protected raw!: Buffer[];
+    protected transaction: Transaction;
+
+    // protected callbacks = {};
+
+    constructor(tx: Transaction = undefined) {
         super(Buffer.from([0x1c]), Buffer.from([]), Buffer.from([]));
+        if (tx instanceof Transaction) {
+            this.transaction = tx;
+        }
+
+        // this._setChangeEmitter();
     }
 
     abstract getRaw(): Buffer[];
 
     abstract serialize(): Buffer;
+
+    abstract publicKey(txHash: Buffer): PublicKey[];
+
+    // // Simple eventEmitter
+    // on(event, cb) {
+    //     if (!this.callbacks[event]) this.callbacks[event] = [];
+    //     this.callbacks[event].push(cb);
+    // }
+    //
+    // emit(event, data) {
+    //     const cbs = this.callbacks[event];
+    //     if (cbs) {
+    //         cbs.forEach(cb => cb(data));
+    //     }
+    // }
+    //
+    // protected _setChangeEmitter() {
+    //     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    //     const vDescriptor = Object.getOwnPropertyDescriptor(this, 'raw')!;
+    //     Object.defineProperty(this, 'raw', {
+    //         ...vDescriptor,
+    //         set: (v: any) => {
+    //             vDescriptor?.set?.(v);
+    //
+    //             this.emit('change', this);
+    //
+    //         },
+    //     });
+    // }
+
 }
 
 /**
  *
  */
 export class SingleSignature extends TransactionSignature {
-    protected raw!: Buffer[];
 
     /**
      *
      * @param data RLP encoded ECDSASignatureBuffer [v,r,s] or object type ECDSASignatureBuffer
      */
-    constructor(data: Buffer | ECDSASignatureBuffer) {
-        super();
+    constructor(data: Buffer | ECDSASignatureBuffer, tx: Transaction = undefined) {
+        super(tx);
         // Define Properties
         const rlpSchema: RlpSchemaField[] = [
             {
@@ -63,6 +103,10 @@ export class SingleSignature extends TransactionSignature {
         defineProperties(this, rlpSchema, data);
 
         this._overrideVSetterWithValidation();
+    }
+
+    static fromString(signature: string): SingleSignature {
+        return new SingleSignature(super.fromString(signature));
     }
 
     /**
@@ -105,9 +149,9 @@ export class SingleSignature extends TransactionSignature {
      * Return singer public key for txHash
      * @param txHash
      */
-    publicKey(txHash: Buffer): PublicKey {
+    publicKey(txHash: Buffer): PublicKey[] {
         const rawPubKey = KeyPairSecp256k1.publicKeyFromMessageBuf(txHash, [this.v, this.r, this.s]);
-        return new PublicKey({keyType: KeyType.SECP256K1, raw: rawPubKey});
+        return [new PublicKey({keyType: KeyType.SECP256K1, raw: rawPubKey})];
     }
 
     /**
@@ -153,18 +197,19 @@ export class SingleSignature extends TransactionSignature {
  *
  */
 export class MultiSignature extends TransactionSignature {
+    protected raw!: Buffer[];
+
     // Signature data
     public multisig!: Buffer; // multisig Address
-    public signatures!: Buffer[]; // array of single RLP ready (raw data) signatures
-    protected raw!: Buffer[];
-    protected _signatures!: SingleSignature[];
+    public signatures!: Buffer[]; // array of single RLP serialized signatures
+    protected _signatures!: Map<string, SingleSignature>;
 
     /**
      *
      * @param data RLP encoded multisig data
      */
-    constructor(data: Buffer | { multisig: Buffer; signatures: Buffer[] }) {
-        super();
+    constructor(data: Buffer | { multisig: Buffer; signatures: Buffer[] }, tx: Transaction = undefined) {
+        super(tx);
 
         // Define Properties
         const rlpSchema: RlpSchemaField[] = [
@@ -175,8 +220,8 @@ export class MultiSignature extends TransactionSignature {
             {
                 name               : 'signatures',
                 allowNonBinaryArray: true,
-                nonBinaryArrayTransform(item) {
-                    return new SingleSignature(item).getRaw();// Buffer
+                nonBinaryArrayTransform(sigBuf) {
+                    return new SingleSignature(sigBuf).getRaw();// Buffer
                 },
             },
         ];
@@ -191,9 +236,23 @@ export class MultiSignature extends TransactionSignature {
         // attached serialize
         defineProperties(this, rlpSchema, data);
 
-        this._signatures = this.signatures.map((data) => {
-            return new SingleSignature(data);
-        });
+        if (0 < this.signatures.length) {
+            this._signatures = new Map(this.signatures.map((buf) => {
+                const sig = new SingleSignature(buf);
+                const key = sha256(sig.serialize()).toString('hex');
+                return [key, sig];
+            }));
+        }
+        //
+        else {
+            this._signatures = new Map();
+        }
+    }
+
+    static fromString(signature: string): MultiSignature {
+        // TODO:
+        throw new Error('Not implemented');
+        //return new MultiSignature(super.fromString(signature));
     }
 
     /**
@@ -207,7 +266,7 @@ export class MultiSignature extends TransactionSignature {
      *
      */
     valid(): boolean {
-        return this._signatures.every((vrsSig) => {
+        return Array.from(this._signatures.values()).every((vrsSig) => {
             return vrsSig.valid();
         });
     }
@@ -217,8 +276,8 @@ export class MultiSignature extends TransactionSignature {
      * @param txHash
      */
     publicKey(txHash: Buffer): PublicKey[] {
-        return this._signatures.reduce((res, sig) => {
-            res.push(sig.publicKey(txHash));
+        return Array.from(this._signatures.values()).reduce((res, sig) => {
+            res.push(sig.publicKey(txHash).pop());
             return res;
         }, [] as PublicKey[]);
     }
@@ -236,8 +295,20 @@ export class MultiSignature extends TransactionSignature {
      * @param signature
      */
     addOne(signature: SingleSignature): MultiSignature {
-        this._signatures.push(signature);
-        this.signatures.push(signature.serialize());
+
+        const key = sha256(signature.serialize()).toString('hex');
+        if (!this._signatures.has(key)) {
+            this._signatures.set(key, signature);
+            this.signatures = Array.from(this._signatures.values()).reduce((res, sig) => {
+                res.push(sig.serialize());
+                return res;
+            }, [] as Buffer[]);
+
+            if (this.transaction instanceof Transaction){
+                this.transaction.signatureData = this.serialize();
+            }
+        }
+
         return this;
     }
 
@@ -245,8 +316,15 @@ export class MultiSignature extends TransactionSignature {
      *
      * @param multisig
      */
-    setMultisig(multisig: Buffer): void {
+    setMultisig(multisig: Buffer): MultiSignature {
         this.multisig = multisig;
+
+        if (this.transaction instanceof Transaction){
+            this.transaction.signatureData = this.serialize();
+        }
+
+        return this;
     }
+
 }
 
