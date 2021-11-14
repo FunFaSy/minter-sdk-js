@@ -1,8 +1,8 @@
 {
     "name": "Taconet",
-    "chainId": "minter-taco-1",
+    "chainId": "v2.6.0-taconet6",
     "networkId": 3,
-    "initialHeight": 3278787,
+    "initialHeight": 3202609,
     "totalSlashed": 0,
     "blockMaxGas": 100000,
     "blockMaxBytes": 10000000,
@@ -10,13 +10,15 @@
     "comment": "",
     "urls": {
         "www": "https://minter.org/",
-        "doc": "https://www.minter.network/docs",
+        "doc": "https://github.com/klim0v/minter-network-web/blob/patch-4/content/docs/index.md",
         "console": "https://console.taconet.minter.network",
         "wallet": "https://console.taconet.minter.network/wallet",
         "explorer": "https://explorer.taconet.minter.network/",
         "api": {
             "node": {
-                "http": [],
+                "http": [
+                    "https://node-api.taconet.minter.network/v2/"
+                ],
                 "ws": []
             },
             "gate": {
