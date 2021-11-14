@@ -18,15 +18,12 @@ export abstract class TransactionSignature extends Signature {
     protected raw!: Buffer[];
     protected transaction: Transaction;
 
-    // protected callbacks = {};
-
     constructor(tx: Transaction = undefined) {
         super(Buffer.from([0x1c]), Buffer.from([]), Buffer.from([]));
         if (tx instanceof Transaction) {
             this.transaction = tx;
         }
 
-        // this._setChangeEmitter();
     }
 
     abstract getRaw(): Buffer[];
@@ -34,33 +31,6 @@ export abstract class TransactionSignature extends Signature {
     abstract serialize(): Buffer;
 
     abstract publicKey(txHash: Buffer): PublicKey[];
-
-    // // Simple eventEmitter
-    // on(event, cb) {
-    //     if (!this.callbacks[event]) this.callbacks[event] = [];
-    //     this.callbacks[event].push(cb);
-    // }
-    //
-    // emit(event, data) {
-    //     const cbs = this.callbacks[event];
-    //     if (cbs) {
-    //         cbs.forEach(cb => cb(data));
-    //     }
-    // }
-    //
-    // protected _setChangeEmitter() {
-    //     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    //     const vDescriptor = Object.getOwnPropertyDescriptor(this, 'raw')!;
-    //     Object.defineProperty(this, 'raw', {
-    //         ...vDescriptor,
-    //         set: (v: any) => {
-    //             vDescriptor?.set?.(v);
-    //
-    //             this.emit('change', this);
-    //
-    //         },
-    //     });
-    // }
 
 }
 
@@ -72,6 +42,7 @@ export class SingleSignature extends TransactionSignature {
     /**
      *
      * @param data RLP encoded ECDSASignatureBuffer [v,r,s] or object type ECDSASignatureBuffer
+     * @param tx
      */
     constructor(data: Buffer | ECDSASignatureBuffer, tx: Transaction = undefined) {
         super(tx);
@@ -207,6 +178,7 @@ export class MultiSignature extends TransactionSignature {
     /**
      *
      * @param data RLP encoded multisig data
+     * @param tx
      */
     constructor(data: Buffer | { multisig: Buffer; signatures: Buffer[] }, tx: Transaction = undefined) {
         super(tx);
@@ -304,7 +276,7 @@ export class MultiSignature extends TransactionSignature {
                 return res;
             }, [] as Buffer[]);
 
-            if (this.transaction instanceof Transaction){
+            if (this.transaction instanceof Transaction) {
                 this.transaction.signatureData = this.serialize();
             }
         }
@@ -319,7 +291,7 @@ export class MultiSignature extends TransactionSignature {
     setMultisig(multisig: Buffer): MultiSignature {
         this.multisig = multisig;
 
-        if (this.transaction instanceof Transaction){
+        if (this.transaction instanceof Transaction) {
             this.transaction.signatureData = this.serialize();
         }
 
