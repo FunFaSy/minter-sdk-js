@@ -1,14 +1,18 @@
 import {Check, IssueCheckParams} from './check';
 import {RedeemCheckAction} from '../transaction/action/check_redeem';
 
+
 export class Checkbook {
-    issue(params: IssueCheckParams): Check {
+    static issue(params: IssueCheckParams): Check {
         return new Check(params);
     }
 
-    redeem(check: Check, password: string): RedeemCheckAction {
-        // TODO
-        const proof = Buffer.from(password, 'utf8');
+    static redeem(check: Check, password: string, address: string): RedeemCheckAction {
+        const proof = Checkbook.getProof(password, address);
         return new RedeemCheckAction({check, proof});
+    }
+
+    static getProof(password: string, address: string): Buffer {
+        return Check.getProof(password, address);
     }
 }

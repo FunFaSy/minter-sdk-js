@@ -6,3 +6,5 @@
  0 means index 0
  */
 export const MINTER_DERIVATION_PATH = 'm/44\'/60\'/0\'/0';
+
+export const MINTER_LAST_BLOCK_HEIGHT = 999999999;
