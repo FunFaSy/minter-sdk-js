@@ -2,7 +2,7 @@ import {Provider} from './provider';
 import {ConnectionInfo, deepExtend, fetchJson, isString, logWarning, TypedError} from '../util';
 import exponentialBackoff from '../util/exponential-backoff';
 import {parseRpcError} from './errors';
-import {NodeStatusResult} from './types';
+import  * as rpcTypes from './types';
 
 // Default number of retries before giving up on a request.
 const REQUEST_RETRY_NUMBER = 5;
@@ -83,7 +83,143 @@ export class JsonRpcProvider extends Provider {
         return resultData;
     }
 
-    status(): Promise<NodeStatusResult> {
-        return this.sendRpcCall('status');
+    async estimateCoinBuy(params: rpcTypes.EstimateCoinBuyRequest): Promise<rpcTypes.EstimateCoinBuyResult> {
+        return Promise.resolve(undefined);
+    }
+
+    async estimateCoinSell(params: rpcTypes.EstimateCoinSellRequest): Promise<rpcTypes.EstimateCoinSellResult> {
+        return Promise.resolve(undefined);
+    }
+
+    async estimateCoinSellAll(params: rpcTypes.EstimateCoinSellAllRequest): Promise<rpcTypes.EstimateCoinSellAllResult> {
+        return Promise.resolve(undefined);
+    }
+
+    async estimateTxCommission(params: rpcTypes.EstimateTxCommissionRequest): Promise<rpcTypes.EstimateTxCommissionResult> {
+        return Promise.resolve(undefined);
+    }
+
+    async getAddress(params: rpcTypes.AddressStateRequest): Promise<rpcTypes.AddressStateResult> {
+        return Promise.resolve(undefined);
+    }
+
+    async getAddresses(params: rpcTypes.AdressesRequest): Promise<rpcTypes.AdressesResult> {
+        return Promise.resolve(undefined);
+    }
+
+    async getBlock(params: rpcTypes.BlockRequest): Promise<rpcTypes.BlockResult> {
+        return Promise.resolve(undefined);
+    }
+
+    async getBlocks(params: rpcTypes.BlocksRequest): Promise<rpcTypes.BlocksResult> {
+        return Promise.resolve(undefined);
+    }
+
+    async getCandidate(params: rpcTypes.CandidateRequest): Promise<rpcTypes.CandidateResult> {
+        return Promise.resolve(undefined);
+    }
+
+    async getCandidates(params: rpcTypes.CandidatesRequest): Promise<rpcTypes.CandidatesResult> {
+        return Promise.resolve(undefined);
+    }
+
+    async getCoinInfo(params: rpcTypes.CoinInfoRequest): Promise<rpcTypes.CoinInfoResult> {
+        return Promise.resolve(undefined);
+    }
+
+    async getCoinInfoById(params: rpcTypes.CoinInfoByIdRequest): Promise<rpcTypes.CoinInfoByIdResult> {
+        return Promise.resolve(undefined);
+    }
+
+    async getEvents(params: rpcTypes.EventsRequest): Promise<rpcTypes.EventsResult> {
+        return Promise.resolve(undefined);
+    }
+
+    async getFrozen(params: rpcTypes.AddressFrozenRequest): Promise<rpcTypes.AddressFrozenResult> {
+        return Promise.resolve(undefined);
+    }
+
+    async getGenesis(): Promise<rpcTypes.GenesisRequest> {
+        return Promise.resolve(undefined);
+    }
+
+    async getLimitOrder(params: rpcTypes.LimitOrderRequest): Promise<rpcTypes.LimitOrderResult> {
+        return Promise.resolve(undefined);
+    }
+
+    async getLimitOrders(params: rpcTypes.LimitOrdersRequest): Promise<rpcTypes.LimitOrdersResult> {
+        return Promise.resolve(undefined);
+    }
+
+    async getMaxGasPrice(params: rpcTypes.MaxGasPriceRequest): Promise<rpcTypes.MaxGasPriceResult> {
+        return Promise.resolve(undefined);
+    }
+
+    async getMinGasPrice(params: rpcTypes.MinGasPriceRequest): Promise<rpcTypes.MinGasPriceResult> {
+        return Promise.resolve(undefined);
+    }
+
+    async getMissedBlocks(params: rpcTypes.MissedBlocksRequest): Promise<rpcTypes.MissedBlocksResult> {
+        return Promise.resolve(undefined);
+    }
+
+    async getNetInfo(): Promise<rpcTypes.NetInfoResult> {
+        return Promise.resolve(undefined);
+    }
+
+    async getPriceCommissions(params: rpcTypes.PriceCommissionsRequest): Promise<rpcTypes.PriceCommissionsResult> {
+        return Promise.resolve(undefined);
+    }
+
+    async getStatus(): Promise<rpcTypes.NodeStatusResult> {
+        return Promise.resolve(undefined);
+    }
+
+    async getSwapPool(params: rpcTypes.SwapPoolRequest): Promise<rpcTypes.SwapPoolResult> {
+        return Promise.resolve(undefined);
+    }
+
+    async getTransaction(params: rpcTypes.TransactionRequest): Promise<rpcTypes.TransactionResult> {
+        return Promise.resolve(undefined);
+    }
+
+    async getTransactions(params: rpcTypes.TransactionsRequest): Promise<rpcTypes.TransactionsResult> {
+        return Promise.resolve(undefined);
+    }
+
+    async getUnconfirmedTransactions(params: rpcTypes.UnconfirmedTxsRequest): Promise<rpcTypes.UnconfirmedTxsResult> {
+        return Promise.resolve(undefined);
+    }
+
+    async getValidators(params: rpcTypes.ValidatorsRequest): Promise<rpcTypes.ValidatorsResult> {
+        return Promise.resolve(undefined);
+    }
+
+    async getVersionNetwork(): Promise<rpcTypes.VersionNetworkResult> {
+        return Promise.resolve(undefined);
+    }
+
+    async getVoteCommission(params: rpcTypes.VoteCommissionRequest): Promise<rpcTypes.VoteCommissionResult> {
+        return Promise.resolve(undefined);
+    }
+
+    async getVoteHalt(params: rpcTypes.VoteHaltRequest): Promise<rpcTypes.VoteHaltResult> {
+        return Promise.resolve(undefined);
+    }
+
+    async getVoteNetUpdate(params: rpcTypes.VoteNetUpdateRequest): Promise<rpcTypes.VoteNetUpdateResult> {
+        return Promise.resolve(undefined);
+    }
+
+    async getWaitlist(params: rpcTypes.AddressWaitListRequest): Promise<rpcTypes.AddressWaitListResult> {
+        return Promise.resolve(undefined);
+    }
+
+    async query<T extends rpcTypes.QueryResponseKind>(params: rpcTypes.RpcQueryRequest): Promise<T> {
+        return Promise.resolve(undefined);
+    }
+
+    async sendTransaction(params: rpcTypes.SendTransactionRequest): Promise<rpcTypes.SendTransactionResult> {
+        return Promise.resolve(undefined);
     }
 }

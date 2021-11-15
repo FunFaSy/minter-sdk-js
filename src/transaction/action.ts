@@ -59,7 +59,7 @@ export * from './action/multisig_create';
 export * from './action/multisig_edit';
 
 /**
- * Governance
+ * Governess
  */
 export * from './action/vote_set_halt_block';
 export * from './action/vote_net_update';

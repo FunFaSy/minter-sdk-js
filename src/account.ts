@@ -1,7 +1,7 @@
 import {BNLike, BufferLike} from './util';
 import {Connection} from './connection';
 
-export interface AccountData {
+export interface AccountState {
     nonce?: BNLike;
     balance?: BufferLike;
     delegated?: BufferLike;
@@ -9,6 +9,8 @@ export interface AccountData {
     transaction_count?: BNLike;
     bip_value?: BNLike;
 }
+
+
 
 export class Account {
     readonly connection: Connection;
@@ -20,4 +22,7 @@ export class Account {
         this.accountId = accountId;
     }
 
+    async state(): Promise<AccountState>{
+        return this.connection.provider.status();
+    }
 }
