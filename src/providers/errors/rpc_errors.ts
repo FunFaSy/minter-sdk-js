@@ -1,15 +1,24 @@
 import Mustache from 'mustache';
-import schema from '../../generated/rpc_error_schema.json';
-import messages from './error_messages.json';
+import * as messages from './error_messages.json';
 import {TypedError} from '../../util/errors';
 import {formatBipAmount, isObject, isString} from '../../util';
 
+/**
+ * MINTER  have no standardised ERRORS even codes tells nothing.
+ *
+ */
 const mustacheHelpers = {
     formatBip: () => (n, render) => formatBipAmount(render(n)),
 };
 
 export class ServerError extends TypedError {
 }
+
+export class ServerTransactionError extends ServerError {
+    public transaction: string;
+}
+
+/** !!! Codes tells nothing! Different errors can have same code*/
 
 // https://github.com/MinterTeam/minter-go-node/blob/master/coreV2/code/code.go#L8
 export enum ServerErrorCode {
@@ -107,27 +116,24 @@ export enum ServerErrorCode {
     'CoinNotBurnable'                   = 802,
 }
 
-export class ServerTransactionError extends ServerError {
-    public transaction: any;
-}
-
 export function parseRpcError(errorObj: Record<string, any>): ServerError {
     const result = {};
-    let errorClassName = 'UntypedError';
+    let errorClassName = 'UnknownServerError';
 
-    if (errorObj?.code) {
-        errorClassName = getErrorTypeFromErrorCode(errorObj?.code);
-    }
-    //
-    else if (errorObj?.data) {
-        errorClassName = walkSubtype(errorObj.data, schema.schema, result, '');
-    }
-    //
-    else {
-        const errorMessage = `[${errorObj.code}] ${errorObj.message}: ${errorObj.data}`;
-        // NOTE: All this hackery is happening because structured errors not implemented
-        errorClassName = getErrorTypeFromErrorMessage(errorMessage);
-    }
+    // if (errorObj?.code) {
+    //     errorClassName = getErrorTypeFromErrorCode(errorObj?.code);
+    // }
+    // //
+    // else if (errorObj?.data) {
+    //     errorClassName = walkSubtype(errorObj.data, schema.schema, result, '');
+    // }
+    // //
+    // else {
+    const errorMessage = `[${errorObj.code}] ${errorObj.message}: ${JSON.stringify(errorObj.data)}`;
+    // NOTE: All this hackery is happening because structured errors not implemented
+    errorClassName = getErrorTypeFromErrorMessage(errorMessage);
+    result['msg_text'] = errorMessage;
+    // }
 
     // NOTE: This assumes that all errors extend TypedError
     const msg = formatError(errorClassName, result);
@@ -166,7 +172,7 @@ export function formatError(errorClassName: string, errorData): string {
  * @param result An object used in recursion or called directly
  * @param typeName The human-readable error type name as defined in the JSON mapping
  */
-function walkSubtype(errorObj, schema, result, typeName) {
+const walkSubtype = function(errorObj, schema, result, typeName) {
     let error;
     let type;
     let errorTypeName;
@@ -195,15 +201,19 @@ function walkSubtype(errorObj, schema, result, typeName) {
         result.kind = errorObj;
         return typeName;
     }
-}
+};
 
 export function getErrorTypeFromErrorMessage(errorMessage) {
     // This function should be removed when JSON RPC starts returning typed errors.
     switch (true) {
-    case /^tx \(.*?\) not found$/.test(errorMessage):
+    //
+    case /^(.*?)tx(.*?)not found(.*?)$/.test(errorMessage):
         return 'TxNotFound';
+        //
+    case /^(.*?)tx(.*?)already exists in cache(.*?)$/.test(errorMessage):
+        return 'TxAlreadyExists';
     default:
-        return 'UntypedError';
+        return 'UnknownServerError';
     }
 }
 
@@ -213,19 +223,18 @@ export function getErrorTypeFromErrorCode(code: string): string {
     case ServerErrorCode[code]:
         return ServerErrorCode[code];
     default:
-        return 'UntypedError';
+        return 'UnknownServerError';
     }
 }
 
-
 /**
-error:{
+ error:{
     code: "0",
     log: "",
     hash: "Mt1cea90c78f69a9a62e6fe1d349470e4d598229aabf71dd9b76ae174c9fb73abe"
 }
 
-error: {
+ error: {
     code: "101",
     message: "Unexpected nonce. Expected: 12, got 11.",
     data: {
@@ -234,7 +243,7 @@ error: {
     }
 }
 
-error: {
+ error: {
     code: "106",
     message: "rlp: expected input list for transaction.MultisendDataItem, decoding into (transaction.MultisendData).List[0]",
     data: { }
@@ -245,7 +254,7 @@ error: {
     data: { }
 }
 
-error: {
+ error: {
     code: "106",
     message: "rlp: input list has too many elements for transaction.AddLiquidityDataV240",
     data: { }
@@ -261,7 +270,7 @@ error: {
     data: { }
 }
 
-error: {
+ error: {
     code: "107",
     message: "Insufficient funds for sender account: Mx0bd4dd45fc7072ce6f1a4b297706174ee2f86910. Wanted 100000000000000000000 USDCE",
     data: {
@@ -318,7 +327,7 @@ error: {
         min_initial_reserve: "10000000000000000000000"
     }
 }
-error: {
+ error: {
     code: "205",
     message: "Coin supply should be between 1000000000000000000 and 1",
         data: {
@@ -353,7 +362,7 @@ error: {
     }
 }
 
-error: {
+ error: {
     code: "400",
     message: "encoding/hex: invalid byte: U+0027 '''",
     data: { }

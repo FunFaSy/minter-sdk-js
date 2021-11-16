@@ -2,10 +2,6 @@
 export const errorHierarchy = {
     'TypedError': {
         'ExchangeError': {
-            'AuthenticationError': {
-                'PermissionDenied': {},
-                'AccountSuspended': {},
-            },
         },
         'ActionError'  : {
             'ArgumentsRequired': {},
@@ -21,14 +17,12 @@ export const errorHierarchy = {
             },
             'InvalidOrder'     : {
                 'OrderNotFound'           : {},
-                'OrderNotCached'          : {},
-                'CancelPending'           : {},
-                'OrderImmediatelyFillable': {},
-                'OrderNotFillable'        : {},
                 'DuplicateOrderId'        : {},
             },
             'InvalidNonce'     : {},
             'NotSupported'     : {},
+            'TxAlreadyExists'     : {},
+            'TxNotFound'     : {},
         },
         'QueryError'   : {
             'BadQueryResponse': {},
@@ -42,6 +36,7 @@ export const errorHierarchy = {
                 'OnMaintenance': {},
             },
             'RequestTimeout'  : {},
+            'UnknownServerError'  : {},
         },
     },
 };

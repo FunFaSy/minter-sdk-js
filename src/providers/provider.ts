@@ -2,97 +2,89 @@
  * MINTER RPC API request types and responses
  * @module
  */
-import * as rpcTypes from './types';
+import * as rpcTypes from './internal';
 
 /** @hidden (@link https://github.com/MinterTeam/node-grpc-gateway/blob/master/api.proto)*/
 export abstract class Provider {
-
-    // rpc Halts (HaltsRequest) returns (HaltsResponse)
-    //
     //-----------  Blockchain
-    abstract getBlock(params: rpcTypes.BlockRequest): Promise<rpcTypes.BlockResult>;
+    abstract block(height: number, params: rpcTypes.BlockRequest): Promise<rpcTypes.BlockResponse>;
 
-    abstract getBlocks(params: rpcTypes.BlocksRequest): Promise<rpcTypes.BlocksResult>;
+    abstract blocks(fromHeight: number, toHeight: number,params: rpcTypes.BlocksRequest): Promise<rpcTypes.BlocksResponse>;
 
-    abstract getGenesis(): Promise<rpcTypes.GenesisRequest>;
+    abstract genesis(): Promise<rpcTypes.GenesisResponse>;
 
-    abstract getNetInfo(): Promise<rpcTypes.NetInfoResult>;
+    abstract netInfo(): Promise<rpcTypes.NetInfoResponse>;
 
-    abstract sendTransaction(params: rpcTypes.SendTransactionRequest): Promise<rpcTypes.SendTransactionResult>;
+    abstract sendTransaction(tx: string,params: rpcTypes.SendTransactionRequest): Promise<rpcTypes.SendTransactionResponse>;
 
-    abstract getStatus(): Promise<rpcTypes.NodeStatusResult>;
+    abstract status(): Promise<rpcTypes.NodeStatusResponse>;
 
-    abstract getTransaction(params: rpcTypes.TransactionRequest): Promise<rpcTypes.TransactionResult>;
+    abstract transaction(hash: string,params: rpcTypes.TransactionRequest): Promise<rpcTypes.TransactionResponse>;
 
-    abstract getTransactions(params: rpcTypes.TransactionsRequest): Promise<rpcTypes.TransactionsResult>;
+    abstract transactions(query: string,params: rpcTypes.TransactionsRequest): Promise<rpcTypes.TransactionsResponse>;
 
-    abstract getUnconfirmedTransactions(params: rpcTypes.UnconfirmedTxsRequest): Promise<rpcTypes.UnconfirmedTxsResult>;
+    abstract unconfirmedTransactions(params: rpcTypes.UnconfirmedTxsRequest): Promise<rpcTypes.UnconfirmedTxsResponse>;
 
-    abstract getVersionNetwork(): Promise<rpcTypes.VersionNetworkResult>;
+    abstract networkVersion(): Promise<rpcTypes.NetworkVersionResponse>;
 
     //----------- Account
-    abstract getAddress(params: rpcTypes.AddressStateRequest): Promise<rpcTypes.AddressStateResult>;
+    abstract address(address: string,params: rpcTypes.AddressStateRequest): Promise<rpcTypes.AddressStateResponse>;
 
-    abstract getAddresses(params: rpcTypes.AdressesRequest): Promise<rpcTypes.AdressesResult>;
+    abstract addresses(params: rpcTypes.AdressesRequest): Promise<rpcTypes.AdressesResponse>;
 
-    abstract getFrozen(params: rpcTypes.AddressFrozenRequest): Promise<rpcTypes.AddressFrozenResult>;
+    abstract frozen(params: rpcTypes.AddressFrozenRequest): Promise<rpcTypes.AddressFrozenResponse>;
 
-    abstract getWaitlist(params: rpcTypes.AddressWaitListRequest): Promise<rpcTypes.AddressWaitListResult>;
+    abstract waitlist(params: rpcTypes.AddressWaitListRequest): Promise<rpcTypes.AddressWaitListResponse>;
 
     //----------- Validator
-    abstract getCandidate(params: rpcTypes.CandidateRequest): Promise<rpcTypes.CandidateResult>;
+    abstract candidate(publicKey: string,params: rpcTypes.CandidateRequest): Promise<rpcTypes.CandidateResponse>;
 
-    abstract getCandidates(params: rpcTypes.CandidatesRequest): Promise<rpcTypes.CandidatesResult>;
+    abstract candidates(params: rpcTypes.CandidatesRequest): Promise<rpcTypes.CandidatesResponse>;
 
-    abstract getMissedBlocks(params: rpcTypes.MissedBlocksRequest): Promise<rpcTypes.MissedBlocksResult>;
+    abstract missedBlocks(publicKey: string,params: rpcTypes.MissedBlocksRequest): Promise<rpcTypes.MissedBlocksResponse>;
 
-    abstract getValidators(params: rpcTypes.ValidatorsRequest): Promise<rpcTypes.ValidatorsResult>;
+    abstract validators(params: rpcTypes.ValidatorsRequest): Promise<rpcTypes.ValidatorsResponse>;
 
     //----------- Coins/Tokens
-    abstract getCoinInfo(params: rpcTypes.CoinInfoRequest): Promise<rpcTypes.CoinInfoResult>;
+    abstract coinInfo(params: rpcTypes.CoinInfoRequest): Promise<rpcTypes.CoinInfoResponse>;
 
-    abstract getCoinInfoById(params: rpcTypes.CoinInfoByIdRequest): Promise<rpcTypes.CoinInfoByIdResult>;
+    abstract coinInfoById(params: rpcTypes.CoinInfoByIdRequest): Promise<rpcTypes.CoinInfoByIdResponse>;
 
-    abstract estimateCoinBuy(params: rpcTypes.EstimateCoinBuyRequest): Promise<rpcTypes.EstimateCoinBuyResult>;
+    abstract estimateCoinBuy(params: rpcTypes.EstimateCoinBuyRequest): Promise<rpcTypes.EstimateCoinBuyResponse>;
 
-    abstract estimateCoinSell(params: rpcTypes.EstimateCoinSellRequest): Promise<rpcTypes.EstimateCoinSellResult>;
+    abstract estimateCoinSell(params: rpcTypes.EstimateCoinSellRequest): Promise<rpcTypes.EstimateCoinSellResponse>;
 
-    abstract estimateCoinSellAll(params: rpcTypes.EstimateCoinSellAllRequest): Promise<rpcTypes.EstimateCoinSellAllResult>;
+    abstract estimateCoinSellAll(params: rpcTypes.EstimateCoinSellAllRequest): Promise<rpcTypes.EstimateCoinSellAllResponse>;
 
     //----------- Orders
-    abstract getLimitOrder(params: rpcTypes.LimitOrderRequest): Promise<rpcTypes.LimitOrderResult>;
+    abstract limitOrder(params: rpcTypes.LimitOrderRequest): Promise<rpcTypes.LimitOrderResponse>;
 
-    abstract getLimitOrders(params: rpcTypes.LimitOrdersRequest): Promise<rpcTypes.LimitOrdersResult>;
+    abstract limitOrders(params: rpcTypes.LimitOrdersRequest): Promise<rpcTypes.LimitOrdersResponse>;
 
     //----------- SwapPools
-    abstract getSwapPool(params: rpcTypes.SwapPoolRequest): Promise<rpcTypes.SwapPoolResult>;
+    abstract swapPool(params: rpcTypes.SwapPoolRequest): Promise<rpcTypes.SwapPoolResponse>;
 
     //----------- Vote (GOVERNESS) Info
-    abstract getVoteCommission(params: rpcTypes.VoteCommissionRequest): Promise<rpcTypes.VoteCommissionResult>;
+    abstract voteCommission(params: rpcTypes.VoteCommissionRequest): Promise<rpcTypes.VoteCommissionResponse>;
 
-    abstract getVoteHalt(params: rpcTypes.VoteHaltRequest): Promise<rpcTypes.VoteHaltResult>;
+    abstract voteHalt(params: rpcTypes.VoteHaltRequest): Promise<rpcTypes.VoteHaltResponse>;
 
-    abstract getVoteNetUpdate(params: rpcTypes.VoteNetUpdateRequest): Promise<rpcTypes.VoteNetUpdateResult>;
+    abstract voteNetUpdate(params: rpcTypes.VoteNetUpdateRequest): Promise<rpcTypes.VoteNetUpdateResponse>;
 
     //----------- Prices
-    abstract estimateTxCommission(params: rpcTypes.EstimateTxCommissionRequest): Promise<rpcTypes.EstimateTxCommissionResult>;
+    abstract estimateTxCommission(params: rpcTypes.EstimateTxCommissionRequest): Promise<rpcTypes.EstimateTxCommissionResponse>;
 
-    abstract getMinGasPrice(params: rpcTypes.MinGasPriceRequest): Promise<rpcTypes.MinGasPriceResult>;
+    abstract minGasPrice(params: rpcTypes.MinGasPriceRequest): Promise<rpcTypes.MinGasPriceResponse>;
 
-    abstract getMaxGasPrice(params: rpcTypes.MaxGasPriceRequest): Promise<rpcTypes.MaxGasPriceResult>;
+    abstract maxGasPrice(params: rpcTypes.MaxGasPriceRequest): Promise<rpcTypes.MaxGasPriceResponse>;
 
-    abstract getPriceCommissions(params: rpcTypes.PriceCommissionsRequest): Promise<rpcTypes.PriceCommissionsResult>;
+    abstract priceCommissions(params: rpcTypes.PriceCommissionsRequest): Promise<rpcTypes.PriceCommissionsResponse>;
 
     //----------- Events
-    abstract getEvents(params: rpcTypes.EventsRequest): Promise<rpcTypes.EventsResult>;
+    abstract events(params: rpcTypes.EventsRequest): Promise<rpcTypes.EventsResponse>;
 
     //
     //-----------  WebSockets
-    // abstract  Subscribe (SubscribeRequest) returns (stream SubscribeResponse)
-
-    //----------- Queries
-    abstract query<T extends rpcTypes.QueryResponseKind>(params: rpcTypes.RpcQueryRequest): Promise<T>;
-
-    // abstract query<T extends QueryResponseKind>(path: string, data: string): Promise<T>;
+    // abstract  subscribe (SubscribeRequest) returns (stream SubscribeResponse)
 
 }
