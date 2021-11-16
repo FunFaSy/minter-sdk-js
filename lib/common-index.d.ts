@@ -1,12 +1,15 @@
 /** @hidden @module */
 import * as utils from './util';
-import * as providers from './providers';
+import * as constants from './constants';
 import * as tx_actions from './transaction/action';
-export { Account } from './account';
-export { Connection } from './connection';
+import * as providers from './providers';
 export { Chain } from './chain';
 export { KeyType, KeyPair, KeyPairSecp256k1, PublicKey, Signature as SignatureSecp256k1, Address } from './key_pair';
 export { InMemorySigner, Signer } from './signer';
-export { Transaction, TransactionType, SignedTransaction } from './transaction/transaction';
 export { SignatureType, MultiSignature, SingleSignature } from './transaction/signature';
-export { utils, providers, tx_actions, };
+export { default as actionsRegistry } from './transaction/action_registry';
+export { Transaction, SignedTransaction } from './transaction/transaction';
+export { Connection } from './connection';
+export { Check } from './check/check';
+export { Account } from './account';
+export { utils, providers, tx_actions, constants, };

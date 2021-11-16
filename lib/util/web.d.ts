@@ -1,5 +1,6 @@
-import { AxiosRequestConfig } from 'axios';
+import { AxiosInstance, AxiosRequestConfig } from 'axios';
 export interface ConnectionInfo extends AxiosRequestConfig {
+    baseURL?: string;
     url: string;
     auth?: {
         username: string;
@@ -8,9 +9,4 @@ export interface ConnectionInfo extends AxiosRequestConfig {
     timeout?: number;
     headers?: Record<string, string>;
 }
-/**
- *
- * @param connection
- * @param json
- */
-export declare function fetchJson(connection: string | ConnectionInfo, json?: string): Promise<any>;
+export declare function newRpcClient(config: AxiosRequestConfig): AxiosInstance;

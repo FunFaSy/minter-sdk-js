@@ -1,11 +1,6 @@
 export declare const errorHierarchy: {
     TypedError: {
-        ExchangeError: {
-            AuthenticationError: {
-                PermissionDenied: {};
-                AccountSuspended: {};
-            };
-        };
+        ExchangeError: {};
         ActionError: {
             ArgumentsRequired: {};
             BadRequest: {
@@ -20,14 +15,12 @@ export declare const errorHierarchy: {
             };
             InvalidOrder: {
                 OrderNotFound: {};
-                OrderNotCached: {};
-                CancelPending: {};
-                OrderImmediatelyFillable: {};
-                OrderNotFillable: {};
                 DuplicateOrderId: {};
             };
             InvalidNonce: {};
             NotSupported: {};
+            TxAlreadyExists: {};
+            TxNotFound: {};
         };
         QueryError: {
             BadQueryResponse: {};
@@ -41,6 +34,7 @@ export declare const errorHierarchy: {
                 OnMaintenance: {};
             };
             RequestTimeout: {};
+            UnknownServerError: {};
         };
     };
 };

@@ -1,6 +1,10 @@
 import { TypedError } from '../../util/errors';
 export declare class ServerError extends TypedError {
 }
+export declare class ServerTransactionError extends ServerError {
+    transaction: string;
+}
+/** !!! Codes tells nothing! Different errors can have same code*/
 export declare enum ServerErrorCode {
     'OK' = 0,
     'WrongNonce' = 101,
@@ -78,22 +82,19 @@ export declare enum ServerErrorCode {
     'CoinNotMintable' = 801,
     'CoinNotBurnable' = 802
 }
-export declare class ServerTransactionError extends ServerError {
-    transaction: any;
-}
 export declare function parseRpcError(errorObj: Record<string, any>): ServerError;
 export declare function parseTransactionResultError(result: any): ServerTransactionError;
 export declare function formatError(errorClassName: string, errorData: any): string;
-export declare function getErrorTypeFromErrorMessage(errorMessage: any): "UntypedError" | "TxNotFound";
+export declare function getErrorTypeFromErrorMessage(errorMessage: any): "UnknownServerError" | "TxNotFound" | "TxAlreadyExists";
 export declare function getErrorTypeFromErrorCode(code: string): string;
 /**
-error:{
+ error:{
     code: "0",
     log: "",
     hash: "Mt1cea90c78f69a9a62e6fe1d349470e4d598229aabf71dd9b76ae174c9fb73abe"
 }
 
-error: {
+ error: {
     code: "101",
     message: "Unexpected nonce. Expected: 12, got 11.",
     data: {
@@ -102,7 +103,7 @@ error: {
     }
 }
 
-error: {
+ error: {
     code: "106",
     message: "rlp: expected input list for transaction.MultisendDataItem, decoding into (transaction.MultisendData).List[0]",
     data: { }
@@ -113,7 +114,7 @@ error: {
     data: { }
 }
 
-error: {
+ error: {
     code: "106",
     message: "rlp: input list has too many elements for transaction.AddLiquidityDataV240",
     data: { }
@@ -129,7 +130,7 @@ error: {
     data: { }
 }
 
-error: {
+ error: {
     code: "107",
     message: "Insufficient funds for sender account: Mx0bd4dd45fc7072ce6f1a4b297706174ee2f86910. Wanted 100000000000000000000 USDCE",
     data: {
@@ -137,6 +138,15 @@ error: {
         coin_symbol: "USDCE",
         needed_value: "100000000000000000000",
         sender: "Mx0bd4dd45fc7072ce6f1a4b297706174ee2f86910"
+    }
+}
+
+ error: {
+    code: "115",
+    message: "Wrong chain id",
+    data: {
+        current_chain_id: "2",
+        got_chain_id: "3"
     }
 }
 
@@ -177,7 +187,7 @@ error: {
         min_initial_reserve: "10000000000000000000000"
     }
 }
-error: {
+ error: {
     code: "205",
     message: "Coin supply should be between 1000000000000000000 and 1",
         data: {
@@ -212,7 +222,7 @@ error: {
     }
 }
 
-error: {
+ error: {
     code: "400",
     message: "encoding/hex: invalid byte: U+0027 '''",
     data: { }
@@ -264,6 +274,16 @@ error: {
     data: {
         coin0: "1844",
         coin1: "0"
+    }
+}
+
+ error: {
+    code: "713",
+    message: "order price is 1.0000000000000000000000000000000000, but must not exceed 0.7588197427709223431894510718659565 and more than 0.1517639485541844686378902143731913",
+    data: {
+        max_price: "0.1517639485541844686378902143731913",
+        min_price: "0.7588197427709223431894510718659565",
+        order_price: "1.0000000000000000000000000000000000"
     }
 }
 

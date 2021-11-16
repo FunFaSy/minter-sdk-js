@@ -1,7 +1,7 @@
 {
     "name": "Taconet",
     "chainId": "v2.6.0-taconet6",
-    "networkId": 3,
+    "networkId": 2,
     "initialHeight": 3202609,
     "totalSlashed": 0,
     "blockMaxGas": 100000,
