@@ -1,13 +1,13 @@
 import createError from 'http-errors';
-import axios, {AxiosRequestConfig, AxiosResponse} from 'axios';
-import exponentialBackoff from './exponential-backoff';
-import {deepExtend, isString, logWarning, TypedError} from '.';
+import axios, {AxiosInstance, AxiosRequestConfig, AxiosResponse} from 'axios';
+import axiosRetry from 'axios-retry';
+import * as qs from 'qs';
+import {deepExtend, isNumber, isString, logWarning, TypedError} from '.';
 
-const START_WAIT_TIME_MS = 500;
-const BACKOFF_MULTIPLIER = 1.5;
-const RETRY_NUMBER = 3;
+const RETRY_NUMBER = 2;
 
 export interface ConnectionInfo extends AxiosRequestConfig {
+    baseURL?: string;
     url: string;
     auth?: {
         username: string;
@@ -17,11 +17,15 @@ export interface ConnectionInfo extends AxiosRequestConfig {
     headers?: Record<string, string>;
 }
 
-const defaultFetcherConfig = {
-    headers: {'Content-Type': 'application/json; charset=utf-8'},
+const defaultAxiosConfig = {
+    headers         : {'Content-Type': 'application/json; charset=utf-8'},
+    paramsSerializer: (params) => qs.stringify(params, {arrayFormat: 'repeat'}),
+    validateStatus  : function(status) {
+        return true; //status >= 200 && status < 300; // default
+    },
 } as AxiosRequestConfig;
 
-const parseData = (data) => {
+const parseJsonData = (data) => {
     if (isString(data)) {
         try {
             data = JSON.parse(data);
@@ -43,27 +47,8 @@ const isValidUrl = (url) => {
     return true;
 };
 
-/**
- *
- * @param connection
- * @param json
- */
-export async function fetchJson(connection: string | ConnectionInfo, json?: string): Promise<any> {
-    let config = {
-        method: json ? 'POST' : 'GET',
-        data  : json ? json : undefined,
-    } as AxiosRequestConfig;
-
-    if (isString(connection)) {
-        config.url = connection.toString();
-    }
-    //
-    else {
-        config = deepExtend(config, connection);
-    }
-
-    config = deepExtend(defaultFetcherConfig, config);
-
+export function newRpcClient(config: AxiosRequestConfig): AxiosInstance {
+    config = deepExtend(defaultAxiosConfig, config);
     const axiosClient = axios.create(config);
 
     axiosClient.interceptors.request.use((config: AxiosRequestConfig): AxiosRequestConfig => {
@@ -79,61 +64,98 @@ export async function fetchJson(connection: string | ConnectionInfo, json?: stri
         }
 
         return config;
+    });
+
+    axiosClient.interceptors.response.use(
+        (response: AxiosResponse) => {
+            if (response?.data) {
+            // transformResponse
+                const data = parseJsonData(response.data);
+
+                if (data?.error?.details) {
+                    data.error.data = data.error.details;
+                }
+                response.data = data;
+            }
+
+            return response;
+        },
+        (error) => {
+            const {config} = error;
+
+            // Error 😨
+            if (axios.isCancel(error)) {
+                return Promise.reject(Object.assign(error, new TypedError(error.message, 'RequestCanceled')));
+            }
+
+            if ('ECONNRESET' === error.code) {
+                logWarning(`HTTP request for ${config.url} got connection reset`);
+                return Promise.reject(Object.assign(error, new TypedError('Connection was reset', 'ConnReset')));
+            }
+
+            if ('ECONNABORTED' === error.code) {
+                logWarning(`HTTP request for ${config.url} got aborted connection`);
+                return Promise.reject(Object.assign(error, new TypedError('Connection was aborted', 'ConnAborted')));
+            }
+
+            if (error.response) {
+            /*
+                 * The request was made and the server responded with a
+                 * status code that falls out of the range of 2xx
+                 */
+                return Promise.reject(Object.assign(error, createError(error.response.status, error.response.data)));
+
+            }
+            //
+            else if (error.request) {
+            /*
+                 * The request was made but no response was received, `error.request`
+                 * is an instance of XMLHttpRequest in the browser and an instance
+                 * of http.ClientRequest in Node.js
+                 */
+                logWarning(`HTTP request for ${config.url} got no response`/*, error.request*/);
+                return Promise.reject(
+                    Object.assign(error, new TypedError('Server not responding', 'ServerNotResponding')));
+            }
+            //
+            else {
+            // Something happened in setting up the request and triggered an Error
+                logWarning(`Something happened in setting up the request ${config.url} and triggered an Error`,
+                    error.request);
+                return Promise.reject(Object.assign(error, createError(error.status, error.message)));
+            }
+
+        },
+    );
+
+    axiosClient.interceptors.response.use((response) => {
+        return response;
+    },
+    async (error) => {
+        const {config} = error;
+        const retryCount = 'axios-retry' in config ? config['axios-retry'].retryCount : undefined;
+
+        if (retryCount && isNumber(retryCount) && RETRY_NUMBER <= retryCount) {
+            throw new TypedError(`Exceeded ${RETRY_NUMBER} attempts for ${config.url}.`, 'RetriesExceeded');
+        }
+
+        return Promise.reject(error);
     },
     );
 
-    const responseData = await exponentialBackoff(START_WAIT_TIME_MS, RETRY_NUMBER, BACKOFF_MULTIPLIER, async () => {
-        return await axiosClient(config)
-            //
-            .then((response: AxiosResponse) => {
-                // Success 🎉
-                if (response.status === 503) {
-                    logWarning(`Retrying HTTP request for ${config.url} as it's not available now`);
-                    return null;
-                }
+    axiosRetry(axiosClient, {
+        retries       : RETRY_NUMBER,
+        retryDelay    : axiosRetry.exponentialDelay,
+        retryCondition: async (error): Promise<boolean> => {
+            const retryableErrorTypes = ['ConnAborted', 'ServerNotResponding'];
 
-                return response.data;
-            })
-            //
-            .catch(error => {
-                // Error 😨
-                if ('ECONNRESET' === error.code) {
-                    logWarning(`Retrying HTTP request for ${config.url} because of connection was reset`);
-                    return null;
-                }
+            if (typeof error['type'] !== 'undefined' && error['type'].length) {
+                return (error?.response?.status != 404 && retryableErrorTypes.includes(error['type']));
+            }
 
-                if ('ECONNABORTED' === error.code) {
-                    logWarning(`Retrying HTTP request for ${config.url} because of connection was aborted`);
-                    return null;
-                }
-
-                if (error.response) {
-                    /*
-                     * The request was made and the server responded with a
-                     * status code that falls out of the range of 2xx
-                     */
-                    throw createError(error.response.status, error.response.data);
-
-                } else if (error.request) {
-                    /*
-                     * The request was made but no response was received, `error.request`
-                     * is an instance of XMLHttpRequest in the browser and an instance
-                     * of http.ClientRequest in Node.js
-                     */
-                    logWarning(`Retrying HTTP request for ${config.url} because got no response`, error.request);
-                    return null;
-                } else {
-                    // Something happened in setting up the request and triggered an Error
-                    logWarning(`Something happened in setting up the request ${config.url} and triggered an Error`,
-                        error.request);
-                    throw createError(error.status, error.message);
-                }
-            });
+            return !error.response || error.response.status >= 500 && error.response.status <= 599;
+        },
     });
 
-    if (!responseData) {
-        throw new TypedError(`Exceeded ${RETRY_NUMBER} attempts for ${config.url}.`, 'RetriesExceeded');
-    }
-
-    return parseData(responseData);
+    return axiosClient;
 }

@@ -25,6 +25,7 @@ export {
     , isValidPublic as ethIsValidPublic
     , toBuffer as ethToBuffer
     , bufferToInt
+    , bufferToHex
     , ECDSASignature
     , ECDSASignatureBuffer
     , PrefixedHexString
