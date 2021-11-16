@@ -23,7 +23,7 @@ export class MultiSendAction extends Action {
 
         if (typeof data == 'object' && !Buffer.isBuffer(data)) {
             _data = {
-                list: data?.list, // Pass values through to nonBinaryArrayTransform encoder function.
+                list: data?.list || [], // Pass values through to nonBinaryArrayTransform encoder function.
             };
         }
         super(_data);
@@ -37,7 +37,8 @@ export class MultiSendAction extends Action {
                 default            : Buffer.from([]),
                 allowNonBinaryArray: true,
                 nonBinaryArrayTransform(action) {
-                    return action.raw;
+                    // In case transaction restored from string
+                    return (action instanceof SendAction) ? action.raw : action;
                 },
             },
         ];

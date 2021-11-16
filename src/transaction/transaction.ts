@@ -112,14 +112,14 @@ export class Transaction {
 
         // RLP encoded action
         if (this.data.length) {
+            // Recover Action from Buffer
             const actionType = '0x' + toBuffer(this.type).toString('hex').toUpperCase() as TransactionType;
             const ActionClass = actionsRegistry.get(actionType);
 
             if (ActionClass) {
                 this._action = new ActionClass(this.data) as Action;
             } else {
-
-                logWarning(`Unregistered action type ${actionType}`, ActionClass, actionsRegistry);
+                logWarning(`Unregistered action type ${actionType}`);
             }
         }
 
@@ -218,29 +218,6 @@ export class Transaction {
     }
 
     /**
-     * Computes a sha3-256 hash of the serialized tx
-     * @param includeSignature - Whether or not to include the signature
-     */
-    hash(includeSignature = true): Buffer {
-        if (includeSignature === undefined) {
-            includeSignature = true;
-        }
-
-        let items;
-        if (includeSignature) {
-            items = this.raw;
-        }
-        //
-        else {
-            // hash everything except signatureData
-            items = this.raw.slice(0, this.raw.length - 1);
-        }
-
-        // create hash
-        return rlphash(items);
-    }
-
-    /**
      * Returns the sender's address
      * @return {Address}
      */
@@ -278,6 +255,33 @@ export class Transaction {
         }
 
         return this._senderPublicKey;
+    }
+
+    getAction(): Action {
+        return this._action;
+    }
+
+    /**
+     * Computes a sha3-256 hash of the serialized tx
+     * @param includeSignature - Whether or not to include the signature
+     */
+    hash(includeSignature = true): Buffer {
+        if (includeSignature === undefined) {
+            includeSignature = true;
+        }
+
+        let items;
+        if (includeSignature) {
+            items = this.raw;
+        }
+        //
+        else {
+            // hash everything except signatureData
+            items = this.raw.slice(0, this.raw.length - 1);
+        }
+
+        // create hash
+        return rlphash(items);
     }
 
     /**

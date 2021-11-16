@@ -34,7 +34,7 @@ export class ActionRegistry {
 const actionsRegistry = ActionRegistry.getInstance().
     register(TransactionType.BUY, tx_actions.BuyAction).
     register(TransactionType.SELL, tx_actions.SellAction).
-    register(TransactionType.SELL_ALL, tx_actions.SellAction).
+    register(TransactionType.SELL_ALL, tx_actions.SellAllAction).
     register(TransactionType.DECLARE_CANDIDACY, tx_actions.DeclareCandidacyAction).
     register(TransactionType.EDIT_CANDIDATE, tx_actions.EditCandidateAction).
     register(TransactionType.EDIT_CANDIDATE_COMMISSION, tx_actions.EditCandidateCommissionAction).
