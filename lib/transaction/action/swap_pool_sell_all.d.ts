@@ -1,6 +1,7 @@
 /// <reference types="bn.js" />
 /// <reference types="node" />
 import { BN } from '../../util';
+import { TransactionType } from '../transaction';
 import { Action } from './action';
 import { RlpSchemaField } from '../../util/define-properties';
 /**
@@ -14,6 +15,7 @@ export interface SellAllSwapActionParams {
  *
  */
 export declare class SellAllSwapAction extends Action {
+    static readonly txType = TransactionType.SELL_ALL_SWAP_POOL;
     coins: Buffer[];
     minimumValueToBuy: Buffer;
     constructor(params: SellAllSwapActionParams);

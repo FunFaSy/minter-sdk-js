@@ -1,5 +1,6 @@
 /// <reference types="bn.js" />
 /// <reference types="node" />
+import { TransactionType } from '../transaction';
 import { Action } from './action';
 import { RlpSchemaField } from '../../util/define-properties';
 import { BN } from '../../util/external';
@@ -14,6 +15,7 @@ export interface EditCandidateCommissioActionParams {
  *
  */
 export declare class EditCandidateCommissionAction extends Action {
+    static readonly txType = TransactionType.EDIT_CANDIDATE_COMMISSION;
     commission: Buffer;
     publicKey: Buffer;
     constructor(params: EditCandidateCommissioActionParams);

@@ -5,9 +5,10 @@ import { RlpSchemaField } from '../../util/define-properties';
  *
  */
 export declare abstract class Action {
+    static readonly txType: TransactionType;
     raw: Buffer[];
-    txType: TransactionType;
     constructor(data: any);
+    static constructorByType(type: TransactionType): Action;
     abstract rlpSchema(): RlpSchemaField[];
     type(): TransactionType;
     /**

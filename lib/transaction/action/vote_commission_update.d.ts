@@ -1,5 +1,6 @@
 /// <reference types="bn.js" />
 /// <reference types="node" />
+import { TransactionType } from '../transaction';
 import { Action } from './action';
 import { RlpSchemaField } from '../../util/define-properties';
 import { BN } from '../../util/external';
@@ -60,6 +61,7 @@ export interface VoteCommissionUpdateActionParams {
  *
  */
 export declare class VoteCommissionUpdateAction extends Action {
+    static readonly txType = TransactionType.VOTE_COMMISSION;
     publicKey: Buffer;
     height: Buffer;
     coin: Buffer;

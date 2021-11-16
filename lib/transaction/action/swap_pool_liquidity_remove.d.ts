@@ -1,6 +1,7 @@
 /// <reference types="bn.js" />
 /// <reference types="node" />
 import { BN } from '../../util';
+import { TransactionType } from '../transaction';
 import { Action } from './action';
 import { RlpSchemaField } from '../../util/define-properties';
 /**
@@ -17,6 +18,7 @@ export interface RemoveLiquidityActionParams {
  *
  */
 export declare class RemoveLiquidityAction extends Action {
+    static readonly txType = TransactionType.REMOVE_LIQUIDITY;
     coin0: Buffer;
     coin1: Buffer;
     liquidity: Buffer;
