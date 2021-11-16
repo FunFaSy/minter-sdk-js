@@ -24,16 +24,18 @@ export class AddLimitOrderAction extends Action {
     coinToBuy: Buffer;
     valueToBuy: Buffer;
 
-    constructor(params: AddLimitOrderActionParams) {
-        // Convert params to Buffers
-        const _params = {
-            coinToSell : new BN(params.coinToSell),
-            valueToSell: new BN(params.valueToSell),
-            coinToBuy  : new BN(params.coinToBuy),
-            valueToBuy : new BN(params.valueToBuy),
-        };
+    constructor(data?: string | Buffer | AddLimitOrderActionParams) {
+        let _data: any = data;
 
-        super(_params);
+        if (typeof data == 'object' && !Buffer.isBuffer(data)) {
+            _data = {
+                coinToSell : new BN(data?.coinToSell),
+                valueToSell: new BN(data?.valueToSell),
+                coinToBuy  : new BN(data?.coinToBuy),
+                valueToBuy : new BN(data?.valueToBuy),
+            };
+        }
+        super(_data);
     }
 
     rlpSchema(): RlpSchemaField[] {

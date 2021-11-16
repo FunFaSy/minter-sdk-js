@@ -18,15 +18,17 @@ export class SetCandidateOnAction extends Action {
 
     publicKey: Buffer;
 
-    constructor(params: SetCandidateOnActionParams) {
-        // Convert params to Buffers
-        const _params = {
-            publicKey: toBuffer(params.publicKey),
-        };
+    constructor(data?: string | Buffer | SetCandidateOnActionParams) {
+        let _data: any = data;
 
+        if (typeof data == 'object' && !Buffer.isBuffer(data)) {
+            _data = {
+                publicKey: toBuffer(data.publicKey),
+            };
+        }
         // TODO: Validation
 
-        super(_params);
+        super(_data);
     }
 
     rlpSchema(): RlpSchemaField[] {

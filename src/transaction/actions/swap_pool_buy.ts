@@ -22,16 +22,17 @@ export class BuySwapAction extends Action {
     valueToBuy: Buffer;
     maximumValueToSell: Buffer;
 
-    constructor(params: BuySwapActionParams) {
+    constructor(data?: string | Buffer | BuySwapActionParams) {
+        let _data: any = data;
 
-        // Convert params to Buffers
-        const _params = {
-            coins             : params.coins.map(item => new BN(item)),
-            valueToBuy        : new BN(params.valueToBuy),
-            maximumValueToSell: new BN(params.maximumValueToSell),
-        };
-
-        super(_params);
+        if (typeof data == 'object' && !Buffer.isBuffer(data)) {
+            _data = {
+                coins             : data.coins.map(item => new BN(item)),
+                valueToBuy        : new BN(data.valueToBuy),
+                maximumValueToSell: new BN(data.maximumValueToSell),
+            };
+        }
+        super(_data);
     }
 
     rlpSchema(): RlpSchemaField[] {

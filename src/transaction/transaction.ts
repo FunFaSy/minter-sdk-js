@@ -1,4 +1,4 @@
-import {Assignable, bufferToHex, bufferToInt, isValidAddress, logWarning, rlp, rlphash, toBuffer} from '../util';
+import {Assignable, bufferToInt, isValidAddress, logWarning, rlp, rlphash, toBuffer} from '../util';
 import {assert} from '../util/external';
 import defineProperties, {RlpSchemaField} from '../util/define-properties';
 import {Chain} from '../chain';
@@ -71,7 +71,7 @@ export class Transaction {
     protected _chain: Chain = null;
     protected _action: Action = null;
 
-    constructor(data?: string | Buffer | TransactionParams  , opts: TransactionOptions = {}) {
+    constructor(data?: string | Buffer | TransactionParams, opts: TransactionOptions = {}) {
 
         if (typeof data == 'object' && !Buffer.isBuffer(data)) {
             // TODO: Prepare params .
@@ -112,12 +112,14 @@ export class Transaction {
 
         // RLP encoded action
         if (this.data.length) {
-            const actionType = bufferToHex(this.type) as TransactionType;
+            const actionType = '0x' + toBuffer(this.type).toString('hex').toUpperCase() as TransactionType;
             const ActionClass = actionsRegistry.get(actionType);
+
             if (ActionClass) {
                 this._action = new ActionClass(this.data) as Action;
             } else {
-                logWarning(`Unregistered action type ${actionType}`);
+
+                logWarning(`Unregistered action type ${actionType}`, ActionClass, actionsRegistry);
             }
         }
 

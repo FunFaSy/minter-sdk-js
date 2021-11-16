@@ -24,20 +24,18 @@ export class CreateSwapPoolAction extends Action {
     volume0: Buffer;
     volume1: Buffer;
 
-    /**
-     *
-     * @param params
-     */
-    constructor(params: CreateSwapPoolActionParams) {
-        // Convert params to Buffers
-        const _params = {
-            coin0  : new BN(params.coin0),
-            coin1  : new BN(params.coin1),
-            volume0: new BN(params.volume0),
-            volume1: new BN(params.volume1),
-        };
+    constructor(data?: string | Buffer | CreateSwapPoolActionParams) {
+        let _data: any = data;
 
-        super(_params);
+        if (typeof data == 'object' && !Buffer.isBuffer(data)) {
+            _data = {
+                coin0  : new BN(data?.coin0),
+                coin1  : new BN(data?.coin1),
+                volume0: new BN(data?.volume0),
+                volume1: new BN(data?.volume1),
+            };
+        }
+        super(_data);
     }
 
     /**

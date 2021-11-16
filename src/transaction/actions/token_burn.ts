@@ -20,14 +20,16 @@ export class BurnTokenAction extends Action {
     coin: Buffer;
     value: Buffer;
 
-    constructor(params: BurnTokenActionParams) {
-        // Convert params to Buffers
-        const _params = {
-            coin : new BN(params.coin),
-            value: new BN(params.value),
-        };
+    constructor(data?: string | Buffer | BurnTokenActionParams) {
+        let _data: any = data;
 
-        super(_params);
+        if (typeof data == 'object' && !Buffer.isBuffer(data)) {
+            _data = {
+                coin : new BN(data.coin),
+                value: new BN(data.value),
+            };
+        }
+        super(_data);
     }
 
     rlpSchema(): RlpSchemaField[] {

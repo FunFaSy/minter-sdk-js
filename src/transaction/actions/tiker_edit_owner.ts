@@ -24,16 +24,18 @@ export class EditTickerOwnerAction extends Action {
      *
      * @param params
      */
-    constructor(params: EditTickerOwnerActionParams) {
-        // Convert params to Buffers
-        const _params = {
-            symbol  : Buffer.from(params.symbol, 'utf8'),
-            newOwner: toBuffer(params.newOwner),
-        };
+    constructor(data?: string | Buffer | EditTickerOwnerActionParams) {
+        let _data: any = data;
 
+        if (typeof data == 'object' && !Buffer.isBuffer(data)) {
+            _data = {
+                symbol  : Buffer.from(data.symbol, 'utf8'),
+                newOwner: toBuffer(data.newOwner),
+            };
+        }
         // TODO: Validation
         // Ticker symbol (for example, BTC). Must be unique, alphabetic, uppercase, and 3 to 10 symbols long.
-        super(_params);
+        super(_data);
     }
 
     /**

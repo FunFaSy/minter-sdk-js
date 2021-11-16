@@ -18,13 +18,15 @@ export class MultiSendAction extends Action {
 
     list: Buffer[];
 
-    constructor(params: MultiSendActionParams) {
-        // Convert params to Buffers
-        const _params = {
-            list: params.list, // Pass values through to nonBinaryArrayTransform encoder function.
-        };
+    constructor(data?: string | Buffer | MultiSendActionParams) {
+        let _data: any = data;
 
-        super(_params);
+        if (typeof data == 'object' && !Buffer.isBuffer(data)) {
+            _data = {
+                list: data?.list, // Pass values through to nonBinaryArrayTransform encoder function.
+            };
+        }
+        super(_data);
     }
 
     rlpSchema(): RlpSchemaField[] {

@@ -26,17 +26,19 @@ export class RemoveLiquidityAction extends Action {
     minimumVolume0: Buffer;
     minimumVolume1: Buffer;
 
-    constructor(params: RemoveLiquidityActionParams) {
-        // Convert params to Buffers
-        const _params = {
-            coin0         : new BN(params.coin0),
-            coin1         : new BN(params.coin1),
-            liquidity     : new BN(params.liquidity),
-            minimumVolume0: new BN(params.minimumVolume0),
-            minimumVolume1: new BN(params.minimumVolume1),
-        };
+    constructor(data?: string | Buffer | RemoveLiquidityActionParams) {
+        let _data: any = data;
 
-        super(_params);
+        if (typeof data == 'object' && !Buffer.isBuffer(data)) {
+            _data = {
+                coin0         : new BN(data?.coin0),
+                coin1         : new BN(data?.coin1),
+                liquidity     : new BN(data?.liquidity),
+                minimumVolume0: new BN(data?.minimumVolume0),
+                minimumVolume1: new BN(data?.minimumVolume1),
+            };
+        }
+        super(_data);
     }
 
     rlpSchema(): RlpSchemaField[] {

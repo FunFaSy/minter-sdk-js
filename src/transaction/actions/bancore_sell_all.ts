@@ -16,21 +16,23 @@ export interface SellAllActionParams {
  *
  */
 export class SellAllAction extends Action {
-    public static readonly txType= TransactionType.SELL_ALL;
+    public static readonly txType = TransactionType.SELL_ALL;
 
     coinToSell: Buffer;
     coinToBuy: Buffer;
     minimumValueToBuy: Buffer;
 
-    constructor(params: SellAllActionParams) {
-        // Convert params to Buffers
-        const _params = {
-            coinToSell       : new BN(params.coinToSell),
-            coinToBuy        : new BN(params.coinToBuy),
-            minimumValueToBuy: new BN(params.minimumValueToBuy),
-        };
+    constructor(data?: string | Buffer | SellAllActionParams) {
+        let _data: any = data;
 
-        super(_params);
+        if (typeof data == 'object' && !Buffer.isBuffer(data)) {
+            _data = {
+                coinToSell       : new BN(data?.coinToSell),
+                coinToBuy        : new BN(data?.coinToBuy),
+                minimumValueToBuy: new BN(data?.minimumValueToBuy),
+            };
+        }
+        super(_data);
 
     }
 

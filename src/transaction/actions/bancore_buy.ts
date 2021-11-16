@@ -17,23 +17,25 @@ export interface BuyActionParams {
  *
  */
 export class BuyAction extends Action {
-    public static readonly txType= TransactionType.BUY;
+    public static readonly txType = TransactionType.BUY;
 
     coinToBuy: Buffer;
     valueToBuy: Buffer;
     coinToSell: Buffer;
     maximumValueToSell: Buffer;
 
-    constructor(params: BuyActionParams) {
-        // Convert params to Buffers
-        const _params = {
-            coinToBuy         : new BN(params.coinToBuy),
-            valueToBuy        : new BN(params.valueToBuy),
-            coinToSell        : new BN(params.coinToSell),
-            maximumValueToSell: new BN(params.maximumValueToSell),
-        };
+    constructor(data?: string | Buffer | BuyActionParams) {
+        let _data: any = data;
 
-        super(_params);
+        if (typeof data == 'object' && !Buffer.isBuffer(data)) {
+            _data = {
+                coinToBuy         : new BN(data?.coinToBuy),
+                valueToBuy        : new BN(data?.valueToBuy),
+                coinToSell        : new BN(data?.coinToSell),
+                maximumValueToSell: new BN(data?.maximumValueToSell),
+            };
+        }
+        super(_data);
     }
 
     rlpSchema(): RlpSchemaField[] {

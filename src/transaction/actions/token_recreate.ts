@@ -19,7 +19,7 @@ export interface ReCreateTokenActionParams {
  *
  */
 export class ReCreateTokenAction extends Action {
-    public static readonly txType= TransactionType.RECREATE_TOKEN;
+    public static readonly txType = TransactionType.RECREATE_TOKEN;
 
     name: Buffer;
     symbol: Buffer;
@@ -28,25 +28,23 @@ export class ReCreateTokenAction extends Action {
     mintable?: Buffer;
     burnable?: Buffer;
 
-    /**
-     *
-     * @param params
-     */
-    constructor(params: ReCreateTokenActionParams) {
-        // Convert params to Buffers
-        const _params = {
-            name         : Buffer.from(params.name, 'utf8'),
-            symbol       : Buffer.from(params.symbol, 'utf8'),
-            initialAmount: new BN(params.initialAmount),
-            maxSupply    : new BN(params.maxSupply),
-            mintable     : params.mintable ? new BN(1) : new BN(0),
-            burnable     : params.burnable ? new BN(1) : new BN(0),
-        };
+    constructor(data?: string | Buffer | ReCreateTokenActionParams) {
+        let _data: any = data;
 
+        if (typeof data == 'object' && !Buffer.isBuffer(data)) {
+            _data = {
+                name         : Buffer.from(data.name, 'utf8'),
+                symbol       : Buffer.from(data.symbol, 'utf8'),
+                initialAmount: new BN(data.initialAmount),
+                maxSupply    : new BN(data.maxSupply),
+                mintable     : data.mintable ? new BN(1) : new BN(0),
+                burnable     : data.burnable ? new BN(1) : new BN(0),
+            };
+        }
         // TODO: Validation
         // "Maximum supply cannot be more than the initial amount, if the token is not mintable"
         // "Symbol max len 10"
-        super(_params);
+        super(_data);
     }
 
     /**

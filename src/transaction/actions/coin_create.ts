@@ -28,22 +28,20 @@ export class CreateCoinAction extends Action {
     constantReserveRatio: Buffer;
     maxSupply?: Buffer;
 
-    /**
-     *
-     * @param params
-     */
-    constructor(params: CreateCoinActionParams) {
-        // Convert params to Buffers
-        const _params = {
-            name                : Buffer.from(params.name, 'utf8'),
-            symbol              : Buffer.from(params.symbol, 'utf8'),
-            initialAmount       : new BN(params.initialAmount),
-            initialReserve      : new BN(params.initialReserve),
-            constantReserveRatio: new BN(params.constantReserveRatio),
-            maxSupply           : new BN(params.maxSupply),
-        };
+    constructor(data?: string | Buffer | CreateCoinActionParams) {
+        let _data: any = data;
 
-        super(_params);
+        if (typeof data == 'object' && !Buffer.isBuffer(data)) {
+            _data = {
+                name                : Buffer.from(data.name, 'utf8'),
+                symbol              : Buffer.from(data.symbol, 'utf8'),
+                initialAmount       : new BN(data.initialAmount),
+                initialReserve      : new BN(data.initialReserve),
+                constantReserveRatio: new BN(data.constantReserveRatio),
+                maxSupply           : new BN(data.maxSupply),
+            };
+        }
+        super(_data);
     }
 
     /**

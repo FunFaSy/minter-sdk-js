@@ -26,19 +26,21 @@ export class DeclareCandidacyAction extends Action {
     coin: Buffer;
     stake: Buffer;
 
-    constructor(params: DeclareCandidacyActionParams) {
-        // Convert params to Buffers
-        const _params = {
-            address   : toBuffer(params.address),
-            publicKey : toBuffer(params.publicKey),
-            commission: new BN(params.commission),
-            coin      : new BN(params.coin),
-            stake     : new BN(params.stake),
-        };
+    constructor(data?: string | Buffer | DeclareCandidacyActionParams) {
+        let _data: any = data;
 
+        if (typeof data == 'object' && !Buffer.isBuffer(data)) {
+            _data = {
+                address   : toBuffer(data.address),
+                publicKey : toBuffer(data.publicKey),
+                commission: new BN(data.commission),
+                coin      : new BN(data.coin),
+                stake     : new BN(data.stake),
+            };
+        }
         // TODO: Validation
 
-        super(_params);
+        super(_data);
     }
 
     rlpSchema(): RlpSchemaField[] {

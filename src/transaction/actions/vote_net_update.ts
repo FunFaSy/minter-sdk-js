@@ -23,17 +23,19 @@ export class VoteNetUpdateAction extends Action {
     height: Buffer;
     version: Buffer;
 
-    constructor(params: VoteNetUpdateActionParams) {
-        // Convert params to Buffers
-        const _params = {
-            publicKey: toBuffer(params.publicKey),
-            version  : Buffer.from(params.version, 'utf8'),
-            height   : new BN(params.height),
-        };
+    constructor(data?: string | Buffer | VoteNetUpdateActionParams) {
+        let _data: any = data;
 
+        if (typeof data == 'object' && !Buffer.isBuffer(data)) {
+            _data = {
+                publicKey: toBuffer(data.publicKey),
+                version  : Buffer.from(data.version, 'utf8'),
+                height   : new BN(data.height),
+            };
+        }
         // TODO: Validation
         // version regexp("^[a-zA-Z0-9_]{1,20}$")
-        super(_params);
+        super(_data);
     }
 
     rlpSchema(): RlpSchemaField[] {

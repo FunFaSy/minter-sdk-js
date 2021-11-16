@@ -23,17 +23,19 @@ export class DelegateAction extends Action {
     stake: Buffer;
     publicKey: Buffer;
 
-    constructor(params: DelegateActionParams) {
-        // Convert params to Buffers
-        const _params = {
-            publicKey: toBuffer(params.publicKey),
-            coin     : new BN(params.coin),
-            stake    : new BN(params.stake),
-        };
+    constructor(data?: string | Buffer | DelegateActionParams) {
+        let _data: any = data;
 
+        if (typeof data == 'object' && !Buffer.isBuffer(data)) {
+            _data = {
+                publicKey: toBuffer(data.publicKey),
+                coin     : new BN(data.coin),
+                stake    : new BN(data.stake),
+            };
+        }
         // TODO: Validation
 
-        super(_params);
+        super(_data);
     }
 
     rlpSchema(): RlpSchemaField[] {

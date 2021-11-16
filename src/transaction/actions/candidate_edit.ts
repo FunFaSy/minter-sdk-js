@@ -24,18 +24,20 @@ export class EditCandidateAction extends Action {
     rewardAddress: Buffer;
     publicKey: Buffer;
 
-    constructor(params: EditCandidateActionParams) {
-        // Convert params to Buffers
-        const _params = {
-            publicKey     : toBuffer(params.publicKey),
-            ownerAddress  : toBuffer(params.ownerAddress),
-            controlAddress: toBuffer(params.controlAddress),
-            rewardAddress : toBuffer(params.rewardAddress),
-        };
+    constructor(data?: string | Buffer | EditCandidateActionParams) {
+        let _data: any = data;
 
+        if (typeof data == 'object' && !Buffer.isBuffer(data)) {
+            _data = {
+                publicKey     : toBuffer(data.publicKey),
+                ownerAddress  : toBuffer(data.ownerAddress),
+                controlAddress: toBuffer(data.controlAddress),
+                rewardAddress : toBuffer(data.rewardAddress),
+            };
+        }
         // TODO: Validation
 
-        super(_params);
+        super(_data);
 
     }
 

@@ -25,20 +25,22 @@ export class MoveStakeAction extends Action {
     from: Buffer;
     to: Buffer;
 
-    constructor(params: MoveStakeActionParams) {
-        // Convert params to Buffers
-        const _params = {
-            from : toBuffer(params.from),
-            to   : toBuffer(params.to),
-            coin : new BN(params.coin),
-            stake: new BN(params.stake),
-        };
+    constructor(data?: string | Buffer | MoveStakeActionParams) {
+        let _data: any = data;
 
+        if (typeof data == 'object' && !Buffer.isBuffer(data)) {
+            _data = {
+                from : toBuffer(data?.from),
+                to   : toBuffer(data?.to),
+                coin : new BN(data?.coin),
+                stake: new BN(data?.stake),
+            };
+        }
         throw new Error(
             'Action MoveStake disabled for now. @link https://www.minter.network/docs#move-stake-transaction');
         // TODO: Validation
 
-        super(_params);
+        super(_data);
     }
 
     rlpSchema(): RlpSchemaField[] {

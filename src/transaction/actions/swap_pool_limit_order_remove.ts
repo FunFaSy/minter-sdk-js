@@ -18,13 +18,15 @@ export class RemoveLimitOrderAction extends Action {
 
     orderId: Buffer;
 
-    constructor(params: RemoveLimitOrderActionParams) {
-        // Convert params to Buffers
-        const _params = {
-            orderId: new BN(params.orderId),
-        };
+    constructor(data?: string | Buffer | RemoveLimitOrderActionParams) {
+        let _data: any = data;
 
-        super(_params);
+        if (typeof data == 'object' && !Buffer.isBuffer(data)) {
+            _data = {
+                orderId: new BN(data.orderId),
+            };
+        }
+        super(_data);
     }
 
     rlpSchema(): RlpSchemaField[] {

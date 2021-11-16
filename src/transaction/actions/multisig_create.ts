@@ -22,19 +22,21 @@ export class CreateMultiSigAction extends Action {
     weights: Buffer[];
     addresses: Buffer[];
 
-    constructor(params: CreateMultiSigActionParams) {
-        // Convert params to Buffers
-        const _params = {
-            threshold: new BN(params.threshold),// Should be less or equal than Weights Sum
-            weights  : params.weights, // Should be greater or equal than threshold
-            addresses: params.addresses,
-        };
+    constructor(data?: string | Buffer | CreateMultiSigActionParams) {
+        let _data: any = data;
 
+        if (typeof data == 'object' && !Buffer.isBuffer(data)) {
+            _data = {
+                threshold: new BN(data?.threshold),// Should be less or equal than Weights Sum
+                weights  : data?.weights.map(w => new BN(w)), // Should be greater or equal than threshold
+                addresses: data?.addresses,
+            };
+        }
         // TODO: Validation
         // threshold Should be less or equal than Weights Sum
         // weights   Should be greater or equal than threshold
 
-        super(_params);
+        super(_data);
     }
 
     rlpSchema(): RlpSchemaField[] {

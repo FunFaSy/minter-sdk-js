@@ -20,16 +20,18 @@ export class EditCandidatePubKeyAction extends Action {
     newPublicKey: Buffer;
     publicKey: Buffer;
 
-    constructor(params: EditCandidatePubKeyActionParams) {
-        // Convert params to Buffers
-        const _params = {
-            publicKey   : toBuffer(params.publicKey),
-            newPublicKey: toBuffer(params.newPublicKey),
-        };
+    constructor(data?: string | Buffer | EditCandidatePubKeyActionParams) {
+        let _data: any = data;
 
+        if (typeof data == 'object' && !Buffer.isBuffer(data)) {
+            _data = {
+                publicKey   : toBuffer(data.publicKey),
+                newPublicKey: toBuffer(data.newPublicKey),
+            };
+        }
         // TODO: Validation
 
-        super(_params);
+        super(_data);
 
     }
 

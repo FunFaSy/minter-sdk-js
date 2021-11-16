@@ -20,14 +20,16 @@ export class MintTokenAction extends Action {
     coin: Buffer;
     value: Buffer;
 
-    constructor(params: MintTokenActionParams) {
-        // Convert params to Buffers
-        const _params = {
-            coin : new BN(params.coin),
-            value: new BN(params.value),
-        };
+    constructor(data?: string | Buffer | MintTokenActionParams) {
+        let _data: any = data;
 
-        super(_params);
+        if (typeof data == 'object' && !Buffer.isBuffer(data)) {
+            _data = {
+                coin : new BN(data.coin),
+                value: new BN(data.value),
+            };
+        }
+        super(_data);
     }
 
     rlpSchema(): RlpSchemaField[] {

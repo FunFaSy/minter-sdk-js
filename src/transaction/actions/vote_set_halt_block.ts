@@ -21,16 +21,18 @@ export class VoteHaltBlockAction extends Action {
     publicKey: Buffer;
     height: Buffer;
 
-    constructor(params: VoteHaltBlockActionParams) {
-        // Convert params to Buffers
-        const _params = {
-            publicKey: toBuffer(params.publicKey),
-            height   : new BN(params.height),
-        };
+    constructor(data?: string | Buffer | VoteHaltBlockActionParams) {
+        let _data: any = data;
 
+        if (typeof data == 'object' && !Buffer.isBuffer(data)) {
+            _data = {
+                publicKey: toBuffer(data.publicKey),
+                height   : new BN(data.height),
+            };
+        }
         // TODO: Validation
 
-        super(_params);
+        super(_data);
     }
 
     rlpSchema(): RlpSchemaField[] {

@@ -22,16 +22,17 @@ export class SellSwapAction extends Action {
     valueToSell: Buffer;
     minimumValueToBuy: Buffer;
 
-    constructor(params: SellSwapActionParams) {
+    constructor(data?: string | Buffer | SellSwapActionParams) {
+        let _data: any = data;
 
-        // Convert params to Buffers
-        const _params = {
-            coins            : params.coins.map(item => new BN(item)),
-            valueToSell      : new BN(params.valueToSell),
-            minimumValueToBuy: new BN(params.minimumValueToBuy),
-        };
-
-        super(_params);
+        if (typeof data == 'object' && !Buffer.isBuffer(data)) {
+            _data = {
+                coins            : data.coins.map(item => new BN(item)),
+                valueToSell      : new BN(data.valueToSell),
+                minimumValueToBuy: new BN(data.minimumValueToBuy),
+            };
+        }
+        super(_data);
     }
 
     rlpSchema(): RlpSchemaField[] {

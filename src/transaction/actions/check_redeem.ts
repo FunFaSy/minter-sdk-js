@@ -21,14 +21,16 @@ export class RedeemCheckAction extends Action {
     check: Buffer;
     proof: Buffer;
 
-    constructor(params: RedeemCheckActionParams) {
-        // Convert params to Buffers
-        const _params = {
-            check: (typeof params.check == 'string') ? (new Check(params.check)).serialize() : params.check.serialize(),
-            proof: (typeof params.proof == 'string') ? toBuffer(params.proof) : params.proof,
-        };
+    constructor(data?: string | Buffer | RedeemCheckActionParams) {
+        let _data: any = data;
 
-        super(_params);
+        if (typeof data == 'object' && !Buffer.isBuffer(data)) {
+            _data = {
+                check: (typeof data.check == 'string') ? (new Check(data.check)).serialize() : data.check.serialize(),
+                proof: (typeof data.proof == 'string') ? toBuffer(data.proof) : data.proof,
+            };
+        }
+        super(_data);
     }
 
     rlpSchema(): RlpSchemaField[] {

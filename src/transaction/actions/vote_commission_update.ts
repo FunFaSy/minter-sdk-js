@@ -113,63 +113,65 @@ export class VoteCommissionUpdateAction extends Action {
     addLimitOrder: Buffer;
     removeLimitOrder: Buffer;
 
-    constructor(params: VoteCommissionUpdateActionParams) {
-        // Convert params to Buffers
-        const _params = {
-            publicKey              : toBuffer(params.publicKey),
-            height                 : new BN(params.height),
-            coin                   : new BN(params.coin),
-            payloadByte            : new BN(params.payloadByte),
-            send                   : new BN(params.send),
-            buyBancor              : new BN(params.buyBancor),
-            sellBancor             : new BN(params.sellBancor),
-            sellAllBancor          : new BN(params.sellAllBancor),
-            buyPoolBase            : new BN(params.buyPoolBase),
-            buyPoolDelta           : new BN(params.buyPoolDelta),
-            sellPoolBase           : new BN(params.sellPoolBase),
-            sellPoolDelta          : new BN(params.sellPoolDelta),
-            sellAllPoolBase        : new BN(params.sellAllPoolBase),
-            sellAllPoolDelta       : new BN(params.sellAllPoolDelta),
-            createTicker3          : new BN(params.createTicker3),
-            createTicker4          : new BN(params.createTicker4),
-            createTicker5          : new BN(params.createTicker5),
-            createTicker6          : new BN(params.createTicker6),
-            createTicker7to10      : new BN(params.createTicker7to10),
-            createCoin             : new BN(params.createCoin),
-            createToken            : new BN(params.createToken),
-            recreateCoin           : new BN(params.recreateCoin),
-            recreateToken          : new BN(params.recreateToken),
-            declareCandidacy       : new BN(params.declareCandidacy),
-            delegate               : new BN(params.delegate),
-            unbond                 : new BN(params.unbond),
-            redeemCheck            : new BN(params.redeemCheck),
-            setCandidateOn         : new BN(params.setCandidateOn),
-            setCandidateOff        : new BN(params.setCandidateOff),
-            createMultisig         : new BN(params.createMultisig),
-            multisendBase          : new BN(params.multisendBase),
-            multisendDelta         : new BN(params.multisendDelta),
-            editCandidate          : new BN(params.editCandidate),
-            setHaltBlock           : new BN(params.setHaltBlock),
-            editTickerOwner        : new BN(params.editTickerOwner),
-            editMultisig           : new BN(params.editMultisig),
-            editCandidatePublicKey : new BN(params.editCandidatePublicKey),
-            createSwapPool         : new BN(params.createSwapPool),
-            addLiquidity           : new BN(params.addLiquidity),
-            removeLiquidity        : new BN(params.removeLiquidity),
-            editCandidateCommission: new BN(params.editCandidateCommission),
-            mintToken              : new BN(params.mintToken),
-            burnToken              : new BN(params.burnToken),
-            voteCommission         : new BN(params.voteCommission),
-            voteUpdate             : new BN(params.voteUpdate),
-            failedTx               : new BN(params.failedTx),
-            addLimitOrder          : new BN(params.addLimitOrder),
-            removeLimitOrder       : new BN(params.removeLimitOrder),
-            // more:               : Buffer.from([])
-        };
+    constructor(data?: string | Buffer | VoteCommissionUpdateActionParams) {
+        let _data: any = data;
 
+        if (typeof data == 'object' && !Buffer.isBuffer(data)) {
+            _data = {
+                publicKey              : toBuffer(data.publicKey),
+                height                 : new BN(data.height),
+                coin                   : new BN(data.coin),
+                payloadByte            : new BN(data.payloadByte),
+                send                   : new BN(data.send),
+                buyBancor              : new BN(data.buyBancor),
+                sellBancor             : new BN(data.sellBancor),
+                sellAllBancor          : new BN(data.sellAllBancor),
+                buyPoolBase            : new BN(data.buyPoolBase),
+                buyPoolDelta           : new BN(data.buyPoolDelta),
+                sellPoolBase           : new BN(data.sellPoolBase),
+                sellPoolDelta          : new BN(data.sellPoolDelta),
+                sellAllPoolBase        : new BN(data.sellAllPoolBase),
+                sellAllPoolDelta       : new BN(data.sellAllPoolDelta),
+                createTicker3          : new BN(data.createTicker3),
+                createTicker4          : new BN(data.createTicker4),
+                createTicker5          : new BN(data.createTicker5),
+                createTicker6          : new BN(data.createTicker6),
+                createTicker7to10      : new BN(data.createTicker7to10),
+                createCoin             : new BN(data.createCoin),
+                createToken            : new BN(data.createToken),
+                recreateCoin           : new BN(data.recreateCoin),
+                recreateToken          : new BN(data.recreateToken),
+                declareCandidacy       : new BN(data.declareCandidacy),
+                delegate               : new BN(data.delegate),
+                unbond                 : new BN(data.unbond),
+                redeemCheck            : new BN(data.redeemCheck),
+                setCandidateOn         : new BN(data.setCandidateOn),
+                setCandidateOff        : new BN(data.setCandidateOff),
+                createMultisig         : new BN(data.createMultisig),
+                multisendBase          : new BN(data.multisendBase),
+                multisendDelta         : new BN(data.multisendDelta),
+                editCandidate          : new BN(data.editCandidate),
+                setHaltBlock           : new BN(data.setHaltBlock),
+                editTickerOwner        : new BN(data.editTickerOwner),
+                editMultisig           : new BN(data.editMultisig),
+                editCandidatePublicKey : new BN(data.editCandidatePublicKey),
+                createSwapPool         : new BN(data.createSwapPool),
+                addLiquidity           : new BN(data.addLiquidity),
+                removeLiquidity        : new BN(data.removeLiquidity),
+                editCandidateCommission: new BN(data.editCandidateCommission),
+                mintToken              : new BN(data.mintToken),
+                burnToken              : new BN(data.burnToken),
+                voteCommission         : new BN(data.voteCommission),
+                voteUpdate             : new BN(data.voteUpdate),
+                failedTx               : new BN(data.failedTx),
+                addLimitOrder          : new BN(data.addLimitOrder),
+                removeLimitOrder       : new BN(data.removeLimitOrder),
+                // more:               : Buffer.from([])
+            };
+        }
         // TODO: Validation
 
-        super(_params);
+        super(_data);
     }
 
     rlpSchema(): RlpSchemaField[] {

@@ -24,16 +24,18 @@ export class AddLiquidityAction extends Action {
     volume0: Buffer;
     maximumVolume1: Buffer;
 
-    constructor(params: AddLiquidityActionParams) {
-        // Convert params to Buffers
-        const _params = {
-            coin0         : new BN(params.coin0),
-            coin1         : new BN(params.coin1),
-            volume0       : new BN(params.volume0),
-            maximumVolume1: new BN(params.maximumVolume1),
-        };
+    constructor(data?: string | Buffer | AddLiquidityActionParams) {
+        let _data: any = data;
 
-        super(_params);
+        if (typeof data == 'object' && !Buffer.isBuffer(data)) {
+            _data = {
+                coin0         : new BN(data?.coin0),
+                coin1         : new BN(data?.coin1),
+                volume0       : new BN(data?.volume0),
+                maximumVolume1: new BN(data?.maximumVolume1),
+            };
+        }
+        super(_data);
     }
 
     rlpSchema(): RlpSchemaField[] {
