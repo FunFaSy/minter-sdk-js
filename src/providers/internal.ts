@@ -97,19 +97,29 @@ export interface NodeStatusResponse extends RpcQueryResponse {[key: string]: any
 //----------- Account
 export interface AddressStateRequest extends RpcQueryRequest {
     height: number;
+    delegated: boolean;
 }
 
 export interface AddressStateResponse extends RpcQueryResponse {[key: string]: any}
 
-export interface AdressesRequest extends RpcQueryRequest {[key: string]: any}
+export interface AdressesRequest extends RpcQueryRequest {
+    height: number;
+    delegated: boolean;
+}
 
 export interface AdressesResponse extends RpcQueryResponse {[key: string]: any}
 
 export interface AddressFrozenResponse extends RpcQueryResponse {[key: string]: any}
 
-export interface AddressFrozenRequest extends RpcQueryRequest {[key: string]: any}
+export interface AddressFrozenRequest extends RpcQueryRequest {
+    height: number;
+    coinId: number;
+}
 
-export interface AddressWaitListRequest extends RpcQueryRequest {[key: string]: any}
+export interface AddressWaitListRequest extends RpcQueryRequest {
+    height: number;
+    publicKey: number;
+}
 
 export interface AddressWaitListResponse extends RpcQueryResponse {[key: string]: any}
 

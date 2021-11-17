@@ -30,11 +30,11 @@ export abstract class Provider {
     //----------- Account
     abstract address(address: string,params: rpcTypes.AddressStateRequest): Promise<rpcTypes.AddressStateResponse>;
 
-    abstract addresses(params: rpcTypes.AdressesRequest): Promise<rpcTypes.AdressesResponse>;
+    abstract addresses(addresses: string[],params: rpcTypes.AdressesRequest): Promise<rpcTypes.AdressesResponse>;
 
-    abstract frozen(params: rpcTypes.AddressFrozenRequest): Promise<rpcTypes.AddressFrozenResponse>;
+    abstract frozen(address: string,params: rpcTypes.AddressFrozenRequest): Promise<rpcTypes.AddressFrozenResponse>;
 
-    abstract waitlist(params: rpcTypes.AddressWaitListRequest): Promise<rpcTypes.AddressWaitListResponse>;
+    abstract waitlist(address: string,params: rpcTypes.AddressWaitListRequest): Promise<rpcTypes.AddressWaitListResponse>;
 
     //----------- Validator
     abstract candidate(publicKey: string,params: rpcTypes.CandidateRequest): Promise<rpcTypes.CandidateResponse>;
