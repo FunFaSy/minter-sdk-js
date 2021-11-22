@@ -7,48 +7,48 @@ import * as rpcTypes from './internal';
 /** @hidden (@link https://github.com/MinterTeam/node-grpc-gateway/blob/master/api.proto)*/
 export abstract class Provider {
     //-----------  Blockchain
-    abstract block(height: number, params: rpcTypes.BlockRequest): Promise<rpcTypes.BlockResponse>;
+    abstract block(height: number, params?: rpcTypes.BlockRequest): Promise<rpcTypes.BlockResponse>;
 
-    abstract blocks(fromHeight: number, toHeight: number,params: rpcTypes.BlocksRequest): Promise<rpcTypes.BlocksResponse>;
+    abstract blocks(fromHeight: number, toHeight: number, params?: rpcTypes.BlocksRequest): Promise<rpcTypes.BlocksResponse>;
 
     abstract genesis(): Promise<rpcTypes.GenesisResponse>;
 
     abstract netInfo(): Promise<rpcTypes.NetInfoResponse>;
 
-    abstract sendTransaction(tx: string,params: rpcTypes.SendTransactionRequest): Promise<rpcTypes.SendTransactionResponse>;
+    abstract sendTransaction(tx: string, params?: rpcTypes.SendTransactionRequest): Promise<rpcTypes.SendTransactionResponse>;
 
     abstract status(): Promise<rpcTypes.NodeStatusResponse>;
 
-    abstract transaction(hash: string,params: rpcTypes.TransactionRequest): Promise<rpcTypes.TransactionResponse>;
+    abstract transaction(hash: string, params?: rpcTypes.TransactionRequest): Promise<rpcTypes.TransactionResponse>;
 
-    abstract transactions(query: string,params: rpcTypes.TransactionsRequest): Promise<rpcTypes.TransactionsResponse>;
+    abstract transactions(query: string, params?: rpcTypes.TransactionsRequest): Promise<rpcTypes.TransactionsResponse>;
 
     abstract unconfirmedTransactions(params: rpcTypes.UnconfirmedTxsRequest): Promise<rpcTypes.UnconfirmedTxsResponse>;
 
     abstract networkVersion(): Promise<rpcTypes.NetworkVersionResponse>;
 
     //----------- Account
-    abstract address(address: string,params: rpcTypes.AddressStateRequest): Promise<rpcTypes.AddressStateResponse>;
+    abstract address(address: string, params?: rpcTypes.AddressStateRequest): Promise<rpcTypes.AddressStateResponse>;
 
-    abstract addresses(addresses: string[],params: rpcTypes.AdressesRequest): Promise<rpcTypes.AdressesResponse>;
+    abstract addresses(addresses: string[], params?: rpcTypes.AdressesRequest): Promise<rpcTypes.AdressesResponse>;
 
-    abstract frozen(address: string,params: rpcTypes.AddressFrozenRequest): Promise<rpcTypes.AddressFrozenResponse>;
+    abstract frozen(address: string, params?: rpcTypes.AddressFrozenRequest): Promise<rpcTypes.AddressFrozenResponse>;
 
-    abstract waitlist(address: string,params: rpcTypes.AddressWaitListRequest): Promise<rpcTypes.AddressWaitListResponse>;
+    abstract waitlist(address: string, params?: rpcTypes.AddressWaitListRequest): Promise<rpcTypes.AddressWaitListResponse>;
 
     //----------- Validator
-    abstract candidate(publicKey: string,params: rpcTypes.CandidateRequest): Promise<rpcTypes.CandidateResponse>;
+    abstract candidate(publicKey: string, params?: rpcTypes.CandidateRequest): Promise<rpcTypes.CandidateResponse>;
 
-    abstract candidates(params: rpcTypes.CandidatesRequest): Promise<rpcTypes.CandidatesResponse>;
+    abstract candidates(params?: rpcTypes.CandidatesRequest): Promise<rpcTypes.CandidatesResponse>;
 
-    abstract missedBlocks(publicKey: string,params: rpcTypes.MissedBlocksRequest): Promise<rpcTypes.MissedBlocksResponse>;
+    abstract missedBlocks(publicKey: string, params?: rpcTypes.MissedBlocksRequest): Promise<rpcTypes.MissedBlocksResponse>;
 
-    abstract validators(params: rpcTypes.ValidatorsRequest): Promise<rpcTypes.ValidatorsResponse>;
+    abstract validators(params?: rpcTypes.ValidatorsRequest): Promise<rpcTypes.ValidatorsResponse>;
 
     //----------- Coins/Tokens
-    abstract coinInfo(params: rpcTypes.CoinInfoRequest): Promise<rpcTypes.CoinInfoResponse>;
+    abstract coinInfo(symbol: string, params?: rpcTypes.CoinInfoRequest): Promise<rpcTypes.CoinInfoResponse>;
 
-    abstract coinInfoById(params: rpcTypes.CoinInfoByIdRequest): Promise<rpcTypes.CoinInfoByIdResponse>;
+    abstract coinInfoById(id: number, params?: rpcTypes.CoinInfoByIdRequest): Promise<rpcTypes.CoinInfoByIdResponse>;
 
     abstract estimateCoinBuy(params: rpcTypes.EstimateCoinBuyRequest): Promise<rpcTypes.EstimateCoinBuyResponse>;
 

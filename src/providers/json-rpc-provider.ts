@@ -3,7 +3,7 @@
  * @module
  */
 import {Provider} from './provider';
-import {ConnectionInfo, isString, logWarning, newRpcClient, TypedError} from '../util';
+import {ConnectionInfo, convertBipToPip, isString, logWarning, newRpcClient, TypedError} from '../util';
 import exponentialBackoff from '../util/exponential-backoff';
 import {parseRpcError} from './errors';
 import * as rpcTypes from './internal';
@@ -46,7 +46,7 @@ export class JsonRpcProvider extends Provider {
     }
 
     //-----------  Blockchain
-    async block(height: number, params: rpcTypes.BlockRequest): Promise<rpcTypes.BlockResponse> {
+    async block(height: number, params?: rpcTypes.BlockRequest): Promise<rpcTypes.BlockResponse> {
         if (!height) {
             return Promise.reject(new TypedError('height parameter required', 'ArgumentsRequired'));
         }
@@ -58,7 +58,7 @@ export class JsonRpcProvider extends Provider {
         return this.sendRpcCall(url, _params);
     }
 
-    async blocks(fromHeight: number, toHeight: number, params: rpcTypes.BlocksRequest): Promise<rpcTypes.BlocksResponse> {
+    async blocks(fromHeight: number, toHeight: number, params?: rpcTypes.BlocksRequest): Promise<rpcTypes.BlocksResponse> {
 
         if (!fromHeight || !toHeight) {
             return Promise.reject(new TypedError('fromHeight/toHeight  parameters required', 'ArgumentsRequired'));
@@ -82,7 +82,7 @@ export class JsonRpcProvider extends Provider {
         return this.sendRpcCall('net_info');
     }
 
-    async sendTransaction(tx: string, params: rpcTypes.SendTransactionRequest): Promise<rpcTypes.SendTransactionResponse> {
+    async sendTransaction(tx: string, params?: rpcTypes.SendTransactionRequest): Promise<rpcTypes.SendTransactionResponse> {
         if (!tx && !params.tx) {
             return Promise.reject(new TypedError('tx parameter not specified', 'ArgumentsRequired'));
         }
@@ -95,7 +95,7 @@ export class JsonRpcProvider extends Provider {
         return this.sendRpcCall('status');
     }
 
-    async transaction(hash: string, params: rpcTypes.TransactionRequest): Promise<rpcTypes.TransactionResponse> {
+    async transaction(hash: string, params?: rpcTypes.TransactionRequest): Promise<rpcTypes.TransactionResponse> {
         if (!hash && !params.hash) {
             return Promise.reject(new TypedError('transaction hash parameter not specified', 'ArgumentsRequired'));
         }
@@ -104,7 +104,7 @@ export class JsonRpcProvider extends Provider {
         return this.sendRpcCall(url, params);
     }
 
-    async transactions(query: string, params: rpcTypes.TransactionsRequest): Promise<rpcTypes.TransactionsResponse> {
+    async transactions(query: string, params?: rpcTypes.TransactionsRequest): Promise<rpcTypes.TransactionsResponse> {
         if (!query) {
             return Promise.reject(new TypedError('query  parameters required', 'ArgumentsRequired'));
         }
@@ -119,7 +119,7 @@ export class JsonRpcProvider extends Provider {
         return this.sendRpcCall(url, _params);
     }
 
-    async unconfirmedTransactions(params: rpcTypes.UnconfirmedTxsRequest): Promise<rpcTypes.UnconfirmedTxsResponse> {
+    async unconfirmedTransactions(params?: rpcTypes.UnconfirmedTxsRequest): Promise<rpcTypes.UnconfirmedTxsResponse> {
         const _params = {
             limit: params?.limit || 30,
         };
@@ -134,7 +134,7 @@ export class JsonRpcProvider extends Provider {
     }
 
     //----------- Account
-    async address(address: string, params: rpcTypes.AddressStateRequest): Promise<rpcTypes.AddressStateResponse> {
+    async address(address: string, params?: rpcTypes.AddressStateRequest): Promise<rpcTypes.AddressStateResponse> {
         if (!address) {
             return Promise.reject(new TypedError('address parameter not specified', 'ArgumentsRequired'));
         }
@@ -147,7 +147,7 @@ export class JsonRpcProvider extends Provider {
         return this.sendRpcCall(url, _params);
     }
 
-    async addresses(addresses: string[], params: rpcTypes.AdressesRequest): Promise<rpcTypes.AdressesResponse> {
+    async addresses(addresses: string[], params?: rpcTypes.AdressesRequest): Promise<rpcTypes.AdressesResponse> {
         if (!addresses || !addresses.length) {
             return Promise.reject(
                 new TypedError('addresses parameter not specified or empty array', 'ArgumentsRequired'));
@@ -162,7 +162,7 @@ export class JsonRpcProvider extends Provider {
         return this.sendRpcCall(url, _params);
     }
 
-    async frozen(address: string, params: rpcTypes.AddressFrozenRequest): Promise<rpcTypes.AddressFrozenResponse> {
+    async frozen(address: string, params?: rpcTypes.AddressFrozenRequest): Promise<rpcTypes.AddressFrozenResponse> {
         if (!address) {
             return Promise.reject(new TypedError('address parameter not specified', 'ArgumentsRequired'));
         }
@@ -175,7 +175,7 @@ export class JsonRpcProvider extends Provider {
         return this.sendRpcCall(url, _params);
     }
 
-    async waitlist(address: string, params: rpcTypes.AddressWaitListRequest): Promise<rpcTypes.AddressWaitListResponse> {
+    async waitlist(address: string, params?: rpcTypes.AddressWaitListRequest): Promise<rpcTypes.AddressWaitListResponse> {
         if (!address) {
             return Promise.reject(new TypedError('address parameter not specified', 'ArgumentsRequired'));
         }
@@ -189,70 +189,225 @@ export class JsonRpcProvider extends Provider {
     }
 
     //----------- Validator
-    async candidate(publicKey: string, params: rpcTypes.CandidateRequest = {
-        height    : undefined,
-        showStakes: true,
-    }): Promise<rpcTypes.CandidateResponse> {
+    async candidate(publicKey: string, params?: rpcTypes.CandidateRequest): Promise<rpcTypes.CandidateResponse> {
+        if (!publicKey) {
+            return Promise.reject(new TypedError('publicKey parameter not specified', 'ArgumentsRequired'));
+        }
+
         const _params = {
-            height         : params.height,
-            not_show_stakes: !params.showStakes,
+            height         : params?.height,
+            not_show_stakes: !params?.showStakes,
         };
         const url = 'candidate/'.concat(publicKey);
         return this.sendRpcCall(url, _params);
     }
 
-    async candidates(params: rpcTypes.CandidatesRequest = {
-        height       : undefined,
-        includeStakes: false,
-        showStakes   : true,
-        status       : CandidatesStatusEnum.ALL,
-    }): Promise<rpcTypes.CandidatesResponse> {
+    async candidates(params?: rpcTypes.CandidatesRequest): Promise<rpcTypes.CandidatesResponse> {
         const _params = {
-            height         : params.height,
-            include_stakes : params.includeStakes,
-            not_show_stakes: !params.showStakes,
-            status         : params.status,
+            height         : params?.height,
+            include_stakes : params?.includeStakes || false,
+            not_show_stakes: !params?.showStakes,
+            status         : params?.status || CandidatesStatusEnum.ALL,
         };
         const url = 'candidates';
 
         return this.sendRpcCall(url, _params);
     }
 
-    async missedBlocks(publicKey: string, params: rpcTypes.MissedBlocksRequest = {height: undefined}): Promise<rpcTypes.MissedBlocksResponse> {
+    async missedBlocks(publicKey: string, params?: rpcTypes.MissedBlocksRequest): Promise<rpcTypes.MissedBlocksResponse> {
+        if (!publicKey) {
+            return Promise.reject(new TypedError('publicKey parameter not specified', 'ArgumentsRequired'));
+        }
+        const _params = {
+            height: params?.height,
+        };
         const url = 'missed_blocks/'.concat(publicKey);
-        return this.sendRpcCall(url, params);
+        return this.sendRpcCall(url, _params);
     }
 
-    async validators(params: rpcTypes.ValidatorsRequest): Promise<rpcTypes.ValidatorsResponse> {
-        return Promise.resolve(undefined);
+    async validators(params?: rpcTypes.ValidatorsRequest): Promise<rpcTypes.ValidatorsResponse> {
+        const _params = {
+            height: params?.height,
+        };
+        const url = 'validators';
+        return this.sendRpcCall(url, _params);
     }
 
     //----------- Coins/Tokens
+    async coinInfo(symbol: string, params?: rpcTypes.CoinInfoRequest): Promise<rpcTypes.CoinInfoResponse> {
+        const url = 'coin_info/'.concat(symbol.toUpperCase());
+        const _params = {
+            height: params?.height,
+        };
+
+        return this.sendRpcCall(url, _params);
+    }
+
+    async coinInfoById(id: number, params?: rpcTypes.CoinInfoByIdRequest): Promise<rpcTypes.CoinInfoByIdResponse> {
+        const url = 'coin_info_by_id/'.concat(id.toString());
+        const _params = {
+            height: params?.height,
+        };
+
+        return this.sendRpcCall(url, _params);
+    }
+
+    async estimateCoinBuy(params: rpcTypes.EstimateCoinBuyRequest): Promise<rpcTypes.EstimateCoinBuyResponse> {
+        if (!params.coinToSell && 0 > params.coinIdToSell) {
+            return Promise.reject(new Error('Coin to sell not specified'));
+        }
+        if (!params.coinToBuy && 0 > params.coinIdToBuy) {
+            return Promise.reject(new Error('Coin to buy not specified'));
+        }
+        if (!params.valueToBuy) {
+            return Promise.reject(new Error('Value to buy not specified'));
+        }
+
+        if (params?.coinToBuy) {
+            params.coinToBuy = params.coinToBuy.toUpperCase();
+        }
+        if (params?.coinToSell) {
+            params.coinToSell = params.coinToSell.toUpperCase();
+        }
+        if (params?.coinCommission) {
+            params.coinCommission = params.coinCommission.toUpperCase();
+        }
+
+        if (typeof params.valueToBuy == 'number') {
+            params.valueToBuy = convertBipToPip(params.valueToBuy);
+        }
+
+        const {
+            coinIdToBuy     : coin_id_to_buy,
+            coinToBuy       : coin_to_buy,
+            coinIdToSell    : coin_id_to_sell,
+            coinToSell      : coin_to_sell,
+            valueToBuy      : value_to_buy,
+            coinIdCommission: coin_id_commission,
+            coinCommission  : coin_commission,
+            swapFrom        : swap_from,
+            route           : route,
+        } = params;
+
+        const url = 'estimate_coin_buy';
+        return this.sendRpcCall(url, {
+            coin_id_to_buy,
+            coin_to_buy,
+            coin_id_to_sell,
+            coin_to_sell,
+            value_to_buy,
+            coin_id_commission,
+            coin_commission,
+            swap_from,
+            route,
+        });
+    }
+
+    async estimateCoinSell(params: rpcTypes.EstimateCoinSellRequest): Promise<rpcTypes.EstimateCoinSellResponse> {
+        if (!params.coinToSell && 0 > params.coinIdToSell) {
+            return Promise.reject(new Error('Coin to sell not specified'));
+        }
+        if (!params.coinToBuy && 0 > params.coinIdToBuy) {
+            return Promise.reject(new Error('Coin to buy not specified'));
+        }
+        if (!params.valueToSell) {
+            return Promise.reject(new Error('Value to sell not specified'));
+        }
+
+        if (params.coinToBuy) {
+            params.coinToBuy = params.coinToBuy.toUpperCase();
+        }
+        if (params.coinToSell) {
+            params.coinToSell = params.coinToSell.toUpperCase();
+        }
+        if (params.coinCommission) {
+            params.coinCommission = params.coinCommission.toUpperCase();
+        }
+
+        if (typeof params.valueToSell == 'number') {
+            params.valueToSell = convertBipToPip(params.valueToSell);
+        }
+
+
+        const {
+            coinIdToBuy     : coin_id_to_buy,
+            coinToBuy       : coin_to_buy,
+            coinIdToSell    : coin_id_to_sell,
+            coinToSell      : coin_to_sell,
+            valueToSell     : value_to_sell,
+            coinIdCommission: coin_id_commission,
+            coinCommission  : coin_commission,
+            swapFrom        : swap_from,
+            route           : route,
+        } = params;
+        const url = 'estimate_coin_sell';
+
+        return this.sendRpcCall(url, {
+            coin_id_to_buy,
+            coin_to_buy,
+            coin_id_to_sell,
+            coin_to_sell,
+            value_to_sell,
+            coin_id_commission,
+            coin_commission,
+            swap_from,
+            route,
+        });
+    }
+
+    async estimateCoinSellAll(params: rpcTypes.EstimateCoinSellAllRequest): Promise<rpcTypes.EstimateCoinSellAllResponse> {
+        if (!params.coinToSell && 0 > params.coinIdToSell) {
+            return Promise.reject(new Error('Coin to sell not specified'));
+        }
+        if (!params.coinToBuy && 0 > params.coinIdToBuy) {
+            return Promise.reject(new Error('Coin to buy not specified'));
+        }
+        if (!params.valueToSell) {
+            return Promise.reject(new Error('Value to sell not specified'));
+        }
+
+        if (params.coinToBuy) {
+            params.coinToBuy = params.coinToBuy.toUpperCase();
+        }
+        if (params.coinToSell) {
+            params.coinToSell = params.coinToSell.toUpperCase();
+        }
+
+        if (typeof params.valueToSell == 'number') {
+            params.valueToSell = convertBipToPip(params.valueToSell);
+        }
+
+        const {
+            coinIdToBuy : coin_id_to_buy,
+            coinToBuy   : coin_to_buy,
+            coinIdToSell: coin_id_to_sell,
+            coinToSell  : coin_to_sell,
+            valueToSell : value_to_sell,
+            gasPrice    : gas_price,
+            swapFrom    : swap_from,
+            route       : route,
+        } = params;
+
+        const url = 'estimate_coin_sell_all';
+
+        return this.sendRpcCall(url, {
+            coin_id_to_buy,
+            coin_to_buy,
+            coin_id_to_sell,
+            coin_to_sell,
+            value_to_sell,
+            gas_price,
+            swap_from,
+            route,
+        });
+    }
+
     //----------- Orders
     //----------- SwapPools
     //----------- Vote (GOVERNESS) Info
     //----------- Prices
-    async estimateCoinBuy(params: rpcTypes.EstimateCoinBuyRequest): Promise<rpcTypes.EstimateCoinBuyResponse> {
-        return Promise.resolve(undefined);
-    }
-
-    async estimateCoinSell(params: rpcTypes.EstimateCoinSellRequest): Promise<rpcTypes.EstimateCoinSellResponse> {
-        return Promise.resolve(undefined);
-    }
-
-    async estimateCoinSellAll(params: rpcTypes.EstimateCoinSellAllRequest): Promise<rpcTypes.EstimateCoinSellAllResponse> {
-        return Promise.resolve(undefined);
-    }
 
     async estimateTxCommission(params: rpcTypes.EstimateTxCommissionRequest): Promise<rpcTypes.EstimateTxCommissionResponse> {
-        return Promise.resolve(undefined);
-    }
-
-    async coinInfo(params: rpcTypes.CoinInfoRequest): Promise<rpcTypes.CoinInfoResponse> {
-        return Promise.resolve(undefined);
-    }
-
-    async coinInfoById(params: rpcTypes.CoinInfoByIdRequest): Promise<rpcTypes.CoinInfoByIdResponse> {
         return Promise.resolve(undefined);
     }
 

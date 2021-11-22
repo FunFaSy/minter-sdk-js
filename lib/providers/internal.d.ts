@@ -89,12 +89,14 @@ export interface NodeStatusResponse extends RpcQueryResponse {
 }
 export interface AddressStateRequest extends RpcQueryRequest {
     height: number;
+    delegated: boolean;
 }
 export interface AddressStateResponse extends RpcQueryResponse {
     [key: string]: any;
 }
 export interface AdressesRequest extends RpcQueryRequest {
-    [key: string]: any;
+    height: number;
+    delegated: boolean;
 }
 export interface AdressesResponse extends RpcQueryResponse {
     [key: string]: any;
@@ -103,10 +105,12 @@ export interface AddressFrozenResponse extends RpcQueryResponse {
     [key: string]: any;
 }
 export interface AddressFrozenRequest extends RpcQueryRequest {
-    [key: string]: any;
+    height: number;
+    coinId: number;
 }
 export interface AddressWaitListRequest extends RpcQueryRequest {
-    [key: string]: any;
+    height: number;
+    publicKey: number;
 }
 export interface AddressWaitListResponse extends RpcQueryResponse {
     [key: string]: any;
@@ -131,46 +135,77 @@ export interface CandidatesResponse extends RpcQueryResponse {
     [key: string]: any;
 }
 export interface MissedBlocksRequest extends RpcQueryRequest {
-    [key: string]: any;
+    height: number;
 }
 export interface MissedBlocksResponse extends RpcQueryResponse {
     [key: string]: any;
 }
 export interface ValidatorsRequest extends RpcQueryRequest {
-    [key: string]: any;
+    height: number;
 }
 export interface ValidatorsResponse extends RpcQueryResponse {
     [key: string]: any;
 }
 export interface CoinInfoRequest extends RpcQueryRequest {
-    [key: string]: any;
+    height: number;
 }
 export interface CoinInfoResponse extends RpcQueryResponse {
     [key: string]: any;
 }
 export interface CoinInfoByIdRequest extends RpcQueryRequest {
-    [key: string]: any;
+    height: number;
 }
 export interface CoinInfoByIdResponse extends RpcQueryResponse {
     [key: string]: any;
 }
 export interface EstimateCoinBuyRequest extends RpcQueryRequest {
-    [key: string]: any;
+    coinIdToBuy?: number;
+    coinToBuy?: string;
+    coinIdToSell?: number;
+    coinToSell?: string;
+    valueToBuy: string | number;
+    height?: number;
+    coinIdCommission?: number;
+    coinCommission?: string;
+    swapFrom?: SwapAlgoEnum;
+    route?: number[] | string[];
 }
 export interface EstimateCoinBuyResponse extends RpcQueryResponse {
-    [key: string]: any;
+    will_pay: string;
+    commission: string;
+    swap_from: string;
 }
 export interface EstimateCoinSellRequest extends RpcQueryRequest {
-    [key: string]: any;
+    coinIdToBuy?: number;
+    coinToBuy?: string;
+    coinIdToSell?: number;
+    coinToSell?: string;
+    valueToSell: string | number;
+    height?: number;
+    coinIdCommission?: number;
+    coinCommission?: string;
+    swapFrom?: SwapAlgoEnum;
+    route?: number[] | string[];
 }
 export interface EstimateCoinSellResponse extends RpcQueryResponse {
-    [key: string]: any;
+    will_get: string;
+    commission: string;
+    swap_from: string;
 }
 export interface EstimateCoinSellAllRequest extends RpcQueryRequest {
-    [key: string]: any;
+    coinIdToBuy?: number;
+    coinToBuy?: string;
+    coinIdToSell?: number;
+    coinToSell?: string;
+    valueToSell: string | number;
+    gasPrice?: number;
+    height?: number;
+    swapFrom?: SwapAlgoEnum;
+    route?: number[] | string[];
 }
 export interface EstimateCoinSellAllResponse extends RpcQueryResponse {
-    [key: string]: any;
+    will_get: string;
+    swap_from: string;
 }
 export interface LimitOrderRequest extends RpcQueryRequest {
     [key: string]: any;

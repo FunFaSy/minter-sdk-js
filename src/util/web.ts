@@ -8,7 +8,7 @@ const RETRY_NUMBER = 2;
 
 export interface ConnectionInfo extends AxiosRequestConfig {
     baseURL?: string;
-    url: string;
+    url?: string;
     auth?: {
         username: string;
         password: string;

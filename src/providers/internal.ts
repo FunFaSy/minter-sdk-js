@@ -142,34 +142,85 @@ export interface CandidatesRequest extends RpcQueryRequest {
 
 export interface CandidatesResponse extends RpcQueryResponse {[key: string]: any}
 
-export interface MissedBlocksRequest extends RpcQueryRequest {[key: string]: any}
+export interface MissedBlocksRequest extends RpcQueryRequest {
+    height: number;
+}
 
 export interface MissedBlocksResponse extends RpcQueryResponse {[key: string]: any}
 
-export interface ValidatorsRequest extends RpcQueryRequest {[key: string]: any}
+export interface ValidatorsRequest extends RpcQueryRequest {
+    height: number;
+}
 
 export interface ValidatorsResponse extends RpcQueryResponse {[key: string]: any}
 
 //----------- Coins/Tokens
-export interface CoinInfoRequest extends RpcQueryRequest {[key: string]: any}
+export interface CoinInfoRequest extends RpcQueryRequest {
+    height: number;
+}
 
 export interface CoinInfoResponse extends RpcQueryResponse {[key: string]: any}
 
-export interface CoinInfoByIdRequest extends RpcQueryRequest {[key: string]: any}
+export interface CoinInfoByIdRequest extends RpcQueryRequest {
+    height: number;
+}
 
 export interface CoinInfoByIdResponse extends RpcQueryResponse {[key: string]: any}
 
-export interface EstimateCoinBuyRequest extends RpcQueryRequest {[key: string]: any}
+export interface EstimateCoinBuyRequest extends RpcQueryRequest {
+    coinIdToBuy?: number;
+    coinToBuy?: string;
+    coinIdToSell?: number;
+    coinToSell?: string;
+    valueToBuy: string | number;
+    height?: number;
+    coinIdCommission?: number;
+    coinCommission?: string;
+    swapFrom?: SwapAlgoEnum; // -Default value : optimal
+    route?: number[] | string[];
+}
 
-export interface EstimateCoinBuyResponse extends RpcQueryResponse {[key: string]: any}
+export interface EstimateCoinBuyResponse extends RpcQueryResponse {
+    will_pay: string;
+    commission: string;
+    swap_from: string;
+}
 
-export interface EstimateCoinSellRequest extends RpcQueryRequest {[key: string]: any}
+export interface EstimateCoinSellRequest extends RpcQueryRequest {
+    coinIdToBuy?: number;
+    coinToBuy?: string;
+    coinIdToSell?: number;
+    coinToSell?: string;
+    valueToSell: string | number;
+    height?: number;
+    coinIdCommission?: number;
+    coinCommission?: string;
+    swapFrom?: SwapAlgoEnum; // -Default value : optimal
+    route?: number[] | string[];
+}
 
-export interface EstimateCoinSellResponse extends RpcQueryResponse {[key: string]: any}
+export interface EstimateCoinSellResponse extends RpcQueryResponse {
+    will_get: string;
+    commission: string;
+    swap_from: string;
+}
 
-export interface EstimateCoinSellAllRequest extends RpcQueryRequest {[key: string]: any}
+export interface EstimateCoinSellAllRequest extends RpcQueryRequest {
+    coinIdToBuy?: number;
+    coinToBuy?: string;
+    coinIdToSell?: number;
+    coinToSell?: string;
+    valueToSell: string | number;
+    gasPrice?: number; //	Default value : 1
+    height?: number;
+    swapFrom?: SwapAlgoEnum; // -Default value : optimal
+    route?: number[] | string[];
+}
 
-export interface EstimateCoinSellAllResponse extends RpcQueryResponse {[key: string]: any}
+export interface EstimateCoinSellAllResponse extends RpcQueryResponse {
+    will_get: string;
+    swap_from: string;
+}
 
 //----------- Orders
 export interface LimitOrderRequest extends RpcQueryRequest {[key: string]: any}
