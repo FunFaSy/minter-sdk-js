@@ -57,19 +57,12 @@ export abstract class Provider {
     abstract estimateCoinSellAll(params: rpcTypes.EstimateCoinSellAllRequest): Promise<rpcTypes.EstimateCoinSellAllResponse>;
 
     //----------- Orders
-    abstract limitOrder(params: rpcTypes.LimitOrderRequest): Promise<rpcTypes.LimitOrderResponse>;
+    abstract limitOrder(orderId: number, params?: rpcTypes.LimitOrderRequest): Promise<rpcTypes.LimitOrderResponse>;
 
-    abstract limitOrders(params: rpcTypes.LimitOrdersRequest): Promise<rpcTypes.LimitOrdersResponse>;
+    abstract limitOrders(ids: number[], params?: rpcTypes.LimitOrdersRequest): Promise<rpcTypes.LimitOrdersResponse>;
 
     //----------- SwapPools
     abstract swapPool(params: rpcTypes.SwapPoolRequest): Promise<rpcTypes.SwapPoolResponse>;
-
-    //----------- Vote (GOVERNESS) Info
-    abstract voteCommission(params: rpcTypes.VoteCommissionRequest): Promise<rpcTypes.VoteCommissionResponse>;
-
-    abstract voteHalt(params: rpcTypes.VoteHaltRequest): Promise<rpcTypes.VoteHaltResponse>;
-
-    abstract voteNetUpdate(params: rpcTypes.VoteNetUpdateRequest): Promise<rpcTypes.VoteNetUpdateResponse>;
 
     //----------- Prices
     abstract estimateTxCommission(params: rpcTypes.EstimateTxCommissionRequest): Promise<rpcTypes.EstimateTxCommissionResponse>;
@@ -79,6 +72,13 @@ export abstract class Provider {
     abstract maxGasPrice(params: rpcTypes.MaxGasPriceRequest): Promise<rpcTypes.MaxGasPriceResponse>;
 
     abstract priceCommissions(params: rpcTypes.PriceCommissionsRequest): Promise<rpcTypes.PriceCommissionsResponse>;
+
+    //----------- Vote (GOVERNESS) Info
+    abstract voteCommission(params: rpcTypes.VoteCommissionRequest): Promise<rpcTypes.VoteCommissionResponse>;
+
+    abstract voteHalt(params: rpcTypes.VoteHaltRequest): Promise<rpcTypes.VoteHaltResponse>;
+
+    abstract voteNetUpdate(params: rpcTypes.VoteNetUpdateRequest): Promise<rpcTypes.VoteNetUpdateResponse>;
 
     //----------- Events
     abstract events(params: rpcTypes.EventsRequest): Promise<rpcTypes.EventsResponse>;

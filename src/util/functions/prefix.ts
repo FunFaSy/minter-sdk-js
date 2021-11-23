@@ -59,7 +59,7 @@ export function isMinterPrefixed(value) {
  * @param {string} publicKey
  * @return {boolean}
  */
-export function isValidPublicKeyString(publicKey) {
+export function isValidPublicKey(publicKey) {
     const pattern = new RegExp('^' + MinterPrefix.PUB + '[0-9a-fA-F]{64}$');
     return pattern.test(publicKey);
 }

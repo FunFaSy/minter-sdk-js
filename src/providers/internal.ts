@@ -6,6 +6,8 @@ export type BlockId = BlockHash | BlockHeight;
 export type BlockReference =
     { blockId: BlockId }
     | { syncCheckpoint: 'genesis' | 'earliest_available' | 'latest' }
+// Resources (@link (https://github.com/MinterTeam/node-grpc-gateway/blob/master/resources.proto)
+export type Coin = { id: string; symbol: string };
 
 export type BlockFields =
     | 'transactions'
@@ -223,18 +225,43 @@ export interface EstimateCoinSellAllResponse extends RpcQueryResponse {
 }
 
 //----------- Orders
-export interface LimitOrderRequest extends RpcQueryRequest {[key: string]: any}
+export interface LimitOrderRequest extends RpcQueryRequest {
+    height: number;
+}
 
-export interface LimitOrderResponse extends RpcQueryResponse {[key: string]: any}
+export interface LimitOrderResponse extends RpcQueryResponse {
+    coin_buy: Coin;
+    coin_sell: Coin;
+    height: string;
+    id: string;
+    owner: string;
+    price: string;
+    want_buy: string;
+    want_sell: string;
+}
 
-export interface LimitOrdersRequest extends RpcQueryRequest {[key: string]: any}
+export interface LimitOrdersRequest extends RpcQueryRequest {
+    height: number;
+}
 
-export interface LimitOrdersResponse extends RpcQueryResponse {[key: string]: any}
+export interface LimitOrdersResponse extends RpcQueryResponse {
+    orders: LimitOrderResponse[];
+}
 
 //----------- SwapPools
-export interface SwapPoolRequest extends RpcQueryRequest {[key: string]: any}
+export interface SwapPoolRequest extends RpcQueryRequest {
+    coin0: number;
+    coin1: number;
+    height?: number;
+    provider?: string; // pub key
+}
 
-export interface SwapPoolResponse extends RpcQueryResponse {[key: string]: any}
+export interface SwapPoolResponse extends RpcQueryResponse {
+    amount0: string;
+    amount1: string;
+    liquidity: string;
+    price: string;
+}
 
 //----------- Vote (GOVERNESS)
 export interface VoteCommissionRequest extends RpcQueryRequest {[key: string]: any}
@@ -273,8 +300,4 @@ export interface EventsResponse extends RpcQueryResponse {[key: string]: any}
 
 //----------- WebSockets
 
-// Resources (@link (https://github.com/MinterTeam/node-grpc-gateway/blob/master/resources.proto)
-export interface Coin {
-    id: number;
-    symbol: string;
-}
+

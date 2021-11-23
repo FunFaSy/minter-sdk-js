@@ -55,7 +55,9 @@ export function newRpcClient(config: AxiosRequestConfig): AxiosInstance {
 
         if (config?.baseURL) {
             if (!isValidUrl(config.baseURL)) {
-                logWarning(`Invalid baseUrl ${config.baseURL}`);
+                const err = new Error(`Invalid baseUrl ${config.baseURL}`);
+                logWarning(err.message);
+                throw err;
             }
 
             if (config.baseURL[config.baseURL.length - 1] !== '/') {
@@ -69,7 +71,7 @@ export function newRpcClient(config: AxiosRequestConfig): AxiosInstance {
     axiosClient.interceptors.response.use(
         (response: AxiosResponse) => {
             if (response?.data) {
-            // transformResponse
+                // transformResponse
                 const data = parseJsonData(response.data);
 
                 if (data?.error?.details) {
@@ -99,27 +101,27 @@ export function newRpcClient(config: AxiosRequestConfig): AxiosInstance {
             }
 
             if (error.response) {
-            /*
-                 * The request was made and the server responded with a
-                 * status code that falls out of the range of 2xx
-                 */
+                /*
+                     * The request was made and the server responded with a
+                     * status code that falls out of the range of 2xx
+                     */
                 return Promise.reject(Object.assign(error, createError(error.response.status, error.response.data)));
 
             }
             //
             else if (error.request) {
-            /*
-                 * The request was made but no response was received, `error.request`
-                 * is an instance of XMLHttpRequest in the browser and an instance
-                 * of http.ClientRequest in Node.js
-                 */
+                /*
+                     * The request was made but no response was received, `error.request`
+                     * is an instance of XMLHttpRequest in the browser and an instance
+                     * of http.ClientRequest in Node.js
+                     */
                 logWarning(`HTTP request for ${config.url} got no response`/*, error.request*/);
                 return Promise.reject(
                     Object.assign(error, new TypedError('Server not responding', 'ServerNotResponding')));
             }
             //
             else {
-            // Something happened in setting up the request and triggered an Error
+                // Something happened in setting up the request and triggered an Error
                 logWarning(`Something happened in setting up the request ${config.url} and triggered an Error`,
                     error.request);
                 return Promise.reject(Object.assign(error, createError(error.status, error.message)));

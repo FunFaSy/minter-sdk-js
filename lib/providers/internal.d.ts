@@ -6,6 +6,10 @@ export declare type BlockReference = {
 } | {
     syncCheckpoint: 'genesis' | 'earliest_available' | 'latest';
 };
+export declare type Coin = {
+    id: string;
+    symbol: string;
+};
 export declare type BlockFields = 'transactions' | 'missed' | 'block_reward' | 'size' | 'proposer' | 'validators' | 'evidence';
 export declare enum CandidatesStatusEnum {
     'ALL' = "all",
@@ -208,22 +212,35 @@ export interface EstimateCoinSellAllResponse extends RpcQueryResponse {
     swap_from: string;
 }
 export interface LimitOrderRequest extends RpcQueryRequest {
-    [key: string]: any;
+    height: number;
 }
 export interface LimitOrderResponse extends RpcQueryResponse {
-    [key: string]: any;
+    coin_buy: Coin;
+    coin_sell: Coin;
+    height: string;
+    id: string;
+    owner: string;
+    price: string;
+    want_buy: string;
+    want_sell: string;
 }
 export interface LimitOrdersRequest extends RpcQueryRequest {
-    [key: string]: any;
+    height: number;
 }
 export interface LimitOrdersResponse extends RpcQueryResponse {
-    [key: string]: any;
+    orders: LimitOrderResponse[];
 }
 export interface SwapPoolRequest extends RpcQueryRequest {
-    [key: string]: any;
+    coin0: number;
+    coin1: number;
+    height?: number;
+    provider?: string;
 }
 export interface SwapPoolResponse extends RpcQueryResponse {
-    [key: string]: any;
+    amount0: string;
+    amount1: string;
+    liquidity: string;
+    price: string;
 }
 export interface VoteCommissionRequest extends RpcQueryRequest {
     [key: string]: any;
@@ -272,9 +289,5 @@ export interface EventsRequest extends RpcQueryRequest {
 }
 export interface EventsResponse extends RpcQueryResponse {
     [key: string]: any;
-}
-export interface Coin {
-    id: number;
-    symbol: string;
 }
 export {};

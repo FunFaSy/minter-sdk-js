@@ -1,7 +1,5 @@
 'use strict';
 
-//import CryptoJS from 'crypto-js';
-//import nacl from 'tweetnacl';
 import BN from 'bn.js';
 import bs58check from 'bs58check';
 import * as secp256k1 from 'ethereum-cryptography/secp256k1';
