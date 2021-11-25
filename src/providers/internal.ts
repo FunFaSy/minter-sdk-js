@@ -111,13 +111,13 @@ export interface AddressStateRequest extends RpcQueryRequest {
 
 export interface AddressStateResponse extends RpcQueryResponse {[key: string]: any}
 
-export interface AdressesRequest extends RpcQueryRequest {
+export interface AddressesRequest extends RpcQueryRequest {
     addresses: string[];
     height?: number;
     delegated?: boolean;
 }
 
-export interface AdressesResponse extends RpcQueryResponse {[key: string]: any}
+export interface AddressesResponse extends RpcQueryResponse {[key: string]: any}
 
 export interface AddressFrozenResponse extends RpcQueryResponse {[key: string]: any}
 

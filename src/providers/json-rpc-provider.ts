@@ -30,6 +30,7 @@ const REQUEST_RETRY_WAIT = 500;
 // Exponential back off for waiting to retry.
 const REQUEST_RETRY_WAIT_BACKOFF = 1.5;
 
+
 /**
  * Client class to interact with the Minter RPC API.
  * @see {@link https://#}
@@ -159,7 +160,7 @@ export class JsonRpcProvider extends Provider {
         return this.sendRpcCall(url, _params);
     }
 
-    async addresses(params: rpcTypes.AdressesRequest): Promise<rpcTypes.AdressesResponse> {
+    async addresses(params: rpcTypes.AddressesRequest): Promise<rpcTypes.AddressesResponse> {
         if (!params.addresses || !params.addresses.length || params.addresses.some(a => !isValidAddress(a))) {
             return Promise.reject(
                 new TypedError('addresses parameter not specified or some address invalid', 'ArgumentsRequired'));

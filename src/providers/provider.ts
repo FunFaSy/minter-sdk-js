@@ -30,7 +30,7 @@ export abstract class Provider {
     //----------- Account
     abstract address(params: rpcTypes.AddressStateRequest): Promise<rpcTypes.AddressStateResponse>;
 
-    abstract addresses(params: rpcTypes.AdressesRequest): Promise<rpcTypes.AdressesResponse>;
+    abstract addresses(params: rpcTypes.AddressesRequest): Promise<rpcTypes.AddressesResponse>;
 
     abstract frozen(params: rpcTypes.AddressFrozenRequest): Promise<rpcTypes.AddressFrozenResponse>;
 
