@@ -280,17 +280,77 @@ export interface SwapPoolResponse extends RpcQueryResponse {
 }
 
 //----------- Vote (GOVERNESS)
-export interface VoteCommissionRequest extends RpcQueryRequest {[key: string]: any}
+export interface CommissionVotesRequest extends RpcQueryRequest {
+    targetVersion: string;
+    height?: number;
+}
 
-export interface VoteCommissionResponse extends RpcQueryResponse {[key: string]: any}
+export interface CommissionVotesResponse extends RpcQueryResponse {
+    price: {
+        coin: Coin;
+        payload_byte: string;
+        send: string;
+        buy_bancor: string;
+        sell_bancor: string;
+        sell_all_bancor: string;
+        buy_pool_base: string;
+        buy_pool_delta: string;
+        sell_pool_base: string;
+        sell_pool_delta: string;
+        sell_all_pool_base: string;
+        sell_all_pool_delta: string;
+        create_ticker3: string;
+        create_ticker4: string;
+        create_ticker5: string;
+        create_ticker6: string;
+        create_ticker7_10: string;
+        create_coin: string;
+        create_token: string;
+        recreate_coin: string;
+        recreate_token: string;
+        declare_candidacy: string;
+        delegate: string;
+        unbond: string;
+        redeem_check: string;
+        set_candidate_on: string;
+        set_candidate_off: string;
+        create_multisig: string;
+        multisend_base: string;
+        multisend_delta: string;
+        edit_candidate: string;
+        set_halt_block: string;
+        edit_ticker_owner: string;
+        edit_multisig: string;
+        edit_candidate_public_key: string;
+        create_swap_pool: string;
+        add_liquidity: string;
+        remove_liquidity: string;
+        edit_candidate_commission: string;
+        mint_token: string;
+        burn_token: string;
+        vote_commission: string;
+        vote_update: string;
+        failed_tx: string;
+    };
+    public_keys: string[];
+}
 
-export interface VoteHaltRequest extends RpcQueryRequest {[key: string]: any}
+export interface HaltVotesRequest extends RpcQueryRequest {
+    height?: number;
+}
 
-export interface VoteHaltResponse extends RpcQueryResponse {[key: string]: any}
+export interface HaltVotesResponse extends RpcQueryResponse {
+    publicKeys: string[];
+}
 
-export interface VoteNetUpdateRequest extends RpcQueryRequest {[key: string]: any}
+export interface NetUpdateVotesRequest extends RpcQueryRequest {
+    targetVersion: string;
+    height?: number;
+}
 
-export interface VoteNetUpdateResponse extends RpcQueryResponse {[key: string]: any}
+export interface NetUpdateVotesResponse extends RpcQueryResponse {
+    votes: { version: string; public_keys: string[] }[];
+}
 
 //----------- Price
 export interface EstimateTxCommissionRequest extends RpcQueryRequest {
@@ -366,9 +426,13 @@ export interface PriceCommissionsResponse extends RpcQueryResponse {
 }
 
 //----------- Events
-export interface EventsRequest extends RpcQueryRequest {[key: string]: any}
+export interface EventsRequest extends RpcQueryRequest {
+    height?: number;
+}
 
-export interface EventsResponse extends RpcQueryResponse {[key: string]: any}
+export interface EventsResponse extends RpcQueryResponse {
+    events: { [key: string]: any }[];
+}
 
 //----------- WebSockets
 

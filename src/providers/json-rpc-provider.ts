@@ -213,7 +213,7 @@ export class JsonRpcProvider extends Provider {
         return this.sendRpcCall(url, _params);
     }
 
-    async candidates(params: rpcTypes.CandidatesRequest): Promise<rpcTypes.CandidatesResponse> {
+    async candidates(params?: rpcTypes.CandidatesRequest): Promise<rpcTypes.CandidatesResponse> {
         const _params = {
             height         : params?.height,
             include_stakes : params?.includeStakes || false,
@@ -246,10 +246,10 @@ export class JsonRpcProvider extends Provider {
 
     //----------- Coins/Tokens
     async coinInfo(params: rpcTypes.CoinInfoRequest): Promise<rpcTypes.CoinInfoResponse> {
-        const url = 'coin_info/'.concat(params.symbol.toUpperCase());
         const _params = {
             height: params?.height,
         };
+        const url = 'coin_info/'.concat(params.symbol.toUpperCase());
 
         return this.sendRpcCall(url, _params);
     }
@@ -497,7 +497,7 @@ export class JsonRpcProvider extends Provider {
         const url = '/max_gas_price';
 
         const _params = {
-            height: params?.height
+            height: params?.height,
         };
 
         return this.sendRpcCall(url, _params);
@@ -507,29 +507,56 @@ export class JsonRpcProvider extends Provider {
         const url = '/price_commissions';
 
         const _params = {
-            height: params?.height
+            height: params?.height,
         };
 
         return this.sendRpcCall(url, _params);
     }
 
     //----------- Vote (GOVERNESS) Info
+    async commissionVotes(params: rpcTypes.CommissionVotesRequest): Promise<rpcTypes.CommissionVotesResponse> {
+        if (!params.targetVersion) {
+            return Promise.reject(new TypedError('targetVersion parameter not specified', 'ArgumentsRequired'));
+        }
+        const _params = {
+            height: params?.height,
+        };
 
-    async voteCommission(params: rpcTypes.VoteCommissionRequest): Promise<rpcTypes.VoteCommissionResponse> {
-        return Promise.resolve(undefined);
+        const url = 'commission_votes/'.concat(params.targetVersion);
+        return this.sendRpcCall(url, _params);
     }
 
-    async voteHalt(params: rpcTypes.VoteHaltRequest): Promise<rpcTypes.VoteHaltResponse> {
-        return Promise.resolve(undefined);
+    async haltVotes(params: rpcTypes.HaltVotesRequest): Promise<rpcTypes.HaltVotesResponse> {
+        if (!params.height) {
+            return Promise.reject(new TypedError('height parameter not specified', 'ArgumentsRequired'));
+        }
+
+        const url = 'halts/'.concat(params.height.toString());
+
+        return this.sendRpcCall(url);
     }
 
-    async voteNetUpdate(params: rpcTypes.VoteNetUpdateRequest): Promise<rpcTypes.VoteNetUpdateResponse> {
-        return Promise.resolve(undefined);
+    async netUpdateVotes(params: rpcTypes.NetUpdateVotesRequest): Promise<rpcTypes.NetUpdateVotesResponse> {
+        if (!params.targetVersion) {
+            return Promise.reject(new TypedError('targetVersion parameter not specified', 'ArgumentsRequired'));
+        }
+        const _params = {
+            height: params?.height,
+        };
+        const url = 'update_votes/'.concat(params.targetVersion.toString());
+
+        return this.sendRpcCall(url,_params);
     }
 
     //----------- Events
     async events(params: rpcTypes.EventsRequest): Promise<rpcTypes.EventsResponse> {
-        return Promise.resolve(undefined);
+        if (!params.height) {
+            return Promise.reject(new TypedError('height parameter not specified', 'ArgumentsRequired'));
+        }
+
+        const url = 'events/'.concat(params.height.toString());
+
+        return this.sendRpcCall(url);
     }
 
     /** @hidden */

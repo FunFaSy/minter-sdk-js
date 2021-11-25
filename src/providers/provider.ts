@@ -39,7 +39,7 @@ export abstract class Provider {
     //----------- Validator
     abstract candidate(params: rpcTypes.CandidateRequest): Promise<rpcTypes.CandidateResponse>;
 
-    abstract candidates(params: rpcTypes.CandidatesRequest): Promise<rpcTypes.CandidatesResponse>;
+    abstract candidates(params?: rpcTypes.CandidatesRequest): Promise<rpcTypes.CandidatesResponse>;
 
     abstract missedBlocks(params: rpcTypes.MissedBlocksRequest): Promise<rpcTypes.MissedBlocksResponse>;
 
@@ -74,11 +74,11 @@ export abstract class Provider {
     abstract priceCommissions(params?: rpcTypes.PriceCommissionsRequest): Promise<rpcTypes.PriceCommissionsResponse>;
 
     //----------- Vote (GOVERNESS) Info
-    abstract voteCommission(params: rpcTypes.VoteCommissionRequest): Promise<rpcTypes.VoteCommissionResponse>;
+    abstract commissionVotes(params: rpcTypes.CommissionVotesRequest): Promise<rpcTypes.CommissionVotesResponse>;
 
-    abstract voteHalt(params: rpcTypes.VoteHaltRequest): Promise<rpcTypes.VoteHaltResponse>;
+    abstract haltVotes(params: rpcTypes.HaltVotesRequest): Promise<rpcTypes.HaltVotesResponse>;
 
-    abstract voteNetUpdate(params: rpcTypes.VoteNetUpdateRequest): Promise<rpcTypes.VoteNetUpdateResponse>;
+    abstract netUpdateVotes(params: rpcTypes.NetUpdateVotesRequest): Promise<rpcTypes.NetUpdateVotesResponse>;
 
     //----------- Events
     abstract events(params: rpcTypes.EventsRequest): Promise<rpcTypes.EventsResponse>;
