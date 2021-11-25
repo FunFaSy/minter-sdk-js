@@ -28,15 +28,18 @@ export interface RpcQueryResponse {
     [key: string]: any;
 }
 export interface BlockRequest extends RpcQueryRequest {
-    fields: BlockFields[];
-    failedTxs: boolean;
+    height: number;
+    fields?: BlockFields[];
+    failedTxs?: boolean;
 }
 export interface BlockResponse extends RpcQueryResponse {
     [key: string]: any;
 }
 export interface BlocksRequest extends RpcQueryRequest {
-    fields: BlockFields[];
-    failedTxs: boolean;
+    fromHeight: number;
+    toHeight: number;
+    fields?: BlockFields[];
+    failedTxs?: boolean;
 }
 export interface BlocksResponse extends RpcQueryResponse {
     [key: string]: any;
@@ -54,7 +57,7 @@ export interface SendTransactionResponse extends RpcQueryResponse {
     [key: string]: any;
 }
 export interface TransactionRequest extends RpcQueryRequest {
-    [key: string]: any;
+    hash: string;
 }
 export interface TransactionResponse extends RpcQueryResponse {
     hash: string;
@@ -76,14 +79,15 @@ export interface TransactionResponse extends RpcQueryResponse {
     log: string;
 }
 export interface TransactionsRequest extends RpcQueryRequest {
-    page: number;
-    perPage: number;
+    query: string;
+    page?: number;
+    perPage?: number;
 }
 export interface TransactionsResponse extends RpcQueryResponse {
     [key: string]: any;
 }
 export interface UnconfirmedTxsRequest extends RpcQueryRequest {
-    limit: number;
+    limit?: number;
 }
 export interface UnconfirmedTxsResponse extends RpcQueryResponse {
     [key: string]: any;
@@ -92,15 +96,17 @@ export interface NodeStatusResponse extends RpcQueryResponse {
     [key: string]: any;
 }
 export interface AddressStateRequest extends RpcQueryRequest {
-    height: number;
-    delegated: boolean;
+    address: string;
+    height?: number;
+    delegated?: boolean;
 }
 export interface AddressStateResponse extends RpcQueryResponse {
     [key: string]: any;
 }
 export interface AdressesRequest extends RpcQueryRequest {
-    height: number;
-    delegated: boolean;
+    addresses: string[];
+    height?: number;
+    delegated?: boolean;
 }
 export interface AdressesResponse extends RpcQueryResponse {
     [key: string]: any;
@@ -109,12 +115,14 @@ export interface AddressFrozenResponse extends RpcQueryResponse {
     [key: string]: any;
 }
 export interface AddressFrozenRequest extends RpcQueryRequest {
-    height: number;
-    coinId: number;
+    address: string;
+    height?: number;
+    coinId?: number;
 }
 export interface AddressWaitListRequest extends RpcQueryRequest {
-    height: number;
-    publicKey: number;
+    address: string;
+    height?: number;
+    publicKey?: number;
 }
 export interface AddressWaitListResponse extends RpcQueryResponse {
     [key: string]: any;
@@ -123,41 +131,45 @@ export interface NetworkVersionResponse extends RpcQueryResponse {
     [key: string]: any;
 }
 export interface CandidateRequest extends RpcQueryRequest {
-    height: number;
-    showStakes: boolean;
+    publicKey: string;
+    height?: number;
+    showStakes?: boolean;
 }
 export interface CandidateResponse extends RpcQueryResponse {
     [key: string]: any;
 }
 export interface CandidatesRequest extends RpcQueryRequest {
-    height: number;
-    includeStakes: boolean;
-    showStakes: boolean;
-    status: CandidatesStatusEnum;
+    height?: number;
+    includeStakes?: boolean;
+    showStakes?: boolean;
+    status?: CandidatesStatusEnum;
 }
 export interface CandidatesResponse extends RpcQueryResponse {
     [key: string]: any;
 }
 export interface MissedBlocksRequest extends RpcQueryRequest {
-    height: number;
+    publicKey: string;
+    height?: number;
 }
 export interface MissedBlocksResponse extends RpcQueryResponse {
     [key: string]: any;
 }
 export interface ValidatorsRequest extends RpcQueryRequest {
-    height: number;
+    height?: number;
 }
 export interface ValidatorsResponse extends RpcQueryResponse {
     [key: string]: any;
 }
 export interface CoinInfoRequest extends RpcQueryRequest {
-    height: number;
+    symbol: string;
+    height?: number;
 }
 export interface CoinInfoResponse extends RpcQueryResponse {
     [key: string]: any;
 }
 export interface CoinInfoByIdRequest extends RpcQueryRequest {
-    height: number;
+    id: number;
+    height?: number;
 }
 export interface CoinInfoByIdResponse extends RpcQueryResponse {
     [key: string]: any;
@@ -212,7 +224,8 @@ export interface EstimateCoinSellAllResponse extends RpcQueryResponse {
     swap_from: string;
 }
 export interface LimitOrderRequest extends RpcQueryRequest {
-    height: number;
+    orderId: number;
+    height?: number;
 }
 export interface LimitOrderResponse extends RpcQueryResponse {
     coin_buy: Coin;
@@ -225,7 +238,8 @@ export interface LimitOrderResponse extends RpcQueryResponse {
     want_sell: string;
 }
 export interface LimitOrdersRequest extends RpcQueryRequest {
-    height: number;
+    ids: number[];
+    height?: number;
 }
 export interface LimitOrdersResponse extends RpcQueryResponse {
     orders: LimitOrderResponse[];
@@ -261,7 +275,7 @@ export interface VoteNetUpdateResponse extends RpcQueryResponse {
     [key: string]: any;
 }
 export interface EstimateTxCommissionRequest extends RpcQueryRequest {
-    [key: string]: any;
+    tx: string;
 }
 export interface EstimateTxCommissionResponse extends RpcQueryResponse {
     [key: string]: any;
@@ -270,19 +284,62 @@ export interface MinGasPriceRequest extends RpcQueryRequest {
     [key: string]: any;
 }
 export interface MinGasPriceResponse extends RpcQueryResponse {
-    [key: string]: any;
+    min_gas_price: string;
 }
 export interface MaxGasPriceRequest extends RpcQueryRequest {
-    [key: string]: any;
+    height?: number;
 }
 export interface MaxGasPriceResponse extends RpcQueryResponse {
-    [key: string]: any;
+    max_gas_price: string;
 }
 export interface PriceCommissionsRequest extends RpcQueryRequest {
-    [key: string]: any;
+    height?: number;
 }
 export interface PriceCommissionsResponse extends RpcQueryResponse {
-    [key: string]: any;
+    coin: Coin;
+    payload_byte: string;
+    send: string;
+    buy_bancor: string;
+    sell_bancor: string;
+    sell_all_bancor: string;
+    buy_pool_base: string;
+    buy_pool_delta: string;
+    sell_pool_base: string;
+    sell_pool_delta: string;
+    sell_all_pool_base: string;
+    sell_all_pool_delta: string;
+    create_ticker3: string;
+    create_ticker4: string;
+    create_ticker5: string;
+    create_ticker6: string;
+    create_ticker7_10: string;
+    create_coin: string;
+    create_token: string;
+    recreate_coin: string;
+    recreate_token: string;
+    declare_candidacy: string;
+    delegate: string;
+    unbond: string;
+    redeem_check: string;
+    set_candidate_on: string;
+    set_candidate_off: string;
+    create_multisig: string;
+    multisend_base: string;
+    multisend_delta: string;
+    edit_candidate: string;
+    set_halt_block: string;
+    edit_ticker_owner: string;
+    edit_multisig: string;
+    edit_candidate_public_key: string;
+    create_swap_pool: string;
+    add_liquidity: string;
+    remove_liquidity: string;
+    edit_candidate_commission: string;
+    mint_token: string;
+    burn_token: string;
+    vote_commission: string;
+    vote_update: string;
+    failed_tx: string;
 }
 export interface EventsRequest extends RpcQueryRequest {
     [key: string]: any;

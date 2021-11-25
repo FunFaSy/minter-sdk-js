@@ -30,7 +30,7 @@ export declare function isMinterPrefixed(value: any): boolean;
  * @param {string} publicKey
  * @return {boolean}
  */
-export declare function isValidPublicKeyString(publicKey: any): boolean;
+export declare function isValidPublicKey(publicKey: any): boolean;
 export declare function isValidAddress(address: any): boolean;
 export declare function isValidCheck(cheque: any): boolean;
 export declare function isValidTransaction(tx: any): boolean;
