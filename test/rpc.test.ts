@@ -22,17 +22,29 @@ test('[RPC] Latest Block', async () => {
 });
 
 test('[RPC] Latest N blocks batch', async () => {
-    const BLOCK_TAIL=5;
+    const BLOCK_TAIL = 5;
 
     const chain = new minterSdk.Chain('mainnet');
 
     const rpcProvider = new minterSdk.providers.JsonRpcProvider({baseURL: chain.urls()?.api?.node?.http[0]});
 
-    const height = await rpcProvider.status().then(res => Number(res?.latest_block_height));
-
-    const blocks = await rpcProvider.blocks({fromHeight: height - BLOCK_TAIL, toHeight: height});
+    const blocks = await rpcProvider.status().
+        then(res => Number(res?.latest_block_height)).
+        then(height => rpcProvider.blocks({fromHeight: height - BLOCK_TAIL, toHeight: height}));
 
     expect(Number(blocks?.blocks?.length)).toBeGreaterThanOrEqual(BLOCK_TAIL);
+});
+
+test('[RPC] Address nonce', async () => {
+    const accountAddress = 'Mx04bea23efb744dc93b4fda4c20bf4a21c6e195f1';
+    const chain = new minterSdk.Chain('mainnet');
+
+    const rpcProvider = new minterSdk.providers.JsonRpcProvider({baseURL: chain.urls()?.api?.node?.http[0]});
+
+    const accountNonce = await rpcProvider.address({address: accountAddress, delegated: true}).
+        then(res => Number(res?.transaction_count));
+
+    expect(accountNonce).toBeGreaterThanOrEqual(1);
 });
 
 test('[RPC] Current Validators list', async () => {
