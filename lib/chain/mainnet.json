@@ -17,7 +17,6 @@
         "api": {
             "node": {
                 "http": [
-                    "https://node-api.minter.network/v2",
                     "https://mnt.funfasy.dev/v2",
                     "https://api.minter.one/v2"
                 ],
