@@ -1,4 +1,6 @@
 # minter-sdk-js
+[![Version](https://img.shields.io/github/v/release/FunFaSy/minter-js-sdk)](https://github.com/FunFaSy/minter-js-sdk/releases/latest)
+[![License](https://img.shields.io/github/license/FunFaSy/minter-js-sdk)](https://github.com/FunFaSy/minter-js-sdk/blob/master/LICENSE)
 
 A JavaScript/TypeScript library for development of DApps on the Minter platform
 
