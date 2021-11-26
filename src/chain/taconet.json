@@ -1,5 +1,5 @@
 {
-    "name": "Taconet",
+    "name": "taconet",
     "chainId": "v2.6.0-taconet6",
     "networkId": 2,
     "initialHeight": 3202609,
@@ -9,15 +9,15 @@
     "gasCoin": 0,
     "comment": "",
     "urls": {
-        "www": "https://minter.org/",
+        "www": "https://minter.org",
         "doc": "https://github.com/klim0v/minter-network-web/blob/patch-4/content/docs/index.md",
         "console": "https://console.taconet.minter.network",
         "wallet": "https://console.taconet.minter.network/wallet",
-        "explorer": "https://explorer.taconet.minter.network/",
+        "explorer": "https://explorer.taconet.minter.network",
         "api": {
             "node": {
                 "http": [
-                    "https://node-api.taconet.minter.network/v2/"
+                    "https://node-api.taconet.minter.network/v2"
                 ],
                 "ws": []
             },
@@ -27,7 +27,7 @@
             },
             "explorer": {
                 "http": [
-                    "https://explorer-api.taconet.minter.network/api/v2/"
+                    "https://explorer-api.taconet.minter.network/api/v2"
                 ],
                 "ws": []
             }
