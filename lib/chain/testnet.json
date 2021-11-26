@@ -1,5 +1,5 @@
 {
-    "name": "Testnet",
+    "name": "testnet",
     "chainId": "minter-test-1",
     "networkId": 2,
     "initialHeight": 3278787,
@@ -9,25 +9,28 @@
     "gasCoin": 0,
     "comment": "",
     "urls": {
-        "www": "https://minter.org/",
+        "www": "https://minter.org",
         "doc": "https://www.minter.network/docs",
         "console": "https://console.testnet.minter.network",
         "wallet": "https://console.testnet.minter.network/wallet",
-        "explorer": "https://explorer.testnet.minter.network/",
+        "explorer": "https://explorer.testnet.minter.network",
         "api": {
             "node": {
                 "http": [
+                    "https://node-api.testnet.minter.network/v2",
                     "https://test.mnt.funfasy.dev/v2"
                 ],
                 "ws": []
             },
             "gate": {
-                "http": [],
+                "http": [
+                    "https://gate-api.testnet.minter.network/api/v2"
+                ],
                 "ws": []
             },
             "explorer": {
                 "http": [
-                    "https://explorer-api.testnet.minter.network/api/v2/"
+                    "https://explorer-api.testnet.minter.network/api/v2"
                 ],
                 "ws": []
             }

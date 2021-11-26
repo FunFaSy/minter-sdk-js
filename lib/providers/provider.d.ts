@@ -16,11 +16,11 @@ export declare abstract class Provider {
     abstract unconfirmedTransactions(params: rpcTypes.UnconfirmedTxsRequest): Promise<rpcTypes.UnconfirmedTxsResponse>;
     abstract networkVersion(): Promise<rpcTypes.NetworkVersionResponse>;
     abstract address(params: rpcTypes.AddressStateRequest): Promise<rpcTypes.AddressStateResponse>;
-    abstract addresses(params: rpcTypes.AdressesRequest): Promise<rpcTypes.AdressesResponse>;
+    abstract addresses(params: rpcTypes.AddressesRequest): Promise<rpcTypes.AddressesResponse>;
     abstract frozen(params: rpcTypes.AddressFrozenRequest): Promise<rpcTypes.AddressFrozenResponse>;
     abstract waitlist(params: rpcTypes.AddressWaitListRequest): Promise<rpcTypes.AddressWaitListResponse>;
     abstract candidate(params: rpcTypes.CandidateRequest): Promise<rpcTypes.CandidateResponse>;
-    abstract candidates(params: rpcTypes.CandidatesRequest): Promise<rpcTypes.CandidatesResponse>;
+    abstract candidates(params?: rpcTypes.CandidatesRequest): Promise<rpcTypes.CandidatesResponse>;
     abstract missedBlocks(params: rpcTypes.MissedBlocksRequest): Promise<rpcTypes.MissedBlocksResponse>;
     abstract validators(params: rpcTypes.ValidatorsRequest): Promise<rpcTypes.ValidatorsResponse>;
     abstract coinInfo(params: rpcTypes.CoinInfoRequest): Promise<rpcTypes.CoinInfoResponse>;
@@ -35,8 +35,8 @@ export declare abstract class Provider {
     abstract minGasPrice(params?: rpcTypes.MinGasPriceRequest): Promise<rpcTypes.MinGasPriceResponse>;
     abstract maxGasPrice(params?: rpcTypes.MaxGasPriceRequest): Promise<rpcTypes.MaxGasPriceResponse>;
     abstract priceCommissions(params?: rpcTypes.PriceCommissionsRequest): Promise<rpcTypes.PriceCommissionsResponse>;
-    abstract voteCommission(params: rpcTypes.VoteCommissionRequest): Promise<rpcTypes.VoteCommissionResponse>;
-    abstract voteHalt(params: rpcTypes.VoteHaltRequest): Promise<rpcTypes.VoteHaltResponse>;
-    abstract voteNetUpdate(params: rpcTypes.VoteNetUpdateRequest): Promise<rpcTypes.VoteNetUpdateResponse>;
+    abstract commissionVotes(params: rpcTypes.CommissionVotesRequest): Promise<rpcTypes.CommissionVotesResponse>;
+    abstract haltVotes(params: rpcTypes.HaltVotesRequest): Promise<rpcTypes.HaltVotesResponse>;
+    abstract netUpdateVotes(params: rpcTypes.NetUpdateVotesRequest): Promise<rpcTypes.NetUpdateVotesResponse>;
     abstract events(params: rpcTypes.EventsRequest): Promise<rpcTypes.EventsResponse>;
 }

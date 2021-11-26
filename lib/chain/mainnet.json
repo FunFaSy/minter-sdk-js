@@ -1,5 +1,5 @@
 {
-    "name": "Mainnet",
+    "name": "mainnet",
     "chainId": "minter-mainnet-4",
     "networkId": 1,
     "initialHeight": 3278787,
@@ -17,12 +17,16 @@
         "api": {
             "node": {
                 "http": [
-                    "https://mnt.funfasy.dev/v2"
+                    "https://node-api.minter.network/v2",
+                    "https://mnt.funfasy.dev/v2",
+                    "https://api.minter.one/v2"
                 ],
                 "ws": []
             },
             "gate": {
-                "http": [],
+                "http": [
+                    "https://gate-api.minter.network/api/v2"
+                ],
                 "ws": []
             },
             "explorer": {

@@ -29,11 +29,11 @@ export declare class JsonRpcProvider extends Provider {
     unconfirmedTransactions(params: rpcTypes.UnconfirmedTxsRequest): Promise<rpcTypes.UnconfirmedTxsResponse>;
     networkVersion(): Promise<rpcTypes.NetworkVersionResponse>;
     address(params: rpcTypes.AddressStateRequest): Promise<rpcTypes.AddressStateResponse>;
-    addresses(params: rpcTypes.AdressesRequest): Promise<rpcTypes.AdressesResponse>;
+    addresses(params: rpcTypes.AddressesRequest): Promise<rpcTypes.AddressesResponse>;
     frozen(params: rpcTypes.AddressFrozenRequest): Promise<rpcTypes.AddressFrozenResponse>;
     waitlist(params: rpcTypes.AddressWaitListRequest): Promise<rpcTypes.AddressWaitListResponse>;
     candidate(params: rpcTypes.CandidateRequest): Promise<rpcTypes.CandidateResponse>;
-    candidates(params: rpcTypes.CandidatesRequest): Promise<rpcTypes.CandidatesResponse>;
+    candidates(params?: rpcTypes.CandidatesRequest): Promise<rpcTypes.CandidatesResponse>;
     missedBlocks(params: rpcTypes.MissedBlocksRequest): Promise<rpcTypes.MissedBlocksResponse>;
     validators(params?: rpcTypes.ValidatorsRequest): Promise<rpcTypes.ValidatorsResponse>;
     coinInfo(params: rpcTypes.CoinInfoRequest): Promise<rpcTypes.CoinInfoResponse>;
@@ -48,9 +48,9 @@ export declare class JsonRpcProvider extends Provider {
     minGasPrice(params?: rpcTypes.MinGasPriceRequest): Promise<rpcTypes.MinGasPriceResponse>;
     maxGasPrice(params?: rpcTypes.MaxGasPriceRequest): Promise<rpcTypes.MaxGasPriceResponse>;
     priceCommissions(params: rpcTypes.PriceCommissionsRequest): Promise<rpcTypes.PriceCommissionsResponse>;
-    voteCommission(params: rpcTypes.VoteCommissionRequest): Promise<rpcTypes.VoteCommissionResponse>;
-    voteHalt(params: rpcTypes.VoteHaltRequest): Promise<rpcTypes.VoteHaltResponse>;
-    voteNetUpdate(params: rpcTypes.VoteNetUpdateRequest): Promise<rpcTypes.VoteNetUpdateResponse>;
+    commissionVotes(params: rpcTypes.CommissionVotesRequest): Promise<rpcTypes.CommissionVotesResponse>;
+    haltVotes(params: rpcTypes.HaltVotesRequest): Promise<rpcTypes.HaltVotesResponse>;
+    netUpdateVotes(params: rpcTypes.NetUpdateVotesRequest): Promise<rpcTypes.NetUpdateVotesResponse>;
     events(params: rpcTypes.EventsRequest): Promise<rpcTypes.EventsResponse>;
     /** @hidden */
     sendRpcCall<T>(url: string, params?: object, data?: object, method?: string): Promise<T>;
