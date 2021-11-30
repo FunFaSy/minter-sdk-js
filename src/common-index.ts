@@ -12,7 +12,9 @@ export {default as actionsRegistry} from './transaction/action_registry';
 export {Transaction, SignedTransaction} from './transaction/transaction';
 export {Connection} from './connection';
 export {Check} from './check/check';
+
 export {Account} from './account';
+export {Wallet} from './wallet';
 //export {Minter} from './minter';
 
 export {

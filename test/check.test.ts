@@ -1,5 +1,6 @@
 import * as minterSdk from '../src';
 import {IssueCheckParams} from '../src/check/check';
+import {Wallet} from '../src';
 
 const MNEMONIC = 'solar when satoshi champion about zebra crop solution leopard senior ability vocal';
 
@@ -20,7 +21,8 @@ test('[Check] Issue Check', async () => {
         chainId : chain.networkId(),
     } as IssueCheckParams);
 
-    const keyPair = minterSdk.KeyPairSecp256k1.fromBip39Mnemonic(MNEMONIC);
+    const wal = Wallet.fromMnemonic(MNEMONIC);
+    const keyPair = wal.getKeyPair();
 
     check.setLock(CHECK_PASSWD).sign(keyPair);
 

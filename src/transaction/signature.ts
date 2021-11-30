@@ -1,6 +1,6 @@
 // secp256k1n/2
 import {assertIsArray, base_decode, BN, bufferToInt, ECDSASignatureBuffer, rlp, sha256, toBuffer} from '../util';
-import {KeyPairSecp256k1, KeyType, PublicKey, Signature} from '../key_pair';
+import {PublicKey, Signature} from '../key_pair';
 import defineProperties, {RlpSchemaField} from '../util/define-properties';
 import {Transaction} from './transaction';
 
@@ -121,8 +121,8 @@ export class SingleSignature extends TransactionSignature {
      * @param txHash
      */
     publicKey(txHash: Buffer): PublicKey[] {
-        const rawPubKey = KeyPairSecp256k1.publicKeyFromMessageBuf(txHash, [this.v, this.r, this.s]);
-        return [new PublicKey({keyType: KeyType.SECP256K1, raw: rawPubKey})];
+        const pubKey = PublicKey.fromMessageBuf(txHash, [this.v, this.r, this.s]);
+        return [pubKey];
     }
 
     /**

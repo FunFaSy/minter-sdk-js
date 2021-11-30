@@ -1,6 +1,5 @@
 import {
     assertIsBuffer,
-    assertIsPositiveInt,
     assertIsString,
     Assignable,
     base_decode,
@@ -20,10 +19,6 @@ import {
     sha256,
     toBuffer,
 } from './util';
-import {assert} from './util/external';
-import * as bip39 from 'bip39';
-import {HDKey as hdKey} from 'ethereum-cryptography/hdkey';
-import {MINTER_DERIVATION_PATH} from './constants';
 import BN from 'bn.js';
 import {List} from 'rlp/src/types';
 
@@ -57,11 +52,6 @@ const str2KeyType = (keyType: string): KeyType => {
     default:
         throw new Error(`Unknown key type ${keyType}`);
     }
-};
-
-const isValidMnemonic = (mnemonic) => {
-    return typeof mnemonic === 'string' && mnemonic.trim().split(/\s+/g).length >= 12 &&
-        bip39.validateMnemonic(mnemonic);
 };
 
 export abstract class KeyPair {
@@ -194,49 +184,6 @@ export class KeyPairSecp256k1 extends KeyPair {
     }
 
     /**
-     * Generate a new secp256k1 keypair based on BIP39 mnemonic phrase.
-     * @example
-     *  const keyPair = KeyPairSecp256k1.fromBip39Mnemonic('solar when satoshi champion about zebra ....')
-     * keyRandom.publicKey()
-     * // returns [PUBLIC_KEY]
-     * keyRandom.toString()
-     * // returns [SECRET_KEY]
-     *
-     * @param mnemonic
-     * @param deriveChildId number
-     */
-    static fromBip39Mnemonic(mnemonic: string, deriveChildId = 0): KeyPairSecp256k1 {
-        assert(isValidMnemonic(mnemonic), 'Invalid mnemonic phrase');
-        assertIsPositiveInt(deriveChildId);
-
-        const seed = bip39.mnemonicToSeedSync(mnemonic);
-        const secretKey = hdKey.fromMasterSeed(seed).
-            derive(MINTER_DERIVATION_PATH).
-            deriveChild(deriveChildId).privateKey;
-
-        return new KeyPairSecp256k1(base_encode(secretKey));
-    }
-
-    static publicKeyFromMessageBuf(message: Buffer, signature: Buffer[]): Buffer {
-        assertIsBuffer(signature[0]);
-        assertIsBuffer(signature[1]);
-        assertIsBuffer(signature[2]);
-
-        const bufV: Buffer = signature[0];
-        const bufR: Buffer = signature[1];
-        const bufS: Buffer = signature[2];
-
-        try {
-            const v = bufferToInt(bufV);
-            // ecrecover throw error in case invalid signature
-            return ecrecover(message, v, bufR, bufS);
-        }
-        catch (error) {
-            return Buffer.from([]);
-        }
-    }
-
-    /**
      * Sign message and return ECDSASignature
      *
      * @param message Buffer Sha256 hash of `message`
@@ -316,8 +263,29 @@ export class PublicKey extends Assignable {
 
     /**
      *
+     * @param message
+     * @param signature
+     */
+    static fromMessageBuf(message: Buffer, signature: Buffer[]): PublicKey {
+        assertIsBuffer(signature[0]);
+        assertIsBuffer(signature[1]);
+        assertIsBuffer(signature[2]);
+
+        const bufV: Buffer = signature[0];
+        const bufR: Buffer = signature[1];
+        const bufS: Buffer = signature[2];
+
+        const v = bufferToInt(bufV);
+
+        return PublicKey.fromBuffer (ecrecover(message, v, bufR, bufS));
+
+    }
+
+    /**
+     *
      */
     toString(): string {
+        // native Minter encoding `0x${this.raw.toString('hex')}`
         return `${keyType2Str(this.keyType)}:${base_encode(this.raw)}`;
     }
 
@@ -332,8 +300,8 @@ export class PublicKey extends Assignable {
         // case KeyType.ED25519:
         //     return nacl.sign.detached.verify(message, signature, this.data);
         case KeyType.SECP256K1: {
-            const publicKey = KeyPairSecp256k1.publicKeyFromMessageBuf(message, signature);
-            return publicKey && this.raw.equals(publicKey as Buffer);
+            const msgPublicKey = PublicKey.fromMessageBuf(message, signature);
+            return msgPublicKey && this.raw.equals(msgPublicKey.getRaw());
         }
         //
         default:
@@ -453,7 +421,8 @@ export class Signature implements ECDSASignatureBuffer {
      */
     valid(): boolean {
         const message = sha256(Buffer.from([]));
-        return ethIsValidPublic(KeyPairSecp256k1.publicKeyFromMessageBuf(message, [this.v, this.r, this.s]));
+        const pubKey = PublicKey.fromMessageBuf(message, [this.v, this.r, this.s]);
+        return ethIsValidPublic(pubKey.getRaw());
     }
 
 }
