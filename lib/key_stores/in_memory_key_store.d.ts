@@ -2,30 +2,6 @@ import { KeyStore } from './keystore';
 import { KeyPair } from '../key_pair';
 /**
  * Simple in-memory keystore for mainly for testing purposes.
- *
- * @example {@link }
- * @example
- * ```js
- * import { connect, keyStores, utils } from 'minter-api-js';
- *
- * const privateKey = '.......';
- * const keyPair = utils.KeyPair.fromString(privateKey);
- *
- * const keyStore = new keyStores.InMemoryKeyStore();
- * keyStore.setKey('testnet', 'example-account.testnet', keyPair);
- *
- * const config = {
- *   keyStore, // instance of InMemoryKeyStore
- *   networkId: 'testnet',
- *   nodeUrl: 'https://rpc.testnet.minter.org',
- *   walletUrl: 'https://wallet.testnet.minter.org',
- *   helperUrl: 'https://helper.testnet.minter.org',
- *   explorerUrl: 'https://explorer.testnet.minter.org'
- * };
- *
- * // inside an async function
- * const minter = await connect(config)
- * ```
  */
 export declare class InMemoryKeyStore extends KeyStore {
     /** @hidden */

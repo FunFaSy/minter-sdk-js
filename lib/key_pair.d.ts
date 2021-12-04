@@ -59,20 +59,6 @@ export declare class KeyPairSecp256k1 extends KeyPair {
      */
     static fromRandom(): KeyPair;
     /**
-     * Generate a new secp256k1 keypair based on BIP39 mnemonic phrase.
-     * @example
-     *  const keyPair = KeyPairSecp256k1.fromBip39Mnemonic('solar when satoshi champion about zebra ....')
-     * keyRandom.publicKey()
-     * // returns [PUBLIC_KEY]
-     * keyRandom.toString()
-     * // returns [SECRET_KEY]
-     *
-     * @param mnemonic
-     * @param deriveChildId number
-     */
-    static fromBip39Mnemonic(mnemonic: string, deriveChildId?: number): KeyPairSecp256k1;
-    static publicKeyFromMessageBuf(message: Buffer, signature: Buffer[]): Buffer;
-    /**
      * Sign message and return ECDSASignature
      *
      * @param message Buffer Sha256 hash of `message`
@@ -101,6 +87,12 @@ export declare class PublicKey extends Assignable {
      */
     static fromString(encodedKey: string): PublicKey;
     static fromBuffer(buf: Buffer): PublicKey;
+    /**
+     *
+     * @param message
+     * @param signature
+     */
+    static fromMessageBuf(message: Buffer, signature: Buffer[]): PublicKey;
     /**
      *
      */

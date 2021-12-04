@@ -8,4 +8,5 @@ declare const assertIsHexString: (input: string, msg?: string | Error) => void;
 declare const assertIsMinerAddress: (input: string, msg?: string | Error) => void;
 declare const assertIsMinerPublicKey: (input: string, msg?: string | Error) => void;
 declare const assertIsMinerTransaction: (input: string, msg?: string | Error) => void;
-export { assertIsBuffer, assertIsString, assertIsNumber, assertIsInt, assertIsPositiveInt, assertIsArray, assertIsHexString, assertIsMinerAddress, assertIsMinerPublicKey, assertIsMinerTransaction, };
+declare const assertIsMnemonic: (input: string, msg?: string | Error) => void;
+export { assertIsBuffer, assertIsString, assertIsNumber, assertIsInt, assertIsPositiveInt, assertIsArray, assertIsHexString, assertIsMinerAddress, assertIsMinerPublicKey, assertIsMinerTransaction, assertIsMnemonic, };

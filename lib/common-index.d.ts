@@ -12,4 +12,5 @@ export { Transaction, SignedTransaction } from './transaction/transaction';
 export { Connection } from './connection';
 export { Check } from './check/check';
 export { Account } from './account';
+export { Wallet } from './wallet';
 export { utils, providers, tx_actions, constants, };

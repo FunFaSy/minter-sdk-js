@@ -33,8 +33,6 @@ export declare class InMemorySigner extends Signer {
     /**
      * Creates a single account Signer instance with account, network and keyPair provided.
      *
-     * Intended to be useful for temporary keys (e.g. claiming a Linkdrop).
-     *
      * @param networkId The targeted network. (ex. mainnet, testnet, etc…)
      * @param accountId The Minter account to assign the key pair to
      * @param keyPair The keyPair to use for signing

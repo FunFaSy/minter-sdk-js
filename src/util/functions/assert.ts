@@ -1,4 +1,4 @@
-import {assert} from '../external';
+import {assert, isValidMnemonic} from '../external';
 import {isArray, isBuffer, isHexString, isInteger, isNumber, isString} from './type';
 import {isValidAddress, isValidPublicKey, isValidTransaction} from './prefix';
 
@@ -22,6 +22,8 @@ const assertIsMinerPublicKey = (input: string, msg?: string | Error) => assert(i
     msg || `Only supports Mp-prefixed hex strings but input was: ${input}`);
 const assertIsMinerTransaction = (input: string, msg?: string | Error) => assert(isValidTransaction(input),
     msg || `Only supports Mt-prefixed hex strings but input was: ${input}`);
+const assertIsMnemonic = (input: string, msg?: string | Error) => assert(isValidMnemonic(input),
+    msg || `Invalid bip39 mnemonic. Expect 12+ dictionary valid words but input was: ${input}`);
 
 export {
     assertIsBuffer
@@ -33,5 +35,6 @@ export {
     , assertIsHexString
     , assertIsMinerAddress
     , assertIsMinerPublicKey
-    , assertIsMinerTransaction,
+    , assertIsMinerTransaction
+    , assertIsMnemonic,
 };
