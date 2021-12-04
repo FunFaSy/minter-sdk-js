@@ -2,6 +2,8 @@
 
 /*  ------------------------------------------------------------------------ */
 
+import {bip39} from '../external';
+
 const isNumber          = Number.isFinite
     , isInteger         = Number.isInteger
     , isArray           = Array.isArray
@@ -17,6 +19,10 @@ const isNumber          = Number.isFinite
         if (typeof value !== 'string' || !value.match(/^0x[0-9A-Fa-f]*$/)) return false;
         if (length && value.length !== 2 + 2 * length) return false;
         return true;
+    }
+    , isValidMnemonic   = (mnemonic: string) => {
+        return typeof mnemonic === 'string' && mnemonic.trim().split(/\s+/g).length >= 12 &&
+        bip39.validateMnemonic(mnemonic);
     };
 /*  .............................................   */
 
@@ -72,6 +78,7 @@ export {
     , isStringCoercible
     , isHexString
     , isDictionary
+    , isValidMnemonic
 
     , hasProps
     , prop

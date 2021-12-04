@@ -5,6 +5,8 @@ import bs58check from 'bs58check';
 import * as secp256k1 from 'ethereum-cryptography/secp256k1';
 import {sha256} from 'ethereum-cryptography/sha256';
 import assert from 'assert';
+import * as bip39 from 'bip39';
+
 
 export {
     ecrecover
@@ -30,13 +32,15 @@ export {
     , Address as ethAddress
     , BNLike
     , BufferLike,
+
 } from 'ethereumjs-util';
 
 export {
     bs58check
     , secp256k1
     , sha256
+    , bip39
     , BN
-    , assert,
+    , assert
 };
 

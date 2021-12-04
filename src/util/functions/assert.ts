@@ -1,5 +1,5 @@
-import {assert, isValidMnemonic} from '../external';
-import {isArray, isBuffer, isHexString, isInteger, isNumber, isString} from './type';
+import {assert} from '../external';
+import {isArray, isBuffer, isHexString, isInteger, isNumber, isString, isValidMnemonic} from './type';
 import {isValidAddress, isValidPublicKey, isValidTransaction} from './prefix';
 
 const assertIsBuffer = (input: any, msg?: string | Error) => assert(isBuffer(input),
