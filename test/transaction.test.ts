@@ -1,6 +1,5 @@
 import {TransactionParams} from '../src/transaction/transaction';
 import * as minterSdk from '../src';
-import {Wallet} from '../src';
 
 const MNEMONIC = 'solar when satoshi champion about zebra crop solution leopard senior ability vocal';
 
@@ -39,7 +38,7 @@ test('[TxSingle] Send transaction type', async () => {
     const TX_RLP_ENCODED = 'f8710202018001a1e08094eb92ae39b84012968f63b2dd260a94d791fe79bd89056bc75e2d63100000000001b845f8431ba0384e5516462774e67c1efc016458af86e68f3780fadcb27c3587389dd36056e8a003b0f7547aee983bdcdcf76334d169dee271ffd96e9cb2284a68cfb1e54cedb0';
 
     const chain = new minterSdk.Chain('testnet');
-    const wal = Wallet.fromMnemonic(MNEMONIC);
+    const wal = minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = wal.getKeyPair();
 
     const txAction = new minterSdk.tx_actions.SendAction({
@@ -77,7 +76,7 @@ test('[TxSingle] MultiSend transaction type', async () => {
     const SendAction = minterSdk.tx_actions.SendAction;
 
     const chain = new minterSdk.Chain('testnet');
-    const wal = Wallet.fromMnemonic(MNEMONIC);
+    const wal = minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = wal.getKeyPair();
 
     const txAction = new minterSdk.tx_actions.MultiSendAction({
@@ -127,7 +126,7 @@ test('[TxSingle] RedeemCheck transaction type', async () => {
     const utils = minterSdk.utils;
 
     const chain = new minterSdk.Chain('testnet');
-    const wal = Wallet.fromMnemonic(MNEMONIC);
+    const wal = minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = wal.getKeyPair();
 
     const check = new minterSdk.Check(CHECK_ENCODED);
@@ -165,7 +164,7 @@ test('[TxSingle] Sell transaction type', async () => {
     const sha256 = minterSdk.utils.sha256;
 
     const chain = new minterSdk.Chain('testnet');
-    const wal = Wallet.fromMnemonic(MNEMONIC);
+    const wal = minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = wal.getKeyPair();
 
     const txAction = new minterSdk.tx_actions.SellAction({
@@ -205,7 +204,7 @@ test('[TxSingle] Buy transaction type', async () => {
     const sha256 = minterSdk.utils.sha256;
 
     const chain = new minterSdk.Chain('testnet');
-    const wal = Wallet.fromMnemonic(MNEMONIC);
+    const wal = minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = wal.getKeyPair();
 
     const txAction = new minterSdk.tx_actions.BuyAction({
@@ -245,7 +244,7 @@ test('[TxSingle] SellAll transaction type', async () => {
     const sha256 = minterSdk.utils.sha256;
 
     const chain = new minterSdk.Chain('testnet');
-    const wal = Wallet.fromMnemonic(MNEMONIC);
+    const wal = minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = wal.getKeyPair();
 
     const txAction = new minterSdk.tx_actions.SellAllAction({
@@ -284,7 +283,7 @@ test('[TxSingle] BuySwap transaction type', async () => {
     const sha256 = minterSdk.utils.sha256;
 
     const chain = new minterSdk.Chain('testnet');
-    const wal = Wallet.fromMnemonic(MNEMONIC);
+    const wal = minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = wal.getKeyPair();
 
     const txAction = new minterSdk.tx_actions.BuySwapAction({
@@ -323,7 +322,7 @@ test('[TxSingle] SellSwap transaction type', async () => {
     const sha256 = minterSdk.utils.sha256;
 
     const chain = new minterSdk.Chain('testnet');
-    const wal = Wallet.fromMnemonic(MNEMONIC);
+    const wal = minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = wal.getKeyPair();
 
     const txAction = new minterSdk.tx_actions.SellSwapAction({
@@ -362,7 +361,7 @@ test('[TxSingle] SellAllSwap transaction type', async () => {
     const sha256 = minterSdk.utils.sha256;
 
     const chain = new minterSdk.Chain('testnet');
-    const wal = Wallet.fromMnemonic(MNEMONIC);
+    const wal = minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = wal.getKeyPair();
 
     const txAction = new minterSdk.tx_actions.SellAllSwapAction({
@@ -401,7 +400,7 @@ test('[TxSingle] CreateSwapPoolAction transaction type', async () => {
     const sha256 = utils.sha256;
 
     const chain = new minterSdk.Chain('testnet');
-    const wal = Wallet.fromMnemonic(MNEMONIC);
+    const wal = minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = wal.getKeyPair();
 
     const txAction = new minterSdk.tx_actions.CreateSwapPoolAction({
@@ -441,7 +440,7 @@ test('[TxSingle] AddLiquidity type transaction', async () => {
     const sha256 = minterSdk.utils.sha256;
 
     const chain = new minterSdk.Chain('testnet');
-    const wal = Wallet.fromMnemonic(MNEMONIC);
+    const wal = minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = wal.getKeyPair();
 
     const txAction = new minterSdk.tx_actions.AddLiquidityAction({
@@ -482,7 +481,7 @@ test('[TxSingle] RemoveLiquidity transaction type', async () => {
     const sha256 = utils.sha256;
 
     const chain = new minterSdk.Chain('testnet');
-    const wal = Wallet.fromMnemonic(MNEMONIC);
+    const wal = minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = wal.getKeyPair();
 
     const txAction = new minterSdk.tx_actions.RemoveLiquidityAction({
@@ -524,7 +523,7 @@ test('[TxSingle] CreateCoin transaction type', async () => {
     const sha256 = utils.sha256;
 
     const chain = new minterSdk.Chain('testnet');
-    const wal = Wallet.fromMnemonic(MNEMONIC);
+    const wal = minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = wal.getKeyPair();
 
     const txAction = new minterSdk.tx_actions.CreateCoinAction({
@@ -567,7 +566,7 @@ test('[TxSingle] ReCreateCoin transaction type', async () => {
     const sha256 = utils.sha256;
 
     const chain = new minterSdk.Chain('testnet');
-    const wal = Wallet.fromMnemonic(MNEMONIC);
+    const wal = minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = wal.getKeyPair();
 
     const txAction = new minterSdk.tx_actions.ReCreateCoinAction({
@@ -610,7 +609,7 @@ test('[TxSingle] CreateToken transaction type', async () => {
     const sha256 = utils.sha256;
 
     const chain = new minterSdk.Chain('testnet');
-    const wal = Wallet.fromMnemonic(MNEMONIC);
+    const wal = minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = wal.getKeyPair();
 
     const txAction = new minterSdk.tx_actions.CreateTokenAction({
@@ -653,7 +652,7 @@ test('[TxSingle] ReCreateToken transaction type', async () => {
     const sha256 = utils.sha256;
 
     const chain = new minterSdk.Chain('testnet');
-    const wal = Wallet.fromMnemonic(MNEMONIC);
+    const wal = minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = wal.getKeyPair();
 
     const txAction = new minterSdk.tx_actions.ReCreateTokenAction({
@@ -695,7 +694,7 @@ test('[TxSingle] EditTickerOwner transaction type', async () => {
     const sha256 = utils.sha256;
 
     const chain = new minterSdk.Chain('testnet');
-    const wal = Wallet.fromMnemonic(MNEMONIC);
+    const wal = minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = wal.getKeyPair();
 
     const txAction = new minterSdk.tx_actions.EditTickerOwnerAction({
@@ -734,7 +733,7 @@ test('[TxSingle] MintToken transaction type', async () => {
     const convertBipToPip = utils.convertBipToPip;
 
     const chain = new minterSdk.Chain('testnet');
-    const wal = Wallet.fromMnemonic(MNEMONIC);
+    const wal = minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = wal.getKeyPair();
 
 
@@ -774,7 +773,7 @@ test('[TxSingle] BurnToken transaction type', async () => {
     const convertBipToPip = utils.convertBipToPip;
 
     const chain = new minterSdk.Chain('testnet');
-    const wal = Wallet.fromMnemonic(MNEMONIC);
+    const wal = minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = wal.getKeyPair();
 
 
@@ -814,7 +813,7 @@ test('[TxSingle] DeclareCandidacy transaction type', async () => {
     const convertBipToPip = utils.convertBipToPip;
 
     const chain = new minterSdk.Chain('testnet');
-    const wal = Wallet.fromMnemonic(MNEMONIC);
+    const wal = minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = wal.getKeyPair();
 
 
@@ -856,7 +855,7 @@ test('[TxSingle] EditCandidate transaction type', async () => {
     const sha256 = utils.sha256;
 
     const chain = new minterSdk.Chain('testnet');
-    const wal = Wallet.fromMnemonic(MNEMONIC);
+    const wal = minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = wal.getKeyPair();
 
 
@@ -897,7 +896,7 @@ test('[TxSingle] EditCandidatePubKey transaction type', async () => {
     const sha256 = utils.sha256;
 
     const chain = new minterSdk.Chain('testnet');
-    const wal = Wallet.fromMnemonic(MNEMONIC);
+    const wal = minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = wal.getKeyPair();
 
 
@@ -936,7 +935,7 @@ test('[TxSingle] EditCandidateCommission transaction type', async () => {
     const sha256 = utils.sha256;
 
     const chain = new minterSdk.Chain('testnet');
-    const wal = Wallet.fromMnemonic(MNEMONIC);
+    const wal = minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = wal.getKeyPair();
 
 
@@ -976,7 +975,7 @@ test('[TxSingle] Delegate transaction type', async () => {
     const convertBipToPip = utils.convertBipToPip;
 
     const chain = new minterSdk.Chain('testnet');
-    const wal = Wallet.fromMnemonic(MNEMONIC);
+    const wal = minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = wal.getKeyPair();
 
 
@@ -1017,7 +1016,7 @@ test('[TxSingle] Unbond transaction type', async () => {
     const convertBipToPip = utils.convertBipToPip;
 
     const chain = new minterSdk.Chain('testnet');
-    const wal = Wallet.fromMnemonic(MNEMONIC);
+    const wal = minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = wal.getKeyPair();
 
 
@@ -1058,7 +1057,7 @@ test('[TxSingle] Unbond transaction type', async () => {
 //     const convertBipToPip = utils.convertBipToPip;
 //
 //     const chain = new minterSdk.Chain('testnet');
-//     const wal = Wallet.fromMnemonic(MNEMONIC);
+//     const wal = minterSdk.Wallet.fromMnemonic(MNEMONIC);
 //      const keyPair = wal.getKeyPair();
 //
 //     const txAction = new minterSdk.tx_actions.MoveStakeAction({
@@ -1098,7 +1097,7 @@ test('[TxSingle] SetCandidateOn transaction type', async () => {
     const sha256 = utils.sha256;
 
     const chain = new minterSdk.Chain('testnet');
-    const wal = Wallet.fromMnemonic(MNEMONIC);
+    const wal = minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = wal.getKeyPair();
 
 
@@ -1136,7 +1135,7 @@ test('[TxSingle] SetCandidateOff transaction type', async () => {
     const sha256 = utils.sha256;
 
     const chain = new minterSdk.Chain('testnet');
-    const wal = Wallet.fromMnemonic(MNEMONIC);
+    const wal = minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = wal.getKeyPair();
 
 
@@ -1174,7 +1173,7 @@ test('[TxSingle] VoteHaltBlock transaction type', async () => {
     const sha256 = utils.sha256;
 
     const chain = new minterSdk.Chain('testnet');
-    const wal = Wallet.fromMnemonic(MNEMONIC);
+    const wal = minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = wal.getKeyPair();
 
 
@@ -1213,7 +1212,7 @@ test('[TxSingle] VoteNetUpdate transaction type', async () => {
     const sha256 = utils.sha256;
 
     const chain = new minterSdk.Chain('testnet');
-    const wal = Wallet.fromMnemonic(MNEMONIC);
+    const wal = minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = wal.getKeyPair();
 
 
@@ -1254,7 +1253,7 @@ test('[TxSingle] VoteCommissionUpdate transaction type', async () => {
     const convertBipToPip = utils.convertBipToPip;
 
     const chain = new minterSdk.Chain('testnet');
-    const wal = Wallet.fromMnemonic(MNEMONIC);
+    const wal = minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = wal.getKeyPair();
 
 
@@ -1339,7 +1338,7 @@ test('[TxSingle] CreateMultiSig transaction type', async () => {
     const sha256 = utils.sha256;
 
     const chain = new minterSdk.Chain('testnet');
-    const wal = Wallet.fromMnemonic(MNEMONIC);
+    const wal = minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = wal.getKeyPair();
 
 
@@ -1444,7 +1443,7 @@ test('[TxSingle] AddLimitOrder transaction type', async () => {
     const convertBipToPip = utils.convertBipToPip;
 
     const chain = new minterSdk.Chain('taconet');
-    const wal = Wallet.fromMnemonic(MNEMONIC);
+    const wal = minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = wal.getKeyPair();
 
 
@@ -1485,7 +1484,7 @@ test('[TxSingle] RemoveLimitOrder transaction type', async () => {
     const sha256 = utils.sha256;
 
     const chain = new minterSdk.Chain('taconet');
-    const wal = Wallet.fromMnemonic(MNEMONIC);
+    const wal = minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = wal.getKeyPair();
 
 
