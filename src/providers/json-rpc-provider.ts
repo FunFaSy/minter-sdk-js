@@ -4,7 +4,6 @@
  */
 import {Provider} from './provider';
 import {
-    ConnectionInfo,
     convertBipToPip,
     isHexString,
     isInteger,
@@ -12,14 +11,14 @@ import {
     isValidAddress,
     isValidPublicKey,
     logWarning,
-    newRpcClient,
     TypedError,
 } from '../util';
 import exponentialBackoff from '../util/exponential-backoff';
 import {parseRpcError} from './errors';
 import * as rpcTypes from './internal';
 import {CandidatesStatusEnum} from './internal';
-import {AxiosInstance, AxiosRequestConfig} from 'axios';
+import HttpTransport, {HttpTransportConfig} from '../transport/http-transport';
+import JsonSerializer from '../transport/json-serializer';
 
 // Default number of retries before giving up on a request.
 const REQUEST_RETRY_NUMBER = 3;
@@ -30,32 +29,30 @@ const REQUEST_RETRY_WAIT = 500;
 // Exponential back off for waiting to retry.
 const REQUEST_RETRY_WAIT_BACKOFF = 1.5;
 
-
 /**
  * Client class to interact with the Minter RPC API.
  * @see {@link https://#}
  */
 export class JsonRpcProvider extends Provider {
     /** @hidden */
-    protected readonly connection: ConnectionInfo;
-    protected readonly rpcClient: AxiosInstance;
+    protected readonly config: HttpTransportConfig
+    protected readonly transport: HttpTransport;
 
     /**
-     * @param connection
+     * @param config
      */
-    constructor(connection: string | ConnectionInfo) {
+    constructor(config: string | HttpTransportConfig) {
         super();
 
-        if (isString(connection)) {
-            this.connection = {baseURL: connection.toString()} as ConnectionInfo;
+        if (isString(config)) {
+            this.config = {baseURL: config.toString()} as HttpTransportConfig;
         }
         //
         else {
-            this.connection = connection as ConnectionInfo;
+            this.config = config as HttpTransportConfig;
         }
 
-        this.rpcClient = newRpcClient(this.connection);
-
+        this.transport = new HttpTransport(this.config, new JsonSerializer());
     }
 
     //-----------  Blockchain
@@ -69,7 +66,7 @@ export class JsonRpcProvider extends Provider {
             failed_txs: !!params?.failedTxs,
         };
         const url = 'block/'.concat(params.height.toString());
-        return this.sendRpcCall(url, _params);
+        return this.send(url, _params);
     }
 
     async blocks(params: rpcTypes.BlocksRequest): Promise<rpcTypes.BlocksResponse> {
@@ -85,15 +82,15 @@ export class JsonRpcProvider extends Provider {
             failed_txs : !!params?.failedTxs,
         };
         const url = 'blocks';
-        return this.sendRpcCall(url, _params);
+        return this.send(url, _params);
     }
 
     async genesis(): Promise<rpcTypes.GenesisResponse> {
-        return this.sendRpcCall('genesis');
+        return this.send('genesis');
     }
 
     async netInfo(): Promise<rpcTypes.NetInfoResponse> {
-        return this.sendRpcCall('net_info');
+        return this.send('net_info');
     }
 
     async sendTransaction(params: rpcTypes.SendTransactionRequest): Promise<rpcTypes.SendTransactionResponse> {
@@ -101,11 +98,11 @@ export class JsonRpcProvider extends Provider {
             return Promise.reject(new TypedError('tx parameter not specified', 'ArgumentsRequired'));
         }
 
-        return this.sendRpcCall('send_transaction', undefined, params, 'post');
+        return this.send('send_transaction', undefined, params, 'post');
     }
 
     async status(): Promise<rpcTypes.NodeStatusResponse> {
-        return this.sendRpcCall('status');
+        return this.send('status');
     }
 
     async transaction(params: rpcTypes.TransactionRequest): Promise<rpcTypes.TransactionResponse> {
@@ -114,7 +111,7 @@ export class JsonRpcProvider extends Provider {
         }
 
         const url = 'transaction/'.concat(params.hash);
-        return this.sendRpcCall(url, params);
+        return this.send(url, params);
     }
 
     async transactions(params: rpcTypes.TransactionsRequest): Promise<rpcTypes.TransactionsResponse> {
@@ -129,7 +126,7 @@ export class JsonRpcProvider extends Provider {
             per_page: params?.perPage && 0 < params.perPage ? params.perPage : 30,
         };
         const url = 'transactions';
-        return this.sendRpcCall(url, _params);
+        return this.send(url, _params);
     }
 
     async unconfirmedTransactions(params: rpcTypes.UnconfirmedTxsRequest): Promise<rpcTypes.UnconfirmedTxsResponse> {
@@ -137,13 +134,13 @@ export class JsonRpcProvider extends Provider {
             limit: params?.limit || 30,
         };
         const url = 'unconfirmed_txs';
-        return this.sendRpcCall(url, _params);
+        return this.send(url, _params);
     }
 
     async networkVersion(): Promise<rpcTypes.NetworkVersionResponse> {
         const _params = {};
         const url = 'version_network';
-        return this.sendRpcCall(url, _params);
+        return this.send(url, _params);
     }
 
     //----------- Account
@@ -157,7 +154,7 @@ export class JsonRpcProvider extends Provider {
             delegated: !!params?.delegated,
         };
         const url = 'address/'.concat(params.address);
-        return this.sendRpcCall(url, _params);
+        return this.send(url, _params);
     }
 
     async addresses(params: rpcTypes.AddressesRequest): Promise<rpcTypes.AddressesResponse> {
@@ -172,7 +169,7 @@ export class JsonRpcProvider extends Provider {
             delegated: !!params?.delegated,
         };
         const url = 'addresses';
-        return this.sendRpcCall(url, _params);
+        return this.send(url, _params);
     }
 
     async frozen(params: rpcTypes.AddressFrozenRequest): Promise<rpcTypes.AddressFrozenResponse> {
@@ -185,7 +182,7 @@ export class JsonRpcProvider extends Provider {
             coin_id: params?.coinId,
         };
         const url = `frozen/${params.address}`;
-        return this.sendRpcCall(url, _params);
+        return this.send(url, _params);
     }
 
     async waitlist(params: rpcTypes.AddressWaitListRequest): Promise<rpcTypes.AddressWaitListResponse> {
@@ -197,7 +194,7 @@ export class JsonRpcProvider extends Provider {
             public_key: params?.publicKey,
         };
         const url = `waitlist/${params.address}`;
-        return this.sendRpcCall(url, _params);
+        return this.send(url, _params);
     }
 
     //----------- Validator
@@ -211,7 +208,7 @@ export class JsonRpcProvider extends Provider {
             not_show_stakes: !params?.showStakes,
         };
         const url = 'candidate/'.concat(params.publicKey);
-        return this.sendRpcCall(url, _params);
+        return this.send(url, _params);
     }
 
     async candidates(params?: rpcTypes.CandidatesRequest): Promise<rpcTypes.CandidatesResponse> {
@@ -223,7 +220,7 @@ export class JsonRpcProvider extends Provider {
         };
         const url = 'candidates';
 
-        return this.sendRpcCall(url, _params);
+        return this.send(url, _params);
     }
 
     async missedBlocks(params: rpcTypes.MissedBlocksRequest): Promise<rpcTypes.MissedBlocksResponse> {
@@ -234,7 +231,7 @@ export class JsonRpcProvider extends Provider {
             height: params?.height,
         };
         const url = 'missed_blocks/'.concat(params.publicKey);
-        return this.sendRpcCall(url, _params);
+        return this.send(url, _params);
     }
 
     async validators(params?: rpcTypes.ValidatorsRequest): Promise<rpcTypes.ValidatorsResponse> {
@@ -242,7 +239,7 @@ export class JsonRpcProvider extends Provider {
             height: params?.height,
         };
         const url = 'validators';
-        return this.sendRpcCall(url, _params);
+        return this.send(url, _params);
     }
 
     //----------- Coins/Tokens
@@ -252,7 +249,7 @@ export class JsonRpcProvider extends Provider {
         };
         const url = 'coin_info/'.concat(params.symbol.toUpperCase());
 
-        return this.sendRpcCall(url, _params);
+        return this.send(url, _params);
     }
 
     async coinInfoById(params: rpcTypes.CoinInfoByIdRequest): Promise<rpcTypes.CoinInfoByIdResponse> {
@@ -265,7 +262,7 @@ export class JsonRpcProvider extends Provider {
             height: params?.height,
         };
 
-        return this.sendRpcCall(url, _params);
+        return this.send(url, _params);
     }
 
     async estimateCoinBuy(params: rpcTypes.EstimateCoinBuyRequest): Promise<rpcTypes.EstimateCoinBuyResponse> {
@@ -306,7 +303,7 @@ export class JsonRpcProvider extends Provider {
         } = params;
 
         const url = 'estimate_coin_buy';
-        return this.sendRpcCall(url, {
+        return this.send(url, {
             coin_id_to_buy,
             coin_to_buy,
             coin_id_to_sell,
@@ -359,7 +356,7 @@ export class JsonRpcProvider extends Provider {
         } = params;
         const url = 'estimate_coin_sell';
 
-        return this.sendRpcCall(url, {
+        return this.send(url, {
             coin_id_to_buy,
             coin_to_buy,
             coin_id_to_sell,
@@ -407,7 +404,7 @@ export class JsonRpcProvider extends Provider {
 
         const url = 'estimate_coin_sell_all';
 
-        return this.sendRpcCall(url, {
+        return this.send(url, {
             coin_id_to_buy,
             coin_to_buy,
             coin_id_to_sell,
@@ -430,7 +427,7 @@ export class JsonRpcProvider extends Provider {
         };
         const url = 'limit_order/'.concat(params.orderId.toString());
 
-        return this.sendRpcCall(url, _params);
+        return this.send(url, _params);
     }
 
     async limitOrders(params: rpcTypes.LimitOrdersRequest): Promise<rpcTypes.LimitOrdersResponse> {
@@ -446,7 +443,7 @@ export class JsonRpcProvider extends Provider {
         };
         const url = 'limit_orders';
 
-        return this.sendRpcCall(url, _params);
+        return this.send(url, _params);
     }
 
     //----------- SwapPools
@@ -472,7 +469,7 @@ export class JsonRpcProvider extends Provider {
             url = url.concat(`/${params.provider.toString()}`);
         }
 
-        return this.sendRpcCall(url, _params);
+        return this.send(url, _params);
     }
 
     //----------- Prices
@@ -483,15 +480,15 @@ export class JsonRpcProvider extends Provider {
         }
 
         const url = 'estimate_tx_commission/'.concat(params.tx);
-        return this.sendRpcCall(url);
+        return this.send(url);
     }
 
     async minGasPrice(params?: rpcTypes.MinGasPriceRequest): Promise<rpcTypes.MinGasPriceResponse> {
         const url = '/min_gas_price';
 
-        const _params = {};
+        const _params = {...params};
 
-        return this.sendRpcCall(url, _params);
+        return this.send(url, _params);
     }
 
     async maxGasPrice(params?: rpcTypes.MaxGasPriceRequest): Promise<rpcTypes.MaxGasPriceResponse> {
@@ -501,7 +498,7 @@ export class JsonRpcProvider extends Provider {
             height: params?.height,
         };
 
-        return this.sendRpcCall(url, _params);
+        return this.send(url, _params);
     }
 
     async priceCommissions(params: rpcTypes.PriceCommissionsRequest): Promise<rpcTypes.PriceCommissionsResponse> {
@@ -511,7 +508,7 @@ export class JsonRpcProvider extends Provider {
             height: params?.height,
         };
 
-        return this.sendRpcCall(url, _params);
+        return this.send(url, _params);
     }
 
     //----------- Vote (GOVERNESS) Info
@@ -524,7 +521,7 @@ export class JsonRpcProvider extends Provider {
         };
 
         const url = 'commission_votes/'.concat(params.targetVersion);
-        return this.sendRpcCall(url, _params);
+        return this.send(url, _params);
     }
 
     async haltVotes(params: rpcTypes.HaltVotesRequest): Promise<rpcTypes.HaltVotesResponse> {
@@ -534,7 +531,7 @@ export class JsonRpcProvider extends Provider {
 
         const url = 'halts/'.concat(params.height.toString());
 
-        return this.sendRpcCall(url);
+        return this.send(url);
     }
 
     async netUpdateVotes(params: rpcTypes.NetUpdateVotesRequest): Promise<rpcTypes.NetUpdateVotesResponse> {
@@ -546,7 +543,7 @@ export class JsonRpcProvider extends Provider {
         };
         const url = 'update_votes/'.concat(params.targetVersion.toString());
 
-        return this.sendRpcCall(url,_params);
+        return this.send(url, _params);
     }
 
     //----------- Events
@@ -557,15 +554,15 @@ export class JsonRpcProvider extends Provider {
 
         const url = 'events/'.concat(params.height.toString());
 
-        return this.sendRpcCall(url);
+        return this.send(url);
     }
 
     /** @hidden */
-    async sendRpcCall<T>(url: string, params: object = undefined, data: object = undefined, method = 'get'): Promise<T> {
+    async send<T>(url: string, params?: object, data?: object , method = 'get'): Promise<T> {
         return exponentialBackoff(REQUEST_RETRY_WAIT, REQUEST_RETRY_NUMBER, REQUEST_RETRY_WAIT_BACKOFF,
             async () => {
 
-                return await this.rpcClient({method, url, params, data} as AxiosRequestConfig)
+                return await this.transport.send({method, url, params, data})
                     //
                     .then((response) => {
                         const {data} = response;
