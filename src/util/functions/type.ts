@@ -20,6 +20,11 @@ const isNumber          = Number.isFinite
         if (length && value.length !== 2 + 2 * length) return false;
         return true;
     }
+    , isValidUrl        = (url) => {
+        try { new URL(url); }
+        catch (e) { return false; }
+        return true;
+    }
     , isValidMnemonic   = (mnemonic: string) => {
         return typeof mnemonic === 'string' && mnemonic.trim().split(/\s+/g).length >= 12 &&
         bip39.validateMnemonic(mnemonic);
@@ -79,6 +84,7 @@ export {
     , isHexString
     , isDictionary
     , isValidMnemonic
+    , isValidUrl
 
     , hasProps
     , prop

@@ -29,6 +29,8 @@ export abstract class Signer {
     abstract signMessage(message: Uint8Array, accountId?: string, networkId?: string): Promise<Signature>;
 }
 
+
+
 /**
  * Signs using in memory key store.
  */
@@ -37,13 +39,12 @@ export class InMemorySigner extends Signer {
 
     constructor(keyStore: InMemoryKeyStore) {
         super();
+
         this.keyStore = keyStore;
     }
 
     /**
      * Creates a single account Signer instance with account, network and keyPair provided.
-     *
-     * Intended to be useful for temporary keys (e.g. claiming a Linkdrop).
      *
      * @param networkId The targeted network. (ex. mainnet, testnet, etc…)
      * @param accountId The Minter account to assign the key pair to

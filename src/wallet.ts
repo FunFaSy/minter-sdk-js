@@ -80,5 +80,5 @@ export class Wallet extends HdWallet {
 
         return new KeyPairSecp256k1(base_encode(address.privateKey));
     }
-}
 
+}
