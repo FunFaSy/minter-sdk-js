@@ -3,30 +3,6 @@ import {KeyPair} from '../key_pair';
 
 /**
  * Simple in-memory keystore for mainly for testing purposes.
- *
- * @example {@link }
- * @example
- * ```js
- * import { connect, keyStores, utils } from 'minter-api-js';
- *
- * const privateKey = '.......';
- * const keyPair = utils.KeyPair.fromString(privateKey);
- *
- * const keyStore = new keyStores.InMemoryKeyStore();
- * keyStore.setKey('testnet', 'example-account.testnet', keyPair);
- *
- * const config = {
- *   keyStore, // instance of InMemoryKeyStore
- *   networkId: 'testnet',
- *   nodeUrl: 'https://rpc.testnet.minter.org',
- *   walletUrl: 'https://wallet.testnet.minter.org',
- *   helperUrl: 'https://helper.testnet.minter.org',
- *   explorerUrl: 'https://explorer.testnet.minter.org'
- * };
- *
- * // inside an async function
- * const minter = await connect(config)
- * ```
  */
 export class InMemoryKeyStore extends KeyStore {
     /** @hidden */
@@ -44,7 +20,7 @@ export class InMemoryKeyStore extends KeyStore {
      * @param keyPair The key pair to store in local storage
      */
     async setKey(networkId: string, accountId: string, keyPair: KeyPair): Promise<void> {
-        this.keys[`${accountId}:${networkId}`] = keyPair.toString();
+        this.keys[`${networkId}:${accountId}`] = keyPair.toString();
     }
 
     /**
@@ -54,7 +30,8 @@ export class InMemoryKeyStore extends KeyStore {
      * @returns {Promise<KeyPair>}
      */
     async getKey(networkId: string, accountId: string): Promise<KeyPair> {
-        const value = this.keys[`${accountId}:${networkId}`];
+        const value = this.keys[`${networkId}:${accountId}`];
+
         if (!value) {
             return null;
         }
@@ -67,7 +44,7 @@ export class InMemoryKeyStore extends KeyStore {
      * @param accountId The Minter account tied to the key pair
      */
     async removeKey(networkId: string, accountId: string): Promise<void> {
-        delete this.keys[`${accountId}:${networkId}`];
+        delete this.keys[`${networkId}:${accountId}`];
     }
 
     /**
@@ -83,9 +60,10 @@ export class InMemoryKeyStore extends KeyStore {
      */
     async getNetworks(): Promise<string[]> {
         const result = new Set<string>();
+
         Object.keys(this.keys).forEach((key) => {
             const parts = key.split(':');
-            result.add(parts[1]);
+            result.add(parts[0]);
         });
         return Array.from(result.values());
     }
@@ -99,9 +77,11 @@ export class InMemoryKeyStore extends KeyStore {
         const result = new Array<string>();
         Object.keys(this.keys).forEach((key) => {
             const parts = key.split(':');
-            if (parts[parts.length - 1] === networkId) {
-                result.push(parts.slice(0, parts.length - 1).join(':'));
+
+            if (parts[0] === networkId) {
+                result.push(parts[parts.length - 1]);
             }
+
         });
         return result;
     }
