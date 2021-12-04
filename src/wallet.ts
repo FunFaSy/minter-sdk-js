@@ -3,7 +3,8 @@ import {HDKey} from 'ethereum-cryptography/hdkey';
 import {HDKeyT} from 'ethereum-cryptography/pure/hdkey';
 import {assert, stripHexPrefix} from './util/external';
 import {assertIsHexString, assertIsMnemonic, assertIsPositiveInt, base_encode} from './util';
-import {KeyPair, KeyPairSecp256k1} from './key_pair';
+import { KeyPairSecp256k1} from './key_pair';
+import {MINTER_BIP44_DERIVATION_COIN_ID} from './constants';
 
 /**
  *
@@ -35,14 +36,14 @@ export class Wallet extends HdWallet {
 
         this.hdKey = hdKey;
 
-        this.coinId = 60; // 491 Bip Minter // 60 Eth
+        this.coinId = MINTER_BIP44_DERIVATION_COIN_ID; // 491 Bip Minter // 60 Eth
         this.accountId = accountId;
     }
 
     /**
      *
-     * @param seed
-     * @param accountId
+     * @param seed 0x prefixed Hex String
+     * @param accountId Number
      */
     static fromSeed(seed: string, accountId = 0): Wallet {
         assertIsHexString(seed);
@@ -65,13 +66,14 @@ export class Wallet extends HdWallet {
     }
 
     /**
-     * Public KeyPair for public or private usage. Public means for receive operations general. Private means for
-     * exchange operations or accounting;
+     * KeyPair for public or private usage.
+     * Public means for receive operations in general.
+     * Private means for exchange operations or accounting;
      *
      * @param index
      * @param pub
      */
-    getKeyPair(index = 0, pub = true): KeyPair {
+    getKeyPair(index = 0, pub = true): KeyPairSecp256k1 {
         assertIsPositiveInt(index);
         const deriveBasePath = Wallet.makeDerivationBasePath(this.coinId, this.accountId, pub);
         const address = this.hdKey.derive(deriveBasePath).deriveChild(index);

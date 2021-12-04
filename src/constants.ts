@@ -9,6 +9,6 @@
  0  change/receive: specifies if the address is for receive or change operations
  0  address_index: denotes the index of the address being generated
  */
-export const BIP44_DERIVATION_COIN_ID = 60 ; // 60 ETh / 491 Minter Bip [ till Minter 2.6.x use ETH Id ]
+export const MINTER_BIP44_DERIVATION_COIN_ID = 60 ; // 60 ETh / 491 Minter Bip [ till Minter 2.6.x use ETH Id ]
 
 export const MINTER_LAST_BLOCK_HEIGHT = 999999999;
