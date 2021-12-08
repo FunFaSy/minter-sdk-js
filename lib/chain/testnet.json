@@ -1,6 +1,6 @@
 {
     "name": "testnet",
-    "chainId": "minter-test-1",
+    "chainId": "testnet",
     "networkId": 2,
     "initialHeight": 3278787,
     "totalSlashed": 0,

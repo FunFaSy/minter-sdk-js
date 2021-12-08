@@ -1,28 +1,26 @@
 import { Provider } from './providers';
-import { Signer } from './signer';
-import { KeyStore } from './key_stores';
+import { ChainId } from './chain/types';
+/**
+ * @param config Contains connection info details
+ * @returns {Signer}
+ */
 /**
  *
  */
 export interface ConnectionConfig {
-    networkId: string | number;
+    chainId: string | ChainId;
     provider: {
         type: string;
         args: any;
-    };
-    signer: {
-        type: string;
-        keyStore: KeyStore;
     };
 }
 /**
  * Connects an account to a given network via a given provider
  */
 export declare class Connection {
-    readonly networkId: string | number;
+    readonly chainId: ChainId;
     readonly provider: Provider;
-    readonly signer: Signer;
-    constructor(networkId: string | number, provider: Provider, signer: Signer);
+    constructor(chainId: ChainId, provider: Provider);
     /**
      * @param config Contains connection info details
      */

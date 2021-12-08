@@ -1,6 +1,6 @@
 export interface ChainParams {
     name: string;
-    chainId: string;
+    chainId: ChainId;
     networkId: number;
     initialHeight: number;
     totalSlashed: number;
@@ -26,5 +26,10 @@ export interface BootstrapNode {
     ip: string;
     port: number | string;
     comment?: string;
+}
+export declare enum ChainId {
+    MAINNET = "mainnet",
+    TESTNET = "testnet",
+    TACONET = "taconet"
 }
 export {};

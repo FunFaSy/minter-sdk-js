@@ -1,5 +1,6 @@
 import { KeyStore } from './keystore';
 import { KeyPair } from '../key_pair';
+import { ChainId } from '../chain/types';
 /**
  * This class is used to store keys in the browsers local storage.
  *
@@ -11,7 +12,7 @@ import { KeyPair } from '../key_pair';
  * const keyStore = new keyStores.BrowserLocalStorageKeyStore();
  * const config = {
  *   keyStore, // instance of BrowserLocalStorageKeyStore
- *   networkId: 'testnet',
+ *   chainId: 'testnet',
  *   nodeUrl: 'https://rpc.testnet.minter.org',
  *   walletUrl: 'https://wallet.testnet.minter.org',
  *   helperUrl: 'https://helper.testnet.minter.org',
@@ -24,7 +25,7 @@ import { KeyPair } from '../key_pair';
  */
 export declare class BrowserLocalStorageKeyStore extends KeyStore {
     /** @hidden */
-    private localStorage;
+    private storage;
     /** @hidden */
     private prefix;
     /**
@@ -34,24 +35,24 @@ export declare class BrowserLocalStorageKeyStore extends KeyStore {
     constructor(localStorage?: any, prefix?: string);
     /**
      * Stores a {@link KeyPair} in local storage.
-     * @param networkId The targeted network. (ex. mainnet, testnet, etc…)
+     * @param chainId The targeted network. (ex. mainnet, testnet, etc…)
      * @param accountId The Minter account tied to the key pair
      * @param keyPair The key pair to store in local storage
      */
-    setKey(networkId: string, accountId: string, keyPair: KeyPair): Promise<void>;
+    setKey(chainId: ChainId, accountId: string, keyPair: KeyPair): Promise<void>;
     /**
      * Gets a {@link KeyPair} from local storage
-     * @param networkId The targeted network. (ex. mainnet, testnet, etc…)
+     * @param chainId The targeted network. (ex. mainnet, testnet, etc…)
      * @param accountId The Minter account tied to the key pair
      * @returns {Promise<KeyPair>}
      */
-    getKey(networkId: string, accountId: string): Promise<KeyPair>;
+    getKey(chainId: ChainId, accountId: string): Promise<KeyPair>;
     /**
      * Removes a {@link KeyPair} from local storage
-     * @param networkId The targeted network. (ex. mainnet, testnet, etc…)
+     * @param chainId The targeted network. (ex. mainnet, testnet, etc…)
      * @param accountId The Minter account tied to the key pair
      */
-    removeKey(networkId: string, accountId: string): Promise<void>;
+    removeKey(chainId: ChainId, accountId: string): Promise<void>;
     /**
      * Removes all items that start with `prefix` from local storage
      */
@@ -60,21 +61,22 @@ export declare class BrowserLocalStorageKeyStore extends KeyStore {
      * Get the network(s) from local storage
      * @returns {Promise<string[]>}
      */
-    getNetworks(): Promise<string[]>;
+    getChains(): Promise<string[]>;
     /**
      * Gets the account(s) from local storage
-     * @param networkId The targeted network. (ex. mainnet, testnet, etc…)
+     * @param chainId The targeted network. (ex. mainnet, testnet, etc…)
      * @returns{Promise<string[]>}
      */
-    getAccounts(networkId: string): Promise<string[]>;
+    getAccounts(chainId: ChainId): Promise<string[]>;
     /**
      * @hidden
      * Helper function to retrieve a local storage key
-     * @param networkId The targeted network. (ex. mainnet, testnet, etc…)
+     * @param chainId The targeted network. (ex. mainnet, testnet, etc…)
      * @param accountId The Minter account tied to the storage keythat's sought
      * @returns {string} An example might be: `minter-api-js:keystore:minter-friend:default`
      */
     private storageKeyForSecretKey;
     /** @hidden */
     private storageKeys;
+    entries(): Promise<IterableIterator<[string, string]>>;
 }

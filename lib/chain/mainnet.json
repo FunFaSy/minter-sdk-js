@@ -1,6 +1,6 @@
 {
     "name": "mainnet",
-    "chainId": "minter-mainnet-4",
+    "chainId": "mainnet",
     "networkId": 1,
     "initialHeight": 3278787,
     "totalSlashed": 0,
