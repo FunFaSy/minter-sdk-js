@@ -7,8 +7,8 @@ import {MINTER_BIP44_DERIVATION_COIN_ID} from './constants';
 import {KeyPair, KeyPairSecp256k1} from './key_pair';
 import {Connection} from './connection';
 import {Account} from './account';
-import {Chain} from './chain';
-import {JsonRpcProvider} from './providers';
+import {Chain, ChainId} from './chain';
+import {InMemoryKeyStore, KeyStore} from './key_stores';
 
 /**
  *
@@ -32,6 +32,8 @@ export abstract class HdWallet {
 export class Wallet extends HdWallet {
     private readonly _hdKey: HDKeyT;
     private _connection: Connection;
+    private _keyStore: KeyStore;
+    private _accounts: Map<string, Account>;
 
     readonly coinId: number;
     readonly walletId: number;
@@ -46,9 +48,13 @@ export class Wallet extends HdWallet {
         assert(hdKey);
 
         this._hdKey = hdKey;
+        this._accounts = new Map<string, Account>();
 
         this.coinId = MINTER_BIP44_DERIVATION_COIN_ID; // 491 Bip Minter // 60 Eth
         this.walletId = parseInt(walletId?.toString()) || 0;
+
+        this.getDefaultConnection().then(con => this.setConnection(con));
+        this.getDefaultKeystore().then(con => this.setKeyStore(con));
     }
 
     //------------------------------------------------------
@@ -87,8 +93,20 @@ export class Wallet extends HdWallet {
     }
 
     //------------------------------------------------------
-    async getDefaultConnection(chain: Chain): Promise<Connection>{
-        return new Connection(chain.chainId, new JsonRpcProvider(chain.urls?.api?.node?.http[0]));
+    /**
+     *
+     * @param chain
+     */
+    async getDefaultConnection(chain?: Chain): Promise<Connection> {
+        const _chain = chain || new Chain(ChainId.MAINNET);
+        return _chain.createJsonRpcConnection();
+    }
+
+    /**
+     *
+     */
+    async getDefaultKeystore(): Promise<KeyStore> {
+        return new InMemoryKeyStore();
     }
 
     /**
@@ -97,7 +115,26 @@ export class Wallet extends HdWallet {
      */
     async setConnection(connection: Connection): Promise<Wallet> {
         this._connection = connection;
-        //new JsonRpcProvider(this._chain.urls()?.api?.node?.http[0]);
+
+        for (const acc of this._accounts.values()) {
+            acc.setConnection(this._connection);
+        }
+
+        return this;
+    }
+
+    /**
+     *
+     * @param keyStore
+     */
+    async setKeyStore(keyStore: KeyStore): Promise<Wallet> {
+        this._keyStore = keyStore;
+
+        for (const acc of this._accounts.values()) {
+            acc.setKeyStore(this._keyStore);
+        }
+
+
         return this;
     }
 
@@ -124,6 +161,15 @@ export class Wallet extends HdWallet {
      * @param pub
      */
     async getAccount(index = 0, pub = true): Promise<Account> {
-        return new Account(await this.getAccountKeyPair(index, pub), this._connection);
+        const accKey = `${this._connection.chainId}:${index}:${pub ? 'pub' : 'priv'}`;
+        let account = this._accounts.get(accKey);
+
+        if (!account) {
+            account = new Account(await this.getAccountKeyPair(index, pub), this._connection);
+            await account.setKeyStore(this._keyStore);
+            this._accounts.set(accKey, account);
+        }
+
+        return account;
     }
 }

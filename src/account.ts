@@ -61,6 +61,8 @@ export class Account {
 
         this._keyStore = new InMemoryKeyStore();
         this._signer = new InMemorySigner(this._keyStore);
+
+        this._keyStore.setKey(this._connection.chainId, this.address.toString(), keyPair).then();
     }
 
     async setKeyStore(keyStore: KeyStore): Promise<Account> {
@@ -70,6 +72,7 @@ export class Account {
         this._signer = new InMemorySigner(this._keyStore);
 
         for (const [k, v] of await oldStore.entries()) {
+
             const parts = k.split(':');
 
             await this._keyStore.setKey(parts[0] as ChainId, parts[1], KeyPair.fromString(v));
