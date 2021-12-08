@@ -2,7 +2,7 @@ import {KeyStore} from './keystore';
 import {KeyPair} from '../key_pair';
 import {ChainId} from '../chain/types';
 
-const LOCAL_STORAGE_KEY_PREFIX = 'minter-api-js:keystore:';
+const LOCAL_STORAGE_KEY_PREFIX = 'minter-sdk-js:keystore:';
 
 /**
  * This class is used to store keys in the browsers local storage.
@@ -108,6 +108,7 @@ export class BrowserLocalStorageKeyStore extends KeyStore {
      */
     async getAccounts(chainId: ChainId): Promise<string[]> {
         const result = new Array<string>();
+
         for (const key of this.storageKeys()) {
             if (key.startsWith(this.prefix)) {
                 const parts = key.substring(this.prefix.length).split(':');
@@ -138,15 +139,17 @@ export class BrowserLocalStorageKeyStore extends KeyStore {
     }
 
     async entries(): Promise<IterableIterator<[string, string]>> {
-       function *entries():IterableIterator<[string, string]> {
-            for (let i = 0; i < this.storage.length; i++) {
-                const key = this.storage.key(i);
-                const value = this.storage.getItem(key);
+        const self = this;
+
+        function* entries(): IterableIterator<[string, string]> {
+            for (let i = 0; i < self.storage.length; i++) {
+                const key = self.storage.key(i);
+                const value = self.storage.getItem(key);
 
                 yield [key, value || null];
             }
         };
 
-       return entries();
+        return entries();
     }
 }
