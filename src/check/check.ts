@@ -1,5 +1,5 @@
 import {BN, secp256k1, sha256} from '../util/external';
-import {Chain} from '../chain';
+import {Chain, ChainId} from '../chain';
 import defineProperties, {RlpSchemaField} from '../util/define-properties';
 import {KeyPair, MINTER_LAST_BLOCK_HEIGHT} from '..';
 
@@ -79,7 +79,7 @@ export class Check {
 
         if (opts.chain) {
             this._chain = opts.chain;
-            this.chainId = toBuffer(this._chain.networkId());
+            this.chainId = toBuffer(this._chain.chainId);
         }
         //
         else if (this.chainId.length) {
@@ -88,12 +88,12 @@ export class Check {
         }
         //
         else {
-            this._chain = new Chain('mainnet');
-            this.chainId = toBuffer(this._chain.networkId());
+            this._chain = new Chain(ChainId.MAINNET);
+            this.chainId = toBuffer(this._chain.chainId);
         }
 
         if (!this.gasCoin.length) {
-            this.gasCoin = toBuffer(this._chain.gasCoin());
+            this.gasCoin = toBuffer(this._chain.gasCoin);
         }
 
         if (!this.lock.length && typeof data == 'object' && (data as IssueCheckParams)?.password) {

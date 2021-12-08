@@ -1,4 +1,5 @@
 import {KeyPair} from '../key_pair';
+import {ChainId} from '../chain/types';
 
 /**
  * KeyStores are passed to {@link Minter} via {@link MinterConfig}
@@ -7,15 +8,19 @@ import {KeyPair} from '../key_pair';
  * @example {@link connect}
  */
 export abstract class KeyStore {
-    abstract setKey(networkId: string, accountId: string, keyPair: KeyPair): Promise<void>;
 
-    abstract getKey(networkId: string, accountId: string): Promise<KeyPair>;
+    abstract setKey(chainId: ChainId, accountId: string, keyPair: KeyPair): Promise<void>;
 
-    abstract removeKey(networkId: string, accountId: string): Promise<void>;
+    abstract getKey(chainId: ChainId, accountId: string): Promise<KeyPair>;
+
+    abstract removeKey(chainId: ChainId, accountId: string): Promise<void>;
 
     abstract clear(): Promise<void>;
 
-    abstract getNetworks(): Promise<string[]>;
+    abstract entries(): Promise<IterableIterator<[string, string]>>;
 
-    abstract getAccounts(networkId: string): Promise<string[]>;
+    abstract getChains(): Promise<string[]>;
+
+    abstract getAccounts(chainId: ChainId): Promise<string[]>;
+
 }

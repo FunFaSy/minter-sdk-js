@@ -3,7 +3,7 @@ import * as minterSdk from '../src';
 test('[RPC] Status', async () => {
     const chain = new minterSdk.Chain('mainnet');
 
-    const rpcProvider = new minterSdk.providers.JsonRpcProvider({baseURL: chain.urls()?.api?.node?.http[0]});
+    const rpcProvider = new minterSdk.providers.JsonRpcProvider({baseURL: chain.urls?.api?.node?.http[0]});
 
     const status = await rpcProvider.status();
     expect(Number(status?.latest_block_height)).toBeGreaterThan(1);
@@ -12,7 +12,7 @@ test('[RPC] Status', async () => {
 test('[RPC] Latest Block', async () => {
     const chain = new minterSdk.Chain('mainnet');
 
-    const rpcProvider = new minterSdk.providers.JsonRpcProvider({baseURL: chain.urls()?.api?.node?.http[0]});
+    const rpcProvider = new minterSdk.providers.JsonRpcProvider({baseURL: chain.urls?.api?.node?.http[0]});
 
     const block = await rpcProvider.block({
         height: await rpcProvider.status().then(res => res.latest_block_height),
@@ -26,7 +26,7 @@ test('[RPC] Latest N blocks batch', async () => {
 
     const chain = new minterSdk.Chain('mainnet');
 
-    const rpcProvider = new minterSdk.providers.JsonRpcProvider({baseURL: chain.urls()?.api?.node?.http[0]});
+    const rpcProvider = new minterSdk.providers.JsonRpcProvider({baseURL: chain.urls?.api?.node?.http[0]});
 
     const blocks = await rpcProvider.status().
         then(res => Number(res?.latest_block_height)).
@@ -39,7 +39,7 @@ test('[RPC] Address nonce', async () => {
     const accountAddress = 'Mx04bea23efb744dc93b4fda4c20bf4a21c6e195f1';
     const chain = new minterSdk.Chain('mainnet');
 
-    const rpcProvider = new minterSdk.providers.JsonRpcProvider({baseURL: chain.urls()?.api?.node?.http[0]});
+    const rpcProvider = new minterSdk.providers.JsonRpcProvider({baseURL: chain.urls?.api?.node?.http[0]});
 
     const accountNonce = await rpcProvider.address({address: accountAddress, delegated: true}).
         then(res => Number(res?.transaction_count));
@@ -50,7 +50,7 @@ test('[RPC] Address nonce', async () => {
 test('[RPC] Current Validators list', async () => {
     const chain = new minterSdk.Chain('mainnet');
 
-    const rpcProvider = new minterSdk.providers.JsonRpcProvider({baseURL: chain.urls()?.api?.node?.http[0]});
+    const rpcProvider = new minterSdk.providers.JsonRpcProvider({baseURL: chain.urls?.api?.node?.http[0]});
 
     const validators = await rpcProvider.candidates().then(res => res?.candidates.filter(c => c.validator));
 
@@ -60,7 +60,7 @@ test('[RPC] Current Validators list', async () => {
 test('[RPC] Candidate Info', async () => {
     const chain = new minterSdk.Chain('mainnet');
 
-    const rpcProvider = new minterSdk.providers.JsonRpcProvider({baseURL: chain.urls()?.api?.node?.http[0]});
+    const rpcProvider = new minterSdk.providers.JsonRpcProvider({baseURL: chain.urls?.api?.node?.http[0]});
 
     const validator = await rpcProvider.candidates().then(res => res?.candidates.find(c => c.validator));
 
@@ -72,7 +72,7 @@ test('[RPC] Candidate Info', async () => {
 test('[RPC] Coin Info', async () => {
     const chain = new minterSdk.Chain('mainnet');
 
-    const rpcProvider = new minterSdk.providers.JsonRpcProvider({baseURL: chain.urls()?.api?.node?.http[0]});
+    const rpcProvider = new minterSdk.providers.JsonRpcProvider({baseURL: chain.urls?.api?.node?.http[0]});
 
     const baseCoin = await rpcProvider.coinInfo({symbol: 'BIP'});
 

@@ -1,6 +1,6 @@
 /**
  * This module contains the main class developers will use to interact with Minter.
- * The {@link Minter} class is used to interact with {@link Account | Accounts} through the {@link JsonRpcProvider.JsonRpcProvider | JsonRpcProvider}.
+ * The {@link Minter} class is used to interact with {@link Account | Accounts} through the {@link JsonRpcProvider}.
  * It is configured via the {@link MinterConfig}.
  *
  * @example {@link https://#}
@@ -18,26 +18,14 @@ export interface MinterConfig {
     /** @hidden */
     signer?: Signer;
 
-    /**
-     * The balance transferred from the {@link MinterConfig.masterAccount | masterAccount} to a created account
-     * @see {@link LocalAccountCreator}
-     */
-    initialBalance?: string;
-
-    /**
-     * The account to use when creating new accounts
-     * @see {@link LocalAccountCreator}
-     */
-    masterAccount?: string;
-
-    /**
+     /**
      * {@link KeyPair | KeyPairs} are stored in a {@link KeyStore} under the `networkId` namespace.
      */
     networkId: string;
 
     /**
      * Minter RPC API url. used to make JSON RPC calls to interact with Minter.
-     * @see {@link JsonRpcProvider.JsonRpcProvider | JsonRpcProvider}
+     * @see {@link JsonRpcProvider}
      */
     nodeUrl: string;
 
@@ -62,6 +50,7 @@ export class Minter {
 
     constructor(config: Partial<MinterConfig>) {
         this.config = deepExtend({}, config) as MinterConfig;
+
         // this.connection = Connection.fromConfig({
         //     networkId: config.networkId,
         //     provider: { type: 'JsonRpcProvider', args: { url: config.nodeUrl } },

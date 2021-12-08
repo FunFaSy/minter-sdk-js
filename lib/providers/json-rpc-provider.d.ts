@@ -3,21 +3,20 @@
  * @module
  */
 import { Provider } from './provider';
-import { ConnectionInfo } from '../util';
 import * as rpcTypes from './internal';
-import { AxiosInstance } from 'axios';
+import HttpTransport, { HttpTransportConfig } from '../transport/http-transport';
 /**
  * Client class to interact with the Minter RPC API.
  * @see {@link https://#}
  */
 export declare class JsonRpcProvider extends Provider {
     /** @hidden */
-    protected readonly connection: ConnectionInfo;
-    protected readonly rpcClient: AxiosInstance;
+    protected readonly config: HttpTransportConfig;
+    protected readonly transport: HttpTransport;
     /**
-     * @param connection
+     * @param config
      */
-    constructor(connection: string | ConnectionInfo);
+    constructor(config: string | HttpTransportConfig);
     block(params: rpcTypes.BlockRequest): Promise<rpcTypes.BlockResponse>;
     blocks(params: rpcTypes.BlocksRequest): Promise<rpcTypes.BlocksResponse>;
     genesis(): Promise<rpcTypes.GenesisResponse>;
@@ -53,5 +52,5 @@ export declare class JsonRpcProvider extends Provider {
     netUpdateVotes(params: rpcTypes.NetUpdateVotesRequest): Promise<rpcTypes.NetUpdateVotesResponse>;
     events(params: rpcTypes.EventsRequest): Promise<rpcTypes.EventsResponse>;
     /** @hidden */
-    sendRpcCall<T>(url: string, params?: object, data?: object, method?: string): Promise<T>;
+    send<T>(url: string, params?: object, data?: object, method?: string): Promise<T>;
 }

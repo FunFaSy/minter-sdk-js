@@ -1,6 +1,6 @@
 {
     "name": "taconet",
-    "chainId": "v2.6.0-taconet6",
+    "chainId": "taconet",
     "networkId": 2,
     "initialHeight": 3202609,
     "totalSlashed": 0,

@@ -1,38 +1,9 @@
 import {KeyStore} from './keystore';
 import {KeyPair} from '../key_pair';
+import {ChainId} from '../chain/types';
 
 /**
  * Keystore which can be used to merge multiple key stores into one virtual key store.
- *
- * @example
- * ```js
- * const { homedir } = require('os');
- * import { connect, keyStores, utils } from 'minter-api-js';
- *
- * const privateKey = '.......';
- * const keyPair = utils.KeyPair.fromString(privateKey);
- *
- * const inMemoryKeyStore = new keyStores.InMemoryKeyStore();
- * inMemoryKeyStore.setKey('testnet', 'example-account.testnet', keyPair);
- *
- * const fileSystemKeyStore = new keyStores.UnencryptedFileSystemKeyStore(`${homedir()}/.minter-credentials`);
- *
- * const keyStore = new MergeKeyStore([
- *   inMemoryKeyStore,
- *   fileSystemKeyStore
- * ]);
- * const config = {
- *   keyStore, // instance of MergeKeyStore
- *   networkId: 'testnet',
- *   nodeUrl: 'https://',
- *   walletUrl: 'https://',
- *   helperUrl: 'https://',
- *   explorerUrl: 'https://'
- * };
- *
- * // inside an async function
- * const minter = await connect(config)
- * ```
  */
 
 interface MergeKeyStoreOptions {
@@ -56,23 +27,23 @@ export class MergeKeyStore extends KeyStore {
 
     /**
      * Store a {@link KeyPair} to the first index of a key store array
-     * @param networkId The targeted network. (ex. mainnet, testnet, etc…)
+     * @param chainId The targeted network. (ex. mainnet, testnet, etc…)
      * @param accountId The Minter account tied to the key pair
      * @param keyPair The key pair to store in local storage
      */
-    async setKey(networkId: string, accountId: string, keyPair: KeyPair): Promise<void> {
-        await this.keyStores[this.options.writeKeyStoreIndex].setKey(networkId, accountId, keyPair);
+    async setKey(chainId: ChainId, accountId: string, keyPair: KeyPair): Promise<void> {
+        await this.keyStores[this.options.writeKeyStoreIndex].setKey(chainId, accountId, keyPair);
     }
 
     /**
      * Gets a {@link KeyPair} from the array of key stores
-     * @param networkId The targeted network. (ex. 0, betanet, etc…)
+     * @param chainId The targeted network. (ex. 0, betanet, etc…)
      * @param accountId The Minter account tied to the key pair
      * @returns {Promise<KeyPair>}
      */
-    async getKey(networkId: string, accountId: string): Promise<KeyPair> {
+    async getKey(chainId: ChainId, accountId: string): Promise<KeyPair> {
         for (const keyStore of this.keyStores) {
-            const keyPair = await keyStore.getKey(networkId, accountId);
+            const keyPair = await keyStore.getKey(chainId, accountId);
             if (keyPair) {
                 return keyPair;
             }
@@ -82,12 +53,12 @@ export class MergeKeyStore extends KeyStore {
 
     /**
      * Removes a {@link KeyPair} from the array of key stores
-     * @param networkId The targeted network. (ex. mainnet, testnet, etc…)
+     * @param chainId The targeted network. (ex. mainnet, testnet, etc…)
      * @param accountId The Minter account tied to the key pair
      */
-    async removeKey(networkId: string, accountId: string): Promise<void> {
+    async removeKey(chainId: ChainId, accountId: string): Promise<void> {
         for (const keyStore of this.keyStores) {
-            await keyStore.removeKey(networkId, accountId);
+            await keyStore.removeKey(chainId, accountId);
         }
     }
 
@@ -104,10 +75,10 @@ export class MergeKeyStore extends KeyStore {
      * Get the network(s) from the array of key stores
      * @returns {Promise<string[]>}
      */
-    async getNetworks(): Promise<string[]> {
+    async getChains(): Promise<string[]> {
         const result = new Set<string>();
         for (const keyStore of this.keyStores) {
-            for (const network of await keyStore.getNetworks()) {
+            for (const network of await keyStore.getChains()) {
                 result.add(network);
             }
         }
@@ -116,21 +87,34 @@ export class MergeKeyStore extends KeyStore {
 
     /**
      * Gets the account(s) from the array of key stores
-     * @param networkId The targeted network. (ex. mainnet, testnet, etc…)
+     * @param chainId The targeted network. (ex. mainnet, testnet, etc…)
      * @returns{Promise<string[]>}
      */
-    async getAccounts(networkId: string): Promise<string[]> {
+    async getAccounts(chainId: ChainId): Promise<string[]> {
         const result = new Set<string>();
         for (const keyStore of this.keyStores) {
-            for (const account of await keyStore.getAccounts(networkId)) {
+            for (const account of await keyStore.getAccounts(chainId)) {
                 result.add(account);
             }
         }
         return Array.from(result);
     }
 
+    async entries(): Promise<IterableIterator<[string, string]>> {
+        function* entries(): IterableIterator<[string, string]> {
+            for (const keyStore of this.keyStores) {
+                for (const [key, val] of keyStore.entries()) {
+                    yield [key, val];
+                }
+            }
+        };
+
+        return entries();
+    }
+
     /** @hidden */
     toString(): string {
         return `MergeKeyStore(${this.keyStores.join(', ')})`;
     }
+
 }

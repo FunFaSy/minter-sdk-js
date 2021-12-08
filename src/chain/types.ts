@@ -1,6 +1,6 @@
 export interface ChainParams {
-    name: string;// Mainnet
-    chainId: string; // minter-mainnet-4
+    name: string;// 'Mainnet'
+    chainId: ChainId; // 'mainnet'
     networkId: number; // 1
     initialHeight: number;
     totalSlashed: number;
@@ -26,6 +26,12 @@ export interface BootstrapNode {
     ip: string;
     port: number | string;
     comment?: string;
+}
+
+export enum ChainId {
+    MAINNET = 'mainnet',
+    TESTNET = 'testnet',
+    TACONET = 'taconet',
 }
 
 export {};

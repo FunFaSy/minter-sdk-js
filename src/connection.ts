@@ -1,6 +1,5 @@
 import {JsonRpcProvider, Provider} from './providers';
-import {InMemorySigner, Signer} from './signer';
-import {InMemoryKeyStore, KeyStore} from './key_stores';
+import {ChainId} from './chain/types';
 
 /**
  * @param config Contains connection info details
@@ -21,39 +20,37 @@ function getProvider(config: { type: string; args: any }): Provider {
  * @param config Contains connection info details
  * @returns {Signer}
  */
-function getSigner(config: { type: string; keyStore: KeyStore }): Signer {
-    switch (config.type) {
-    case undefined:
-        return undefined;
-    case 'InMemorySigner': {
-        return new InMemorySigner(config.keyStore as InMemoryKeyStore);
-    }
-    default:
-        throw new Error(`Unknown signer type ${config.type}`);
-    }
-}
+// function getSigner(config: { type: string; keyStore: KeyStore }): Signer {
+//     switch (config.type) {
+//     case undefined:
+//         return undefined;
+//     case 'InMemorySigner': {
+//         return new InMemorySigner(config.keyStore as InMemoryKeyStore);
+//     }
+//     default:
+//         throw new Error(`Unknown signer type ${config.type}`);
+//     }
+// }
 
 /**
  *
  */
 export interface ConnectionConfig {
-    networkId: string | number;
+    chainId: string | ChainId;
     provider: { type: string; args: any };
-    signer: { type: string; keyStore: KeyStore };
+//    signer: { type: string; keyStore: KeyStore };
 }
 
 /**
  * Connects an account to a given network via a given provider
  */
 export class Connection {
-    readonly networkId: string | number;
-    readonly provider: Provider;
-    readonly signer: Signer;
+    readonly chainId: ChainId;
+    readonly provider: Provider; //
 
-    constructor(networkId: string | number, provider: Provider, signer: Signer) {
-        this.networkId = networkId;
+    constructor(chainId: ChainId, provider: Provider) {
+        this.chainId = chainId;
         this.provider = provider;
-        this.signer = signer;
     }
 
     /**
@@ -61,7 +58,7 @@ export class Connection {
      */
     static fromConfig(config: ConnectionConfig): Connection {
         const provider = getProvider(config.provider);
-        const signer = getSigner(config.signer);
-        return new Connection(config.networkId, provider, signer);
+        //const signer = getSigner(config.signer);
+        return new Connection(config.chainId as ChainId, provider);
     }
 }

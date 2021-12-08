@@ -4,6 +4,7 @@ import {promisify as _promisify} from 'util';
 
 import {KeyStore} from './keystore';
 import {KeyPair} from '../key_pair';
+import {ChainId} from '../chain/types';
 
 const promisifyFs = (fn: Function): Function => {
     if (!fn) {
@@ -59,33 +60,13 @@ export async function readKeyFile(filename: string): Promise<{ account_id: strin
 
 /**
  * This module contains the {@link UnencryptedFileSystemKeyStore} class which is used to store keys on the file system.
- *
- * @example {@link https://docs.minter.org/docs/develop/front-end/naj-quick-reference#key-store}
- * @example
- * ```js
- * const { homedir } = require('os');
- * const { connect, keyStores } = require('minter-api-js');
- *
- * const keyStore = new keyStores.UnencryptedFileSystemKeyStore(`${homedir()}/.minter-credentials`);
- * const config = {
- *   keyStore, // instance of UnencryptedFileSystemKeyStore
- *   networkId: 'testnet',
- *   nodeUrl: 'https://rpc.testnet.minter.org',
- *   walletUrl: 'https://wallet.testnet.minter.org',
- *   helperUrl: 'https://helper.testnet.minter.org',
- *   explorerUrl: 'https://explorer.testnet.minter.org'
- * };
- *
- * // inside an async function
- * const minter = await connect(config)
- * ```
  */
 export class UnencryptedFileSystemKeyStore extends KeyStore {
     /** @hidden */
     readonly keyDir: string;
 
     /**
-     * @param keyDir base directory for key storage. Keys will be stored in `keyDir/networkId/accountId.json`
+     * @param keyDir base directory for key storage. Keys will be stored in `keyDir/chainId/accountId.json`
      */
     constructor(keyDir: string) {
         super();
@@ -94,43 +75,45 @@ export class UnencryptedFileSystemKeyStore extends KeyStore {
 
     /**
      * Store a {@link KeyPair} in an unencrypted file
-     * @param networkId The targeted network. (ex. mainnet, testnet, etc…)
+     * @param chainId The targeted network. (ex. mainnet, testnet, etc…)
      * @param accountId The Minter account tied to the key pair
      * @param keyPair The key pair to store in local storage
      */
-    async setKey(networkId: string, accountId: string, keyPair: KeyPair): Promise<void> {
-        await ensureDir(`${this.keyDir}/${networkId}`);
+    async setKey(chainId: ChainId, accountId: string, keyPair: KeyPair): Promise<void> {
+        await ensureDir(`${this.keyDir}/${chainId}`);
+
         const content: AccountInfo = {
             account_id : accountId,
             public_key : keyPair.publicKey().toString(),
             private_key: keyPair.toString(),
         };
-        await writeFile(this.getKeyFilePath(networkId, accountId), JSON.stringify(content), {mode: 0o600});
+
+        await writeFile(this.getKeyFilePath(chainId, accountId), JSON.stringify(content), {mode: 0o600});
     }
 
     /**
      * Gets a {@link KeyPair} from an unencrypted file
-     * @param networkId The targeted network. (ex. mainnet, testnet, etc…)
+     * @param chainId The targeted network. (ex. mainnet, testnet, etc…)
      * @param accountId The Minter account tied to the key pair
      * @returns {Promise<KeyPair>}
      */
-    async getKey(networkId: string, accountId: string): Promise<KeyPair> {
+    async getKey(chainId: ChainId, accountId: string): Promise<KeyPair> {
         // Find key / account id.
-        if (!await exists(this.getKeyFilePath(networkId, accountId))) {
+        if (!await exists(this.getKeyFilePath(chainId, accountId))) {
             return null;
         }
-        const accountKeyPair = await readKeyFile(this.getKeyFilePath(networkId, accountId));
+        const accountKeyPair = await readKeyFile(this.getKeyFilePath(chainId, accountId));
         return accountKeyPair.keyPair;
     }
 
     /**
      * Deletes an unencrypted file holding a {@link KeyPair}
-     * @param networkId The targeted network. (ex. mainnet, testnet, etc…)
+     * @param chainId The targeted network. (ex. mainnet, testnet, etc…)
      * @param accountId The Minter account tied to the key pair
      */
-    async removeKey(networkId: string, accountId: string): Promise<void> {
-        if (await exists(this.getKeyFilePath(networkId, accountId))) {
-            await unlink(this.getKeyFilePath(networkId, accountId));
+    async removeKey(chainId: ChainId, accountId: string): Promise<void> {
+        if (await exists(this.getKeyFilePath(chainId, accountId))) {
+            await unlink(this.getKeyFilePath(chainId, accountId));
         }
     }
 
@@ -138,9 +121,9 @@ export class UnencryptedFileSystemKeyStore extends KeyStore {
      * Deletes all unencrypted files from the `keyDir` path.
      */
     async clear(): Promise<void> {
-        for (const network of await this.getNetworks()) {
-            for (const account of await this.getAccounts(network)) {
-                await this.removeKey(network, account);
+        for (const network of await this.getChains()) {
+            for (const account of await this.getAccounts(network as ChainId)) {
+                await this.removeKey(network as ChainId, account);
             }
         }
     }
@@ -149,22 +132,22 @@ export class UnencryptedFileSystemKeyStore extends KeyStore {
      * Get the network(s) from subdirectory names in `keyDir`
      * @returns {Promise<string[]>}
      */
-    async getNetworks(): Promise<string[]> {
+    async getChains(): Promise<string[]> {
         const files: fs.Dirent[] = await readdir(this.keyDir, {withFileTypes: true});
         return files.filter(item => item.isDirectory()).map(item => item.name);
     }
 
     /**
-     * Gets the account(s) files in `keyDir/networkId`
-     * @param networkId The targeted network. (ex. mainnet, testnet, etc…)
+     * Gets the account(s) files in `keyDir/chainId`
+     * @param chainId The targeted network. (ex. mainnet, testnet, etc…)
      * @returns{Promise<string[]>}
      */
-    async getAccounts(networkId: string): Promise<string[]> {
-        if (!await exists(`${this.keyDir}/${networkId}`)) {
+    async getAccounts(chainId: ChainId): Promise<string[]> {
+        if (!await exists(`${this.keyDir}/${chainId}`)) {
             return [];
         }
 
-        const files: string[] = await readdir(`${this.keyDir}/${networkId}`);
+        const files: string[] = await readdir(`${this.keyDir}/${chainId}`);
 
         return files.filter(file => file.endsWith('.json')).map(file => file.replace(/.json$/, ''));
     }
@@ -175,7 +158,26 @@ export class UnencryptedFileSystemKeyStore extends KeyStore {
     }
 
     /** @hidden */
-    private getKeyFilePath(networkId: string, accountId: string): string {
-        return `${this.keyDir}/${networkId}/${accountId}.json`;
+    private getKeyFilePath(chainId: ChainId, accountId: string): string {
+        return `${this.keyDir}/${chainId}/${accountId}.json`;
+    }
+
+    async entries(): Promise<IterableIterator<[string, string]>> {
+        const result: [string, string][] = [];
+        for (const network of await this.getChains()) {
+            for (const account of await this.getAccounts(network as ChainId)) {
+                const key = this.getKeyFilePath(network as ChainId, account);
+                const val = await this.getKey(network as ChainId, account);
+                result.push([key, val.toString()]);
+            }
+        }
+
+        function* entries(): IterableIterator<[string, string]> {
+            for (const pair of result) {
+                yield pair;
+            }
+        }
+
+        return entries();
     }
 }

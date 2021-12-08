@@ -1,7 +1,7 @@
 import {Assignable, bufferToInt, isValidAddress, logWarning, rlp, rlphash, toBuffer} from '../util';
 import {assert} from '../util/external';
 import defineProperties, {RlpSchemaField} from '../util/define-properties';
-import {Chain} from '../chain';
+import {Chain, ChainId} from '../chain';
 import {Address, KeyPair, PublicKey} from '../key_pair';
 import {
     MultiSignature,
@@ -82,7 +82,7 @@ export class Transaction {
 
         if (opts.chain) {
             this._chain = opts.chain;
-            this.chainId = toBuffer(this._chain.networkId());
+            this.chainId = toBuffer(this._chain.chainId);
         }
         //
         else if (this.chainId.length) {
@@ -90,12 +90,12 @@ export class Transaction {
         }
         //
         else {
-            this._chain = new Chain('mainnet');
-            this.chainId = toBuffer(this._chain.networkId());
+            this._chain = new Chain(ChainId.MAINNET);
+            this.chainId = toBuffer(this._chain.chainId);
         }
 
         if (!this.gasCoin.length) {
-            this.gasCoin = toBuffer([this._chain.gasCoin()]);
+            this.gasCoin = toBuffer([this._chain.gasCoin]);
         }
 
         if (this.signatureData.length) {

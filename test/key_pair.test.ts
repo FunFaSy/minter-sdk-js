@@ -27,8 +27,8 @@ test('[KeyPair] KeyPair from secret', async () => {
 
 //
 test('[KeyPair] KeyPair from BIP39 mnemonic', async () => {
-    const wal = Wallet.fromMnemonic(MNEMONIC);
-    const keyPair = wal.getKeyPair();
+    const wal = await Wallet.fromMnemonic(MNEMONIC);
+    const keyPair = await wal.getAccountKeyPair();
     expect(keyPair.publicKey().toString()).toEqual(PUBKEY_SECP256K1_FULL);
 });
 

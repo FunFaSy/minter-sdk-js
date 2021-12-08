@@ -1,5 +1,6 @@
 import {KeyStore} from './keystore';
 import {KeyPair} from '../key_pair';
+import {ChainId} from '../chain/types';
 
 const LOCAL_STORAGE_KEY_PREFIX = 'minter-api-js:keystore:';
 
@@ -14,7 +15,7 @@ const LOCAL_STORAGE_KEY_PREFIX = 'minter-api-js:keystore:';
  * const keyStore = new keyStores.BrowserLocalStorageKeyStore();
  * const config = {
  *   keyStore, // instance of BrowserLocalStorageKeyStore
- *   networkId: 'testnet',
+ *   chainId: 'testnet',
  *   nodeUrl: 'https://rpc.testnet.minter.org',
  *   walletUrl: 'https://wallet.testnet.minter.org',
  *   helperUrl: 'https://helper.testnet.minter.org',
@@ -27,7 +28,7 @@ const LOCAL_STORAGE_KEY_PREFIX = 'minter-api-js:keystore:';
  */
 export class BrowserLocalStorageKeyStore extends KeyStore {
     /** @hidden */
-    private localStorage: any;
+    private storage: any;
     /** @hidden */
     private prefix: string;
 
@@ -37,28 +38,28 @@ export class BrowserLocalStorageKeyStore extends KeyStore {
      */
     constructor(localStorage: any = window.localStorage, prefix = LOCAL_STORAGE_KEY_PREFIX) {
         super();
-        this.localStorage = localStorage;
+        this.storage = localStorage;
         this.prefix = prefix;
     }
 
     /**
      * Stores a {@link KeyPair} in local storage.
-     * @param networkId The targeted network. (ex. mainnet, testnet, etc…)
+     * @param chainId The targeted network. (ex. mainnet, testnet, etc…)
      * @param accountId The Minter account tied to the key pair
      * @param keyPair The key pair to store in local storage
      */
-    async setKey(networkId: string, accountId: string, keyPair: KeyPair): Promise<void> {
-        this.localStorage.setItem(this.storageKeyForSecretKey(networkId, accountId), keyPair.toString());
+    async setKey(chainId: ChainId, accountId: string, keyPair: KeyPair): Promise<void> {
+        this.storage.setItem(this.storageKeyForSecretKey(chainId, accountId), keyPair.toString());
     }
 
     /**
      * Gets a {@link KeyPair} from local storage
-     * @param networkId The targeted network. (ex. mainnet, testnet, etc…)
+     * @param chainId The targeted network. (ex. mainnet, testnet, etc…)
      * @param accountId The Minter account tied to the key pair
      * @returns {Promise<KeyPair>}
      */
-    async getKey(networkId: string, accountId: string): Promise<KeyPair> {
-        const value = this.localStorage.getItem(this.storageKeyForSecretKey(networkId, accountId));
+    async getKey(chainId: ChainId, accountId: string): Promise<KeyPair> {
+        const value = this.storage.getItem(this.storageKeyForSecretKey(chainId, accountId));
         if (!value) {
             return null;
         }
@@ -67,11 +68,11 @@ export class BrowserLocalStorageKeyStore extends KeyStore {
 
     /**
      * Removes a {@link KeyPair} from local storage
-     * @param networkId The targeted network. (ex. mainnet, testnet, etc…)
+     * @param chainId The targeted network. (ex. mainnet, testnet, etc…)
      * @param accountId The Minter account tied to the key pair
      */
-    async removeKey(networkId: string, accountId: string): Promise<void> {
-        this.localStorage.removeItem(this.storageKeyForSecretKey(networkId, accountId));
+    async removeKey(chainId: ChainId, accountId: string): Promise<void> {
+        this.storage.removeItem(this.storageKeyForSecretKey(chainId, accountId));
     }
 
     /**
@@ -80,7 +81,7 @@ export class BrowserLocalStorageKeyStore extends KeyStore {
     async clear(): Promise<void> {
         for (const key of this.storageKeys()) {
             if (key.startsWith(this.prefix)) {
-                this.localStorage.removeItem(key);
+                this.storage.removeItem(key);
             }
         }
     }
@@ -89,7 +90,7 @@ export class BrowserLocalStorageKeyStore extends KeyStore {
      * Get the network(s) from local storage
      * @returns {Promise<string[]>}
      */
-    async getNetworks(): Promise<string[]> {
+    async getChains(): Promise<string[]> {
         const result = new Set<string>();
         for (const key of this.storageKeys()) {
             if (key.startsWith(this.prefix)) {
@@ -102,15 +103,15 @@ export class BrowserLocalStorageKeyStore extends KeyStore {
 
     /**
      * Gets the account(s) from local storage
-     * @param networkId The targeted network. (ex. mainnet, testnet, etc…)
+     * @param chainId The targeted network. (ex. mainnet, testnet, etc…)
      * @returns{Promise<string[]>}
      */
-    async getAccounts(networkId: string): Promise<string[]> {
+    async getAccounts(chainId: ChainId): Promise<string[]> {
         const result = new Array<string>();
         for (const key of this.storageKeys()) {
             if (key.startsWith(this.prefix)) {
                 const parts = key.substring(this.prefix.length).split(':');
-                if (parts[1] === networkId) {
+                if (parts[1] === chainId) {
                     result.push(parts[0]);
                 }
             }
@@ -121,18 +122,31 @@ export class BrowserLocalStorageKeyStore extends KeyStore {
     /**
      * @hidden
      * Helper function to retrieve a local storage key
-     * @param networkId The targeted network. (ex. mainnet, testnet, etc…)
+     * @param chainId The targeted network. (ex. mainnet, testnet, etc…)
      * @param accountId The Minter account tied to the storage keythat's sought
      * @returns {string} An example might be: `minter-api-js:keystore:minter-friend:default`
      */
-    private storageKeyForSecretKey(networkId: string, accountId: string): string {
-        return `${this.prefix}${accountId}:${networkId}`;
+    private storageKeyForSecretKey(chainId: ChainId, accountId: string): string {
+        return `${this.prefix}${accountId}:${chainId}`;
     }
 
     /** @hidden */
     private* storageKeys(): IterableIterator<string> {
-        for (let i = 0; i < this.localStorage.length; i++) {
-            yield this.localStorage.key(i);
+        for (let i = 0; i < this.storage.length; i++) {
+            yield this.storage.key(i);
         }
+    }
+
+    async entries(): Promise<IterableIterator<[string, string]>> {
+       function *entries():IterableIterator<[string, string]> {
+            for (let i = 0; i < this.storage.length; i++) {
+                const key = this.storage.key(i);
+                const value = this.storage.getItem(key);
+
+                yield [key, value || null];
+            }
+        };
+
+       return entries();
     }
 }

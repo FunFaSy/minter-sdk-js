@@ -1,4 +1,4 @@
-import {BootstrapNode, ChainParams, GenesisBlock} from './chain/types';
+import {BootstrapNode, ChainId, ChainParams, GenesisBlock} from './chain/types';
 import * as mainNetParams from './chain/mainnet.json';
 import * as tacoNetParams from './chain/taconet.json';
 import * as testNetParams from './chain/testnet.json';
@@ -107,7 +107,7 @@ export class Chain {
      * Returns the Genesis parameters of current chain
      * @returns Genesis dictionary
      */
-    genesis(): GenesisBlock {
+    get genesis(): GenesisBlock {
         return this.chainParams.genesis;
     }
 
@@ -115,7 +115,7 @@ export class Chain {
      * Returns bootstrap nodes for the current chain
      * @returns {Dictionary} Dict with bootstrap nodes
      */
-    bootstrapNodes(): BootstrapNode[] {
+    get bootstrapNodes(): BootstrapNode[] {
         return this.chainParams.bootstrapNodes;
     }
 
@@ -123,7 +123,7 @@ export class Chain {
      * Returns the name of current chain
      * @returns chain name (lower case)
      */
-    name(): string {
+    get name(): string {
         return this.chainParams.name.toLowerCase();
     }
 
@@ -131,7 +131,7 @@ export class Chain {
      * Returns the Id of current chain
      * @returns chain Id
      */
-    chainId(): string {
+    get chainId(): ChainId {
         return this.chainParams.chainId;
     }
 
@@ -139,7 +139,7 @@ export class Chain {
      * Returns the Id of current network
      * @returns network Id
      */
-    networkId(): number {
+    get networkId(): number {
         return this.chainParams.networkId;
     }
 
@@ -147,14 +147,14 @@ export class Chain {
      * Returns the Id of gasCoin for current network
      * @returns gasCoin Id
      */
-    gasCoin(): number {
+    get gasCoin(): number {
         return this.chainParams.gasCoinId;
     }
 
     /**
      *
      */
-    urls(): { [k: string]: any } {
+    get urls(): { [k: string]: any } {
         return this.chainParams.urls;
     }
 }

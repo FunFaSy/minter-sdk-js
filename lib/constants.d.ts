@@ -9,5 +9,5 @@
  0  change/receive: specifies if the address is for receive or change operations
  0  address_index: denotes the index of the address being generated
  */
-export declare const BIP44_DERIVATION_COIN_ID = 60;
+export declare const MINTER_BIP44_DERIVATION_COIN_ID = 60;
 export declare const MINTER_LAST_BLOCK_HEIGHT = 999999999;

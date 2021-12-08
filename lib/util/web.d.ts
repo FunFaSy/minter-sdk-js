@@ -1,5 +1,5 @@
 import { AxiosInstance, AxiosRequestConfig } from 'axios';
-export interface ConnectionInfo extends AxiosRequestConfig {
+export interface TransportConfig extends AxiosRequestConfig {
     baseURL?: string;
     url?: string;
     auth?: {
@@ -9,4 +9,4 @@ export interface ConnectionInfo extends AxiosRequestConfig {
     timeout?: number;
     headers?: Record<string, string>;
 }
-export declare function newRpcClient(config: AxiosRequestConfig): AxiosInstance;
+export declare function newRpcClient(config: TransportConfig): AxiosInstance;
