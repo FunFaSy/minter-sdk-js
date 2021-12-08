@@ -30,13 +30,12 @@ export abstract class HdWallet {
  *
  */
 export class Wallet extends HdWallet {
+    readonly coinId: number;
+    readonly walletId: number;
     private readonly _hdKey: HDKeyT;
     private _connection: Connection;
     private _keyStore: KeyStore;
     private _accounts: Map<string, Account>;
-
-    readonly coinId: number;
-    readonly walletId: number;
 
     /**
      *
@@ -133,7 +132,6 @@ export class Wallet extends HdWallet {
         for (const acc of this._accounts.values()) {
             acc.setKeyStore(this._keyStore);
         }
-
 
         return this;
     }

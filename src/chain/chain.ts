@@ -41,6 +41,61 @@ export class Chain {
     }
 
     /**
+     * Returns the Genesis parameters of current chain
+     * @returns Genesis dictionary
+     */
+    get genesis(): GenesisBlock {
+        return this.chainParams.genesis;
+    }
+
+    /**
+     * Returns bootstrap nodes for the current chain
+     * @returns {Dictionary} Dict with bootstrap nodes
+     */
+    get bootstrapNodes(): BootstrapNode[] {
+        return this.chainParams.bootstrapNodes;
+    }
+
+    /**
+     * Returns the name of current chain
+     * @returns chain name (lower case)
+     */
+    get name(): string {
+        return this.chainParams.name.toLowerCase();
+    }
+
+    /**
+     * Returns the Id of current chain
+     * @returns chain Id
+     */
+    get chainId(): ChainId {
+        return this.chainParams.chainId;
+    }
+
+    /**
+     * Returns the Id of current network
+     * @returns network Id
+     */
+    get networkId(): number {
+        return this.chainParams.networkId;
+    }
+
+    /**
+     * Returns the Id of gasCoin for current network
+     * @returns gasCoin Id
+     */
+    get gasCoin(): number {
+        return this.chainParams.gasCoinId;
+    }
+
+    /**
+     *
+     */
+    get urls(): { [k: string]: any } {
+        return this.chainParams.urls;
+    }
+
+    /**
      * Creates a Chain object for a custom chain, based on a standard one. It uses all the [[ChainParams]]
      * params from [[baseChain]] except the ones overridden in [[userConfig]].
      *
@@ -108,60 +163,5 @@ export class Chain {
      */
     createJsonRpcConnection(): Connection {
         return new Connection(this.chainId, new JsonRpcProvider(this.urls?.api?.node?.http[0]));
-    }
-
-    /**
-     * Returns the Genesis parameters of current chain
-     * @returns Genesis dictionary
-     */
-    get genesis(): GenesisBlock {
-        return this.chainParams.genesis;
-    }
-
-    /**
-     * Returns bootstrap nodes for the current chain
-     * @returns {Dictionary} Dict with bootstrap nodes
-     */
-    get bootstrapNodes(): BootstrapNode[] {
-        return this.chainParams.bootstrapNodes;
-    }
-
-    /**
-     * Returns the name of current chain
-     * @returns chain name (lower case)
-     */
-    get name(): string {
-        return this.chainParams.name.toLowerCase();
-    }
-
-    /**
-     * Returns the Id of current chain
-     * @returns chain Id
-     */
-    get chainId(): ChainId {
-        return this.chainParams.chainId;
-    }
-
-    /**
-     * Returns the Id of current network
-     * @returns network Id
-     */
-    get networkId(): number {
-        return this.chainParams.networkId;
-    }
-
-    /**
-     * Returns the Id of gasCoin for current network
-     * @returns gasCoin Id
-     */
-    get gasCoin(): number {
-        return this.chainParams.gasCoinId;
-    }
-
-    /**
-     *
-     */
-    get urls(): { [k: string]: any } {
-        return this.chainParams.urls;
     }
 }

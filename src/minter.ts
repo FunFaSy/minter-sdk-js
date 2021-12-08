@@ -18,7 +18,7 @@ export interface MinterConfig {
     /** @hidden */
     signer?: Signer;
 
-     /**
+    /**
      * {@link KeyPair | KeyPairs} are stored in a {@link KeyStore} under the `networkId` namespace.
      */
     networkId: string;

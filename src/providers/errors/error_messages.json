@@ -7,5 +7,4 @@
     "Timeout": "Timeout exceeded",
     "Closed": "Connection closed",
     "UnknownServerError": "Unknown server error: {{msg_text}}"
-
 }

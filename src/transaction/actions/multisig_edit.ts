@@ -28,7 +28,7 @@ export class EditMultiSigAction extends Action {
         if (typeof data == 'object' && !Buffer.isBuffer(data)) {
             _data = {
                 threshold: new BN(data.threshold),// Should be less or equal than Weights Sum
-                weights  : data.weights.map(w=>new BN(w)), // Should be greater or equal than threshold
+                weights  : data.weights.map(w => new BN(w)), // Should be greater or equal than threshold
                 addresses: data.addresses,
             };
         }

@@ -1,7 +1,6 @@
 import * as tx_actions from './action';
 import {TransactionType} from './internal';
 
-
 type Constructor<T extends {} = {}> = new (...args: any[]) => T;
 
 export class ActionRegistry {

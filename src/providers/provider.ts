@@ -59,7 +59,7 @@ export abstract class Provider {
     //----------- Orders
     abstract limitOrder(params: rpcTypes.LimitOrderRequest): Promise<rpcTypes.LimitOrderResponse>;
 
-    abstract limitOrders( params: rpcTypes.LimitOrdersRequest): Promise<rpcTypes.LimitOrdersResponse>;
+    abstract limitOrders(params: rpcTypes.LimitOrdersRequest): Promise<rpcTypes.LimitOrdersResponse>;
 
     //----------- SwapPools
     abstract swapPool(params: rpcTypes.SwapPoolRequest): Promise<rpcTypes.SwapPoolResponse>;

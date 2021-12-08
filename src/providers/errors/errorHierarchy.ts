@@ -1,8 +1,7 @@
 'use strict';
 export const errorHierarchy = {
     'TypedError': {
-        'ExchangeError': {
-        },
+        'ExchangeError': {},
         'ActionError'  : {
             'ArgumentsRequired': {},
             'BadRequest'       : {
@@ -16,27 +15,27 @@ export const errorHierarchy = {
                 'AddressPending': {},
             },
             'InvalidOrder'     : {
-                'OrderNotFound'           : {},
-                'DuplicateOrderId'        : {},
+                'OrderNotFound'   : {},
+                'DuplicateOrderId': {},
             },
             'InvalidNonce'     : {},
             'NotSupported'     : {},
-            'TxAlreadyExists'     : {},
-            'TxNotFound'     : {},
+            'TxAlreadyExists'  : {},
+            'TxNotFound'       : {},
         },
         'QueryError'   : {
             'BadQueryResponse': {},
         },
         'NetworkError' : {
-            'BadResponse'     : {},
-            'DDoSProtection'  : {
+            'BadResponse'       : {},
+            'DDoSProtection'    : {
                 'RateLimitExceeded': {},
             },
-            'NodeNotAvailable': {
+            'NodeNotAvailable'  : {
                 'OnMaintenance': {},
             },
-            'RequestTimeout'  : {},
-            'UnknownServerError'  : {},
+            'RequestTimeout'    : {},
+            'UnknownServerError': {},
         },
     },
 };

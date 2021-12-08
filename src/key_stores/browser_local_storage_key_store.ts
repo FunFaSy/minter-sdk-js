@@ -148,7 +148,7 @@ export class BrowserLocalStorageKeyStore extends KeyStore {
 
                 yield [key, value || null];
             }
-        };
+        }
 
         return entries();
     }

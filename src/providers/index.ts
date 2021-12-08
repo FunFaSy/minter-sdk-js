@@ -5,5 +5,5 @@ import {JsonRpcProvider} from './json-rpc-provider';
 
 export {
     Provider
-    , JsonRpcProvider
+    , JsonRpcProvider,
 };
