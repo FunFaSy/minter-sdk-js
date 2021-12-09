@@ -11,28 +11,6 @@ export declare class Chain {
      */
     constructor(chain: string | number | ChainParams);
     /**
-     * Creates a Chain object for a custom chain, based on a standard one. It uses all the [[ChainParams]]
-     * params from [[baseChain]] except the ones overridden in [[userConfig]].
-     *
-     * @param baseChain The name (`mainnet`) or id (`1`) of a standard chain used to base the custom
-     * chain params on.
-     * @param userConfig The custom parameters of the chain.
-     */
-    static forCustomChain(baseChain: string | number, userConfig: Partial<ChainParams>): Chain;
-    /**
-     *  Returns the ChainParams object represents given chain.
-     * @param chain
-     */
-    static getBaseParams(chain: string | number): ChainParams;
-    /**
-     *
-     */
-    describe(): any;
-    /**
-     *
-     */
-    createJsonRpcConnection(): Connection;
-    /**
      * Returns the Genesis parameters of current chain
      * @returns Genesis dictionary
      */
@@ -68,4 +46,26 @@ export declare class Chain {
     get urls(): {
         [k: string]: any;
     };
+    /**
+     * Creates a Chain object for a custom chain, based on a standard one. It uses all the [[ChainParams]]
+     * params from [[baseChain]] except the ones overridden in [[userConfig]].
+     *
+     * @param baseChain The name (`mainnet`) or id (`1`) of a standard chain used to base the custom
+     * chain params on.
+     * @param userConfig The custom parameters of the chain.
+     */
+    static forCustomChain(baseChain: string | number, userConfig: Partial<ChainParams>): Chain;
+    /**
+     *  Returns the ChainParams object represents given chain.
+     * @param chain
+     */
+    static getBaseParams(chain: string | number): ChainParams;
+    /**
+     *
+     */
+    describe(): any;
+    /**
+     *
+     */
+    newJsonRpcConnection(): Connection;
 }

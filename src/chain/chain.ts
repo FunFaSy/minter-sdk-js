@@ -161,7 +161,7 @@ export class Chain {
     /**
      *
      */
-    createJsonRpcConnection(): Connection {
+    newJsonRpcConnection(): Connection {
         return new Connection(this.chainId, new JsonRpcProvider(this.urls?.api?.node?.http[0]));
     }
 }

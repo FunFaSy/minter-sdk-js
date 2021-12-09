@@ -38,7 +38,7 @@ test('[TxSingle] Send transaction type', async () => {
     const TX_RLP_ENCODED = 'f8710202018001a1e08094eb92ae39b84012968f63b2dd260a94d791fe79bd89056bc75e2d63100000000001b845f8431ba0384e5516462774e67c1efc016458af86e68f3780fadcb27c3587389dd36056e8a003b0f7547aee983bdcdcf76334d169dee271ffd96e9cb2284a68cfb1e54cedb0';
 
     const chain = new minterSdk.Chain('testnet');
-    const wal = await await minterSdk.Wallet.fromMnemonic(MNEMONIC);
+    const wal = await minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = await wal.getAccountKeyPair();
 
     const txAction = new minterSdk.tx_actions.SendAction({

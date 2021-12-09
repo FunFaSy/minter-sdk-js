@@ -107,7 +107,7 @@ export class MergeKeyStore extends KeyStore {
                     yield [key, val];
                 }
             }
-        };
+        }
 
         return entries();
     }

@@ -21,12 +21,12 @@ export declare abstract class HdWallet {
  *
  */
 export declare class Wallet extends HdWallet {
+    readonly coinId: number;
+    readonly walletId: number;
     private readonly _hdKey;
     private _connection;
     private _keyStore;
     private _accounts;
-    readonly coinId: number;
-    readonly walletId: number;
     /**
      *
      * @param hdKey

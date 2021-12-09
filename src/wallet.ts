@@ -98,7 +98,7 @@ export class Wallet extends HdWallet {
      */
     async getDefaultConnection(chain?: Chain): Promise<Connection> {
         const _chain = chain || new Chain(ChainId.MAINNET);
-        return _chain.createJsonRpcConnection();
+        return _chain.newJsonRpcConnection();
     }
 
     /**

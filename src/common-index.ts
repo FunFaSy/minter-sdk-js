@@ -4,7 +4,7 @@ import * as constants from './constants';
 import * as tx_actions from './transaction/action';
 import * as providers from './providers';
 
-export {Chain} from './chain';
+export {Chain,ChainId} from './chain';
 export {KeyType, KeyPair, KeyPairSecp256k1, PublicKey, Signature as SignatureSecp256k1, Address} from './key_pair';
 export {InMemorySigner} from './signer';
 export {SignatureType, MultiSignature, SingleSignature} from './transaction/signature';
@@ -24,4 +24,5 @@ export {
     , providers
     , tx_actions
     , constants,
+
 };
