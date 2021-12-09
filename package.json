@@ -57,7 +57,7 @@
         "dev": "yarn compile -w",
         "doc": "typedoc src && touch docs/.nojekyll",
         "build": "yarn compile",
-        "test": "jest --ci --reporters=default --reporters=jest-Junit",
+        "test": "jest --ci --reporters=default --reporters=jest-junit",
         "lint": "eslint test/**/*.ts && eslint src/**/*.ts",
         "fix": "eslint test/**/*.ts --fix && eslint src/**/*.ts --fix",
         "prefuzz": "yarn build",
