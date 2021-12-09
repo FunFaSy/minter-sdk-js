@@ -12,16 +12,16 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
-              -
+
             - name: Build 🔧
               uses: actions/setup-node@v1
               with:
                   node-version: '15.x'
-              run: yarn install --frozen-lockfile
+            - run: yarn install --frozen-lockfile
 
             - name: Deploy 🚀
               uses: sterlingwes/gh-pages-deploy-action@v1.1
               with:
                   access-token: ${{ secrets.DEPLOY_TOKEN }}
-                  source-directory: docs
-                  build-command: yarn doc
+                    source-directory: docs
+                    build-command: yarn doc
