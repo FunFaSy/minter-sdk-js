@@ -9,9 +9,7 @@ on:
 
 jobs:
     build:
-
         runs-on: ubuntu-latest
-
         steps:
             - uses: actions/checkout@v2
             - uses: actions/setup-node@v1
@@ -20,6 +18,6 @@ jobs:
             - run: yarn install --frozen-lockfile
             - uses: sterlingwes/gh-pages-deploy-action@v1.1
               with:
-                  access-token: ${{ secrets.ACCESS_TOKEN }}
+                  access-token: ${{ secrets.GITHUB_TOKEN }}
                   source-directory: docs
                   build-command: yarn doc

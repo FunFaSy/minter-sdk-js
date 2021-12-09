@@ -23,7 +23,7 @@ jobs:
             - uses: actions/upload-artifact@v2  # upload test results
               if: success() || failure()        # run this step even if previous step failed
               with:
-                  name: JEST Tests
+                  name: test-results
                   path: 'reports/jest-junit.xml'
             - name: Build
               run: yarn build
