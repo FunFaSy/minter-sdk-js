@@ -20,8 +20,11 @@ jobs:
             - run: yarn install --frozen-lockfile
 
             - name: Deploy 🚀
-              uses: sterlingwes/gh-pages-deploy-action@v1.1
-              with:
-                access-token: ${{ secrets.DEPLOY_TOKEN }}
-                source-directory: docs
-                build-command: yarn doc
+              uses: jeoy/github-deploy-actions@v1.0.1
+              env:
+                  COMMIT_EMAIL: azimuth0x28@users.noreply.github.com
+                  ACCESS_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+                  BASE_BRANCH: master
+                  DEPLOY_BRANCH: docs
+                  BUILD_SCRIPT: yarn doc
+                  FOLDER: docs
