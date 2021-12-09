@@ -18,15 +18,12 @@ jobs:
                   node-version: ${{ matrix.node-version }}
             - name: Install dependencies
               run: yarn
-
             - name: Test Report
               run: yarn test
-              uses: actions/upload-artifact@v2  # upload test results
+            - uses: actions/upload-artifact@v2  # upload test results
               if: success() || failure()        # run this step even if previous step failed
               with:
                   name: JEST Tests
-                  path: reports/jest-*.xml
-                  reporter: jest-junit
-
+                  path: jest-junit.xml
             - name: Build
               run: yarn build
