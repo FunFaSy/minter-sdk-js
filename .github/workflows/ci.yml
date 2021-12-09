@@ -24,6 +24,6 @@ jobs:
               if: success() || failure()        # run this step even if previous step failed
               with:
                   name: JEST Tests
-                  path: jest-junit.xml
+                  path: 'reports/jest-junit.xml'
             - name: Build
               run: yarn build
