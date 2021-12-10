@@ -102,29 +102,29 @@ const state = await acc.state(); // Agregate balance + waitlist + frozen
 import * as minterSdk from 'minter-sdk-js';
 
 const MNEMONIC = 'solar when satoshi champion about zebra crop solution leopard senior ability vocal';
-    const chain = new minterSdk.Chain(minterSdk.ChainId.TESTNET);
-    const wall = await minterSdk.Wallet.fromMnemonic(MNEMONIC).then(wall=>wall.setConnection(chain.newJsonRpcConnection()));
-    const acc = await wall.getAccount();
-     const keyPair = await wall.getAccountKeyPair();
+const chain = new minterSdk.Chain(minterSdk.ChainId.TESTNET);
+const wall = await minterSdk.Wallet.fromMnemonic(MNEMONIC).then(wall=>wall.setConnection(chain.newJsonRpcConnection()));
+const acc = await wall.getAccount();
+const keyPair = await wall.getAccountKeyPair();
 
-    const txAction = new minterSdk.tx_actions.SendAction({
-        to   : 'Mxeb92ae39b84012968f63b2dd260a94d791fe79bd',
-        coin : 0,
-        value: minterSdk.utils.convertBipToPip(100),
-    });
+const txAction = new minterSdk.tx_actions.SendAction({
+    to   : 'Mxeb92ae39b84012968f63b2dd260a94d791fe79bd',
+    coin : 0,
+    value: minterSdk.utils.convertBipToPip(100),
+});
 
-    const txParams = {
-        nonce        : await acc.nonce(),
-        chainId      : chain.networkId,   //
-        gasCoin      : 0,                   //
-        gasPrice     : 1,                   //
-        type         : txAction.type(),     //
-        data         : txAction.serialize(),//
-        signatureType: minterSdk.TxSignatureType.Single,
-    } ;
+const txParams = {
+    nonce        : await acc.nonce(),
+    chainId      : chain.networkId,   //
+    gasCoin      : 0,                   //
+    gasPrice     : 1,                   //
+    type         : txAction.type(),     //
+    data         : txAction.serialize(),//
+    signatureType: minterSdk.TxSignatureType.Single,
+} ;
 
-    const tx = new minterSdk.Transaction(txParams);
-    const signedTx = await acc.signTx(tx); // .toString() return RLP serialized hex encoded  tx 
+const tx = new minterSdk.Transaction(txParams);
+const signedTx = await acc.signTx(tx); // .toString() return RLP serialized hex encoded  tx 
 
 ```
 ### Restore
