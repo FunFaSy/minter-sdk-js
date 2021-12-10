@@ -4,23 +4,23 @@
     "exclude": "**/*index.ts",
     "links": [
         {
+            "label": "FunFaSy dev suite",
+            "url": "https://funfasy.dev"
+        },
+        {
             "label": "Minter Docs",
-            "url": "https://#"
+            "url": "https://www.minter.network/docs"
         },
         {
             "label": "RPC Endpoints",
-            "url": "https://#"
+            "url": "https://funfasy.dev/info/docs/#tag/API"
         }
     ],
     "outline": [
         {
-            "Connect to Minter": {
-                "browser": "browserconnect",
-                "node.js": "connect"
-            },
             "Managing Accounts": {
                 "Wallet": "classes/wallet.wallet-1",
-                "Account": "classes/account.account-1.html"
+                "Account": "classes/account.account-1"
             },
             "Managing Keys": {
                 "KeyPair": "key_pair",
@@ -30,11 +30,12 @@
                 "MergeKeyStore": "classes/key_stores_merge_key_store.mergekeystore"
             },
             "RPC": {
-                "Request and Response Types": "providers_provider",
-                "Client": "classes/providers_json_rpc_provider.jsonrpcprovider"
+                "Client (Data Provider)": "classes/providers_json_rpc_provider.jsonrpcprovider",
+                "Request and Response Types": "modules/providers_internal"
+
             },
             "utils": {
-                "Formatting": "utils_format"
+                "Formatting": "modules/util_functions_format"
             }
         }
     ]

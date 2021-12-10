@@ -40,7 +40,6 @@ export interface MinterConfig {
  * This is the main class developers should use to interact with Minter.
  * @example
  * ```js
- * const minter = new Minter(config);
  * ```
  */
 export class Minter {

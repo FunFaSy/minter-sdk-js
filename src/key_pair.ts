@@ -180,12 +180,8 @@ export class KeyPairSecp256k1 extends KeyPair {
     /**
      * Generate a new random secp256k1 keypair.
      * @example
-     * const keyRandom = KeyPairSecp256k1.fromRandom();
-     * keyRandom.publicKey
-     * // returns [PUBLIC_KEY]
-     *
-     * keyRandom.toString()
-     * // returns [SECRET_KEY]
+     * ```js
+     * ```
      */
     static fromRandom(): KeyPair {
         const secretKey = secp256k1.createPrivateKeySync();

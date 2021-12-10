@@ -10,20 +10,6 @@ const LOCAL_STORAGE_KEY_PREFIX = 'minter-sdk-js:keystore:';
  * @example {@link }
  * @example
  * ```js
- * import { connect, keyStores } from 'minter-api-js';
- *
- * const keyStore = new keyStores.BrowserLocalStorageKeyStore();
- * const config = {
- *   keyStore, // instance of BrowserLocalStorageKeyStore
- *   chainId: 'testnet',
- *   nodeUrl: 'https://rpc.testnet.minter.org',
- *   walletUrl: 'https://wallet.testnet.minter.org',
- *   helperUrl: 'https://helper.testnet.minter.org',
- *   explorerUrl: 'https://explorer.testnet.minter.org'
- * };
- *
- * // inside an async function
- * const minter = await connect(config)
  * ```
  */
 export class BrowserLocalStorageKeyStore extends KeyStore {
@@ -139,12 +125,10 @@ export class BrowserLocalStorageKeyStore extends KeyStore {
     }
 
     async entries(): Promise<IterableIterator<[string, string]>> {
-        const self = this;
-
         function* entries(): IterableIterator<[string, string]> {
-            for (let i = 0; i < self.storage.length; i++) {
-                const key = self.storage.key(i);
-                const value = self.storage.getItem(key);
+            for (let i = 0; i < this.storage.length; i++) {
+                const key = this.storage.key(i);
+                const value = this.storage.getItem(key);
 
                 yield [key, value || null];
             }
