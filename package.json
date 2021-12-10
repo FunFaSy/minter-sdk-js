@@ -2,11 +2,26 @@
     "name": "@funfasy/minter-sdk-js",
     "description": "JavaScript library to interact with Minter Protocol via RPC API",
     "version": "0.1.0",
-    "homepage": "https://github.com/FunFaSy/minter-sdk-js",
-    "author": "FunFaSy Team",
+    "homepage": "https://github.com/FunFaSy/minter-sdk-js#readme",
+    "author": "FunFaSy Team (https://github.com/FunFaSy)",
+    "keywords": [
+        "minter",
+        "blockchain",
+        "sdk"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/FunFaSy/minter-sdk-js.git"
+    },
+    "license": "(MIT AND Apache-2.0)",
     "main": "lib/index.js",
     "browser": "lib/browser-index.js",
     "types": "lib/index.d.ts",
+    "files": [
+        "/lib/",
+        "/dist/",
+        "browser-exports.js"
+    ],
     "dependencies": {
         "axios": "^0.24.0",
         "axios-retry": "^3.2.4",
@@ -46,11 +61,9 @@
         "typedoc-neo-theme": "^1.1.1",
         "typescript": "4.2.4"
     },
-    "keywords": [],
-    "license": "(MIT AND Apache-2.0)",
     "scripts": {
         "dist": "yarn browserify && yarn doc",
-        "browserify": "browserify browser-exports.js -i node-fetch -i http -i https -o dist/minter-sdk-js.js && terser dist/minter-sdk-js.js --comments false -c passes=2 -m  -o dist/minter-sdk-js.min.js",
+        "browserify": "rm -rf dist/ && browserify browser-exports.js -i node-fetch -i http -i https -o dist/minter-sdk-js.js && terser dist/minter-sdk-js.js --comments false -c passes=2 -m  -o dist/minter-sdk-js.min.js",
         "prebrowserify": "yarn build",
         "prepublish": "not-in-install && (yarn build && yarn browserify) || in-install",
         "compile": "tsc -p ./tsconfig.json",
@@ -71,11 +84,6 @@
             }
         ]
     },
-    "files": [
-        "lib",
-        "dist",
-        "browser-exports.js"
-    ],
     "linterOptions": {
         "exclude": [
             "node_modules"
@@ -92,5 +100,6 @@
     },
     "publishConfig": {
         "access": "public"
-    }
+    },
+    "unpkg": "dist/minter-sdk-js.min.js"
 }

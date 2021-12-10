@@ -22,7 +22,7 @@ _(Common use cases / more complex examples)_
 ---
 # Installation
 ```shell script
-yarn add minter-sdk-js
+yarn add @funfasy/minter-sdk-js
 ```
 
 or from browser
