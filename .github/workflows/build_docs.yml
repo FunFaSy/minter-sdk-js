@@ -32,8 +32,8 @@ jobs:
                 clean: true
                 silent: true
 
-            - name: Cleanup Generated Branch
-              uses: dawidd6/action-delete-branch@v2.0.1
-              with:
-                  github_token: ${{ secrets.GITHUB_TOKEN }}
-                  branches: gh-pages
+#            - name: Cleanup Generated Branch
+#              uses: dawidd6/action-delete-branch@v2.0.1
+#              with:
+#                  github_token: ${{ secrets.GITHUB_TOKEN }}
+#                  branches: gh-pages
