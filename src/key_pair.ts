@@ -64,6 +64,12 @@ export abstract class KeyPair {
         this._keyType = type;
     }
 
+    abstract get publicKey(): PublicKey ;
+
+    get type(): KeyType {
+        return this._keyType;
+    }
+
     /**
      * @param curve Name of elliptical curve, case-insensitive
      * @returns Random KeyPair based on the curve
@@ -129,14 +135,8 @@ export abstract class KeyPair {
      */
     abstract verify(message: Buffer, signature: Buffer[]): boolean;
 
-    abstract get publicKey(): PublicKey ;
-
     toString(): string {
         return `${keyType2Str(this.publicKey.keyType)}:${base_encode(this._secretKey)}`;
-    }
-
-    get type(): KeyType {
-        return this._keyType;
     }
 
     address(): Address {
@@ -149,8 +149,6 @@ export abstract class KeyPair {
  * generating key pairs, encoding key pairs, signing and verifying.
  */
 export class KeyPairSecp256k1 extends KeyPair {
-    protected _publicKey: PublicKey;
-
     /**
      * Construct an instance of key pair given a secret key.
      * It's generally assumed that these are encoded in base58check.
@@ -172,6 +170,8 @@ export class KeyPairSecp256k1 extends KeyPair {
         const publicKey = ethPrivateToPublic(_secretKey);
         this._publicKey = new PublicKey({keyType: KeyType.SECP256K1, raw: publicKey});
     }
+
+    protected _publicKey: PublicKey;
 
     get publicKey(): PublicKey {
         return this._publicKey;

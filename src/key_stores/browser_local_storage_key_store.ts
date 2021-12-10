@@ -106,6 +106,19 @@ export class BrowserLocalStorageKeyStore extends KeyStore {
         return result;
     }
 
+    async entries(): Promise<IterableIterator<[string, string]>> {
+        function* entries(): IterableIterator<[string, string]> {
+            for (let i = 0; i < this.storage.length; i++) {
+                const key = this.storage.key(i);
+                const value = this.storage.getItem(key);
+
+                yield [key, value || null];
+            }
+        }
+
+        return entries();
+    }
+
     /**
      * @hidden
      * Helper function to retrieve a local storage key
@@ -122,18 +135,5 @@ export class BrowserLocalStorageKeyStore extends KeyStore {
         for (let i = 0; i < this.storage.length; i++) {
             yield this.storage.key(i);
         }
-    }
-
-    async entries(): Promise<IterableIterator<[string, string]>> {
-        function* entries(): IterableIterator<[string, string]> {
-            for (let i = 0; i < this.storage.length; i++) {
-                const key = this.storage.key(i);
-                const value = this.storage.getItem(key);
-
-                yield [key, value || null];
-            }
-        }
-
-        return entries();
     }
 }

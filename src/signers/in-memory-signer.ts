@@ -67,7 +67,7 @@ export class InMemorySigner extends Signer {
      * @param accountId
      * @param chainId
      */
-    async signTransaction(tx: Transaction , accountId: string, chainId: ChainId): Promise<SignedTransaction> {
+    async signTransaction(tx: Transaction, accountId: string, chainId: ChainId): Promise<SignedTransaction> {
         if (!accountId) {
             throw new Error('InMemorySigner requires provided account id');
         }

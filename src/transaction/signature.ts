@@ -168,11 +168,10 @@ export class TxSingleSignature extends TransactionSignature {
  *
  */
 export class TxMultiSignature extends TransactionSignature {
-    protected raw!: Buffer[];
-
     // Signature data
     public multisig!: Buffer; // multisig Address
     public signatures!: Buffer[]; // array of single RLP serialized signatures
+    protected raw!: Buffer[];
     protected _signatures!: Map<string, TxSingleSignature>;
 
     /**

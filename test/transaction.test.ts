@@ -736,7 +736,6 @@ test('[TxSingle] MintToken transaction type', async () => {
     const wal = await minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = await wal.getAccountKeyPair();
 
-
     const txAction = new minterSdk.tx_actions.MintTokenAction({
         coin : 2010,                                 // Coin Id
         value: convertBipToPip(10_000),
@@ -776,7 +775,6 @@ test('[TxSingle] BurnToken transaction type', async () => {
     const wal = await minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = await wal.getAccountKeyPair();
 
-
     const txAction = new minterSdk.tx_actions.BurnTokenAction({
         coin : 2011,                                 // Coin Id
         value: convertBipToPip(10_000),
@@ -815,7 +813,6 @@ test('[TxSingle] DeclareCandidacy transaction type', async () => {
     const chain = new minterSdk.Chain('testnet');
     const wal = await minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = await wal.getAccountKeyPair();
-
 
     const txAction = new minterSdk.tx_actions.DeclareCandidacyAction({
         address   : 'Mx0bd4dd45fc7072ce6f1a4b297706174ee2f86910', // Validator owner  address Mx.............
@@ -858,7 +855,6 @@ test('[TxSingle] EditCandidate transaction type', async () => {
     const wal = await minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = await wal.getAccountKeyPair();
 
-
     const txAction = new minterSdk.tx_actions.EditCandidateAction({
         ownerAddress  : 'Mx0bd4dd45fc7072ce6f1a4b297706174ee2f86910', // Validator owner  address Mx.............
         controlAddress: 'Mxeb92ae39b84012968f63b2dd260a94d791fe79bd', // Validator owner  address Mx.............
@@ -899,7 +895,6 @@ test('[TxSingle] EditCandidatePubKey transaction type', async () => {
     const wal = await minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = await wal.getAccountKeyPair();
 
-
     const txAction = new minterSdk.tx_actions.EditCandidatePubKeyAction({
         publicKey   : 'Mp6787a7adfed250d13cd089db516e274d71f105f4e6a0639e0f9521985ea6c201', // Validator node pub key Mp.............
         newPublicKey: 'Mpaaaaa16ebd6af229b4cfc02c3ab40bd25c1051c3aa2120f07d08c1bd01777778', // Validator node pub key Mp.............
@@ -937,7 +932,6 @@ test('[TxSingle] EditCandidateCommission transaction type', async () => {
     const chain = new minterSdk.Chain('testnet');
     const wal = await minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = await wal.getAccountKeyPair();
-
 
     const txAction = new minterSdk.tx_actions.EditCandidateCommissionAction({
         publicKey : 'Mpaaaaa16ebd6af229b4cfc02c3ab40bd25c1051c3aa2120f07d08c1bd01777778', // Validator node pub key Mp.............
@@ -978,7 +972,6 @@ test('[TxSingle] Delegate transaction type', async () => {
     const wal = await minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = await wal.getAccountKeyPair();
 
-
     const txAction = new minterSdk.tx_actions.DelegateAction({
         publicKey: 'Mpaaaaa16ebd6af229b4cfc02c3ab40bd25c1051c3aa2120f07d08c1bd01777778', // Validator node pub key Mp.............
         coin     : 0, //  Coin ID
@@ -1018,7 +1011,6 @@ test('[TxSingle] Unbond transaction type', async () => {
     const chain = new minterSdk.Chain('testnet');
     const wal = await minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = await wal.getAccountKeyPair();
-
 
     const txAction = new minterSdk.tx_actions.UnbondAction({
         publicKey: 'Mpaaaaa16ebd6af229b4cfc02c3ab40bd25c1051c3aa2120f07d08c1bd01777778', // Validator node pub key Mp.............
@@ -1100,7 +1092,6 @@ test('[TxSingle] SetCandidateOn transaction type', async () => {
     const wal = await minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = await wal.getAccountKeyPair();
 
-
     const txAction = new minterSdk.tx_actions.SetCandidateOnAction({
         publicKey: 'Mpaaaaa16ebd6af229b4cfc02c3ab40bd25c1051c3aa2120f07d08c1bd01777778', // Validator node pub key Mp.............
     });
@@ -1137,7 +1128,6 @@ test('[TxSingle] SetCandidateOff transaction type', async () => {
     const chain = new minterSdk.Chain('testnet');
     const wal = await minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = await wal.getAccountKeyPair();
-
 
     const txAction = new minterSdk.tx_actions.SetCandidateOffAction({
         publicKey: 'Mpaaaaa16ebd6af229b4cfc02c3ab40bd25c1051c3aa2120f07d08c1bd01777778', // Validator node pub key Mp.............
@@ -1176,7 +1166,6 @@ test('[TxSingle] VoteHaltBlock transaction type', async () => {
     const wal = await minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = await wal.getAccountKeyPair();
 
-
     const txAction = new minterSdk.tx_actions.VoteHaltBlockAction({
         publicKey: 'Mpaaaaa16ebd6af229b4cfc02c3ab40bd25c1051c3aa2120f07d08c1bd01777778', // Validator node pub key Mp.............
         height   : 6285865, // Block height
@@ -1214,7 +1203,6 @@ test('[TxSingle] VoteNetUpdate transaction type', async () => {
     const chain = new minterSdk.Chain('testnet');
     const wal = await minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = await wal.getAccountKeyPair();
-
 
     const txAction = new minterSdk.tx_actions.VoteNetUpdateAction({
         publicKey: 'Mpaaaaa16ebd6af229b4cfc02c3ab40bd25c1051c3aa2120f07d08c1bd01777778', // Validator node pub key Mp.............
@@ -1255,7 +1243,6 @@ test('[TxSingle] VoteCommissionUpdate transaction type', async () => {
     const chain = new minterSdk.Chain('testnet');
     const wal = await minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = await wal.getAccountKeyPair();
-
 
     const txAction = new minterSdk.tx_actions.VoteCommissionUpdateAction({
         publicKey              : 'Mpaaaaa16ebd6af229b4cfc02c3ab40bd25c1051c3aa2120f07d08c1bd01777778', // Validator node pub key Mp.............
@@ -1340,7 +1327,6 @@ test('[TxSingle] CreateMultiSig transaction type', async () => {
     const chain = new minterSdk.Chain('testnet');
     const wal = await minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = await wal.getAccountKeyPair();
-
 
     const txAction = new minterSdk.tx_actions.CreateMultiSigAction({
         addresses: [
@@ -1446,7 +1432,6 @@ test('[TxSingle] AddLimitOrder transaction type', async () => {
     const wal = await minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = await wal.getAccountKeyPair();
 
-
     const txAction = new minterSdk.tx_actions.AddLimitOrderAction({
         coinToBuy  : 6836,      // Commission coin Id
         valueToBuy : convertBipToPip(625),
@@ -1486,7 +1471,6 @@ test('[TxSingle] RemoveLimitOrder transaction type', async () => {
     const chain = new minterSdk.Chain('taconet');
     const wal = await minterSdk.Wallet.fromMnemonic(MNEMONIC);
     const keyPair = await wal.getAccountKeyPair();
-
 
     const txAction = new minterSdk.tx_actions.RemoveLimitOrderAction({
         orderId: 1161218,      //

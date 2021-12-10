@@ -157,11 +157,6 @@ export class UnencryptedFileSystemKeyStore extends KeyStore {
         return `UnencryptedFileSystemKeyStore(${this.keyDir})`;
     }
 
-    /** @hidden */
-    private getKeyFilePath(chainId: ChainId, accountId: string): string {
-        return `${this.keyDir}/${chainId}/${accountId}.json`;
-    }
-
     async entries(): Promise<IterableIterator<[string, string]>> {
         const result: [string, string][] = [];
         for (const network of await this.getChains()) {
@@ -179,5 +174,10 @@ export class UnencryptedFileSystemKeyStore extends KeyStore {
         }
 
         return entries();
+    }
+
+    /** @hidden */
+    private getKeyFilePath(chainId: ChainId, accountId: string): string {
+        return `${this.keyDir}/${chainId}/${accountId}.json`;
     }
 }
