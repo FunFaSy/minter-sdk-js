@@ -101,7 +101,7 @@ export class InMemorySigner extends Signer {
         if (keyPair === null) {
             return null;
         }
-        return keyPair.publicKey();
+        return keyPair.publicKey;
     }
 
     toString(): string {

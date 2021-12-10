@@ -1,3 +1,5 @@
+/** @module */
+
 import {Connection} from './connection';
 import {Address, KeyPair, PublicKey, Signature} from './key_pair';
 import {InMemoryKeyStore, KeyStore} from './key_stores';
@@ -44,7 +46,11 @@ export interface AccountState {
 // TODO: AccountBuilder
 
 /**
+ * This class provides common account related RPC calls including signing transactions with a {@link KeyPair}.
  *
+ * @example {@link }
+ * @hint Use {@link Wallet} in the browser to manage derivited Accounts.
+ * @see {@link }
  */
 export class Account {
     readonly publicKey: PublicKey; // enough for reading operations
@@ -55,7 +61,7 @@ export class Account {
     protected _connection: Connection;// Provider + Signer connects Account to network
 
     constructor(keyPair: KeyPair, connection: Connection) {
-        this.publicKey = keyPair.publicKey();
+        this.publicKey = keyPair.publicKey;
         this.address = this.publicKey.address();
         this._connection = connection;
 

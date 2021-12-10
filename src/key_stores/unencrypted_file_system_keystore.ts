@@ -84,7 +84,7 @@ export class UnencryptedFileSystemKeyStore extends KeyStore {
 
         const content: AccountInfo = {
             account_id : accountId,
-            public_key : keyPair.publicKey().toString(),
+            public_key : keyPair.publicKey.toString(),
             private_key: keyPair.toString(),
         };
 

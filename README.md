@@ -6,7 +6,7 @@ A JavaScript/TypeScript library for development of DApps on the Minter platform
 
 # Documentation
 
-[Read the TypeDoc API documentation](https://FunFaSy.github.io/minter-sdk-js)
+[Read the TypeDoc API documentation](https://funfasy.github.io/minter-sdk-js/)
 
 ---
 

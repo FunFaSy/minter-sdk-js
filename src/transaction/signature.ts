@@ -6,7 +6,7 @@ import {Transaction} from './transaction';
 
 const N_DIV_2 = new BN('7fffffffffffffffffffffffffffffff5d576e7357a4501ddfe92f46681b20a0', 16);
 
-export enum SignatureType {
+export enum TxSignatureType {
     Single = 1,
     Multi  = 2
 }
@@ -37,7 +37,7 @@ export abstract class TransactionSignature extends Signature {
 /**
  *
  */
-export class SingleSignature extends TransactionSignature {
+export class TxSingleSignature extends TransactionSignature {
 
     /**
      *
@@ -76,8 +76,8 @@ export class SingleSignature extends TransactionSignature {
         this._overrideVSetterWithValidation();
     }
 
-    static fromString(signature: string): SingleSignature {
-        return new SingleSignature(super.fromString(signature));
+    static fromString(signature: string): TxSingleSignature {
+        return new TxSingleSignature(super.fromString(signature));
     }
 
     /**
@@ -91,7 +91,7 @@ export class SingleSignature extends TransactionSignature {
         const vrs: Buffer[] = (rlp.decode(rlpVrs) as undefined) as Buffer[];
         assertIsArray(vrs, `Expect rlp encoded ECDSA signature as array of Buffers, but got ${vrs}`);
 
-        const txSignature = new SingleSignature(rlpVrs);
+        const txSignature = new TxSingleSignature(rlpVrs);
         const txPublicKey = base_decode(txSignature.publicKey(txHash).toString().split(':')[1]).toString('utf-8');
 
         return txSignature.valid() && txPublicKey == publicKey;
@@ -167,13 +167,13 @@ export class SingleSignature extends TransactionSignature {
 /**
  *
  */
-export class MultiSignature extends TransactionSignature {
+export class TxMultiSignature extends TransactionSignature {
     protected raw!: Buffer[];
 
     // Signature data
     public multisig!: Buffer; // multisig Address
     public signatures!: Buffer[]; // array of single RLP serialized signatures
-    protected _signatures!: Map<string, SingleSignature>;
+    protected _signatures!: Map<string, TxSingleSignature>;
 
     /**
      *
@@ -193,7 +193,7 @@ export class MultiSignature extends TransactionSignature {
                 name               : 'signatures',
                 allowNonBinaryArray: true,
                 nonBinaryArrayTransform(sigBuf) {
-                    return new SingleSignature(sigBuf).getRaw();// Buffer
+                    return new TxSingleSignature(sigBuf).getRaw();// Buffer
                 },
             },
         ];
@@ -210,7 +210,7 @@ export class MultiSignature extends TransactionSignature {
 
         if (0 < this.signatures.length) {
             this._signatures = new Map(this.signatures.map((buf) => {
-                const sig = new SingleSignature(buf);
+                const sig = new TxSingleSignature(buf);
                 const key = sha256(sig.serialize()).toString('hex');
                 return [key, sig];
             }));
@@ -221,10 +221,10 @@ export class MultiSignature extends TransactionSignature {
         }
     }
 
-    static fromString(signature: string): MultiSignature {
+    static fromString(signature: string): TxMultiSignature {
         // TODO:
         throw new Error('Not implemented');
-        //return new MultiSignature(super.fromString(signature));
+        //return new TxMultiSignature(super.fromString(signature));
     }
 
     /**
@@ -266,7 +266,7 @@ export class MultiSignature extends TransactionSignature {
      *
      * @param signature
      */
-    addOne(signature: SingleSignature): MultiSignature {
+    addOne(signature: TxSingleSignature): TxMultiSignature {
 
         const key = sha256(signature.serialize()).toString('hex');
         if (!this._signatures.has(key)) {
@@ -288,7 +288,7 @@ export class MultiSignature extends TransactionSignature {
      *
      * @param multisig
      */
-    setMultisig(multisig: Buffer): MultiSignature {
+    setMultisig(multisig: Buffer): TxMultiSignature {
         this.multisig = multisig;
 
         if (this.transaction instanceof Transaction) {

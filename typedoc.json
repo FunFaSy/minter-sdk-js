@@ -1,24 +1,29 @@
 {
-
+    "theme": "./node_modules/typedoc-neo-theme/bin/default",
+    "plugin": "./node_modules/typedoc-neo-theme",
     "exclude": "**/*index.ts",
     "links": [
-        { "label": "Minter Docs", "url": "https://#" },
-        { "label": "API JS Quick Reference", "url": "https://#" },
-        { "label": "RPC Endpoints", "url": "https://#" }
+        {
+            "label": "Minter Docs",
+            "url": "https://#"
+        },
+        {
+            "label": "RPC Endpoints",
+            "url": "https://#"
+        }
     ],
     "outline": [
         {
-            "Connect to MInter": {
+            "Connect to Minter": {
                 "browser": "browserconnect",
                 "node.js": "connect"
             },
             "Managing Accounts": {
-                "Account": "classes/account.account-1",
-                "Wallet Account": "classes/walletaccount.walletconnection",
-                "Smart Contracts": "classes/contract.contract-1"
+                "Wallet": "classes/wallet.wallet-1",
+                "Account": "classes/account.account-1.html"
             },
             "Managing Keys": {
-                "KeyPair": "utils_key_pair",
+                "KeyPair": "key_pair",
                 "BrowserLocalStorageKeyStore": "classes/key_stores_browser_local_storage_key_store.browserlocalstoragekeystore",
                 "InMemoryKeyStore": "classes/key_stores_in_memory_key_store.inmemorykeystore",
                 "UnencryptedFileSystemKeyStore": "classes/key_stores_unencrypted_file_system_keystore.unencryptedfilesystemkeystore",

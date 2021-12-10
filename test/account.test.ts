@@ -67,7 +67,7 @@ test('[Account] Sign transaction', async () => {
         data         : txAction.serialize(),//
         payload      : '0x00',              //
         serviceData  : '0x00',              //
-        signatureType: minterSdk.SignatureType.Single,
+        signatureType: minterSdk.TxSignatureType.Single,
     } as TransactionParams;
 
 

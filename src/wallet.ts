@@ -1,3 +1,9 @@
+/**
+ *
+ * @module wallet
+ */
+
+
 import * as bip39 from 'bip39';
 import {HDKey} from 'ethereum-cryptography/hdkey';
 import {HDKeyT} from 'ethereum-cryptography/pure/hdkey';

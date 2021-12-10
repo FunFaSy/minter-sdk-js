@@ -28,8 +28,9 @@ export type Arrayish = string | ArrayLike<number>;
 
 /** All supported key types */
 export enum KeyType {
-    SECP256K1 = 0, // ECDSA
-    ED25519   = 1, // EdDSA
+    UNKNOWN   = 'UNKNOWN', // Unknown
+    SECP256K1 = 'SECP256K1', // ECDSA
+    ED25519   = 'ED25519', // EdDSA
 }
 
 const keyType2Str = (keyType: KeyType): string => {
@@ -55,19 +56,19 @@ const str2KeyType = (keyType: string): KeyType => {
 };
 
 export abstract class KeyPair {
-    readonly _publicKey: PublicKey;
+    readonly _keyType: KeyType;
     readonly _secretKey: Buffer;
 
-    constructor(publicKey: PublicKey, secretKey: Buffer) {
-        this._publicKey = publicKey;
+    constructor(secretKey: Buffer, type = KeyType.UNKNOWN) {
         this._secretKey = secretKey;
+        this._keyType = type;
     }
 
     /**
      * @param curve Name of elliptical curve, case-insensitive
      * @returns Random KeyPair based on the curve
      */
-    static fromRandom(curve: KeyType | string): KeyPair {
+    static fromRandom(curve: KeyType | string = KeyType.SECP256K1): KeyPair {
         let _curve = KeyType.SECP256K1;
         if (!curve) {
             if (isString(curve)) {
@@ -128,16 +129,18 @@ export abstract class KeyPair {
      */
     abstract verify(message: Buffer, signature: Buffer[]): boolean;
 
+    abstract get publicKey(): PublicKey ;
+
     toString(): string {
-        return `${keyType2Str(this._publicKey.keyType)}:${base_encode(this._secretKey)}`;
+        return `${keyType2Str(this.publicKey.keyType)}:${base_encode(this._secretKey)}`;
+    }
+
+    get type(): KeyType {
+        return this._keyType;
     }
 
     address(): Address {
-        return this._publicKey.address();
-    }
-
-    publicKey(): PublicKey {
-        return this._publicKey;
+        return this.publicKey.address();
     }
 }
 
@@ -146,6 +149,7 @@ export abstract class KeyPair {
  * generating key pairs, encoding key pairs, signing and verifying.
  */
 export class KeyPairSecp256k1 extends KeyPair {
+    protected _publicKey: PublicKey;
 
     /**
      * Construct an instance of key pair given a secret key.
@@ -163,16 +167,21 @@ export class KeyPairSecp256k1 extends KeyPair {
             _secretKey = base_decode(parts[1]);
         }
 
-        const publicKey = ethPrivateToPublic(_secretKey);
+        super(_secretKey, KeyType.SECP256K1);
 
-        super(new PublicKey({keyType: KeyType.SECP256K1, raw: publicKey}), _secretKey);
+        const publicKey = ethPrivateToPublic(_secretKey);
+        this._publicKey = new PublicKey({keyType: KeyType.SECP256K1, raw: publicKey});
+    }
+
+    get publicKey(): PublicKey {
+        return this._publicKey;
     }
 
     /**
      * Generate a new random secp256k1 keypair.
      * @example
      * const keyRandom = KeyPairSecp256k1.fromRandom();
-     * keyRandom.publicKey()
+     * keyRandom.publicKey
      * // returns [PUBLIC_KEY]
      *
      * keyRandom.toString()
@@ -277,7 +286,7 @@ export class PublicKey extends Assignable {
 
         const v = bufferToInt(bufV);
 
-        return PublicKey.fromBuffer (ecrecover(message, v, bufR, bufS));
+        return PublicKey.fromBuffer(ecrecover(message, v, bufR, bufS));
 
     }
 

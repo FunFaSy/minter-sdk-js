@@ -56,7 +56,7 @@ test('[TxSingle] Send transaction type', async () => {
         data         : txAction.serialize(),//
         payload      : '0x00',              //
         serviceData  : '0x00',              //
-        signatureType: minterSdk.SignatureType.Single,
+        signatureType: minterSdk.TxSignatureType.Single,
     } as TransactionParams;
 
     const tx = new minterSdk.Transaction(txParams);
@@ -101,7 +101,7 @@ test('[TxSingle] MultiSend transaction type', async () => {
         gasPrice     : 1,                   //
         type         : txAction.type(),     //
         data         : txAction.serialize(),//
-        signatureType: minterSdk.SignatureType.Single,
+        signatureType: minterSdk.TxSignatureType.Single,
     } as TransactionParams;
 
     const tx = new minterSdk.Transaction(txParams);
@@ -141,7 +141,7 @@ test('[TxSingle] RedeemCheck transaction type', async () => {
         gasPrice     : 1,                   //
         type         : txAction.type(),     //
         data         : txAction.serialize(),//
-        signatureType: minterSdk.SignatureType.Single,
+        signatureType: minterSdk.TxSignatureType.Single,
     } as TransactionParams;
 
     const tx = new minterSdk.Transaction(txParams);
@@ -181,7 +181,7 @@ test('[TxSingle] Sell transaction type', async () => {
         gasPrice     : 1,                   //
         type         : txAction.type(),     //
         data         : txAction.serialize(),//
-        signatureType: minterSdk.SignatureType.Single,
+        signatureType: minterSdk.TxSignatureType.Single,
     } as TransactionParams;
 
     const tx = new minterSdk.Transaction(txParams);
@@ -221,7 +221,7 @@ test('[TxSingle] Buy transaction type', async () => {
         gasPrice     : 1,                   //
         type         : txAction.type(),     //
         data         : txAction.serialize(),//
-        signatureType: minterSdk.SignatureType.Single,
+        signatureType: minterSdk.TxSignatureType.Single,
     } as TransactionParams;
 
     const tx = new minterSdk.Transaction(txParams);
@@ -260,7 +260,7 @@ test('[TxSingle] SellAll transaction type', async () => {
         gasPrice     : 1,                   //
         type         : txAction.type(),     //
         data         : txAction.serialize(),//
-        signatureType: minterSdk.SignatureType.Single,
+        signatureType: minterSdk.TxSignatureType.Single,
     } as TransactionParams;
 
     const tx = new minterSdk.Transaction(txParams);
@@ -299,7 +299,7 @@ test('[TxSingle] BuySwap transaction type', async () => {
         gasPrice     : 1,                   //
         type         : txAction.type(),     //
         data         : txAction.serialize(),//
-        signatureType: minterSdk.SignatureType.Single,
+        signatureType: minterSdk.TxSignatureType.Single,
     } as TransactionParams;
 
     const tx = new minterSdk.Transaction(txParams);
@@ -338,7 +338,7 @@ test('[TxSingle] SellSwap transaction type', async () => {
         gasPrice     : 1,                   //
         type         : txAction.type(),     //
         data         : txAction.serialize(),//
-        signatureType: minterSdk.SignatureType.Single,
+        signatureType: minterSdk.TxSignatureType.Single,
     } as TransactionParams;
 
     const tx = new minterSdk.Transaction(txParams);
@@ -376,7 +376,7 @@ test('[TxSingle] SellAllSwap transaction type', async () => {
         gasPrice     : 1,                   //
         type         : txAction.type(),     //
         data         : txAction.serialize(),//
-        signatureType: minterSdk.SignatureType.Single,
+        signatureType: minterSdk.TxSignatureType.Single,
     } as TransactionParams;
 
     const tx = new minterSdk.Transaction(txParams);
@@ -417,7 +417,7 @@ test('[TxSingle] CreateSwapPoolAction transaction type', async () => {
         gasPrice     : 1,                   //
         type         : txAction.type(),     //
         data         : txAction.serialize(),//
-        signatureType: minterSdk.SignatureType.Single,
+        signatureType: minterSdk.TxSignatureType.Single,
     } as TransactionParams;
 
     const tx = new minterSdk.Transaction(txParams);
@@ -457,7 +457,7 @@ test('[TxSingle] AddLiquidity type transaction', async () => {
         gasPrice     : 1,                   //
         type         : txAction.type(),     //
         data         : txAction.serialize(),//
-        signatureType: minterSdk.SignatureType.Single,
+        signatureType: minterSdk.TxSignatureType.Single,
     } as TransactionParams;
 
     const tx = new minterSdk.Transaction(txParams);
@@ -499,7 +499,7 @@ test('[TxSingle] RemoveLiquidity transaction type', async () => {
         gasPrice     : 1,                   //
         type         : txAction.type(),     //
         data         : txAction.serialize(),//
-        signatureType: minterSdk.SignatureType.Single,
+        signatureType: minterSdk.TxSignatureType.Single,
     };
 
     const tx = new minterSdk.Transaction(txParams);
@@ -542,7 +542,7 @@ test('[TxSingle] CreateCoin transaction type', async () => {
         gasPrice     : 1,                   //
         type         : txAction.type(),     //
         data         : txAction.serialize(),//
-        signatureType: minterSdk.SignatureType.Single,
+        signatureType: minterSdk.TxSignatureType.Single,
     };
 
     const tx = new minterSdk.Transaction(txParams);
@@ -585,7 +585,7 @@ test('[TxSingle] ReCreateCoin transaction type', async () => {
         gasPrice     : 1,                   //
         type         : txAction.type(),     //
         data         : txAction.serialize(),//
-        signatureType: minterSdk.SignatureType.Single,
+        signatureType: minterSdk.TxSignatureType.Single,
     };
 
     const tx = new minterSdk.Transaction(txParams);
@@ -628,7 +628,7 @@ test('[TxSingle] CreateToken transaction type', async () => {
         gasPrice     : 1,                   //
         type         : txAction.type(),     //
         data         : txAction.serialize(),//
-        signatureType: minterSdk.SignatureType.Single,
+        signatureType: minterSdk.TxSignatureType.Single,
     };
 
     const tx = new minterSdk.Transaction(txParams);
@@ -671,7 +671,7 @@ test('[TxSingle] ReCreateToken transaction type', async () => {
         gasPrice     : 1,                   //
         type         : txAction.type(),     //
         data         : txAction.serialize(),//
-        signatureType: minterSdk.SignatureType.Single,
+        signatureType: minterSdk.TxSignatureType.Single,
     };
 
     const tx = new minterSdk.Transaction(txParams);
@@ -709,7 +709,7 @@ test('[TxSingle] EditTickerOwner transaction type', async () => {
         gasPrice     : 1,                   //
         type         : txAction.type(),     //
         data         : txAction.serialize(),//
-        signatureType: minterSdk.SignatureType.Single,
+        signatureType: minterSdk.TxSignatureType.Single,
     };
 
     const tx = new minterSdk.Transaction(txParams);
@@ -749,7 +749,7 @@ test('[TxSingle] MintToken transaction type', async () => {
         gasPrice     : 1,                   //
         type         : txAction.type(),     //
         data         : txAction.serialize(),//
-        signatureType: minterSdk.SignatureType.Single,
+        signatureType: minterSdk.TxSignatureType.Single,
     };
 
     const tx = new minterSdk.Transaction(txParams);
@@ -789,7 +789,7 @@ test('[TxSingle] BurnToken transaction type', async () => {
         gasPrice     : 1,                   //
         type         : txAction.type(),     //
         data         : txAction.serialize(),//
-        signatureType: minterSdk.SignatureType.Single,
+        signatureType: minterSdk.TxSignatureType.Single,
     };
 
     const tx = new minterSdk.Transaction(txParams);
@@ -832,7 +832,7 @@ test('[TxSingle] DeclareCandidacy transaction type', async () => {
         gasPrice     : 1,                   //
         type         : txAction.type(),     //
         data         : txAction.serialize(),//
-        signatureType: minterSdk.SignatureType.Single,
+        signatureType: minterSdk.TxSignatureType.Single,
     };
 
     const tx = new minterSdk.Transaction(txParams);
@@ -873,7 +873,7 @@ test('[TxSingle] EditCandidate transaction type', async () => {
         gasPrice     : 1,                   //
         type         : txAction.type(),     //
         data         : txAction.serialize(),//
-        signatureType: minterSdk.SignatureType.Single,
+        signatureType: minterSdk.TxSignatureType.Single,
     };
 
     const tx = new minterSdk.Transaction(txParams);
@@ -912,7 +912,7 @@ test('[TxSingle] EditCandidatePubKey transaction type', async () => {
         gasPrice     : 1,                   //
         type         : txAction.type(),     //
         data         : txAction.serialize(),//
-        signatureType: minterSdk.SignatureType.Single,
+        signatureType: minterSdk.TxSignatureType.Single,
     };
 
     const tx = new minterSdk.Transaction(txParams);
@@ -951,7 +951,7 @@ test('[TxSingle] EditCandidateCommission transaction type', async () => {
         gasPrice     : 1,                   //
         type         : txAction.type(),     //
         data         : txAction.serialize(),//
-        signatureType: minterSdk.SignatureType.Single,
+        signatureType: minterSdk.TxSignatureType.Single,
     };
 
     const tx = new minterSdk.Transaction(txParams);
@@ -992,7 +992,7 @@ test('[TxSingle] Delegate transaction type', async () => {
         gasPrice     : 1,                   //
         type         : txAction.type(),     //
         data         : txAction.serialize(),//
-        signatureType: minterSdk.SignatureType.Single,
+        signatureType: minterSdk.TxSignatureType.Single,
     };
 
     const tx = new minterSdk.Transaction(txParams);
@@ -1033,7 +1033,7 @@ test('[TxSingle] Unbond transaction type', async () => {
         gasPrice     : 1,                               //
         type         : txAction.type(),                 //
         data         : txAction.serialize(),            //
-        signatureType: minterSdk.SignatureType.Single,  //
+        signatureType: minterSdk.TxSignatureType.Single,  //
     };
 
     const tx = new minterSdk.Transaction(txParams);
@@ -1074,7 +1074,7 @@ test('[TxSingle] Unbond transaction type', async () => {
 //         gasPrice     : 1,                               //
 //         type         : txAction.type(),                 //
 //         data         : txAction.serialize(),            //
-//         signatureType: minterSdk.SignatureType.Single,  //
+//         signatureType: minterSdk.TxSignatureType.Single,  //
 //     };
 //
 //     const tx = new minterSdk.Transaction(txParams);
@@ -1112,7 +1112,7 @@ test('[TxSingle] SetCandidateOn transaction type', async () => {
         gasPrice     : 1,                               //
         type         : txAction.type(),                 //
         data         : txAction.serialize(),            //
-        signatureType: minterSdk.SignatureType.Single,  //
+        signatureType: minterSdk.TxSignatureType.Single,  //
     };
 
     const tx = new minterSdk.Transaction(txParams);
@@ -1150,7 +1150,7 @@ test('[TxSingle] SetCandidateOff transaction type', async () => {
         gasPrice     : 1,                               //
         type         : txAction.type(),                 //
         data         : txAction.serialize(),            //
-        signatureType: minterSdk.SignatureType.Single,  //
+        signatureType: minterSdk.TxSignatureType.Single,  //
     };
 
     const tx = new minterSdk.Transaction(txParams);
@@ -1189,7 +1189,7 @@ test('[TxSingle] VoteHaltBlock transaction type', async () => {
         gasPrice     : 1,                               //
         type         : txAction.type(),                 //
         data         : txAction.serialize(),            //
-        signatureType: minterSdk.SignatureType.Single,  //
+        signatureType: minterSdk.TxSignatureType.Single,  //
     };
 
     const tx = new minterSdk.Transaction(txParams);
@@ -1229,7 +1229,7 @@ test('[TxSingle] VoteNetUpdate transaction type', async () => {
         gasPrice     : 1,                               //
         type         : txAction.type(),                 //
         data         : txAction.serialize(),            //
-        signatureType: minterSdk.SignatureType.Single,  //
+        signatureType: minterSdk.TxSignatureType.Single,  //
     };
 
     const tx = new minterSdk.Transaction(txParams);
@@ -1315,7 +1315,7 @@ test('[TxSingle] VoteCommissionUpdate transaction type', async () => {
         gasPrice     : 1,                               //
         type         : txAction.type(),                 //
         data         : txAction.serialize(),            //
-        signatureType: minterSdk.SignatureType.Single,  //
+        signatureType: minterSdk.TxSignatureType.Single,  //
     };
 
     const tx = new minterSdk.Transaction(txParams);
@@ -1358,7 +1358,7 @@ test('[TxSingle] CreateMultiSig transaction type', async () => {
         gasPrice     : 1,                               //
         type         : txAction.type(),                 //
         data         : txAction.serialize(),            //
-        signatureType: minterSdk.SignatureType.Single,  //
+        signatureType: minterSdk.TxSignatureType.Single,  //
     };
 
     const tx = new minterSdk.Transaction(txParams);
@@ -1402,16 +1402,16 @@ test('[TxMulti] EditMultiSig transaction type', async () => {
         gasPrice     : 1,                               //
         type         : txAction.type(),                 //
         data         : txAction.serialize(),            //
-        signatureType: minterSdk.SignatureType.Multi,   //
+        signatureType: minterSdk.TxSignatureType.Multi,   //
     };
 
     //------------------- STAGE 1 - signing
-    const keyPair = minterSdk.KeyPairSecp256k1.fromString(ACC_PRIV_KEY);
+    const keyPair = minterSdk.KeyPair.fromString(ACC_PRIV_KEY);
     const tx = new minterSdk.Transaction(txParams);
-    const signedTx = tx.sign(keyPair, MULTISIG_ADDRESS); // MultiSignature with only 1 sig.
+    const signedTx = tx.sign(keyPair, MULTISIG_ADDRESS); // TxMultiSignature with only 1 sig.
     const accSigStr = signedTx.signature.toString();
     //-------------------
-    const keyPair1 = minterSdk.KeyPairSecp256k1.fromString(ACC1_PRIV_KEY);
+    const keyPair1 = minterSdk.KeyPair.fromString(ACC1_PRIV_KEY);
     const tx1 = new minterSdk.Transaction(txParams);
     const signedTx1 = tx1.sign(keyPair1, MULTISIG_ADDRESS);
     const accSigStr1 = signedTx1.signature.toString();
@@ -1423,8 +1423,8 @@ test('[TxMulti] EditMultiSig transaction type', async () => {
 
     //------------------- STAGE 2 - collect signatures and send tx to BlockChain
 
-    const sigAcc1 = minterSdk.SingleSignature.fromString(accSigStr1);// == signedTx1
-    (signedTx.signature as minterSdk.MultiSignature).addOne(sigAcc1);
+    const sigAcc1 = minterSdk.TxSingleSignature.fromString(accSigStr1);// == signedTx1
+    (signedTx.signature as minterSdk.TxMultiSignature).addOne(sigAcc1);
 
     const txRawBuf = utils.toBuffer(TX_RLP_RESULT);
     const txMtHash = 'Mt' + sha256(txRawBuf).toString('hex').toLowerCase();
@@ -1461,7 +1461,7 @@ test('[TxSingle] AddLimitOrder transaction type', async () => {
         gasPrice     : 1,                               //
         type         : txAction.type(),                 //
         data         : txAction.serialize(),            //
-        signatureType: minterSdk.SignatureType.Single,  //
+        signatureType: minterSdk.TxSignatureType.Single,  //
     };
 
     const tx = new minterSdk.Transaction(txParams);
@@ -1499,7 +1499,7 @@ test('[TxSingle] RemoveLimitOrder transaction type', async () => {
         gasPrice     : 1,                               //
         type         : txAction.type(),                 //
         data         : txAction.serialize(),            //
-        signatureType: minterSdk.SignatureType.Single,  //
+        signatureType: minterSdk.TxSignatureType.Single,  //
     };
 
     const tx = new minterSdk.Transaction(txParams);
