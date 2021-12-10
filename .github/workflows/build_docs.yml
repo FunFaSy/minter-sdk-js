@@ -13,18 +13,27 @@ jobs:
         steps:
             - uses: actions/checkout@v2
 
-            - name: Build 🔧
+            - name: Install & Build Docs 🔧
               uses: actions/setup-node@v1
               with:
                 node-version: '15.x'
-            - run: yarn install --frozen-lockfile
+            - run: yarn install --frozen-lockfile && yarn doc
 
             - name: Deploy 🚀
-              uses: jeoy/github-deploy-actions@v1.0.1
-              env:
-                  COMMIT_EMAIL: azimuth0x28@users.noreply.github.com
-                  ACCESS_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
-                  BASE_BRANCH: master
-                  DEPLOY_BRANCH: docs
-                  BUILD_SCRIPT: yarn doc
-                  FOLDER: docs
+              uses: JamesIves/github-pages-deploy-action@4.1.1
+              with:
+                git-config-name: gh-workflow
+                git-config-email: gh-workflow@github.com
+                token: ${{ secrets.ACCESS_TOKEN }}
+                branch: gh-pages
+                folder: docs
+                clean: false
+                single-commit: true
+                clean: true
+                silent: true
+
+            - name: Cleanup Generated Branch
+              uses: dawidd6/action-delete-branch@v2.0.1
+              with:
+                  github_token: ${{ secrets.GITHUB_TOKEN }}
+                  branches: gh-pages

@@ -6,13 +6,13 @@ A JavaScript/TypeScript library for development of DApps on the Minter platform
 
 # Documentation
 
-[Read the TypeDoc API documentation](https://github.com/FunFaSy/minter-sdk-js/blob/master/docs/index.html)
+[Read the TypeDoc API documentation](https://FunFaSy.github.io/minter-sdk-js)
 
 ---
 
 # Examples
 
-## [Quick Reference](https://github.com/FunFaSy/minter-sdk-js/blob/master/examples/quick-reference.md)
+## [Quick Reference](https://github.com/FunFaSy/minter-sdk-js/blob/master/examples/README.md)
 _(Cheat sheet / quick reference.Here is a collection of the most commonly used methods within minter-sdk-js)_
 
 
@@ -28,6 +28,7 @@ yarn add @funfasy/minter-sdk-js
 or from browser
 
 ```html
+<script src="https://unpkg.com/@funfasy/minter-sdk-js@latest/dist/minter-sdk-js.min.js"></script>
 <script src="https://unpkg.com/@funfasy/minter-sdk-js"></script>
 ```
 # Contribute to this library
