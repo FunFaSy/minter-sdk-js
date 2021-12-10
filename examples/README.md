@@ -101,29 +101,30 @@ const state = await acc.state(); // Agregate balance + waitlist + frozen
 ```js
 import * as minterSdk from 'minter-sdk-js';
 
-const wall = await minterSdk.Wallet.fromMnemonic(MNEMONIC);
-const acc = await wall.getAccount();
+const MNEMONIC = 'solar when satoshi champion about zebra crop solution leopard senior ability vocal';
+    const chain = new minterSdk.Chain(minterSdk.ChainId.TESTNET);
+    const wall = await minterSdk.Wallet.fromMnemonic(MNEMONIC).then(wall=>wall.setConnection(chain.newJsonRpcConnection()));
+    const acc = await wall.getAccount();
+     const keyPair = await wall.getAccountKeyPair();
 
+    const txAction = new minterSdk.tx_actions.SendAction({
+        to   : 'Mxeb92ae39b84012968f63b2dd260a94d791fe79bd',
+        coin : 0,
+        value: minterSdk.utils.convertBipToPip(100),
+    });
 
-const txAction = new minterSdk.tx_actions.SendAction({
-    to   : 'Mxeb92ae39b84012968f63b2dd260a94d791fe79bd',
-    coin : 0,
-    value: minterSdk.utils.convertBipToPip(100), // 100 bip convert to PIP units
-});
+    const txParams = {
+        nonce        : await acc.nonce(),
+        chainId      : chain.networkId,   //
+        gasCoin      : 0,                   //
+        gasPrice     : 1,                   //
+        type         : txAction.type(),     //
+        data         : txAction.serialize(),//
+        signatureType: minterSdk.TxSignatureType.Single,
+    } ;
 
-const txParams = {
-    nonce        : 2,                               //
-    chainId      : chain.networkId,                 //
-    gasCoin      : 0,                               //
-    gasPrice     : 1,                               //
-    type         : txAction.type(),                 //
-    data         : txAction.serialize(),            //
-    payload      : Buffer.from('Some Text'),        // or HEX string
-    signatureType: minterSdk.TxSignatureType.Single,
-};
-
-const tx = new minterSdk.Transaction(txParams);
-const signedTx = await acc.signTx(tx); // .toString() return RLP serialized hex encoded  tx 
+    const tx = new minterSdk.Transaction(txParams);
+    const signedTx = await acc.signTx(tx); // .toString() return RLP serialized hex encoded  tx 
 
 ```
 ### Restore
@@ -141,31 +142,26 @@ const address = tx.getSenderAddress().toString(); // > 'Mx0bd4dd45fc7072ce6f1a4b
 ```js
 import * as minterSdk from 'minter-sdk-js';
 
-const TX_RLP_ENCODED = '0xf8710202018001a1e08094eb92ae39b84012968f63b2dd260a94d791fe79bd89056bc75e2d63100000000001b845f8431ba0384e5516462774e67c1efc016458af86e68f3780fadcb27c3587389dd36056e8a003b0f7547aee983bdcdcf76334d169dee271ffd96e9cb2284a68cfb1e54cedb0';
-
-const wall = await minterSdk.Wallet.fromMnemonic(MNEMONIC);
-const txHash = await wall.sendTx(TX_RLP_ENCODED);
-
-// OR
-
+const chain = new minterSdk.Chain(minterSdk.ChainId.TESTNET);
+const wall = await minterSdk.Wallet.fromMnemonic(MNEMONIC).then(wall=>wall.setConnection(chain.newJsonRpcConnection()));
 const acc = await wall.getAccount();
 
 const txAction = new minterSdk.tx_actions.SendAction({
     to   : 'Mxeb92ae39b84012968f63b2dd260a94d791fe79bd',
     coin : 0,
-    value: minterSdk.utils.convertBipToPip(100), // 100 bip convert to PIP units
+    value: minterSdk.utils.convertBipToPip(100),
 });
 
 const txParams = {
-    nonce        : 2,                               //
-    chainId      : chain.networkId,                 //
-    gasCoin      : 0,                               //
-    gasPrice     : 1,                               //
-    type         : txAction.type(),                 //
-    data         : txAction.serialize(),            //
+    nonce        : await acc.nonce(),
+    chainId      : chain.networkId,     //
+    gasCoin      : 0,                   //
+    gasPrice     : 1,                   //
+    type         : txAction.type(),     //
+    data         : txAction.serialize(),//
     payload      : Buffer.from('Some Text'),        // or HEX string
     signatureType: minterSdk.TxSignatureType.Single,
-};
+} ;
 
 const tx = new minterSdk.Transaction(txParams);
 const txHash = await acc.signAndSendTx(tx);
