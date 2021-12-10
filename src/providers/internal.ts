@@ -109,7 +109,27 @@ export interface AddressStateRequest extends RpcQueryRequest {
     delegated?: boolean;
 }
 
-export interface AddressStateResponse extends RpcQueryResponse {[key: string]: any}
+export interface AddressStateResponse extends RpcQueryResponse {
+    balance: {
+        coin: Coin
+        value: string
+        bip_value: string
+    }[],
+    delegated: {
+        coin: Coin
+        value: string
+        bip_value: string
+        delegate_bip_value: string
+    }[],
+    total: {
+        coin: Coin,
+        value: string,
+        bip_value: string
+    }[],
+    transaction_count: string;
+    bip_value: string;
+    multisig: boolean;
+}
 
 export interface AddressesRequest extends RpcQueryRequest {
     addresses: string[];
@@ -119,7 +139,16 @@ export interface AddressesRequest extends RpcQueryRequest {
 
 export interface AddressesResponse extends RpcQueryResponse {[key: string]: any}
 
-export interface AddressFrozenResponse extends RpcQueryResponse {[key: string]: any}
+export interface AddressFrozenResponse extends RpcQueryResponse {
+    frozen: {
+        height: string;
+        address: string;
+        candidate_key: string;
+        coin: Coin;
+        value: string;
+
+    }[]
+}
 
 export interface AddressFrozenRequest extends RpcQueryRequest {
     address: string;
@@ -133,7 +162,13 @@ export interface AddressWaitListRequest extends RpcQueryRequest {
     publicKey?: number;
 }
 
-export interface AddressWaitListResponse extends RpcQueryResponse {[key: string]: any}
+export interface AddressWaitListResponse extends RpcQueryResponse {
+    list: {
+        public_key: string;
+        coin: Coin;
+        value: string;
+    }[];
+}
 
 export interface NetworkVersionResponse extends RpcQueryResponse {[key: string]: any}
 

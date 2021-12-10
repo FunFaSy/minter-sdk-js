@@ -8,18 +8,9 @@ import {ChainId} from './chain/types';
 import {SignedTransaction, Transaction} from './transaction/transaction';
 import {TypedError} from './util';
 import {Coin} from './providers/internal';
+import * as rpcTypes from './providers/internal';
 
-export interface AccountState {
-    balance?: {
-        bip_value: string;
-        coin: Coin;
-        value: string;
-    }[];
-    delegated?: {
-        bip_value: string;
-        coin: Coin;
-        value: string;
-    }[];
+export interface AccountState extends rpcTypes.AddressStateResponse {
     frozen?: {
         height: string;
         address: string;
@@ -28,19 +19,11 @@ export interface AccountState {
         value: string;
 
     }[];
-    waitlisted?: {
+    waiting?: {
         public_key: string;
         coin: Coin;
         value: string;
     }[];
-    total?: {
-        bip_value: string;
-        coin: Coin;
-        value: string;
-    }[];
-    transaction_count?: string;
-    bip_value?: string;
-    multisig?: boolean;
 }
 
 // TODO: AccountBuilder
@@ -96,9 +79,42 @@ export class Account {
         return this.state().then(res => Number(res?.transaction_count) + 1);
     }
 
+    async balance(params?: rpcTypes.AddressStateRequest): Promise<rpcTypes.AddressStateResponse> {
+        const address = this.address.toString();
+        const _params = params || {};
+
+        return this._connection.provider.address({..._params, address});
+    }
+
+    async frozen(params?: rpcTypes.AddressFrozenRequest): Promise<rpcTypes.AddressFrozenResponse> {
+        const address = this.address.toString();
+        const _params = params || {};
+
+        return this._connection.provider.frozen({..._params, address});
+    }
+
+    async waitlist(params?: rpcTypes.AddressWaitListRequest): Promise<rpcTypes.AddressWaitListResponse> {
+        const address = this.address.toString();
+        const _params = params || {};
+
+        return this._connection.provider.waitlist({..._params, address});
+    }
+
     async state(): Promise<AccountState> {
         const address = this.address.toString();
-        return this._connection.provider.address({address});
+        const state = {} as AccountState;
+
+        const dfdBalance = this.balance({address, delegated: true});
+        const dfdFrozen = this.frozen({address});
+        const dfdWaitlist = this.waitlist({address});
+
+        return Promise.all([dfdBalance, dfdFrozen, dfdWaitlist]).then(([balance, frozen, waiting]) => {
+            Object.assign(state, balance);
+            state.frozen = frozen.frozen;
+            state.waiting = waiting.list;
+
+            return state;
+        });
     }
 
     //-----------------------------------------------

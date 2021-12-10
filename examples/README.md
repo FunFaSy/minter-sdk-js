@@ -22,7 +22,7 @@ Browser
 
 # Usage
 
-## Wallet && Account
+## Wallet & Account
 
 ### Create new mnemonic
 ```js
@@ -36,18 +36,18 @@ const MNEMONIC = minterSdk.Wallet.generateMnemonic();
 import * as minterSdk from 'minter-sdk-js';
 
 const MNEMONIC = 'solar ... satoshi .... vocal';
-const wall = await minterSdk.Wallet.fromMnemonic(MNEMONIC);
+const wall = await minterSdk.Wallet.fromMnemonic(MNEMONIC); // BIP44 HDWallet
 ```
 
-### Connect to networks ( mainnet / testnet/ taconet)
+### Connect to network
 ```js
 import * as minterSdk from 'minter-sdk-js';
 
 const MNEMONIC = 'solar ... satoshi .... vocal';
-const chain = new minterSdk.Chain(minterSdk.ChainId.TESTNET);
+const chain = new minterSdk.Chain(minterSdk.ChainId.TESTNET);// ( 'mainnet' / 'testnet'/ 'taconet')
 /*
 * By default wallet instance connected to MAINNET
-* You can switch connection derivated accounts will inherit wallet connection.
+* You can switch connection on air. Derivated accounts will inherit wallet connection.
 */
 const wall = await minterSdk.Wallet.fromMnemonic(MNEMONIC)
              .then(wall=>wal.setConnection(chain.newJsonRpcConnection()));
@@ -63,10 +63,10 @@ const wall = await minterSdk.Wallet.fromMnemonic(MNEMONIC);
 */
 // default return account index 0 for public usage. 
 // Public mean you will give address some one. For send you tokens ( for example). One-off account
-const publicAcc = await wal.getAccount(); 
+const pubAcc = await wal.getAccount(); 
 
 // derivate public account by index
-const publicAcc1 = await wal.getAccount(1);
+const pubAcc1 = await wal.getAccount(1);
 
 // derivate private account index 0. 
 // Private account means You will not share address no one. Common usage for private exchange operations 
@@ -74,23 +74,28 @@ const privAcc = await wal.getAccount(0, false);
 // 
 ```
 
-### Get Account Balance
+### Get Account State 
 ```js
+
 import * as minterSdk from 'minter-sdk-js';
 
 const MNEMONIC = 'solar ... satoshi .... vocal';
 const wall = await minterSdk.Wallet.fromMnemonic(MNEMONIC);
 const acc = await wal.getAccount(); 
 
-const state = await acc.state();
+//
+const balance = await acc.balance();
+//
+const waitlist = await acc.waitlist();
+//
+const frozen = await acc.frozen();
+//
+const state = await acc.state(); // Agregate balance + waitlist + frozen
+
 ```
 
 ### Send Tokens
-### State
-```js
-import * as minterSdk from 'minter-sdk-js';
 
-```
 ## Transactions
 ### Prepare
 ```js
