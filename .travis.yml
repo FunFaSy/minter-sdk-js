@@ -37,7 +37,3 @@ jobs:
         - name: danger
           script:
               - yarn danger ci
-
-        - stage: Produce Coverage
-            node_js: stable
-            script: jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage

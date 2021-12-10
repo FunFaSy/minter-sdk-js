@@ -73,6 +73,7 @@
         "doc": "typedoc src && touch docs/.nojekyll",
         "build": "yarn compile",
         "test": "jest --ci --reporters=default --reporters=jest-junit",
+        "test-cov": "jest --ci --coverage",
         "lint": "eslint test/**/*.ts && eslint src/**/*.ts",
         "fix": "eslint test/**/*.ts --fix && eslint src/**/*.ts --fix",
         "prefuzz": "yarn build",
