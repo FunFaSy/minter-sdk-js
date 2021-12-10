@@ -145,7 +145,7 @@ export class Account {
      */
     async signAndSendTx(tx: Transaction): Promise<string> {
 
-        const signedTx = this._signer.signTransaction(tx, this.address.toString(), this._connection.chainId);
+        const signedTx = await this.signTx(tx);
 
         return this._connection.provider.sendTransaction({tx: signedTx.toString()}).then(res => res.hash);
     }
