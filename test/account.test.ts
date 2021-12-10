@@ -76,6 +76,7 @@ test('[Account] Set store', async () => {
     const wal = await minterSdk.Wallet.fromMnemonic(MNEMONIC).then(wal=>wal.setKeyStore(imStore));
     const account = await wal.getAccount();
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const storeType = account._keyStore.toString(); // don't do like that. Just for test purpose
 

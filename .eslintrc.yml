@@ -15,7 +15,7 @@ rules:
         - 4
     linebreak-style:
         - error
-        - unix
+        - windows
     quotes:
         - error
         - single
@@ -29,6 +29,7 @@ rules:
     '@typescript-eslint/camelcase': off
     '@typescript-eslint/explicit-function-return-type': off
     '@typescript-eslint/no-use-before-define': off
+    'typescript-eslint/ban-ts-comment': off
 globals:
     window: true
     fetch: true
