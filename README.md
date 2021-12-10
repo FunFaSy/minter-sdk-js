@@ -25,14 +25,10 @@ _(Common use cases / more complex examples)_
 # Installation
 ```shell script
 yarn add @funfasy/minter-sdk-js
+#or
+npm i @funfasy/minter-sdk-js
 ```
 
-or from browser
-
-```html
-<script src="https://unpkg.com/@funfasy/minter-sdk-js@latest/dist/minter-sdk-js.min.js"></script>
-<script src="https://unpkg.com/@funfasy/minter-sdk-js"></script>
-```
 # Contribute to this library
 1. Install dependencies
 ```shell script

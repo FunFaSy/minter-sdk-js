@@ -236,7 +236,7 @@ export class Transaction {
             return this._from;
         }
 
-        this._from = this.getSenderPublicKey().address();
+        this._from = this.getSenderPublicKey().address;
 
         return this._from;
     }

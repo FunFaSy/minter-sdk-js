@@ -62,7 +62,7 @@ export class Account {
 
     constructor(keyPair: KeyPair, connection: Connection) {
         this.publicKey = keyPair.publicKey;
-        this.address = this.publicKey.address();
+        this.address = this.publicKey.address;
         this._connection = connection;
 
         this._keyStore = new InMemoryKeyStore();

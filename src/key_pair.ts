@@ -139,8 +139,8 @@ export abstract class KeyPair {
         return `${keyType2Str(this.publicKey.keyType)}:${base_encode(this._secretKey)}`;
     }
 
-    address(): Address {
-        return this.publicKey.address();
+    get address(): Address {
+        return this.publicKey.address;
     }
 }
 
@@ -322,7 +322,7 @@ export class PublicKey extends Assignable {
     /**
      *
      */
-    address(): Address {
+    get address(): Address {
         if (this._address instanceof Address) {
             return this._address;
         }

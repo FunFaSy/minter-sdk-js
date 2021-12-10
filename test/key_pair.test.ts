@@ -89,7 +89,7 @@ test('[KeyPair] Restore signer publicKey and verify signer address', async () =>
     const signature = minterSdk.Signature.fromString(SIGNATURE_FULL);
 
     const signerPublicKey = minterSdk.PublicKey.fromMessageBuf(hash, signature.getRaw());
-    const signerAddress = signerPublicKey.address();
+    const signerAddress = signerPublicKey.address;
 
     expect(signerAddress.toString()).toEqual(ADDRESS);
 });
