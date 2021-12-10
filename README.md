@@ -17,10 +17,6 @@ A JavaScript/TypeScript library for development of DApps on the Minter platform
 ## [Quick Reference](https://github.com/FunFaSy/minter-sdk-js/blob/master/examples/README.md)
 _(Cheat sheet / quick reference.Here is a collection of the most commonly used methods within minter-sdk-js)_
 
-
-## [Cookbook](https://github.com/FunFaSy/minter-sdk-js/blob/master/examples/cookbook/README.md)
-_(Common use cases / more complex examples)_
-
 ---
 # Installation
 ```shell script
