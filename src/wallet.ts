@@ -96,6 +96,13 @@ export class Wallet extends HdWallet {
         return Wallet.fromSeed(seed, walletId);
     }
 
+    /**
+     *
+     */
+    static generateMnemonic(): string {
+        return bip39.generateMnemonic();
+    }
+
     //------------------------------------------------------
     /**
      *
