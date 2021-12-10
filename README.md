@@ -1,50 +1,61 @@
 # minter-sdk-js
-[![Version](https://img.shields.io/github/v/release/FunFaSy/minter-js-sdk)](https://github.com/FunFaSy/minter-js-sdk/releases/latest)
-[![License](https://img.shields.io/github/license/FunFaSy/minter-js-sdk)](https://github.com/FunFaSy/minter-js-sdk/blob/master/LICENSE)
+[![Version](https://img.shields.io/github/v/release/FunFaSy/minter-sdk-js)](https://github.com/FunFaSy/minter-sdk-js/releases/latest)
+[![License](https://img.shields.io/github/license/FunFaSy/minter-sdk-js)](https://github.com/FunFaSy/minter-sdk-js/blob/master/LICENSE)
 
 A JavaScript/TypeScript library for development of DApps on the Minter platform
 
 # Documentation
 
-[Read the TypeDoc API documentation](https://#)
+[Read the TypeDoc API documentation](https://github.com/FunFaSy/minter-sdk-js/blob/master/docs/index.html)
 
 ---
 
 # Examples
 
-## [Quick Reference](https://github.com/FunFaSy/minter-js-sdk/blob/master/examples/quick-reference.md)
-_(Cheat sheet / quick reference)_
+## [Quick Reference](https://github.com/FunFaSy/minter-sdk-js/blob/master/examples/quick-reference.md)
+_(Cheat sheet / quick reference.Here is a collection of the most commonly used methods within minter-sdk-js)_
 
-## [Cookbook](https://github.com/FunFaSy/minter-js-sdk/blob/master/examples/cookbook/README.md)
+
+## [Cookbook](https://github.com/FunFaSy/minter-sdk-js/blob/master/examples/cookbook/README.md)
 _(Common use cases / more complex examples)_
 
 ---
+# Installation
+```shell script
+yarn add minter-sdk-js
+```
 
+or from browser
+
+```html
+<script src="https://unpkg.com/@funfasy/minter-sdk-js"></script>
+```
 # Contribute to this library
-
 1. Install dependencies
-
-       yarn
+```shell script
+yarn
+```
 
 2. Run continuous build with:
-
-       yarn build -w
+```shell script
+yarn build -w
+```
 
 
 # Publish
-
 Prepare `dist` version by running:
-
-    yarn dist
+```shell script
+yarn dist
+```
 
 When publishing to npm use [np](https://github.com/sindresorhus/np).
 
 ---
 
 # Integration Test
-
-    yarn test
-
+```shell script
+yarn test
+```
 
 # License
 
