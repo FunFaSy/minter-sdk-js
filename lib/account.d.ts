@@ -6,17 +6,8 @@ import { KeyStore } from './key_stores';
 import { Signer } from './signer';
 import { SignedTransaction, Transaction } from './transaction/transaction';
 import { Coin } from './providers/internal';
-export interface AccountState {
-    balance?: {
-        bip_value: string;
-        coin: Coin;
-        value: string;
-    }[];
-    delegated?: {
-        bip_value: string;
-        coin: Coin;
-        value: string;
-    }[];
+import * as rpcTypes from './providers/internal';
+export interface AccountState extends rpcTypes.AddressStateResponse {
     frozen?: {
         height: string;
         address: string;
@@ -24,19 +15,11 @@ export interface AccountState {
         coin: Coin;
         value: string;
     }[];
-    waitlisted?: {
+    waiting?: {
         public_key: string;
         coin: Coin;
         value: string;
     }[];
-    total?: {
-        bip_value: string;
-        coin: Coin;
-        value: string;
-    }[];
-    transaction_count?: string;
-    bip_value?: string;
-    multisig?: boolean;
 }
 /**
  * This class provides common account related RPC calls including signing transactions with a {@link KeyPair}.
@@ -55,6 +38,9 @@ export declare class Account {
     setKeyStore(keyStore: KeyStore): Promise<Account>;
     setConnection(connection: Connection): Promise<Account>;
     nonce(): Promise<number>;
+    balance(params?: rpcTypes.AddressStateRequest): Promise<rpcTypes.AddressStateResponse>;
+    frozen(params?: rpcTypes.AddressFrozenRequest): Promise<rpcTypes.AddressFrozenResponse>;
+    waitlist(params?: rpcTypes.AddressWaitListRequest): Promise<rpcTypes.AddressWaitListResponse>;
     state(): Promise<AccountState>;
     /**
      *

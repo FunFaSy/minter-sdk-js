@@ -54,6 +54,7 @@ export declare class BrowserLocalStorageKeyStore extends KeyStore {
      * @returns{Promise<string[]>}
      */
     getAccounts(chainId: ChainId): Promise<string[]>;
+    entries(): Promise<IterableIterator<[string, string]>>;
     /**
      * @hidden
      * Helper function to retrieve a local storage key
@@ -64,5 +65,4 @@ export declare class BrowserLocalStorageKeyStore extends KeyStore {
     private storageKeyForSecretKey;
     /** @hidden */
     private storageKeys;
-    entries(): Promise<IterableIterator<[string, string]>>;
 }

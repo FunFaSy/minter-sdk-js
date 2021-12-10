@@ -55,7 +55,7 @@ export declare class UnencryptedFileSystemKeyStore extends KeyStore {
     getAccounts(chainId: ChainId): Promise<string[]>;
     /** @hidden */
     toString(): string;
+    entries(): Promise<IterableIterator<[string, string]>>;
     /** @hidden */
     private getKeyFilePath;
-    entries(): Promise<IterableIterator<[string, string]>>;
 }

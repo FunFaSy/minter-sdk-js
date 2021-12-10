@@ -14,6 +14,7 @@ import {Connection} from './connection';
 import {Account} from './account';
 import {Chain, ChainId} from './chain';
 import {InMemoryKeyStore, KeyStore} from './key_stores';
+import {SignedTransaction} from './transaction/transaction';
 
 /**
  *
@@ -181,5 +182,17 @@ export class Wallet extends HdWallet {
         }
 
         return account;
+    }
+
+    /**
+     * @param signedTx
+     */
+    async sendTx(signedTx: SignedTransaction | string): Promise<string> {
+        let tx = signedTx;
+        if (signedTx instanceof SignedTransaction) {
+            tx = signedTx.toString();
+        }
+
+        return this._connection.provider.sendTransaction({tx: tx as string}).then(res => res.hash);
     }
 }

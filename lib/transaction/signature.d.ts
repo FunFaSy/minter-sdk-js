@@ -60,9 +60,9 @@ export declare class TxSingleSignature extends TransactionSignature {
  *
  */
 export declare class TxMultiSignature extends TransactionSignature {
-    protected raw: Buffer[];
     multisig: Buffer;
     signatures: Buffer[];
+    protected raw: Buffer[];
     protected _signatures: Map<string, TxSingleSignature>;
     /**
      *

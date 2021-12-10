@@ -8,6 +8,7 @@ import { Connection } from './connection';
 import { Account } from './account';
 import { Chain } from './chain';
 import { KeyStore } from './key_stores';
+import { SignedTransaction } from './transaction/transaction';
 /**
  *
  */
@@ -59,6 +60,10 @@ export declare class Wallet extends HdWallet {
     }): Promise<Wallet>;
     /**
      *
+     */
+    static generateMnemonic(): string;
+    /**
+     *
      * @param chain
      */
     getDefaultConnection(chain?: Chain): Promise<Connection>;
@@ -91,4 +96,8 @@ export declare class Wallet extends HdWallet {
      * @param pub
      */
     getAccount(index?: number, pub?: boolean): Promise<Account>;
+    /**
+     * @param signedTx
+     */
+    sendTx(signedTx: SignedTransaction | string): Promise<string>;
 }
