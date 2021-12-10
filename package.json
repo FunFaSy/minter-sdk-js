@@ -46,6 +46,7 @@
         "@typescript-eslint/parser": "^4.23.0",
         "browserify": "^17.0.0",
         "bundlewatch": "^0.3.1",
+        "coveralls": "^3.1.1",
         "danger": "^10.6.6",
         "danger-plugin-yarn": "^1.3.2",
         "eslint": "^6.5.1",
@@ -80,7 +81,7 @@
     "bundlewatch": {
         "files": [
             {
-                "path": "dist/minter-js-sdk.min.js",
+                "path": "dist/minter-sdk-js.min.js",
                 "maxSize": "300kB"
             }
         ]

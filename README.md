@@ -1,6 +1,8 @@
 # minter-sdk-js
-[![Version](https://img.shields.io/github/v/release/FunFaSy/minter-sdk-js)](https://github.com/FunFaSy/minter-sdk-js/releases/latest)
-[![License](https://img.shields.io/github/license/FunFaSy/minter-sdk-js)](https://github.com/FunFaSy/minter-sdk-js/blob/master/LICENSE)
+[![NPM Package](https://img.shields.io/npm/v/@funfasy/minter-sdk-js?style=flat-square)](https://www.npmjs.org/package/@funfasy/minter-sdk-js)
+[![Version](https://img.shields.io/github/v/release/FunFaSy/minter-sdk-js?style=flat-square)](https://github.com/FunFaSy/minter-sdk-js/releases/latest)
+[![Coverage Status](https://img.shields.io/coveralls/github/FunFaSy/minter-sdk-js?style=flat-square)](https://coveralls.io/github/FunFaSy/minter-sdk-js?branch=master)
+[![License](https://img.shields.io/github/license/FunFaSy/minter-sdk-js?style=flat-square)](https://github.com/FunFaSy/minter-sdk-js/blob/master/LICENSE)
 
 A JavaScript/TypeScript library for development of DApps on the Minter platform
 
