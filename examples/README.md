@@ -15,9 +15,17 @@ import * as minterSdk from 'minter-sdk-js';
 
 Browser
 ```html
-<script src="https://unpkg.com/@funfasy/minter-sdk-js@latest/dist/minter-sdk-js.min.js"></script>
-<!-- /#OR-->
 <script src="https://unpkg.com/@funfasy/minter-sdk-js"></script>
+
+<script>
+;(function(window){
+  const minterSdk = window.minterSdk;
+  
+  // ....
+  console.log( new minterSdk.Chain(minterSdk.ChainId.TESTNET).describe() );
+
+})(window);
+</script>
 ```
 
 # Usage
