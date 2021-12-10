@@ -89,5 +89,8 @@
         "suiteNameTemplate": "{filepath}",
         "classNameTemplate": "{classname}",
         "titleTemplate": "{title}"
+    },
+    "publishConfig": {
+        "access": "public"
     }
 }
