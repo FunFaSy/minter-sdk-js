@@ -1,0 +1,105 @@
+{
+    "name": "@funfasy/minter-sdk-js",
+    "description": "JavaScript library to interact with Minter Protocol via RPC API",
+    "version": "0.1.1",
+    "homepage": "https://github.com/FunFaSy/minter-sdk-js#readme",
+    "author": "FunFaSy Team (https://github.com/FunFaSy)",
+    "keywords": [
+        "minter",
+        "blockchain",
+        "sdk"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/FunFaSy/minter-sdk-js.git"
+    },
+    "license": "(MIT AND Apache-2.0)",
+    "unpkg": "dist/minter-sdk-js.min.js",
+    "main": "lib/index.js",
+    "browser": "lib/browser-index.js",
+    "types": "lib/index.d.ts",
+    "files": [
+        "/lib/",
+        "/dist/",
+        "browser-exports.js"
+    ],
+    "dependencies": {
+        "axios": "^0.24.0",
+        "axios-retry": "^3.2.4",
+        "bip39": "^3.0.4",
+        "bn.js": "5.2.0",
+        "bs58check": "^2.1.2",
+        "depd": "^2.0.0",
+        "error-polyfill": "^0.1.3",
+        "ethereum-cryptography": "^0.1.3",
+        "ethereumjs-util": "^7.1.3",
+        "http-errors": "^1.7.2",
+        "mustache": "^4.0.0",
+        "qs": "^6.10.1"
+    },
+    "devDependencies": {
+        "@types/axios": "^0.14.0",
+        "@types/bn.js": "^5.1.0",
+        "@types/http-errors": "^1.6.1",
+        "@types/jest": "^27.0.2",
+        "@typescript-eslint/eslint-plugin": "^4.23.0",
+        "@typescript-eslint/parser": "^4.23.0",
+        "browserify": "^17.0.0",
+        "bundlewatch": "^0.3.1",
+        "danger": "^10.6.6",
+        "danger-plugin-yarn": "^1.3.2",
+        "eslint": "^6.5.1",
+        "in-publish": "^2.0.0",
+        "jest": "26.5.3",
+        "jest-junit": "12.0.0",
+        "localstorage-memory": "^1.0.3",
+        "rimraf": "^3.0.0",
+        "semver": "^7.1.1",
+        "terser": "^5.9.0",
+        "ts-jest": "^26.5.6",
+        "ts-morph": "^11.0.3",
+        "typedoc": "0.20.37",
+        "typedoc-neo-theme": "^1.1.1",
+        "typescript": "4.2.4"
+    },
+    "scripts": {
+        "dist": "yarn browserify && yarn doc",
+        "browserify": "rm -rf dist/ && browserify browser-exports.js -i node-fetch -i http -i https -o dist/minter-sdk-js.js && terser dist/minter-sdk-js.js --comments false -c passes=2 -m  -o dist/minter-sdk-js.min.js",
+        "prebrowserify": "yarn build",
+        "prepublish": "not-in-install && (yarn build && yarn browserify) || in-install",
+        "compile": "tsc -p ./tsconfig.json",
+        "dev": "yarn compile -w",
+        "doc": "typedoc src && touch docs/.nojekyll",
+        "build": "yarn compile",
+        "test": "jest --ci --reporters=default --reporters=jest-junit",
+        "lint": "eslint test/**/*.ts && eslint src/**/*.ts",
+        "fix": "eslint test/**/*.ts --fix && eslint src/**/*.ts --fix",
+        "prefuzz": "yarn build",
+        "fuzz": "jsfuzz test/fuzz/borsh-roundtrip.js test/fuzz/corpus/"
+    },
+    "bundlewatch": {
+        "files": [
+            {
+                "path": "dist/minter-js-sdk.min.js",
+                "maxSize": "300kB"
+            }
+        ]
+    },
+    "linterOptions": {
+        "exclude": [
+            "node_modules"
+        ]
+    },
+    "jest-junit": {
+        "outputDirectory": "reports",
+        "outputName": "jest-junit.xml",
+        "ancestorSeparator": " › ",
+        "uniqueOutputName": "false",
+        "suiteNameTemplate": "{filepath}",
+        "classNameTemplate": "{classname}",
+        "titleTemplate": "{title}"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}

@@ -3,7 +3,7 @@ import { Assignable } from '../util';
 import { RlpSchemaField } from '../util/define-properties';
 import { Chain } from '../chain';
 import { Address, KeyPair, PublicKey } from '../key_pair';
-import { SignatureType, TransactionSignature, TransactionSignature as Signature } from './signature';
+import { TxSignatureType, TransactionSignature, TransactionSignature as Signature } from './signature';
 import { Action } from './action';
 import { TransactionType } from './internal';
 /**
@@ -28,7 +28,7 @@ export interface TransactionParams {
     data: Buffer;
     payload?: string;
     serviceData?: string;
-    signatureType: SignatureType;
+    signatureType: TxSignatureType;
     signatureData?: Buffer;
 }
 /**

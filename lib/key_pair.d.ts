@@ -3,18 +3,19 @@ import { Assignable, ECDSASignatureBuffer } from './util';
 export declare type Arrayish = string | ArrayLike<number>;
 /** All supported key types */
 export declare enum KeyType {
-    SECP256K1 = 0,
-    ED25519 = 1
+    UNKNOWN = "UNKNOWN",
+    SECP256K1 = "SECP256K1",
+    ED25519 = "ED25519"
 }
 export declare abstract class KeyPair {
-    readonly _publicKey: PublicKey;
+    readonly _keyType: KeyType;
     readonly _secretKey: Buffer;
-    constructor(publicKey: PublicKey, secretKey: Buffer);
+    constructor(secretKey: Buffer, type?: KeyType);
     /**
      * @param curve Name of elliptical curve, case-insensitive
      * @returns Random KeyPair based on the curve
      */
-    static fromRandom(curve: KeyType | string): KeyPair;
+    static fromRandom(curve?: KeyType | string): KeyPair;
     /**
      * Construct an instance of key pair given a secret key.
      * It's generally assumed that these are encoded in base58check.
@@ -32,30 +33,29 @@ export declare abstract class KeyPair {
      * @param signature Buffer[]
      */
     abstract verify(message: Buffer, signature: Buffer[]): boolean;
+    abstract get publicKey(): PublicKey;
     toString(): string;
+    get type(): KeyType;
     address(): Address;
-    publicKey(): PublicKey;
 }
 /**
  * This class provides key pair functionality for Secp256k1 curve:
  * generating key pairs, encoding key pairs, signing and verifying.
  */
 export declare class KeyPairSecp256k1 extends KeyPair {
+    protected _publicKey: PublicKey;
     /**
      * Construct an instance of key pair given a secret key.
      * It's generally assumed that these are encoded in base58check.
      * @param {string} secretKey
      */
     constructor(secretKey: string);
+    get publicKey(): PublicKey;
     /**
      * Generate a new random secp256k1 keypair.
      * @example
-     * const keyRandom = KeyPairSecp256k1.fromRandom();
-     * keyRandom.publicKey()
-     * // returns [PUBLIC_KEY]
-     *
-     * keyRandom.toString()
-     * // returns [SECRET_KEY]
+     * ```js
+     * ```
      */
     static fromRandom(): KeyPair;
     /**

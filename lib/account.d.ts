@@ -1,3 +1,4 @@
+/** @module */
 /// <reference types="node" />
 import { Connection } from './connection';
 import { Address, KeyPair, PublicKey, Signature } from './key_pair';
@@ -38,7 +39,11 @@ export interface AccountState {
     multisig?: boolean;
 }
 /**
+ * This class provides common account related RPC calls including signing transactions with a {@link KeyPair}.
  *
+ * @example {@link }
+ * @hint Use {@link Wallet} in the browser to manage derivited Accounts.
+ * @see {@link }
  */
 export declare class Account {
     readonly publicKey: PublicKey;

@@ -7,20 +7,6 @@ import { ChainId } from '../chain/types';
  * @example {@link }
  * @example
  * ```js
- * import { connect, keyStores } from 'minter-api-js';
- *
- * const keyStore = new keyStores.BrowserLocalStorageKeyStore();
- * const config = {
- *   keyStore, // instance of BrowserLocalStorageKeyStore
- *   chainId: 'testnet',
- *   nodeUrl: 'https://rpc.testnet.minter.org',
- *   walletUrl: 'https://wallet.testnet.minter.org',
- *   helperUrl: 'https://helper.testnet.minter.org',
- *   explorerUrl: 'https://explorer.testnet.minter.org'
- * };
- *
- * // inside an async function
- * const minter = await connect(config)
  * ```
  */
 export declare class BrowserLocalStorageKeyStore extends KeyStore {

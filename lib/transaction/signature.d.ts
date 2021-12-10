@@ -2,7 +2,7 @@
 import { ECDSASignatureBuffer } from '../util';
 import { PublicKey, Signature } from '../key_pair';
 import { Transaction } from './transaction';
-export declare enum SignatureType {
+export declare enum TxSignatureType {
     Single = 1,
     Multi = 2
 }
@@ -20,14 +20,14 @@ export declare abstract class TransactionSignature extends Signature {
 /**
  *
  */
-export declare class SingleSignature extends TransactionSignature {
+export declare class TxSingleSignature extends TransactionSignature {
     /**
      *
      * @param data RLP encoded ECDSASignatureBuffer [v,r,s] or object type ECDSASignatureBuffer
      * @param tx
      */
     constructor(data: Buffer | ECDSASignatureBuffer, tx?: Transaction);
-    static fromString(signature: string): SingleSignature;
+    static fromString(signature: string): TxSingleSignature;
     /**
      * Determines if the message signed given public key
      *
@@ -59,11 +59,11 @@ export declare class SingleSignature extends TransactionSignature {
 /**
  *
  */
-export declare class MultiSignature extends TransactionSignature {
+export declare class TxMultiSignature extends TransactionSignature {
     protected raw: Buffer[];
     multisig: Buffer;
     signatures: Buffer[];
-    protected _signatures: Map<string, SingleSignature>;
+    protected _signatures: Map<string, TxSingleSignature>;
     /**
      *
      * @param data RLP encoded multisig data
@@ -73,7 +73,7 @@ export declare class MultiSignature extends TransactionSignature {
         multisig: Buffer;
         signatures: Buffer[];
     }, tx?: Transaction);
-    static fromString(signature: string): MultiSignature;
+    static fromString(signature: string): TxMultiSignature;
     /**
      *
      */
@@ -95,10 +95,10 @@ export declare class MultiSignature extends TransactionSignature {
      *
      * @param signature
      */
-    addOne(signature: SingleSignature): MultiSignature;
+    addOne(signature: TxSingleSignature): TxMultiSignature;
     /**
      *
      * @param multisig
      */
-    setMultisig(multisig: Buffer): MultiSignature;
+    setMultisig(multisig: Buffer): TxMultiSignature;
 }

@@ -1,0 +1,54 @@
+{
+    "name": "testnet",
+    "chainId": "testnet",
+    "networkId": 2,
+    "initialHeight": 3278787,
+    "totalSlashed": 0,
+    "blockMaxGas": 100000,
+    "blockMaxBytes": 10000000,
+    "gasCoin": 0,
+    "comment": "",
+    "urls": {
+        "www": "https://minter.org",
+        "doc": "https://www.minter.network/docs",
+        "console": "https://console.testnet.minter.network",
+        "wallet": "https://console.testnet.minter.network/wallet",
+        "explorer": "https://explorer.testnet.minter.network",
+        "api": {
+            "node": {
+                "http": [
+                    "https://node-api.testnet.minter.network/v2",
+                    "https://test.mnt.funfasy.dev/v2"
+                ],
+                "ws": []
+            },
+            "gate": {
+                "http": [
+                    "https://gate-api.testnet.minter.network/api/v2"
+                ],
+                "ws": []
+            },
+            "explorer": {
+                "http": [
+                    "https://explorer-api.testnet.minter.network/api/v2"
+                ],
+                "ws": []
+            }
+        }
+    },
+    "genesis": {
+        "hash": "",
+        "time": "",
+        "height": "",
+        "proposer": "",
+        "blockReward": ""
+    },
+    "bootstrapNodes": [
+        {
+            "id": "",
+            "ip": "",
+            "port": "26656",
+            "comment": ""
+        }
+    ]
+}
