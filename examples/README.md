@@ -109,7 +109,7 @@ const state = await acc.state(); // Agregate balance + waitlist + frozen
 ```js
 import * as minterSdk from 'minter-sdk-js';
 
-const MNEMONIC = 'solar when satoshi champion about zebra crop solution leopard senior ability vocal';
+const MNEMONIC = 'solar ..... zebra .... solution .... vocal';
 const chain = new minterSdk.Chain(minterSdk.ChainId.TESTNET);
 const wall = await minterSdk.Wallet.fromMnemonic(MNEMONIC).then(wall=>wall.setConnection(chain.newJsonRpcConnection()));
 const acc = await wall.getAccount();
@@ -181,8 +181,56 @@ const txHash = await acc.signAndSendTx(tx);
 import * as minterSdk from 'minter-sdk-js';
 
 ```
-## Utils
+
+## Fetch data
+### Common RpcProvider
 ```js
 import * as minterSdk from 'minter-sdk-js';
+
+const chain = new minterSdk.Chain(minterSdk.ChainId.TESTNET);
+const provider = new minterSdk.JsonRpcProvider(chain.urls?.api?.node?.http[0]);
+
+/*
+* All available methods @see https://funfasy.github.io/minter-sdk-js/classes/providers_json_rpc_provider.jsonrpcprovider.html
+*/
+const height = await provider.status().then(res=>Number(res.latest_block_height));
+
+const batch = await provider.blocks({fromHeight: height - 10, toHeight: height });
+console.log(batch);
+```
+
+### Configured RpcProvider
+```js
+import * as minterSdk from 'minter-sdk-js';
+
+/*
+* JsonRpcRoveder extends Axios http client. So config same as Axios
+*/
+const chain = new minterSdk.Chain(minterSdk.ChainId.TESTNET);
+
+const config = {
+    baseURL: chain.urls?.api?.node?.http[0],
+    headers: {
+        'Content-Type'     : 'application/json; charset=utf-8',
+        'X-Project-Id'     : '<YOUR-FUNFASY-PROJECT-ID>',
+        'X-Project-Secret' : '<YOUR-FUNFASY-PROJECT-SECRET>'
+    },
+};
+
+const provider = new minterSdk.JsonRpcProvider(config);
+
+const height = await provider.status().then(res=>Number(res.latest_block_height));
+
+const batch = await provider.blocks({fromHeight: height - 10, toHeight: height });
+console.log(batch);
+
+```
+
+## Utils
+### BipToPip and PipToBip formatters
+```js
+import * as minterSdk from 'minter-sdk-js';
+
+
 
 ```
