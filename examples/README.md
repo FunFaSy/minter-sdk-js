@@ -183,7 +183,7 @@ import * as minterSdk from 'minter-sdk-js';
 ```
 
 ## Fetch data
-### Common RpcProvider
+### Common RpcProvider usage
 ```js
 import * as minterSdk from 'minter-sdk-js';
 
@@ -199,7 +199,7 @@ const batch = await provider.blocks({fromHeight: height - 10, toHeight: height }
 console.log(batch);
 ```
 
-### Configured RpcProvider
+### Configure RpcProvider
 ```js
 import * as minterSdk from 'minter-sdk-js';
 
@@ -231,6 +231,12 @@ console.log(batch);
 ```js
 import * as minterSdk from 'minter-sdk-js';
 
+const utils = minterSdk.utils;
 
+utils.convertBipToPip(100); // '100000000000000000000'
+utils.convertBipToPip('10.000,123'); // '10000123000000000000'
+utils.convertBipToPip(new utils.BN(100)); // '100000000000000000000'
 
+utils.convertPipToBip(new utils.BN('100000000000000000000')); // '100'
+utils.convertPipToBip('100000000000000000000'); // '100'
 ```
