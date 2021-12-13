@@ -10,7 +10,7 @@ npm i @funfasy/minter-sdk-js
 # Import
 Node.js
 ```js
-import * as minterSdk from 'minter-sdk-js';
+import * as minterSdk from '@funfasy/minter-sdk-js';
 ```
 
 Browser
@@ -34,14 +34,14 @@ Browser
 
 ### Create new mnemonic
 ```js
-import * as minterSdk from 'minter-sdk-js';
+import * as minterSdk from '@funfasy/minter-sdk-js';
 
 const MNEMONIC = minterSdk.Wallet.generateMnemonic();
 ```
 
 ### Get access wallet by mnemonic
 ```js
-import * as minterSdk from 'minter-sdk-js';
+import * as minterSdk from '@funfasy/minter-sdk-js';
 
 const MNEMONIC = 'solar ... satoshi .... vocal';
 const wall = await minterSdk.Wallet.fromMnemonic(MNEMONIC); // BIP44 HDWallet
@@ -49,7 +49,7 @@ const wall = await minterSdk.Wallet.fromMnemonic(MNEMONIC); // BIP44 HDWallet
 
 ### Connect to network
 ```js
-import * as minterSdk from 'minter-sdk-js';
+import * as minterSdk from '@funfasy/minter-sdk-js';
 
 const MNEMONIC = 'solar ... satoshi .... vocal';
 const chain = new minterSdk.Chain(minterSdk.ChainId.TESTNET);// ( 'mainnet' / 'testnet'/ 'taconet')
@@ -62,7 +62,7 @@ const wall = await minterSdk.Wallet.fromMnemonic(MNEMONIC)
 ```
 ### Get Wallet Account
 ```js
-import * as minterSdk from 'minter-sdk-js';
+import * as minterSdk from '@funfasy/minter-sdk-js';
 
 const MNEMONIC = 'solar ... satoshi .... vocal';
 const wall = await minterSdk.Wallet.fromMnemonic(MNEMONIC);
@@ -85,7 +85,7 @@ const privAcc = await wall.getAccount(0, false);
 ### Get Account State 
 ```js
 
-import * as minterSdk from 'minter-sdk-js';
+import * as minterSdk from '@funfasy/minter-sdk-js';
 
 const MNEMONIC = 'solar ... satoshi .... vocal';
 const wall = await minterSdk.Wallet.fromMnemonic(MNEMONIC);
@@ -105,7 +105,7 @@ const state = await acc.state(); // Agregate balance + waitlist + frozen
 ## Transactions
 ### Prepare & Sign
 ```js
-import * as minterSdk from 'minter-sdk-js';
+import * as minterSdk from '@funfasy/minter-sdk-js';
 
 const MNEMONIC = 'solar ..... zebra .... solution .... vocal';
 const chain = new minterSdk.Chain(minterSdk.ChainId.TESTNET);
@@ -135,7 +135,7 @@ const signedTx = await acc.signTx(tx); // .toString() return RLP serialized hex 
 ```
 ### Restore
 ```js
-import * as minterSdk from 'minter-sdk-js';
+import * as minterSdk from '@funfasy/minter-sdk-js';
 
 const TX_RLP_ENCODED = '0xf8710202018001a1e08094eb92ae39b84012968f63b2dd260a94d791fe79bd89056bc75e2d63100000000001b845f8431ba0384e5516462774e67c1efc016458af86e68f3780fadcb27c3587389dd36056e8a003b0f7547aee983bdcdcf76334d169dee271ffd96e9cb2284a68cfb1e54cedb0';
 
@@ -146,7 +146,7 @@ const address = tx.getSenderAddress().toString(); // > 'Mx0bd4dd45fc7072ce6f1a4b
 
 ### Send
 ```js
-import * as minterSdk from 'minter-sdk-js';
+import * as minterSdk from '@funfasy/minter-sdk-js';
 
 const chain = new minterSdk.Chain(minterSdk.ChainId.TESTNET);
 const wall = await minterSdk.Wallet.fromMnemonic(MNEMONIC).then(wall=>wall.setConnection(chain.newJsonRpcConnection()));
@@ -176,14 +176,14 @@ const txHash = await acc.signAndSendTx(tx);
 
 ## Key Store & KeyPairs
 ```js
-import * as minterSdk from 'minter-sdk-js';
+import * as minterSdk from '@funfasy/minter-sdk-js';
 
 ```
 
 ## Fetch data
 ### Common RpcProvider usage
 ```js
-import * as minterSdk from 'minter-sdk-js';
+import * as minterSdk from '@funfasy/minter-sdk-js';
 
 const chain = new minterSdk.Chain(minterSdk.ChainId.TESTNET);
 const provider = new minterSdk.JsonRpcProvider(chain.urls?.api?.node?.http[0]);
@@ -199,7 +199,7 @@ console.log(batch);
 
 ### Configure RpcProvider
 ```js
-import * as minterSdk from 'minter-sdk-js';
+import * as minterSdk from '@funfasy/minter-sdk-js';
 
 /*
 * JsonRpcRoveder extends Axios http client. So config same as Axios
@@ -227,7 +227,7 @@ console.log(batch);
 ## Utils
 ### BipToPip and PipToBip formatters
 ```js
-import * as minterSdk from 'minter-sdk-js';
+import * as minterSdk from '@funfasy/minter-sdk-js';
 
 const utils = minterSdk.utils;
 
