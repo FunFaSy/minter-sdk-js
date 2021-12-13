@@ -21,28 +21,28 @@ export class MintTokenAction extends Action {
     value: Buffer;
 
     constructor(data?: string | Buffer | MintTokenActionParams) {
-        let _data: any = data;
+      let _data: any = data;
 
-        if (typeof data == 'object' && !Buffer.isBuffer(data)) {
-            _data = {
-                coin : new BN(data.coin),
-                value: new BN(data.value),
-            };
-        }
-        super(_data);
+      if (typeof data == 'object' && !Buffer.isBuffer(data)) {
+        _data = {
+          coin : new BN(data.coin),
+          value: new BN(data.value),
+        };
+      }
+      super(_data);
     }
 
     rlpSchema(): RlpSchemaField[] {
-        return [
-            {
-                name     : 'coin',
-                length   : 4,
-                allowLess: true,
-            },
-            {
-                name     : 'value',
-                length   : 32,
-                allowLess: true,
-            }];
+      return [
+        {
+          name     : 'coin',
+          length   : 4,
+          allowLess: true,
+        },
+        {
+          name     : 'value',
+          length   : 32,
+          allowLess: true,
+        }];
     }
 }

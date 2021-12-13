@@ -25,30 +25,30 @@ export class EditTickerOwnerAction extends Action {
      * @param params
      */
     constructor(data?: string | Buffer | EditTickerOwnerActionParams) {
-        let _data: any = data;
+      let _data: any = data;
 
-        if (typeof data == 'object' && !Buffer.isBuffer(data)) {
-            _data = {
-                symbol  : Buffer.from(data.symbol, 'utf8'),
-                newOwner: toBuffer(data.newOwner),
-            };
-        }
-        // TODO: Validation
-        // Ticker symbol (for example, BTC). Must be unique, alphabetic, uppercase, and 3 to 10 symbols long.
-        super(_data);
+      if (typeof data == 'object' && !Buffer.isBuffer(data)) {
+        _data = {
+          symbol  : Buffer.from(data.symbol, 'utf8'),
+          newOwner: toBuffer(data.newOwner),
+        };
+      }
+      // TODO: Validation
+      // Ticker symbol (for example, BTC). Must be unique, alphabetic, uppercase, and 3 to 10 symbols long.
+      super(_data);
     }
 
     /**
      *
      */
     rlpSchema(): RlpSchemaField[] {
-        return [
-            {
-                name  : 'symbol',
-                length: 10,
-            }, {
-                name  : 'newOwner',
-                length: 20,
-            }];
+      return [
+        {
+          name  : 'symbol',
+          length: 10,
+        }, {
+          name  : 'newOwner',
+          length: 20,
+        }];
     }
 }

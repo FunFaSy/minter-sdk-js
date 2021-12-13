@@ -6,14 +6,14 @@ import Serializer from './serializer';
 export default abstract class Transport {
     protected serializer: Serializer;
     /**
-     * Creates a Transport object.
-     * @param serializer - The serializer that will be used to serialize and deserialize requests.
-     */
+       * Creates a Transport object.
+       * @param serializer - The serializer that will be used to serialize and deserialize requests.
+       */
     constructor(serializer: Serializer);
     /**
-     * Generates a unique id that can be used to distinguish between connected clients.
-     * The unique id will be a UUID v4 returned as a Uint8Array.
-     */
+       * Generates a unique id that can be used to distinguish between connected clients.
+       * The unique id will be a UUID v4 returned as a Uint8Array.
+       */
     static uniqueId(): Uint8Array;
     /**
      * This method will be used to send a Message to the server, using the serializer, via the underlying protocol.

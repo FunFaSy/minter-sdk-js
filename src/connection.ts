@@ -6,14 +6,14 @@ import {ChainId} from './chain/types';
  * @returns {Provider}
  */
 function getProvider(config: { type: string; args: any }): Provider {
-    switch (config.type) {
-    case undefined:
-        return undefined;
-    case 'JsonRpcProvider':
-        return new JsonRpcProvider(config.args.url);
-    default:
-        throw new Error(`Unknown provider type ${config.type}`);
-    }
+  switch (config.type) {
+  case undefined:
+    return undefined;
+  case 'JsonRpcProvider':
+    return new JsonRpcProvider(config.args.url);
+  default:
+    throw new Error(`Unknown provider type ${config.type}`);
+  }
 }
 
 /**
@@ -49,16 +49,16 @@ export class Connection {
     readonly provider: Provider; //
 
     constructor(chainId: ChainId, provider: Provider) {
-        this.chainId = chainId;
-        this.provider = provider;
+      this.chainId = chainId;
+      this.provider = provider;
     }
 
     /**
      * @param config Contains connection info details
      */
     static fromConfig(config: ConnectionConfig): Connection {
-        const provider = getProvider(config.provider);
-        //const signer = getSigner(config.signer);
-        return new Connection(config.chainId as ChainId, provider);
+      const provider = getProvider(config.provider);
+      //const signer = getSigner(config.signer);
+      return new Connection(config.chainId as ChainId, provider);
     }
 }

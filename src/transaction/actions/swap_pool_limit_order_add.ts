@@ -25,41 +25,41 @@ export class AddLimitOrderAction extends Action {
     valueToBuy: Buffer;
 
     constructor(data?: string | Buffer | AddLimitOrderActionParams) {
-        let _data: any = data;
+      let _data: any = data;
 
-        if (typeof data == 'object' && !Buffer.isBuffer(data)) {
-            _data = {
-                coinToSell : new BN(data?.coinToSell),
-                valueToSell: new BN(data?.valueToSell),
-                coinToBuy  : new BN(data?.coinToBuy),
-                valueToBuy : new BN(data?.valueToBuy),
-            };
-        }
-        super(_data);
+      if (typeof data == 'object' && !Buffer.isBuffer(data)) {
+        _data = {
+          coinToSell : new BN(data?.coinToSell),
+          valueToSell: new BN(data?.valueToSell),
+          coinToBuy  : new BN(data?.coinToBuy),
+          valueToBuy : new BN(data?.valueToBuy),
+        };
+      }
+      super(_data);
     }
 
     rlpSchema(): RlpSchemaField[] {
-        return [
-            {
-                name     : 'coinToSell',
-                length   : 4,
-                allowLess: true,
-            },
-            {
-                name     : 'valueToSell',
-                length   : 32,
-                allowLess: true,
-            },
-            {
-                name     : 'coinToBuy',
-                length   : 4,
-                allowLess: true,
-            },
-            {
-                name     : 'valueToBuy',
-                length   : 32,
-                allowLess: true,
-            },
-        ];
+      return [
+        {
+          name     : 'coinToSell',
+          length   : 4,
+          allowLess: true,
+        },
+        {
+          name     : 'valueToSell',
+          length   : 32,
+          allowLess: true,
+        },
+        {
+          name     : 'coinToBuy',
+          length   : 4,
+          allowLess: true,
+        },
+        {
+          name     : 'valueToBuy',
+          length   : 32,
+          allowLess: true,
+        },
+      ];
     }
 }

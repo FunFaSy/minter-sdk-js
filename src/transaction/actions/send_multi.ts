@@ -19,28 +19,28 @@ export class MultiSendAction extends Action {
     list: Buffer[];
 
     constructor(data?: string | Buffer | MultiSendActionParams) {
-        let _data: any = data;
+      let _data: any = data;
 
-        if (typeof data == 'object' && !Buffer.isBuffer(data)) {
-            _data = {
-                list: data?.list || [], // Pass values through to nonBinaryArrayTransform encoder function.
-            };
-        }
-        super(_data);
+      if (typeof data == 'object' && !Buffer.isBuffer(data)) {
+        _data = {
+          list: data?.list || [], // Pass values through to nonBinaryArrayTransform encoder function.
+        };
+      }
+      super(_data);
     }
 
     rlpSchema(): RlpSchemaField[] {
-        return [
-            {
-                name               : 'list',
-                allowZero          : false,
-                default            : Buffer.from([]),
-                allowNonBinaryArray: true,
-                nonBinaryArrayTransform(action) {
-                    // In case transaction restored from string
-                    return (action instanceof SendAction) ? action.raw : action;
-                },
-            },
-        ];
+      return [
+        {
+          name               : 'list',
+          allowZero          : false,
+          default            : Buffer.from([]),
+          allowNonBinaryArray: true,
+          nonBinaryArrayTransform(action) {
+            // In case transaction restored from string
+            return (action instanceof SendAction) ? action.raw : action;
+          },
+        },
+      ];
     }
 }

@@ -5,8 +5,8 @@ import {BrowserLocalStorageKeyStore} from './browser_local_storage_key_store';
 import {MergeKeyStore} from './merge_key_store';
 
 export {
-    KeyStore,
-    InMemoryKeyStore,
-    BrowserLocalStorageKeyStore,
-    MergeKeyStore,
+  KeyStore,
+  InMemoryKeyStore,
+  BrowserLocalStorageKeyStore,
+  MergeKeyStore,
 };

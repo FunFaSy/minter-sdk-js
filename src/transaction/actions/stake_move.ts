@@ -26,42 +26,42 @@ export class MoveStakeAction extends Action {
     to: Buffer;
 
     constructor(data?: string | Buffer | MoveStakeActionParams) {
-        let _data: any = data;
+      let _data: any = data;
 
-        if (typeof data == 'object' && !Buffer.isBuffer(data)) {
-            _data = {
-                from : toBuffer(data?.from),
-                to   : toBuffer(data?.to),
-                coin : new BN(data?.coin),
-                stake: new BN(data?.stake),
-            };
-        }
-        throw new Error(
-            'Action MoveStake disabled for now. @link https://www.minter.network/docs#move-stake-transaction');
-        // TODO: Validation
+      if (typeof data == 'object' && !Buffer.isBuffer(data)) {
+        _data = {
+          from : toBuffer(data?.from),
+          to   : toBuffer(data?.to),
+          coin : new BN(data?.coin),
+          stake: new BN(data?.stake),
+        };
+      }
+      throw new Error(
+        'Action MoveStake disabled for now. @link https://www.minter.network/docs#move-stake-transaction');
+      // TODO: Validation
 
-        super(_data);
+      super(_data);
     }
 
     rlpSchema(): RlpSchemaField[] {
-        return [
-            {
-                name  : 'from',
-                length: 32,
-            },
-            {
-                name  : 'to',
-                length: 32,
-            },
-            {
-                name     : 'coin',
-                length   : 4,
-                allowLess: true,
-            },
-            {
-                name     : 'stake',
-                length   : 32,
-                allowLess: true,
-            }];
+      return [
+        {
+          name  : 'from',
+          length: 32,
+        },
+        {
+          name  : 'to',
+          length: 32,
+        },
+        {
+          name     : 'coin',
+          length   : 4,
+          allowLess: true,
+        },
+        {
+          name     : 'stake',
+          length   : 32,
+          allowLess: true,
+        }];
     }
 }

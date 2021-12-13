@@ -9,18 +9,18 @@ import {ChainId} from '../chain/types';
  */
 export abstract class KeyStore {
 
-    abstract setKey(chainId: ChainId, accountId: string, keyPair: KeyPair): Promise<void>;
+  abstract setKey(chainId: ChainId, accountId: string, keyPair: KeyPair): Promise<void>;
 
-    abstract getKey(chainId: ChainId, accountId: string): Promise<KeyPair>;
+  abstract getKey(chainId: ChainId, accountId: string): Promise<KeyPair>;
 
-    abstract removeKey(chainId: ChainId, accountId: string): Promise<void>;
+  abstract removeKey(chainId: ChainId, accountId: string): Promise<void>;
 
-    abstract clear(): Promise<void>;
+  abstract clear(): Promise<void>;
 
-    abstract entries(): Promise<IterableIterator<[string, string]>>;
+  abstract entries(): Promise<IterableIterator<[string, string]>>;
 
-    abstract getChains(): Promise<string[]>;
+  abstract getChains(): Promise<string[]>;
 
-    abstract getAccounts(chainId: ChainId): Promise<string[]>;
+  abstract getAccounts(chainId: ChainId): Promise<string[]>;
 
 }

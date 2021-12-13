@@ -48,13 +48,13 @@ export class Minter {
     //readonly connection: Connection;
 
     constructor(config: Partial<MinterConfig>) {
-        this.config = deepExtend({}, config) as MinterConfig;
+      this.config = deepExtend({}, config) as MinterConfig;
 
-        // this.connection = Connection.fromConfig({
-        //     networkId: config.networkId,
-        //     provider: { type: 'JsonRpcProvider', args: { url: config.nodeUrl } },
-        //     signer: config.signer || { type: 'InMemorySigner', keyStore: config.keyStore || config.deps.keyStore }
-        // });
+      // this.connection = Connection.fromConfig({
+      //     networkId: config.networkId,
+      //     provider: { type: 'JsonRpcProvider', args: { url: config.nodeUrl } },
+      //     signer: config.signer || { type: 'InMemorySigner', keyStore: config.keyStore || config.deps.keyStore }
+      // });
 
     }
 }

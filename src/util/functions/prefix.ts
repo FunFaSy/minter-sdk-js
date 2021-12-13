@@ -16,8 +16,8 @@ const PrefixStrings = Object.keys(MinterPrefix).map(k => MinterPrefix[k as any])
  * @param {string} value
  */
 export function mPrefixToHex(value) {
-    const pattern = new RegExp('^(' + PrefixStrings.join('|') + ')');
-    return value.replace(pattern, '0x');
+  const pattern = new RegExp('^(' + PrefixStrings.join('|') + ')');
+  return value.replace(pattern, '0x');
 }
 
 /**
@@ -25,18 +25,18 @@ export function mPrefixToHex(value) {
  * @param {string} value
  */
 export function mPrefixStrip(value) {
-    const pattern = new RegExp('^(' + PrefixStrings.join('|') + ')');
-    return value.replace(pattern, '');
+  const pattern = new RegExp('^(' + PrefixStrings.join('|') + ')');
+  return value.replace(pattern, '');
 }
 
 export function addressToString(address) {
-    address = toBuffer(address);
-    return `${MinterPrefix.ADDRESS}${address.toString('hex')}`;
+  address = toBuffer(address);
+  return `${MinterPrefix.ADDRESS}${address.toString('hex')}`;
 }
 
 export function checkToString(cheque) {
-    cheque = toBuffer(cheque);
-    return `${MinterPrefix.CHEQUE}${cheque.toString('hex')}`;
+  cheque = toBuffer(cheque);
+  return `${MinterPrefix.CHEQUE}${cheque.toString('hex')}`;
 }
 
 /**
@@ -45,12 +45,12 @@ export function checkToString(cheque) {
  * @return {string}
  */
 export function privateToAddressString(privateKey) {
-    return `${MinterPrefix.ADDRESS}${ethPrivateToAddress(privateKey).toString('hex')}`;
+  return `${MinterPrefix.ADDRESS}${ethPrivateToAddress(privateKey).toString('hex')}`;
 }
 
 export function isMinterPrefixed(value) {
-    const pattern = new RegExp('^(' + PrefixStrings.join('|') + ')[0-9a-fA-F]+$');
-    return pattern.test(value);
+  const pattern = new RegExp('^(' + PrefixStrings.join('|') + ')[0-9a-fA-F]+$');
+  return pattern.test(value);
 }
 
 /**
@@ -60,21 +60,21 @@ export function isMinterPrefixed(value) {
  * @return {boolean}
  */
 export function isValidPublicKey(publicKey) {
-    const pattern = new RegExp('^' + MinterPrefix.PUB + '[0-9a-fA-F]{64}$');
-    return pattern.test(publicKey);
+  const pattern = new RegExp('^' + MinterPrefix.PUB + '[0-9a-fA-F]{64}$');
+  return pattern.test(publicKey);
 }
 
 export function isValidAddress(address) {
-    const pattern = new RegExp('^' + MinterPrefix.ADDRESS + '[0-9a-fA-F]{40}$');
-    return pattern.test(address);
+  const pattern = new RegExp('^' + MinterPrefix.ADDRESS + '[0-9a-fA-F]{40}$');
+  return pattern.test(address);
 }
 
 export function isValidCheck(cheque) {
-    const pattern = new RegExp('^' + MinterPrefix.CHEQUE + '[0-9a-fA-F]+$');
-    return pattern.test(cheque);
+  const pattern = new RegExp('^' + MinterPrefix.CHEQUE + '[0-9a-fA-F]+$');
+  return pattern.test(cheque);
 }
 
 export function isValidTransaction(tx) {
-    const pattern = new RegExp('^' + MinterPrefix.TX + '[0-9a-fA-F]{64}$');
-    return pattern.test(tx);
+  const pattern = new RegExp('^' + MinterPrefix.TX + '[0-9a-fA-F]{64}$');
+  return pattern.test(tx);
 }

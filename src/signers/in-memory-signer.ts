@@ -13,9 +13,9 @@ export class InMemorySigner extends Signer {
     readonly keyStore: KeyStore;
 
     constructor(keyStore?: KeyStore) {
-        super();
+      super();
 
-        this.keyStore = keyStore || new InMemoryKeyStore();
+      this.keyStore = keyStore || new InMemoryKeyStore();
     }
 
     /**
@@ -26,16 +26,16 @@ export class InMemorySigner extends Signer {
      * @param keyPair The keyPair to use for signing
      */
     static async fromKeyPair(accountId: string, chainId: ChainId, keyPair: KeyPair): Promise<Signer> {
-        if (!accountId) {
-            throw new Error('InMemorySigner requires provided account id');
-        }
-        if (!chainId) {
-            throw new Error('InMemorySigner requires provided chain id');
-        }
+      if (!accountId) {
+        throw new Error('InMemorySigner requires provided account id');
+      }
+      if (!chainId) {
+        throw new Error('InMemorySigner requires provided chain id');
+      }
 
-        const keyStore = new InMemoryKeyStore();
-        await keyStore.setKey(chainId, accountId, keyPair);
-        return new InMemorySigner(keyStore);
+      const keyStore = new InMemoryKeyStore();
+      await keyStore.setKey(chainId, accountId, keyPair);
+      return new InMemorySigner(keyStore);
     }
 
     /**
@@ -45,20 +45,20 @@ export class InMemorySigner extends Signer {
      * @returns {Promise<Signature>}
      */
     async sign(message: Buffer, accountId: string, chainId: ChainId): Promise<Signature> {
-        if (!accountId) {
-            throw new Error('InMemorySigner requires provided account id');
-        }
-        if (!chainId) {
-            throw new Error('InMemorySigner requires provided chain id');
-        }
+      if (!accountId) {
+        throw new Error('InMemorySigner requires provided account id');
+      }
+      if (!chainId) {
+        throw new Error('InMemorySigner requires provided chain id');
+      }
 
-        const keyPair = await this.keyStore.getKey(chainId, accountId);
-        if (keyPair === null) {
-            throw new Error(`Key for ${accountId} not found in ${chainId}`);
-        }
+      const keyPair = await this.keyStore.getKey(chainId, accountId);
+      if (keyPair === null) {
+        throw new Error(`Key for ${accountId} not found in ${chainId}`);
+      }
 
-        const hash = sha256(message);
-        return keyPair.sign(hash);
+      const hash = sha256(message);
+      return keyPair.sign(hash);
     }
 
     /**
@@ -68,19 +68,19 @@ export class InMemorySigner extends Signer {
      * @param chainId
      */
     async signTransaction(tx: Transaction, accountId: string, chainId: ChainId): Promise<SignedTransaction> {
-        if (!accountId) {
-            throw new Error('InMemorySigner requires provided account id');
-        }
-        if (!chainId) {
-            throw new Error('InMemorySigner requires provided chain id');
-        }
+      if (!accountId) {
+        throw new Error('InMemorySigner requires provided account id');
+      }
+      if (!chainId) {
+        throw new Error('InMemorySigner requires provided chain id');
+      }
 
-        const keyPair = await this.keyStore.getKey(chainId, accountId);
-        if (keyPair === null) {
-            throw new Error(`Key for ${accountId} not found in ${chainId}`);
-        }
+      const keyPair = await this.keyStore.getKey(chainId, accountId);
+      if (keyPair === null) {
+        throw new Error(`Key for ${accountId} not found in ${chainId}`);
+      }
 
-        return tx.sign(keyPair);
+      return tx.sign(keyPair);
     }
 
     /**
@@ -90,21 +90,21 @@ export class InMemorySigner extends Signer {
      * @returns {Promise<PublicKey>} Returns the public key or null if not found
      */
     async publicKey(accountId: string, chainId: ChainId): Promise<PublicKey> {
-        if (!accountId) {
-            throw new Error('InMemorySigner requires provided account id');
-        }
-        if (!chainId) {
-            throw new Error('InMemorySigner requires provided chain id');
-        }
+      if (!accountId) {
+        throw new Error('InMemorySigner requires provided account id');
+      }
+      if (!chainId) {
+        throw new Error('InMemorySigner requires provided chain id');
+      }
 
-        const keyPair = await this.keyStore.getKey(chainId, accountId);
-        if (keyPair === null) {
-            return null;
-        }
-        return keyPair.publicKey;
+      const keyPair = await this.keyStore.getKey(chainId, accountId);
+      if (keyPair === null) {
+        return null;
+      }
+      return keyPair.publicKey;
     }
 
     toString(): string {
-        return `InMemorySigner(${this.keyStore})`;
+      return `InMemorySigner(${this.keyStore})`;
     }
 }

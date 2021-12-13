@@ -29,48 +29,48 @@ export class CreateCoinAction extends Action {
     maxSupply?: Buffer;
 
     constructor(data?: string | Buffer | CreateCoinActionParams) {
-        let _data: any = data;
+      let _data: any = data;
 
-        if (typeof data == 'object' && !Buffer.isBuffer(data)) {
-            _data = {
-                name                : Buffer.from(data.name, 'utf8'),
-                symbol              : Buffer.from(data.symbol, 'utf8'),
-                initialAmount       : new BN(data.initialAmount),
-                initialReserve      : new BN(data.initialReserve),
-                constantReserveRatio: new BN(data.constantReserveRatio),
-                maxSupply           : new BN(data.maxSupply),
-            };
-        }
-        super(_data);
+      if (typeof data == 'object' && !Buffer.isBuffer(data)) {
+        _data = {
+          name                : Buffer.from(data.name, 'utf8'),
+          symbol              : Buffer.from(data.symbol, 'utf8'),
+          initialAmount       : new BN(data.initialAmount),
+          initialReserve      : new BN(data.initialReserve),
+          constantReserveRatio: new BN(data.constantReserveRatio),
+          maxSupply           : new BN(data.maxSupply),
+        };
+      }
+      super(_data);
     }
 
     /**
      *
      */
     rlpSchema(): RlpSchemaField[] {
-        return [
-            {
-                name   : 'name',
-                default: Buffer.from([]),
-            }, {
-                name  : 'symbol',
-                length: 10,
-            }, {
-                name     : 'initialAmount',
-                length   : 32,
-                allowLess: true,
-            }, {
-                name     : 'initialReserve',
-                length   : 32,
-                allowLess: true,
-            }, {
-                name     : 'constantReserveRatio',
-                length   : 1,
-                allowLess: true,
-            }, {
-                name     : 'maxSupply',
-                length   : 32,
-                allowLess: true,
-            }];
+      return [
+        {
+          name   : 'name',
+          default: Buffer.from([]),
+        }, {
+          name  : 'symbol',
+          length: 10,
+        }, {
+          name     : 'initialAmount',
+          length   : 32,
+          allowLess: true,
+        }, {
+          name     : 'initialReserve',
+          length   : 32,
+          allowLess: true,
+        }, {
+          name     : 'constantReserveRatio',
+          length   : 1,
+          allowLess: true,
+        }, {
+          name     : 'maxSupply',
+          length   : 32,
+          allowLess: true,
+        }];
     }
 }

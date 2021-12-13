@@ -21,30 +21,30 @@ import {Wallet} from './wallet';
 //export {Minter} from './minter';
 
 export {
-    utils
-    , providers
-    , tx_actions
-    , constants
+  utils
+  , providers
+  , tx_actions
+  , constants
 
-    , Chain
-    , ChainId
-    , KeyPair
-    , PublicKey
-    , Signature
-    , TxMultiSignature
-    , TxSingleSignature
-    , TxSignatureType
-    , Signer
-    , InMemorySigner
-    , actionsRegistry
-    , Transaction
-    , SignedTransaction
-    , Check
+  , Chain
+  , ChainId
+  , KeyPair
+  , PublicKey
+  , Signature
+  , TxMultiSignature
+  , TxSingleSignature
+  , TxSignatureType
+  , Signer
+  , InMemorySigner
+  , actionsRegistry
+  , Transaction
+  , SignedTransaction
+  , Check
 
-    , Connection
-    , JsonRpcProvider
+  , Connection
+  , JsonRpcProvider
 
-    , Account
-    , Wallet,
+  , Account
+  , Wallet,
 
 };

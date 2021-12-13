@@ -23,9 +23,9 @@ export class BrowserLocalStorageKeyStore extends KeyStore {
      * @param prefix defaults to `minter-api-js:keystore:`
      */
     constructor(localStorage: any = window.localStorage, prefix = LOCAL_STORAGE_KEY_PREFIX) {
-        super();
-        this.storage = localStorage;
-        this.prefix = prefix;
+      super();
+      this.storage = localStorage;
+      this.prefix = prefix;
     }
 
     /**
@@ -35,7 +35,7 @@ export class BrowserLocalStorageKeyStore extends KeyStore {
      * @param keyPair The key pair to store in local storage
      */
     async setKey(chainId: ChainId, accountId: string, keyPair: KeyPair): Promise<void> {
-        this.storage.setItem(this.storageKeyForSecretKey(chainId, accountId), keyPair.toString());
+      this.storage.setItem(this.storageKeyForSecretKey(chainId, accountId), keyPair.toString());
     }
 
     /**
@@ -45,11 +45,11 @@ export class BrowserLocalStorageKeyStore extends KeyStore {
      * @returns {Promise<KeyPair>}
      */
     async getKey(chainId: ChainId, accountId: string): Promise<KeyPair> {
-        const value = this.storage.getItem(this.storageKeyForSecretKey(chainId, accountId));
-        if (!value) {
-            return null;
-        }
-        return KeyPair.fromString(value);
+      const value = this.storage.getItem(this.storageKeyForSecretKey(chainId, accountId));
+      if (!value) {
+        return null;
+      }
+      return KeyPair.fromString(value);
     }
 
     /**
@@ -58,18 +58,18 @@ export class BrowserLocalStorageKeyStore extends KeyStore {
      * @param accountId The Minter account tied to the key pair
      */
     async removeKey(chainId: ChainId, accountId: string): Promise<void> {
-        this.storage.removeItem(this.storageKeyForSecretKey(chainId, accountId));
+      this.storage.removeItem(this.storageKeyForSecretKey(chainId, accountId));
     }
 
     /**
      * Removes all items that start with `prefix` from local storage
      */
     async clear(): Promise<void> {
-        for (const key of this.storageKeys()) {
-            if (key.startsWith(this.prefix)) {
-                this.storage.removeItem(key);
-            }
+      for (const key of this.storageKeys()) {
+        if (key.startsWith(this.prefix)) {
+          this.storage.removeItem(key);
         }
+      }
     }
 
     /**
@@ -77,14 +77,14 @@ export class BrowserLocalStorageKeyStore extends KeyStore {
      * @returns {Promise<string[]>}
      */
     async getChains(): Promise<string[]> {
-        const result = new Set<string>();
-        for (const key of this.storageKeys()) {
-            if (key.startsWith(this.prefix)) {
-                const parts = key.substring(this.prefix.length).split(':');
-                result.add(parts[1]);
-            }
+      const result = new Set<string>();
+      for (const key of this.storageKeys()) {
+        if (key.startsWith(this.prefix)) {
+          const parts = key.substring(this.prefix.length).split(':');
+          result.add(parts[1]);
         }
-        return Array.from(result.values());
+      }
+      return Array.from(result.values());
     }
 
     /**
@@ -93,30 +93,30 @@ export class BrowserLocalStorageKeyStore extends KeyStore {
      * @returns{Promise<string[]>}
      */
     async getAccounts(chainId: ChainId): Promise<string[]> {
-        const result = new Array<string>();
+      const result = new Array<string>();
 
-        for (const key of this.storageKeys()) {
-            if (key.startsWith(this.prefix)) {
-                const parts = key.substring(this.prefix.length).split(':');
-                if (parts[1] === chainId) {
-                    result.push(parts[0]);
-                }
-            }
+      for (const key of this.storageKeys()) {
+        if (key.startsWith(this.prefix)) {
+          const parts = key.substring(this.prefix.length).split(':');
+          if (parts[1] === chainId) {
+            result.push(parts[0]);
+          }
         }
-        return result;
+      }
+      return result;
     }
 
     async entries(): Promise<IterableIterator<[string, string]>> {
-        function* entries(): IterableIterator<[string, string]> {
-            for (let i = 0; i < this.storage.length; i++) {
-                const key = this.storage.key(i);
-                const value = this.storage.getItem(key);
+      function* entries(): IterableIterator<[string, string]> {
+        for (let i = 0; i < this.storage.length; i++) {
+          const key = this.storage.key(i);
+          const value = this.storage.getItem(key);
 
-                yield [key, value || null];
-            }
+          yield [key, value || null];
         }
+      }
 
-        return entries();
+      return entries();
     }
 
     /**
@@ -127,13 +127,13 @@ export class BrowserLocalStorageKeyStore extends KeyStore {
      * @returns {string} An example might be: `minter-api-js:keystore:minter-friend:default`
      */
     private storageKeyForSecretKey(chainId: ChainId, accountId: string): string {
-        return `${this.prefix}${accountId}:${chainId}`;
+      return `${this.prefix}${accountId}:${chainId}`;
     }
 
     /** @hidden */
     private* storageKeys(): IterableIterator<string> {
-        for (let i = 0; i < this.storage.length; i++) {
-            yield this.storage.key(i);
-        }
+      for (let i = 0; i < this.storage.length; i++) {
+        yield this.storage.key(i);
+      }
     }
 }

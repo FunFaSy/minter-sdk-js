@@ -44,10 +44,10 @@ export declare abstract class KeyPair {
  */
 export declare class KeyPairSecp256k1 extends KeyPair {
     /**
-     * Construct an instance of key pair given a secret key.
-     * It's generally assumed that these are encoded in base58check.
-     * @param {string} secretKey
-     */
+       * Construct an instance of key pair given a secret key.
+       * It's generally assumed that these are encoded in base58check.
+       * @param {string} secretKey
+       */
     constructor(secretKey: string);
     protected _publicKey: PublicKey;
     get publicKey(): PublicKey;
@@ -78,7 +78,7 @@ export declare class KeyPairSecp256k1 extends KeyPair {
 export declare class PublicKey extends Assignable {
     keyType: KeyType;
     protected raw: Buffer;
-    constructor(properties: any);
+    constructor(properties: Record<string, any>);
     protected _address: Address;
     /**
      *

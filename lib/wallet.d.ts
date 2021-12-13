@@ -14,12 +14,12 @@ import { SignedTransaction } from './transaction/transaction';
  */
 export declare abstract class HdWallet {
     /**
-     * @see https://github.com/satoshilabs/slips/blob/ef6d7700cc/slip-0044.md
-     *
-     * @param coinId
-     * @param walletId
-     * @param pub
-     */
+       * @see https://github.com/satoshilabs/slips/blob/ef6d7700cc/slip-0044.md
+       *
+       * @param coinId
+       * @param walletId
+       * @param pub
+       */
     static makeDerivationBasePath(coinId?: number, walletId?: number, pub?: boolean): string;
 }
 /**

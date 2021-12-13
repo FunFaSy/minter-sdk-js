@@ -27,47 +27,47 @@ export class DeclareCandidacyAction extends Action {
     stake: Buffer;
 
     constructor(data?: string | Buffer | DeclareCandidacyActionParams) {
-        let _data: any = data;
+      let _data: any = data;
 
-        if (typeof data == 'object' && !Buffer.isBuffer(data)) {
-            _data = {
-                address   : toBuffer(data.address),
-                publicKey : toBuffer(data.publicKey),
-                commission: new BN(data.commission),
-                coin      : new BN(data.coin),
-                stake     : new BN(data.stake),
-            };
-        }
-        // TODO: Validation
+      if (typeof data == 'object' && !Buffer.isBuffer(data)) {
+        _data = {
+          address   : toBuffer(data.address),
+          publicKey : toBuffer(data.publicKey),
+          commission: new BN(data.commission),
+          coin      : new BN(data.coin),
+          stake     : new BN(data.stake),
+        };
+      }
+      // TODO: Validation
 
-        super(_data);
+      super(_data);
     }
 
     rlpSchema(): RlpSchemaField[] {
-        return [
-            {
-                name  : 'address',
-                length: 20,
-            },
-            {
-                name  : 'publicKey',
-                length: 32,
-            },
-            {
-                name     : 'commission',
-                length   : 1,
-                allowLess: true,
-            },
-            {
-                name     : 'coin',
-                length   : 4,
-                allowLess: true,
-            },
-            {
-                name     : 'stake',
-                length   : 32,
-                allowLess: true,
-                default  : Buffer.from([]),
-            }];
+      return [
+        {
+          name  : 'address',
+          length: 20,
+        },
+        {
+          name  : 'publicKey',
+          length: 32,
+        },
+        {
+          name     : 'commission',
+          length   : 1,
+          allowLess: true,
+        },
+        {
+          name     : 'coin',
+          length   : 4,
+          allowLess: true,
+        },
+        {
+          name     : 'stake',
+          length   : 32,
+          allowLess: true,
+          default  : Buffer.from([]),
+        }];
     }
 }

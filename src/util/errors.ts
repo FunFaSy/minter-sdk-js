@@ -5,9 +5,9 @@ export class TypedError extends Error {
     context?: ErrorContext;
 
     constructor(message?: string, type?: string, context?: ErrorContext) {
-        super(message);
-        this.type = type || 'UntypedError';
-        this.context = context;
+      super(message);
+      this.type = type || 'UntypedError';
+      this.context = context;
     }
 }
 

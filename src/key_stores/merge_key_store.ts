@@ -20,9 +20,9 @@ export class MergeKeyStore extends KeyStore {
      * @param options.writeKeyStoreIndex the keystore index that will receive all write calls
      */
     constructor(keyStores: KeyStore[], options: MergeKeyStoreOptions = {writeKeyStoreIndex: 0}) {
-        super();
-        this.options = options;
-        this.keyStores = keyStores;
+      super();
+      this.options = options;
+      this.keyStores = keyStores;
     }
 
     /**
@@ -32,7 +32,7 @@ export class MergeKeyStore extends KeyStore {
      * @param keyPair The key pair to store in local storage
      */
     async setKey(chainId: ChainId, accountId: string, keyPair: KeyPair): Promise<void> {
-        await this.keyStores[this.options.writeKeyStoreIndex].setKey(chainId, accountId, keyPair);
+      await this.keyStores[this.options.writeKeyStoreIndex].setKey(chainId, accountId, keyPair);
     }
 
     /**
@@ -42,13 +42,13 @@ export class MergeKeyStore extends KeyStore {
      * @returns {Promise<KeyPair>}
      */
     async getKey(chainId: ChainId, accountId: string): Promise<KeyPair> {
-        for (const keyStore of this.keyStores) {
-            const keyPair = await keyStore.getKey(chainId, accountId);
-            if (keyPair) {
-                return keyPair;
-            }
+      for (const keyStore of this.keyStores) {
+        const keyPair = await keyStore.getKey(chainId, accountId);
+        if (keyPair) {
+          return keyPair;
         }
-        return null;
+      }
+      return null;
     }
 
     /**
@@ -57,18 +57,18 @@ export class MergeKeyStore extends KeyStore {
      * @param accountId The Minter account tied to the key pair
      */
     async removeKey(chainId: ChainId, accountId: string): Promise<void> {
-        for (const keyStore of this.keyStores) {
-            await keyStore.removeKey(chainId, accountId);
-        }
+      for (const keyStore of this.keyStores) {
+        await keyStore.removeKey(chainId, accountId);
+      }
     }
 
     /**
      * Removes all items from each key store
      */
     async clear(): Promise<void> {
-        for (const keyStore of this.keyStores) {
-            await keyStore.clear();
-        }
+      for (const keyStore of this.keyStores) {
+        await keyStore.clear();
+      }
     }
 
     /**
@@ -76,13 +76,13 @@ export class MergeKeyStore extends KeyStore {
      * @returns {Promise<string[]>}
      */
     async getChains(): Promise<string[]> {
-        const result = new Set<string>();
-        for (const keyStore of this.keyStores) {
-            for (const network of await keyStore.getChains()) {
-                result.add(network);
-            }
+      const result = new Set<string>();
+      for (const keyStore of this.keyStores) {
+        for (const network of await keyStore.getChains()) {
+          result.add(network);
         }
-        return Array.from(result);
+      }
+      return Array.from(result);
     }
 
     /**
@@ -91,30 +91,30 @@ export class MergeKeyStore extends KeyStore {
      * @returns{Promise<string[]>}
      */
     async getAccounts(chainId: ChainId): Promise<string[]> {
-        const result = new Set<string>();
-        for (const keyStore of this.keyStores) {
-            for (const account of await keyStore.getAccounts(chainId)) {
-                result.add(account);
-            }
+      const result = new Set<string>();
+      for (const keyStore of this.keyStores) {
+        for (const account of await keyStore.getAccounts(chainId)) {
+          result.add(account);
         }
-        return Array.from(result);
+      }
+      return Array.from(result);
     }
 
     async entries(): Promise<IterableIterator<[string, string]>> {
-        function* entries(): IterableIterator<[string, string]> {
-            for (const keyStore of this.keyStores) {
-                for (const [key, val] of keyStore.entries()) {
-                    yield [key, val];
-                }
-            }
+      function* entries(): IterableIterator<[string, string]> {
+        for (const keyStore of this.keyStores) {
+          for (const [key, val] of keyStore.entries()) {
+            yield [key, val];
+          }
         }
+      }
 
-        return entries();
+      return entries();
     }
 
     /** @hidden */
     toString(): string {
-        return `MergeKeyStore(${this.keyStores.join(', ')})`;
+      return `MergeKeyStore(${this.keyStores.join(', ')})`;
     }
 
 }

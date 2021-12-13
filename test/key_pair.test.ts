@@ -17,79 +17,79 @@ const SIGNATURE_FULL = 'ECDSA:0xf8431ca036e4508cc3cf7e3a7f54aa5067dfa6559c894819
 
 //
 test('[KeyPair] KeyPair from secret', async () => {
-    const keyPair = minterSdk.KeyPair.fromString(SECRET_SECP256K1_FULL);
-    expect(keyPair.publicKey.toString()).toEqual(PUBKEY_SECP256K1_FULL);
+  const keyPair = minterSdk.KeyPair.fromString(SECRET_SECP256K1_FULL);
+  expect(keyPair.publicKey.toString()).toEqual(PUBKEY_SECP256K1_FULL);
 
-    const keyPair1 = minterSdk.KeyPair.fromString(SECRET_SECP256K1_FULL);
-    expect(keyPair1.publicKey.toString()).toEqual(PUBKEY_SECP256K1_FULL);
+  const keyPair1 = minterSdk.KeyPair.fromString(SECRET_SECP256K1_FULL);
+  expect(keyPair1.publicKey.toString()).toEqual(PUBKEY_SECP256K1_FULL);
 
 });
 
 //
 test('[KeyPair] KeyPair from BIP39 mnemonic', async () => {
-    const wal = await Wallet.fromMnemonic(MNEMONIC);
-    const keyPair = await wal.getAccountKeyPair();
-    expect(keyPair.publicKey.toString()).toEqual(PUBKEY_SECP256K1_FULL);
+  const wal = await Wallet.fromMnemonic(MNEMONIC);
+  const keyPair = await wal.getAccountKeyPair();
+  expect(keyPair.publicKey.toString()).toEqual(PUBKEY_SECP256K1_FULL);
 });
 
 //
 test('[KeyPair] KeyPair convert to string', async () => {
-    const keyPair = minterSdk.KeyPair.fromRandom();
-    const newKeyPair = minterSdk.KeyPair.fromString(keyPair.toString());
-    expect(newKeyPair.toString()).toEqual(keyPair.toString());
+  const keyPair = minterSdk.KeyPair.fromRandom();
+  const newKeyPair = minterSdk.KeyPair.fromString(keyPair.toString());
+  expect(newKeyPair.toString()).toEqual(keyPair.toString());
 
-    const keyPair1 = minterSdk.KeyPair.fromString(SECRET_SECP256K1_FULL);
-    expect(keyPair1.toString()).toEqual(SECRET_SECP256K1_FULL);
+  const keyPair1 = minterSdk.KeyPair.fromString(SECRET_SECP256K1_FULL);
+  expect(keyPair1.toString()).toEqual(SECRET_SECP256K1_FULL);
 });
 
 //
 test('[KeyPair] Sign and verify signature', async () => {
-    const keyPair = minterSdk.KeyPair.fromString(SECRET_SECP256K1_FULL);
+  const keyPair = minterSdk.KeyPair.fromString(SECRET_SECP256K1_FULL);
 
-    const message = Buffer.from(MESSAGE);
-    const hash = sha256(message);
-    const signature = keyPair.sign(hash);
-    expect(signature.toString()).toEqual(SIGNATURE_FULL);
+  const message = Buffer.from(MESSAGE);
+  const hash = sha256(message);
+  const signature = keyPair.sign(hash);
+  expect(signature.toString()).toEqual(SIGNATURE_FULL);
 });
 
 //
 test('[KeyPair] Sign and verify signature with random', async () => {
-    const keyPair = minterSdk.KeyPair.fromRandom();
+  const keyPair = minterSdk.KeyPair.fromRandom();
 
-    const message = Buffer.from(MESSAGE);
-    const hash = sha256(message);
-    const signature = keyPair.sign(hash);
-    expect(keyPair.verify(hash, signature.getRaw())).toBeTruthy();
+  const message = Buffer.from(MESSAGE);
+  const hash = sha256(message);
+  const signature = keyPair.sign(hash);
+  expect(keyPair.verify(hash, signature.getRaw())).toBeTruthy();
 
-    const message1 = Buffer.from(MESSAGE + ' new');
-    const hash1 = sha256(message1);
-    expect(keyPair.verify(hash1, signature.getRaw())).toBeFalsy();
+  const message1 = Buffer.from(MESSAGE + ' new');
+  const hash1 = sha256(message1);
+  expect(keyPair.verify(hash1, signature.getRaw())).toBeFalsy();
 });
 
 //
 test('[KeyPair] Sign and verify with public key', async () => {
-    const keyPair = minterSdk.KeyPair.fromString(SECRET_SECP256K1_FULL);
-    const message = Buffer.from(MESSAGE);
-    const hash = sha256(message);
-    const signature = keyPair.sign(hash);
+  const keyPair = minterSdk.KeyPair.fromString(SECRET_SECP256K1_FULL);
+  const message = Buffer.from(MESSAGE);
+  const hash = sha256(message);
+  const signature = keyPair.sign(hash);
 
-    const publicKey = minterSdk.PublicKey.from(PUBKEY_SECP256K1_FULL);
-    expect(publicKey.verify(hash, signature.getRaw())).toBeTruthy();
+  const publicKey = minterSdk.PublicKey.from(PUBKEY_SECP256K1_FULL);
+  expect(publicKey.verify(hash, signature.getRaw())).toBeTruthy();
 
-    const message1 = Buffer.from(MESSAGE + ' new');
-    const hash1 = sha256(message1);
-    expect(keyPair.verify(hash1, signature.getRaw())).toBeFalsy();
+  const message1 = Buffer.from(MESSAGE + ' new');
+  const hash1 = sha256(message1);
+  expect(keyPair.verify(hash1, signature.getRaw())).toBeFalsy();
 
 });
 
 //
 test('[KeyPair] Restore signer publicKey and verify signer address', async () => {
-    const message = Buffer.from(MESSAGE);
-    const hash = sha256(message);
-    const signature = minterSdk.Signature.fromString(SIGNATURE_FULL);
+  const message = Buffer.from(MESSAGE);
+  const hash = sha256(message);
+  const signature = minterSdk.Signature.fromString(SIGNATURE_FULL);
 
-    const signerPublicKey = minterSdk.PublicKey.fromMessageBuf(hash, signature.getRaw());
-    const signerAddress = signerPublicKey.address;
+  const signerPublicKey = minterSdk.PublicKey.fromMessageBuf(hash, signature.getRaw());
+  const signerAddress = signerPublicKey.address;
 
-    expect(signerAddress.toString()).toEqual(ADDRESS);
+  expect(signerAddress.toString()).toEqual(ADDRESS);
 });

@@ -22,36 +22,36 @@ export declare abstract class TransactionSignature extends Signature {
  */
 export declare class TxSingleSignature extends TransactionSignature {
     /**
-     *
-     * @param data RLP encoded ECDSASignatureBuffer [v,r,s] or object type ECDSASignatureBuffer
-     * @param tx
-     */
+       *
+       * @param data RLP encoded ECDSASignatureBuffer [v,r,s] or object type ECDSASignatureBuffer
+       * @param tx
+       */
     constructor(data: Buffer | ECDSASignatureBuffer, tx?: Transaction);
     static fromString(signature: string): TxSingleSignature;
     /**
-     * Determines if the message signed given public key
-     *
-     * @param txHash SHA256 transaction hash without signatureData field
-     * @param rlpVrs RLP encoded ECDSA signature [v,r,s]
-     * @param publicKey
-     */
+       * Determines if the message signed given public key
+       *
+       * @param txHash SHA256 transaction hash without signatureData field
+       * @param rlpVrs RLP encoded ECDSA signature [v,r,s]
+       * @param publicKey
+       */
     static assertSignature(txHash: Buffer, rlpVrs: Buffer, publicKey: string): boolean;
     /**
-     *
-     */
+       *
+       */
     getRaw(): Buffer[];
     /**
-     *  Determines if the signature is valid ECDSA signature
-     */
+       *  Determines if the signature is valid ECDSA signature
+       */
     valid(): boolean;
     /**
-     * Return singer public key for txHash
-     * @param txHash
-     */
+       * Return singer public key for txHash
+       * @param txHash
+       */
     publicKey(txHash: Buffer): PublicKey[];
     /**
-     * RLP Encode Signature
-     */
+       * RLP Encode Signature
+       */
     serialize(): Buffer;
     private _validateV;
     private _overrideVSetterWithValidation;

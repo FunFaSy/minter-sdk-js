@@ -25,39 +25,39 @@ export class EditCandidateAction extends Action {
     publicKey: Buffer;
 
     constructor(data?: string | Buffer | EditCandidateActionParams) {
-        let _data: any = data;
+      let _data: any = data;
 
-        if (typeof data == 'object' && !Buffer.isBuffer(data)) {
-            _data = {
-                publicKey     : toBuffer(data.publicKey),
-                ownerAddress  : toBuffer(data.ownerAddress),
-                controlAddress: toBuffer(data.controlAddress),
-                rewardAddress : toBuffer(data.rewardAddress),
-            };
-        }
-        // TODO: Validation
+      if (typeof data == 'object' && !Buffer.isBuffer(data)) {
+        _data = {
+          publicKey     : toBuffer(data.publicKey),
+          ownerAddress  : toBuffer(data.ownerAddress),
+          controlAddress: toBuffer(data.controlAddress),
+          rewardAddress : toBuffer(data.rewardAddress),
+        };
+      }
+      // TODO: Validation
 
-        super(_data);
+      super(_data);
 
     }
 
     rlpSchema(): RlpSchemaField[] {
-        return [
-            {
-                name  : 'publicKey',
-                length: 32,
-            },
-            {
-                name  : 'rewardAddress',
-                length: 20,
-            },
-            {
-                name  : 'ownerAddress',
-                length: 20,
-            },
-            {
-                name  : 'controlAddress',
-                length: 20,
-            }];
+      return [
+        {
+          name  : 'publicKey',
+          length: 32,
+        },
+        {
+          name  : 'rewardAddress',
+          length: 20,
+        },
+        {
+          name  : 'ownerAddress',
+          length: 20,
+        },
+        {
+          name  : 'controlAddress',
+          length: 20,
+        }];
     }
 }

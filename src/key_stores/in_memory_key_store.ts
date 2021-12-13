@@ -13,8 +13,8 @@ export class InMemoryKeyStore extends KeyStore {
      *
      */
     constructor() {
-        super();
-        this.storage = new Map<string, string>();
+      super();
+      this.storage = new Map<string, string>();
     }
 
     /**
@@ -24,7 +24,7 @@ export class InMemoryKeyStore extends KeyStore {
      * @param keyPair The key pair to store in local storage
      */
     async setKey(chainId: ChainId, accountId: string, keyPair: KeyPair): Promise<void> {
-        this.storage.set(`${chainId}:${accountId}`, keyPair.toString());
+      this.storage.set(`${chainId}:${accountId}`, keyPair.toString());
     }
 
     /**
@@ -34,13 +34,13 @@ export class InMemoryKeyStore extends KeyStore {
      * @returns {Promise<KeyPair>}
      */
     async getKey(chainId: ChainId, accountId: string): Promise<KeyPair> {
-        const value = this.storage.get(`${chainId}:${accountId}`);
+      const value = this.storage.get(`${chainId}:${accountId}`);
 
-        if (!value) {
-            return null;
-        }
+      if (!value) {
+        return null;
+      }
 
-        return KeyPair.fromString(value);
+      return KeyPair.fromString(value);
     }
 
     /**
@@ -49,15 +49,15 @@ export class InMemoryKeyStore extends KeyStore {
      * @param accountId The Minter account tied to the key pair
      */
     async removeKey(chainId: ChainId, accountId: string): Promise<void> {
-        this.storage.delete(`${chainId}:${accountId}`);
+      this.storage.delete(`${chainId}:${accountId}`);
     }
 
     async clear(): Promise<void> {
-        this.storage.clear();
+      this.storage.clear();
     }
 
     async entries(): Promise<IterableIterator<[string, string]>> {
-        return this.storage.entries();
+      return this.storage.entries();
     }
 
     /**
@@ -65,14 +65,14 @@ export class InMemoryKeyStore extends KeyStore {
      * @returns {Promise<string[]>}
      */
     async getChains(): Promise<string[]> {
-        const result = new Set<string>();
+      const result = new Set<string>();
 
-        for (const key of this.storage.keys()) {
-            const parts = key.split(':');
-            result.add(parts[0]);
-        }
+      for (const key of this.storage.keys()) {
+        const parts = key.split(':');
+        result.add(parts[0]);
+      }
 
-        return Array.from(result.values());
+      return Array.from(result.values());
     }
 
     /**
@@ -82,22 +82,22 @@ export class InMemoryKeyStore extends KeyStore {
      */
     async getAccounts(chainId: ChainId): Promise<string[]> {
 
-        const result = new Array<string>();
+      const result = new Array<string>();
 
-        for (const key of this.storage.keys()) {
-            const parts = key.split(':');
+      for (const key of this.storage.keys()) {
+        const parts = key.split(':');
 
-            if (parts[0] as ChainId === chainId) {
-                result.push(parts[parts.length - 1]);
-            }
+        if (parts[0] as ChainId === chainId) {
+          result.push(parts[parts.length - 1]);
         }
+      }
 
-        return result;
+      return result;
     }
 
     /** @hidden */
     toString(): string {
-        return 'InMemoryKeyStore';
+      return 'InMemoryKeyStore';
     }
 
 }

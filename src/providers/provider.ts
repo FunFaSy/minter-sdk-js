@@ -83,8 +83,8 @@ export abstract class Provider {
     //----------- Events
     abstract events(params: rpcTypes.EventsRequest): Promise<rpcTypes.EventsResponse>;
 
-    //
-    //-----------  WebSockets
-    // abstract  subscribe (SubscribeRequest) returns (stream SubscribeResponse)
+  //
+  //-----------  WebSockets
+  // abstract  subscribe (SubscribeRequest) returns (stream SubscribeResponse)
 
 }

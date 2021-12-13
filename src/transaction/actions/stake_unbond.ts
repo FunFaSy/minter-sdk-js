@@ -24,35 +24,35 @@ export class UnbondAction extends Action {
     publicKey: Buffer;
 
     constructor(data?: string | Buffer | UnbondActionParams) {
-        let _data: any = data;
+      let _data: any = data;
 
-        if (typeof data == 'object' && !Buffer.isBuffer(data)) {
-            _data = {
-                publicKey: toBuffer(data.publicKey),
-                coin     : new BN(data.coin),
-                stake    : new BN(data.stake),
-            };
-        }
-        // TODO: Validation
+      if (typeof data == 'object' && !Buffer.isBuffer(data)) {
+        _data = {
+          publicKey: toBuffer(data.publicKey),
+          coin     : new BN(data.coin),
+          stake    : new BN(data.stake),
+        };
+      }
+      // TODO: Validation
 
-        super(_data);
+      super(_data);
     }
 
     rlpSchema(): RlpSchemaField[] {
-        return [
-            {
-                name  : 'publicKey',
-                length: 32,
-            },
-            {
-                name     : 'coin',
-                length   : 4,
-                allowLess: true,
-            },
-            {
-                name     : 'stake',
-                length   : 32,
-                allowLess: true,
-            }];
+      return [
+        {
+          name  : 'publicKey',
+          length: 32,
+        },
+        {
+          name     : 'coin',
+          length   : 4,
+          allowLess: true,
+        },
+        {
+          name     : 'stake',
+          length   : 32,
+          allowLess: true,
+        }];
     }
 }

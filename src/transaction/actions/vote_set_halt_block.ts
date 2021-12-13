@@ -22,29 +22,29 @@ export class VoteHaltBlockAction extends Action {
     height: Buffer;
 
     constructor(data?: string | Buffer | VoteHaltBlockActionParams) {
-        let _data: any = data;
+      let _data: any = data;
 
-        if (typeof data == 'object' && !Buffer.isBuffer(data)) {
-            _data = {
-                publicKey: toBuffer(data.publicKey),
-                height   : new BN(data.height),
-            };
-        }
-        // TODO: Validation
+      if (typeof data == 'object' && !Buffer.isBuffer(data)) {
+        _data = {
+          publicKey: toBuffer(data.publicKey),
+          height   : new BN(data.height),
+        };
+      }
+      // TODO: Validation
 
-        super(_data);
+      super(_data);
     }
 
     rlpSchema(): RlpSchemaField[] {
-        return [
-            {
-                name  : 'publicKey',
-                length: 32,
-            },
-            {
-                name     : 'height',
-                length   : 32,
-                allowLess: true,
-            }];
+      return [
+        {
+          name  : 'publicKey',
+          length: 32,
+        },
+        {
+          name     : 'height',
+          length   : 32,
+          allowLess: true,
+        }];
     }
 }

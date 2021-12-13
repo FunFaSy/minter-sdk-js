@@ -1,4 +1,5 @@
 /// <reference types="node" />
+import { fArgReturn } from './types';
 export interface RlpSchemaField {
     name: string;
     length?: number;
@@ -7,7 +8,7 @@ export interface RlpSchemaField {
     allowZero?: boolean;
     default?: Buffer;
     allowNonBinaryArray?: boolean;
-    nonBinaryArrayTransform?: Function;
+    nonBinaryArrayTransform?: fArgReturn;
 }
 /**
  * Defines properties on a `Object`. It make the assumption that underlying data is binary.
@@ -21,4 +22,4 @@ export interface RlpSchemaField {
  * * `nonBinaryArrayTransform` - function to transform each item of the non binary array
  * @param {*} [data] data to be validated against the definitions
  */
-export default function defineProperties(self: any, fields: RlpSchemaField[], data: any): void;
+export default function defineProperties(self: Record<string, any>, fields: RlpSchemaField[], data: unknown): void;

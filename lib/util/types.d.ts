@@ -21,7 +21,12 @@ export declare type IBuilder<T> = {
 export declare class PipelineBuilder<Input, Config extends Record<string, any>, Output> {
     private readonly stages;
     private constructor();
-    static new<Input>(): PipelineBuilder<Input, {}, Input>;
+    static new<Input>(): PipelineBuilder<Input, Record<string, unknown>, Input>;
     append<NewConfig extends Record<string, any>, NewOutput>(newStage: (state: Output, config: NewConfig) => NewOutput): PipelineBuilder<Input, Config & NewConfig, NewOutput>;
     build(): (input: Input, config: Config) => Output;
 }
+export declare type Constructor<T extends unknown = unknown> = new (...args: any[]) => T;
+export declare type fEmptyVoid = () => void;
+export declare type fEmptyReturn = () => any;
+export declare type fArgVoid = (...args: any[]) => void;
+export declare type fArgReturn = (...args: any[]) => any;

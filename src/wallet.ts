@@ -20,16 +20,16 @@ import {SignedTransaction} from './transaction/transaction';
  *
  */
 export abstract class HdWallet {
-    /**
+  /**
      * @see https://github.com/satoshilabs/slips/blob/ef6d7700cc/slip-0044.md
      *
      * @param coinId
      * @param walletId
      * @param pub
      */
-    static makeDerivationBasePath(coinId = 491, walletId = 0, pub = true) {
-        return `m/44'/${coinId}'/${walletId}'/${pub ? 0 : 1}`;
-    }
+  static makeDerivationBasePath(coinId = 491, walletId = 0, pub = true) {
+    return `m/44'/${coinId}'/${walletId}'/${pub ? 0 : 1}`;
+  }
 }
 
 /**
@@ -49,17 +49,17 @@ export class Wallet extends HdWallet {
      * @param walletId Number
      */
     constructor(hdKey: HDKeyT, walletId = 0) {
-        super();
-        assert(hdKey);
+      super();
+      assert(hdKey);
 
-        this._hdKey = hdKey;
-        this._accounts = new Map<string, Account>();
+      this._hdKey = hdKey;
+      this._accounts = new Map<string, Account>();
 
-        this.coinId = MINTER_BIP44_DERIVATION_COIN_ID; // 491 Bip Minter // 60 Eth
-        this.walletId = parseInt(walletId?.toString()) || 0;
+      this.coinId = MINTER_BIP44_DERIVATION_COIN_ID; // 491 Bip Minter // 60 Eth
+      this.walletId = parseInt(walletId?.toString()) || 0;
 
-        this.getDefaultConnection().then(con => this.setConnection(con));
-        this.getDefaultKeystore().then(con => this.setKeyStore(con));
+      this.getDefaultConnection().then(con => this.setConnection(con));
+      this.getDefaultKeystore().then(con => this.setKeyStore(con));
     }
 
     //------------------------------------------------------
@@ -69,11 +69,11 @@ export class Wallet extends HdWallet {
      * @param walletId Number
      */
     static async fromSeed(seed: string, walletId = 0): Promise<Wallet> {
-        assertIsHexString(seed);
+      assertIsHexString(seed);
 
-        const hdKey = HDKey.fromMasterSeed(Buffer.from(stripHexPrefix(seed), 'hex'));
+      const hdKey = HDKey.fromMasterSeed(Buffer.from(stripHexPrefix(seed), 'hex'));
 
-        return new Wallet(hdKey, walletId);
+      return new Wallet(hdKey, walletId);
     }
 
     /**
@@ -82,10 +82,10 @@ export class Wallet extends HdWallet {
      * @param walletId
      */
     static async fromMnemonic(mnemonic: string, walletId = 0): Promise<Wallet> {
-        assertIsMnemonic(mnemonic);
+      assertIsMnemonic(mnemonic);
 
-        const seed = bip39.mnemonicToSeedSync(mnemonic).toString('hex');
-        return Wallet.fromSeed(`0x${seed}`, walletId);
+      const seed = bip39.mnemonicToSeedSync(mnemonic).toString('hex');
+      return Wallet.fromSeed(`0x${seed}`, walletId);
     }
 
     /**
@@ -93,15 +93,15 @@ export class Wallet extends HdWallet {
      * @param config
      */
     static async fromConfig(config: { seed: string; walletId?: number }): Promise<Wallet> {
-        const {seed = '', walletId = 0} = config;
-        return Wallet.fromSeed(seed, walletId);
+      const {seed = '', walletId = 0} = config;
+      return Wallet.fromSeed(seed, walletId);
     }
 
     /**
      *
      */
     static generateMnemonic(): string {
-        return bip39.generateMnemonic();
+      return bip39.generateMnemonic();
     }
 
     //------------------------------------------------------
@@ -110,15 +110,15 @@ export class Wallet extends HdWallet {
      * @param chain
      */
     async getDefaultConnection(chain?: Chain): Promise<Connection> {
-        const _chain = chain || new Chain(ChainId.MAINNET);
-        return _chain.newJsonRpcConnection();
+      const _chain = chain || new Chain(ChainId.MAINNET);
+      return _chain.newJsonRpcConnection();
     }
 
     /**
      *
      */
     async getDefaultKeystore(): Promise<KeyStore> {
-        return new InMemoryKeyStore();
+      return new InMemoryKeyStore();
     }
 
     /**
@@ -126,13 +126,13 @@ export class Wallet extends HdWallet {
      * @param connection Connection
      */
     async setConnection(connection: Connection): Promise<Wallet> {
-        this._connection = connection;
+      this._connection = connection;
 
-        for (const acc of this._accounts.values()) {
-            acc.setConnection(this._connection);
-        }
+      for (const acc of this._accounts.values()) {
+        acc.setConnection(this._connection);
+      }
 
-        return this;
+      return this;
     }
 
     /**
@@ -140,13 +140,13 @@ export class Wallet extends HdWallet {
      * @param keyStore
      */
     async setKeyStore(keyStore: KeyStore): Promise<Wallet> {
-        this._keyStore = keyStore;
+      this._keyStore = keyStore;
 
-        for (const acc of this._accounts.values()) {
-            acc.setKeyStore(this._keyStore);
-        }
+      for (const acc of this._accounts.values()) {
+        acc.setKeyStore(this._keyStore);
+      }
 
-        return this;
+      return this;
     }
 
     /**
@@ -158,12 +158,12 @@ export class Wallet extends HdWallet {
      * @param pub
      */
     async getAccountKeyPair(index = 0, pub = true): Promise<KeyPair> {
-        assertIsPositiveInt(index);
+      assertIsPositiveInt(index);
 
-        const deriveBasePath = Wallet.makeDerivationBasePath(this.coinId, this.walletId, pub);
-        const hdAccount = this._hdKey.derive(deriveBasePath).deriveChild(index);
+      const deriveBasePath = Wallet.makeDerivationBasePath(this.coinId, this.walletId, pub);
+      const hdAccount = this._hdKey.derive(deriveBasePath).deriveChild(index);
 
-        return new KeyPairSecp256k1(base_encode(hdAccount.privateKey));
+      return new KeyPairSecp256k1(base_encode(hdAccount.privateKey));
     }
 
     /**
@@ -172,27 +172,27 @@ export class Wallet extends HdWallet {
      * @param pub
      */
     async getAccount(index = 0, pub = true): Promise<Account> {
-        const accKey = `${this._connection.chainId}:${index}:${pub ? 'pub' : 'priv'}`;
-        let account = this._accounts.get(accKey);
+      const accKey = `${this._connection.chainId}:${index}:${pub ? 'pub' : 'priv'}`;
+      let account = this._accounts.get(accKey);
 
-        if (!account) {
-            account = new Account(await this.getAccountKeyPair(index, pub), this._connection);
-            await account.setKeyStore(this._keyStore);
-            this._accounts.set(accKey, account);
-        }
+      if (!account) {
+        account = new Account(await this.getAccountKeyPair(index, pub), this._connection);
+        await account.setKeyStore(this._keyStore);
+        this._accounts.set(accKey, account);
+      }
 
-        return account;
+      return account;
     }
 
     /**
      * @param signedTx
      */
     async sendTx(signedTx: SignedTransaction | string): Promise<string> {
-        let tx = signedTx;
-        if (signedTx instanceof SignedTransaction) {
-            tx = signedTx.toString();
-        }
+      let tx = signedTx;
+      if (signedTx instanceof SignedTransaction) {
+        tx = signedTx.toString();
+      }
 
-        return this._connection.provider.sendTransaction({tx: tx as string}).then(res => res.hash);
+      return this._connection.provider.sendTransaction({tx: tx as string}).then(res => res.hash);
     }
 }

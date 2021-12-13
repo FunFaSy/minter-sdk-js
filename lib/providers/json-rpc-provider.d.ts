@@ -60,5 +60,5 @@ export declare class JsonRpcProvider extends Provider {
     netUpdateVotes(params: rpcTypes.NetUpdateVotesRequest): Promise<rpcTypes.NetUpdateVotesResponse>;
     events(params: rpcTypes.EventsRequest): Promise<rpcTypes.EventsResponse>;
     /** @hidden */
-    send<T>(url: string, params?: object, data?: object, method?: string): Promise<T>;
+    send<T>(url: string, params?: Record<string, unknown>, data?: Record<string, unknown>, method?: string): Promise<T>;
 }

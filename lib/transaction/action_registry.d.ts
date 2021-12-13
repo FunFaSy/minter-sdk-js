@@ -1,5 +1,5 @@
 import { TransactionType } from './internal';
-declare type Constructor<T extends {} = {}> = new (...args: any[]) => T;
+import { Constructor } from '../util';
 export declare class ActionRegistry {
     private registry;
     private static instance;

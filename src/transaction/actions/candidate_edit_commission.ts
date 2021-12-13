@@ -22,31 +22,31 @@ export class EditCandidateCommissionAction extends Action {
     publicKey: Buffer;
 
     constructor(data?: string | Buffer | EditCandidateCommissioActionParams) {
-        let _data: any = data;
+      let _data: any = data;
 
-        if (typeof data == 'object' && !Buffer.isBuffer(data)) {
-            _data = {
-                publicKey : toBuffer(data.publicKey),
-                commission: new BN(data.commission),
-            };
-        }
-        // TODO: Validation
+      if (typeof data == 'object' && !Buffer.isBuffer(data)) {
+        _data = {
+          publicKey : toBuffer(data.publicKey),
+          commission: new BN(data.commission),
+        };
+      }
+      // TODO: Validation
 
-        super(_data);
+      super(_data);
 
     }
 
     rlpSchema(): RlpSchemaField[] {
-        return [
-            {
-                name  : 'publicKey',
-                length: 32,
-            },
-            {
-                name     : 'commission',
-                length   : 1,
-                allowLess: true,
-            },
-        ];
+      return [
+        {
+          name  : 'publicKey',
+          length: 32,
+        },
+        {
+          name     : 'commission',
+          length   : 1,
+          allowLess: true,
+        },
+      ];
     }
 }

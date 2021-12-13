@@ -44,77 +44,77 @@ export class Account {
     protected _connection: Connection;// Provider + Signer connects Account to network
 
     constructor(keyPair: KeyPair, connection: Connection) {
-        this.publicKey = keyPair.publicKey;
-        this.address = this.publicKey.address;
-        this._connection = connection;
+      this.publicKey = keyPair.publicKey;
+      this.address = this.publicKey.address;
+      this._connection = connection;
 
-        this._keyStore = new InMemoryKeyStore();
-        this._signer = new InMemorySigner(this._keyStore);
+      this._keyStore = new InMemoryKeyStore();
+      this._signer = new InMemorySigner(this._keyStore);
 
-        this._keyStore.setKey(this._connection.chainId, this.address.toString(), keyPair).then();
+      this._keyStore.setKey(this._connection.chainId, this.address.toString(), keyPair).then();
     }
 
     async setKeyStore(keyStore: KeyStore): Promise<Account> {
-        const oldStore = this._keyStore;
+      const oldStore = this._keyStore;
 
-        this._keyStore = keyStore;
-        this._signer = new InMemorySigner(this._keyStore);
+      this._keyStore = keyStore;
+      this._signer = new InMemorySigner(this._keyStore);
 
-        for (const [k, v] of await oldStore.entries()) {
+      for (const [k, v] of await oldStore.entries()) {
 
-            const parts = k.split(':');
+        const parts = k.split(':');
 
-            await this._keyStore.setKey(parts[0] as ChainId, parts[1], KeyPair.fromString(v));
-        }
+        await this._keyStore.setKey(parts[0] as ChainId, parts[1], KeyPair.fromString(v));
+      }
 
-        return this;
+      return this;
     }
 
     async setConnection(connection: Connection): Promise<Account> {
-        this._connection = connection;
-        return this;
+      this._connection = connection;
+      return this;
     }
 
     async nonce(): Promise<number> {
-        return this.state().then(res => Number(res?.transaction_count) + 1);
+      return this.state().then(res => Number(res?.transaction_count) + 1);
     }
 
     async balance(params?: rpcTypes.AddressStateRequest): Promise<rpcTypes.AddressStateResponse> {
-        const address = this.address.toString();
-        const _params = params || {};
+      const address = this.address.toString();
+      const _params = params || {};
 
-        return this._connection.provider.address({..._params, address});
+      return this._connection.provider.address({..._params, address});
     }
 
     async frozen(params?: rpcTypes.AddressFrozenRequest): Promise<rpcTypes.AddressFrozenResponse> {
-        const address = this.address.toString();
-        const _params = params || {};
+      const address = this.address.toString();
+      const _params = params || {};
 
-        return this._connection.provider.frozen({..._params, address});
+      return this._connection.provider.frozen({..._params, address});
     }
 
     async waitlist(params?: rpcTypes.AddressWaitListRequest): Promise<rpcTypes.AddressWaitListResponse> {
-        const address = this.address.toString();
-        const _params = params || {};
+      const address = this.address.toString();
+      const _params = params || {};
 
-        return this._connection.provider.waitlist({..._params, address});
+      return this._connection.provider.waitlist({..._params, address});
     }
 
     async state(): Promise<AccountState> {
-        const address = this.address.toString();
-        const state = {} as AccountState;
+      const address = this.address.toString();
+      const state = {} as AccountState;
 
-        const dfdBalance = this.balance({address, delegated: true});
-        const dfdFrozen = this.frozen({address});
-        const dfdWaitlist = this.waitlist({address});
+      const dfdBalance = this.balance({address, delegated: true});
+      const dfdFrozen = this.frozen({address});
+      const dfdWaitlist = this.waitlist({address});
 
-        return Promise.all([dfdBalance, dfdFrozen, dfdWaitlist]).then(([balance, frozen, waiting]) => {
-            Object.assign(state, balance);
-            state.frozen = frozen.frozen;
-            state.waiting = waiting.list;
+      return Promise.all([dfdBalance, dfdFrozen, dfdWaitlist]).then(([balance, frozen, waiting]) => {
+        Object.assign(state, balance);
+        state.frozen = frozen.frozen;
+        state.waiting = waiting.list;
 
-            return state;
-        });
+        return state;
+      });
     }
 
     //-----------------------------------------------
@@ -123,11 +123,11 @@ export class Account {
      * @param message
      */
     async sign(message: Buffer): Promise<Signature> {
-        if (!this._signer) {
-            throw new TypedError('Accont has no ');
-        }
+      if (!this._signer) {
+        throw new TypedError('Accont has no ');
+      }
 
-        return this._signer.sign(message, this.address.toString(), this._connection.chainId);
+      return this._signer.sign(message, this.address.toString(), this._connection.chainId);
     }
 
     /**
@@ -135,7 +135,7 @@ export class Account {
      * @param tx
      */
     async signTx(tx: Transaction): Promise<SignedTransaction> {
-        return this._signer.signTransaction(tx, this.address.toString(), this._connection.chainId);
+      return this._signer.signTransaction(tx, this.address.toString(), this._connection.chainId);
     }
 
     /**
@@ -145,11 +145,11 @@ export class Account {
      */
     async signAndSendTx(tx: Transaction): Promise<string> {
 
-        const signedTx = await this.signTx(tx);
+      const signedTx = await this.signTx(tx);
 
-        return this._connection.provider.sendTransaction({tx: signedTx.toString()}).then(res => res.hash);
+      return this._connection.provider.sendTransaction({tx: signedTx.toString()}).then(res => res.hash);
     }
 
-    //-----------------------------------------------
+  //-----------------------------------------------
 
 }

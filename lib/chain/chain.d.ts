@@ -63,7 +63,7 @@ export declare class Chain {
     /**
      *
      */
-    describe(): any;
+    describe(): Record<string, any>;
     /**
      *
      */

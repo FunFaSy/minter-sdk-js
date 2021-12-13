@@ -23,34 +23,34 @@ export class SellSwapAction extends Action {
     minimumValueToBuy: Buffer;
 
     constructor(data?: string | Buffer | SellSwapActionParams) {
-        let _data: any = data;
+      let _data: any = data;
 
-        if (typeof data == 'object' && !Buffer.isBuffer(data)) {
-            _data = {
-                coins            : data.coins.map(item => new BN(item)),
-                valueToSell      : new BN(data.valueToSell),
-                minimumValueToBuy: new BN(data.minimumValueToBuy),
-            };
-        }
-        super(_data);
+      if (typeof data == 'object' && !Buffer.isBuffer(data)) {
+        _data = {
+          coins            : data.coins.map(item => new BN(item)),
+          valueToSell      : new BN(data.valueToSell),
+          minimumValueToBuy: new BN(data.minimumValueToBuy),
+        };
+      }
+      super(_data);
     }
 
     rlpSchema(): RlpSchemaField[] {
-        return [
-            {
-                name               : 'coins',
-                allowZero          : false,
-                allowNonBinaryArray: true,
-            },
-            {
-                name     : 'valueToSell',
-                length   : 32,
-                allowLess: true,
-            },
-            {
-                name     : 'minimumValueToBuy',
-                length   : 32,
-                allowLess: true,
-            }];
+      return [
+        {
+          name               : 'coins',
+          allowZero          : false,
+          allowNonBinaryArray: true,
+        },
+        {
+          name     : 'valueToSell',
+          length   : 32,
+          allowLess: true,
+        },
+        {
+          name     : 'minimumValueToBuy',
+          length   : 32,
+          allowLess: true,
+        }];
     }
 }

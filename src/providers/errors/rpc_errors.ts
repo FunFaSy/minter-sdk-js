@@ -8,7 +8,7 @@ import {formatBipAmount, isObject, isString} from '../../util';
  *
  */
 const mustacheHelpers = {
-    formatBip: () => (n, render) => formatBipAmount(render(n)),
+  formatBip: () => (n, render) => formatBipAmount(render(n)),
 };
 
 export class ServerError extends TypedError {
@@ -117,52 +117,52 @@ export enum ServerErrorCode {
 }
 
 export function parseRpcError(errorObj: Record<string, any>): ServerError {
-    const result = {};
-    let errorClassName = 'UnknownServerError';
+  const result = {};
+  let errorClassName = 'UnknownServerError';
 
-    // if (errorObj?.code) {
-    //     errorClassName = getErrorTypeFromErrorCode(errorObj?.code);
-    // }
-    // //
-    // else if (errorObj?.data) {
-    //     errorClassName = walkSubtype(errorObj.data, schema.schema, result, '');
-    // }
-    // //
-    // else {
-    const errorMessage = `[${errorObj.code}] ${errorObj.message}: ${JSON.stringify(errorObj.data)}`;
-    // NOTE: All this hackery is happening because structured errors not implemented
-    errorClassName = getErrorTypeFromErrorMessage(errorMessage);
-    result['msg_text'] = errorMessage;
-    // }
+  // if (errorObj?.code) {
+  //     errorClassName = getErrorTypeFromErrorCode(errorObj?.code);
+  // }
+  // //
+  // else if (errorObj?.data) {
+  //     errorClassName = walkSubtype(errorObj.data, schema.schema, result, '');
+  // }
+  // //
+  // else {
+  const errorMessage = `[${errorObj.code}] ${errorObj.message}: ${JSON.stringify(errorObj.data)}`;
+  // NOTE: All this hackery is happening because structured errors not implemented
+  errorClassName = getErrorTypeFromErrorMessage(errorMessage);
+  result['msg_text'] = errorMessage;
+  // }
 
-    // NOTE: This assumes that all errors extend TypedError
-    const msg = formatError(errorClassName, result);
-    const error = new ServerError(msg, errorClassName, errorObj);
+  // NOTE: This assumes that all errors extend TypedError
+  const msg = formatError(errorClassName, result);
+  const error = new ServerError(msg, errorClassName, errorObj);
 
-    Object.assign(error, result);
-    return error;
+  Object.assign(error, result);
+  return error;
 }
 
 export function parseTransactionResultError(result: any): ServerTransactionError {
-    const server_error = parseRpcError(result.error);
-    const server_tx_error = new ServerTransactionError();
-    Object.assign(server_tx_error, server_error);
+  const server_error = parseRpcError(result.error);
+  const server_tx_error = new ServerTransactionError();
+  Object.assign(server_tx_error, server_error);
 
-    server_tx_error.type = server_error.type;
-    server_tx_error.message = server_error.message;
-    server_tx_error.transaction = result.hash;
+  server_tx_error.type = server_error.type;
+  server_tx_error.message = server_error.message;
+  server_tx_error.transaction = result.hash;
 
-    return server_tx_error;
+  return server_tx_error;
 }
 
 export function formatError(errorClassName: string, errorData): string {
-    if (typeof messages[errorClassName] === 'string') {
-        return Mustache.render(messages[errorClassName], {
-            ...errorData,
-            ...mustacheHelpers,
-        });
-    }
-    return JSON.stringify(errorData);
+  if (typeof messages[errorClassName] === 'string') {
+    return Mustache.render(messages[errorClassName], {
+      ...errorData,
+      ...mustacheHelpers,
+    });
+  }
+  return JSON.stringify(errorData);
 }
 
 /**
@@ -173,58 +173,58 @@ export function formatError(errorClassName: string, errorData): string {
  * @param typeName The human-readable error type name as defined in the JSON mapping
  */
 const walkSubtype = function(errorObj, schema, result, typeName) {
-    let error;
-    let type;
-    let errorTypeName;
-    for (const errorName in schema) {
-        if (isString(errorObj[errorName])) {
-            // Return early if error type is in a schema
-            return errorObj[errorName];
-        }
-        if (isObject(errorObj[errorName])) {
-            error = errorObj[errorName];
-            type = schema[errorName];
-            errorTypeName = errorName;
-        } else if (isObject(errorObj.kind) && isObject(errorObj.kind[errorName])) {
-            error = errorObj.kind[errorName];
-            type = schema[errorName];
-            errorTypeName = errorName;
-        }
+  let error;
+  let type;
+  let errorTypeName;
+  for (const errorName in schema) {
+    if (isString(errorObj[errorName])) {
+      // Return early if error type is in a schema
+      return errorObj[errorName];
     }
-    if (error && type) {
-        for (const prop of Object.keys(type.props)) {
-            result[prop] = error[prop];
-        }
-        return walkSubtype(error, schema, result, errorTypeName);
-    } else {
-        // TODO: is this the right thing to do?
-        result.kind = errorObj;
-        return typeName;
+    if (isObject(errorObj[errorName])) {
+      error = errorObj[errorName];
+      type = schema[errorName];
+      errorTypeName = errorName;
+    } else if (isObject(errorObj.kind) && isObject(errorObj.kind[errorName])) {
+      error = errorObj.kind[errorName];
+      type = schema[errorName];
+      errorTypeName = errorName;
     }
+  }
+  if (error && type) {
+    for (const prop of Object.keys(type.props)) {
+      result[prop] = error[prop];
+    }
+    return walkSubtype(error, schema, result, errorTypeName);
+  } else {
+    // TODO: is this the right thing to do?
+    result.kind = errorObj;
+    return typeName;
+  }
 };
 
 export function getErrorTypeFromErrorMessage(errorMessage) {
-    // This function should be removed when JSON RPC starts returning typed errors.
-    switch (true) {
+  // This function should be removed when JSON RPC starts returning typed errors.
+  switch (true) {
+  //
+  case /^(.*?)tx(.*?)not found(.*?)$/.test(errorMessage):
+    return 'TxNotFound';
     //
-    case /^(.*?)tx(.*?)not found(.*?)$/.test(errorMessage):
-        return 'TxNotFound';
-        //
-    case /^(.*?)tx(.*?)already exists in cache(.*?)$/.test(errorMessage):
-        return 'TxAlreadyExists';
-    default:
-        return 'UnknownServerError';
-    }
+  case /^(.*?)tx(.*?)already exists in cache(.*?)$/.test(errorMessage):
+    return 'TxAlreadyExists';
+  default:
+    return 'UnknownServerError';
+  }
 }
 
 export function getErrorTypeFromErrorCode(code: string): string {
-    // This function should be removed when JSON RPC starts returning typed errors.
-    switch (true) {
-    case ServerErrorCode[code]:
-        return ServerErrorCode[code];
-    default:
-        return 'UnknownServerError';
-    }
+  // This function should be removed when JSON RPC starts returning typed errors.
+  switch (true) {
+  case ServerErrorCode[code]:
+    return ServerErrorCode[code];
+  default:
+    return 'UnknownServerError';
+  }
 }
 
 /**

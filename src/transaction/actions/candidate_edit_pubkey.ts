@@ -21,30 +21,30 @@ export class EditCandidatePubKeyAction extends Action {
     publicKey: Buffer;
 
     constructor(data?: string | Buffer | EditCandidatePubKeyActionParams) {
-        let _data: any = data;
+      let _data: any = data;
 
-        if (typeof data == 'object' && !Buffer.isBuffer(data)) {
-            _data = {
-                publicKey   : toBuffer(data.publicKey),
-                newPublicKey: toBuffer(data.newPublicKey),
-            };
-        }
-        // TODO: Validation
+      if (typeof data == 'object' && !Buffer.isBuffer(data)) {
+        _data = {
+          publicKey   : toBuffer(data.publicKey),
+          newPublicKey: toBuffer(data.newPublicKey),
+        };
+      }
+      // TODO: Validation
 
-        super(_data);
+      super(_data);
 
     }
 
     rlpSchema(): RlpSchemaField[] {
-        return [
-            {
-                name  : 'publicKey',
-                length: 32,
-            },
-            {
-                name  : 'newPublicKey',
-                length: 32,
-            },
-        ];
+      return [
+        {
+          name  : 'publicKey',
+          length: 32,
+        },
+        {
+          name  : 'newPublicKey',
+          length: 32,
+        },
+      ];
     }
 }

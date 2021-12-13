@@ -1,54 +1,54 @@
 {
-    "name": "mainnet",
-    "chainId": "mainnet",
-    "networkId": 1,
-    "initialHeight": 3278787,
-    "totalSlashed": 0,
-    "blockMaxGas": 100000,
-    "blockMaxBytes": 10000000,
-    "gasCoin": 0,
-    "comment": "",
-    "urls": {
-        "www": "https://minter.org/",
-        "doc": "https://www.minter.network/docs",
-        "console": "https://console.minter.network",
-        "wallet": "https://console.minter.network/wallet",
-        "explorer": "https://explorer.minter.network/",
-        "api": {
-            "node": {
-                "http": [
-                    "https://mnt.funfasy.dev/v2",
-                    "https://api.minter.one/v2"
-                ],
-                "ws": []
-            },
-            "gate": {
-                "http": [
-                    "https://gate-api.minter.network/api/v2"
-                ],
-                "ws": []
-            },
-            "explorer": {
-                "http": [
-                    "https://explorer-api.minter.network/api/v2/"
-                ],
-                "ws": []
-            }
-        }
-    },
-    "genesis": {
-        "hash": "",
-        "time": "",
-        "height": "",
-        "proposer": "",
-        "blockReward": ""
-    },
-    "bootstrapNodes": [
-        {
-            "id": "",
-            "ip": "",
-            "port": "26656",
-            "comment": ""
-        }
-    ]
+  "name": "mainnet",
+  "chainId": "mainnet",
+  "networkId": 1,
+  "initialHeight": 3278787,
+  "totalSlashed": 0,
+  "blockMaxGas": 100000,
+  "blockMaxBytes": 10000000,
+  "gasCoin": 0,
+  "comment": "",
+  "urls": {
+    "www": "https://minter.org/",
+    "doc": "https://www.minter.network/docs",
+    "console": "https://console.minter.network",
+    "wallet": "https://console.minter.network/wallet",
+    "explorer": "https://explorer.minter.network/",
+    "api": {
+      "node": {
+        "http": [
+          "https://mnt.funfasy.dev/v2",
+          "https://api.minter.one/v2"
+        ],
+        "ws": []
+      },
+      "gate": {
+        "http": [
+          "https://gate-api.minter.network/api/v2"
+        ],
+        "ws": []
+      },
+      "explorer": {
+        "http": [
+          "https://explorer-api.minter.network/api/v2/"
+        ],
+        "ws": []
+      }
+    }
+  },
+  "genesis": {
+    "hash": "",
+    "time": "",
+    "height": "",
+    "proposer": "",
+    "blockReward": ""
+  },
+  "bootstrapNodes": [
+    {
+      "id": "",
+      "ip": "",
+      "port": "26656",
+      "comment": ""
+    }
+  ]
 }

@@ -4,11 +4,11 @@ import defineProperties, {RlpSchemaField} from '../util/define-properties';
 import {Chain, ChainId} from '../chain';
 import {Address, KeyPair, PublicKey} from '../key_pair';
 import {
-    TxMultiSignature,
-    TxSignatureType,
-    TxSingleSignature,
-    TransactionSignature,
-    TransactionSignature as Signature,
+  TxMultiSignature,
+  TxSignatureType,
+  TxSingleSignature,
+  TransactionSignature,
+  TransactionSignature as Signature,
 } from './signature';
 import {Action} from './action';
 import actionsRegistry from './action_registry';
@@ -73,148 +73,148 @@ export class Transaction {
 
     constructor(data?: string | Buffer | TransactionParams, opts: TransactionOptions = {}) {
 
-        if (typeof data == 'object' && !Buffer.isBuffer(data)) {
-            // TODO: Prepare params .
-        }
+      if (typeof data == 'object' && !Buffer.isBuffer(data)) {
+        // TODO: Prepare params .
+      }
 
-        // Define RLP Properties
-        defineProperties(this, Transaction.rlpSchema(), data);
+      // Define RLP Properties
+      defineProperties(this, Transaction.rlpSchema(), data);
 
-        if (opts.chain) {
-            this._chain = opts.chain;
-            this.chainId = toBuffer(this._chain.chainId);
+      if (opts.chain) {
+        this._chain = opts.chain;
+        this.chainId = toBuffer(this._chain.chainId);
+      }
+      //
+      else if (this.chainId.length) {
+        this._chain = new Chain(parseInt(this.chainId.toString('hex'), 16));
+      }
+      //
+      else {
+        this._chain = new Chain(ChainId.MAINNET);
+        this.chainId = toBuffer(this._chain.chainId);
+      }
+
+      if (!this.gasCoin.length) {
+        this.gasCoin = toBuffer([this._chain.gasCoin]);
+      }
+
+      if (this.signatureData.length) {
+        if (this.isSignatureTypeSingle()) {
+          this.signature = new TxSingleSignature(this.signatureData, this);
         }
         //
-        else if (this.chainId.length) {
-            this._chain = new Chain(parseInt(this.chainId.toString('hex'), 16));
+        else if (this.isSignatureTypeMulti()) {
+          this.signature = new TxMultiSignature(this.signatureData, this);
+        } else {
+          throw new Error('Unknown signature type');
         }
-        //
-        else {
-            this._chain = new Chain(ChainId.MAINNET);
-            this.chainId = toBuffer(this._chain.chainId);
+      }
+
+      // RLP encoded action
+      if (this.data.length) {
+        // Recover Action from Buffer
+        const actionType = '0x' + toBuffer(this.type).toString('hex').toUpperCase() as TransactionType;
+        const ActionClass = actionsRegistry.get(actionType);
+
+        if (ActionClass) {
+          this._action = new ActionClass(this.data) as Action;
+        } else {
+          logWarning(`Unregistered action type ${actionType}`);
         }
+      }
 
-        if (!this.gasCoin.length) {
-            this.gasCoin = toBuffer([this._chain.gasCoin]);
-        }
-
-        if (this.signatureData.length) {
-            if (this.isSignatureTypeSingle()) {
-                this.signature = new TxSingleSignature(this.signatureData, this);
-            }
-            //
-            else if (this.isSignatureTypeMulti()) {
-                this.signature = new TxMultiSignature(this.signatureData, this);
-            } else {
-                throw new Error('Unknown signature type');
-            }
-        }
-
-        // RLP encoded action
-        if (this.data.length) {
-            // Recover Action from Buffer
-            const actionType = '0x' + toBuffer(this.type).toString('hex').toUpperCase() as TransactionType;
-            const ActionClass = actionsRegistry.get(actionType);
-
-            if (ActionClass) {
-                this._action = new ActionClass(this.data) as Action;
-            } else {
-                logWarning(`Unregistered action type ${actionType}`);
-            }
-        }
-
-        /**
+      /**
          * @property {Buffer} from (read only) sender address of this transaction, mathematically derived from other parameters.
          * @name from
          * @memberof Transaction
          */
-        Object.defineProperty(this, 'from', {
-            enumerable  : true,
-            configurable: true,
-            get         : this.getSenderAddress.bind(this),
-        });
+      Object.defineProperty(this, 'from', {
+        enumerable  : true,
+        configurable: true,
+        get         : this.getSenderAddress.bind(this),
+      });
     }
 
     /**
      *
      */
     static rlpSchema(): RlpSchemaField[] {
-        return [
-            {
-                name     : 'nonce',
-                length   : 32,
-                allowLess: true,
-                default  : Buffer.allocUnsafe(0),
-            },
-            {
-                name     : 'chainId',
-                length   : 1,
-                allowZero: true,
-                default  : Buffer.from([0]),
-            },
-            {
-                name     : 'gasPrice',
-                length   : 32,
-                allowLess: true,
-                default  : toBuffer(1),
-            },
-            {
-                name     : 'gasCoin',
-                length   : 4,
-                allowLess: true,
-                default  : Buffer.allocUnsafe(0),
-            },
-            {
-                name   : 'type',
-                length : 1,
-                default: toBuffer([TxSignatureType.Single]),
-            },
-            {
-                name   : 'data',
-                alias  : 'input',
-                default: Buffer.allocUnsafe(0),
-            },
-            {
-                name     : 'payload',
-                allowZero: true,
-                default  : Buffer.allocUnsafe(0),
-            },
-            {
-                name     : 'serviceData',
-                allowZero: true,
-                default  : Buffer.allocUnsafe(0),
-            },
-            // Signature fields
-            {
-                name     : 'signatureType',
-                length   : 1,
-                allowLess: true,
-                default  : toBuffer(TxSignatureType.Single),
-            },
-            {
-                name   : 'signatureData',
-                default: Buffer.allocUnsafe(0),
-            },
-        ];
+      return [
+        {
+          name     : 'nonce',
+          length   : 32,
+          allowLess: true,
+          default  : Buffer.allocUnsafe(0),
+        },
+        {
+          name     : 'chainId',
+          length   : 1,
+          allowZero: true,
+          default  : Buffer.from([0]),
+        },
+        {
+          name     : 'gasPrice',
+          length   : 32,
+          allowLess: true,
+          default  : toBuffer(1),
+        },
+        {
+          name     : 'gasCoin',
+          length   : 4,
+          allowLess: true,
+          default  : Buffer.allocUnsafe(0),
+        },
+        {
+          name   : 'type',
+          length : 1,
+          default: toBuffer([TxSignatureType.Single]),
+        },
+        {
+          name   : 'data',
+          alias  : 'input',
+          default: Buffer.allocUnsafe(0),
+        },
+        {
+          name     : 'payload',
+          allowZero: true,
+          default  : Buffer.allocUnsafe(0),
+        },
+        {
+          name     : 'serviceData',
+          allowZero: true,
+          default  : Buffer.allocUnsafe(0),
+        },
+        // Signature fields
+        {
+          name     : 'signatureType',
+          length   : 1,
+          allowLess: true,
+          default  : toBuffer(TxSignatureType.Single),
+        },
+        {
+          name   : 'signatureData',
+          default: Buffer.allocUnsafe(0),
+        },
+      ];
     }
 
     isSignatureTypeSingle(): boolean {
-        return bufferToInt(this.signatureType) == TxSignatureType.Single;
+      return bufferToInt(this.signatureType) == TxSignatureType.Single;
     }
 
     isSignatureTypeMulti(): boolean {
-        return bufferToInt(this.signatureType) == TxSignatureType.Multi;
+      return bufferToInt(this.signatureType) == TxSignatureType.Multi;
     }
 
     getRaw(): Buffer[] {
-        return this.raw;
+      return this.raw;
     }
 
     /**
      * returns chain ID
      */
     getChainId(): number {
-        return bufferToInt(this.chainId);
+      return bufferToInt(this.chainId);
     }
 
     /**
@@ -222,23 +222,23 @@ export class Transaction {
      * @return {Address}
      */
     getSenderAddress(): Address {
-        if (this._from) {
-            return this._from;
-        }
-
-        if (!this.isValidSignature()) {
-            throw new Error('Invalid Signature');
-        }
-
-        if (this.isSignatureTypeMulti()) {
-            const multiSignature = this.signature as TxMultiSignature;
-            this._from = new Address({raw: multiSignature.multisig});// "multisig" field
-            return this._from;
-        }
-
-        this._from = this.getSenderPublicKey().address;
-
+      if (this._from) {
         return this._from;
+      }
+
+      if (!this.isValidSignature()) {
+        throw new Error('Invalid Signature');
+      }
+
+      if (this.isSignatureTypeMulti()) {
+        const multiSignature = this.signature as TxMultiSignature;
+        this._from = new Address({raw: multiSignature.multisig});// "multisig" field
+        return this._from;
+      }
+
+      this._from = this.getSenderPublicKey().address;
+
+      return this._from;
     }
 
     /**
@@ -246,19 +246,19 @@ export class Transaction {
      * @return {Buffer}
      */
     getSenderPublicKey(): PublicKey {
-        if (!this.isValidSignature()) {
-            throw new Error('Invalid Signature');
-        }
+      if (!this.isValidSignature()) {
+        throw new Error('Invalid Signature');
+      }
 
-        if (this.isSignatureTypeMulti()) {
-            throw new Error('Unable to determine public key for Multisig transaction!');
-        }
+      if (this.isSignatureTypeMulti()) {
+        throw new Error('Unable to determine public key for Multisig transaction!');
+      }
 
-        return this._senderPublicKey;
+      return this._senderPublicKey;
     }
 
     getAction(): Action {
-        return this._action;
+      return this._action;
     }
 
     /**
@@ -266,22 +266,22 @@ export class Transaction {
      * @param includeSignature - Whether or not to include the signature
      */
     hash(includeSignature = true): Buffer {
-        if (includeSignature === undefined) {
-            includeSignature = true;
-        }
+      if (includeSignature === undefined) {
+        includeSignature = true;
+      }
 
-        let items;
-        if (includeSignature) {
-            items = this.raw;
-        }
-        //
-        else {
-            // hash everything except signatureData
-            items = this.raw.slice(0, this.raw.length - 1);
-        }
+      let items;
+      if (includeSignature) {
+        items = this.raw;
+      }
+      //
+      else {
+        // hash everything except signatureData
+        items = this.raw.slice(0, this.raw.length - 1);
+      }
 
-        // create hash
-        return rlphash(items);
+      // create hash
+      return rlphash(items);
     }
 
     /**
@@ -291,42 +291,42 @@ export class Transaction {
      */
     sign(keyPair: KeyPair, multiSigAddress: string = null): SignedTransaction {
 
-        const hash = this.hash(false);
-        const vrsSig = keyPair.sign(hash);
+      const hash = this.hash(false);
+      const vrsSig = keyPair.sign(hash);
 
-        if (this.isSignatureTypeSingle()) {
-            this.signature = new TxSingleSignature(vrsSig, this); // Convert Signature to TxSingleSignature;
-            // Side effect
-            this._senderPublicKey = (this.signature as TxSingleSignature).publicKey(hash).pop();
-        }
-        //
-        else if (this.isSignatureTypeMulti()) {
-            assert(
-                isValidAddress(multiSigAddress),
-                `Multisig transaction expect valid Multisig address, but got ${multiSigAddress}`,
-            );
+      if (this.isSignatureTypeSingle()) {
+        this.signature = new TxSingleSignature(vrsSig, this); // Convert Signature to TxSingleSignature;
+        // Side effect
+        this._senderPublicKey = (this.signature as TxSingleSignature).publicKey(hash).pop();
+      }
+      //
+      else if (this.isSignatureTypeMulti()) {
+        assert(
+          isValidAddress(multiSigAddress),
+          `Multisig transaction expect valid Multisig address, but got ${multiSigAddress}`,
+        );
 
-            if (!this.signature || !(this.signature instanceof TxMultiSignature)) {
-                this.signature = new TxMultiSignature({multisig: toBuffer(multiSigAddress), signatures: []}, this);
-            }
-
-            (this.signature as TxMultiSignature).addOne(new TxSingleSignature(vrsSig)); //
-            (this.signature as TxMultiSignature).setMultisig(toBuffer(multiSigAddress));//
-            Object.assign(this.signature, vrsSig);
-        }
-        //
-        else {
-            throw new Error('Unknown signature type!');
+        if (!this.signature || !(this.signature instanceof TxMultiSignature)) {
+          this.signature = new TxMultiSignature({multisig: toBuffer(multiSigAddress), signatures: []}, this);
         }
 
-        // Sync signature instance to Tx.signatureData
-        this.signatureData = this.signature.serialize();
+        (this.signature as TxMultiSignature).addOne(new TxSingleSignature(vrsSig)); //
+        (this.signature as TxMultiSignature).setMultisig(toBuffer(multiSigAddress));//
+        Object.assign(this.signature, vrsSig);
+      }
+      //
+      else {
+        throw new Error('Unknown signature type!');
+      }
 
-        // this.signature.on('channge',(sig: TransactionSignature) => {
-        //     this.signatureData = sig.serialize();
-        // });
+      // Sync signature instance to Tx.signatureData
+      this.signatureData = this.signature.serialize();
 
-        return new SignedTransaction({transaction: this, signature: this.signature});
+      // this.signature.on('channge',(sig: TransactionSignature) => {
+      //     this.signatureData = sig.serialize();
+      // });
+
+      return new SignedTransaction({transaction: this, signature: this.signature});
     }
 
     /**
@@ -334,16 +334,16 @@ export class Transaction {
      * @param keyPair
      */
     async signAsync(keyPair: KeyPair): Promise<SignedTransaction> {
-        return new Promise<SignedTransaction>((resolve, reject) => {
-            try {
-                const signedTxData = this.sign(keyPair);
-                return resolve(signedTxData);
-            }
-            catch (e) {
-                reject(e);
-            }
+      return new Promise<SignedTransaction>((resolve, reject) => {
+        try {
+          const signedTxData = this.sign(keyPair);
+          return resolve(signedTxData);
+        }
+        catch (e) {
+          reject(e);
+        }
 
-        });
+      });
     }
 
     /**
@@ -353,16 +353,16 @@ export class Transaction {
     validate(stringError: false): boolean
     validate(stringError: true): string
     validate(stringError = false): boolean | string {
-        const errors = [];
-        if (!this.isValidSignature()) {
-            errors.push('Invalid Signature');
-        }
+      const errors = [];
+      if (!this.isValidSignature()) {
+        errors.push('Invalid Signature');
+      }
 
-        if (stringError === false) {
-            return errors.length === 0;
-        } else {
-            return errors.join(' ');
-        }
+      if (stringError === false) {
+        return errors.length === 0;
+      } else {
+        return errors.join(' ');
+      }
     }
 
     /**
@@ -371,25 +371,25 @@ export class Transaction {
      * @return {Boolean}
      */
     isValidSignature(): boolean {
-        const isValid = this.signature instanceof Signature && this.signature.valid();
+      const isValid = this.signature instanceof Signature && this.signature.valid();
 
-        if (isValid && this.isSignatureTypeSingle()) {
-            // Side effect
-            if (!(this._senderPublicKey instanceof PublicKey)) {
-                const txHash = this.hash(false);
-                this._senderPublicKey = (this.signature as TxSingleSignature).publicKey(txHash).pop();
-            }
+      if (isValid && this.isSignatureTypeSingle()) {
+        // Side effect
+        if (!(this._senderPublicKey instanceof PublicKey)) {
+          const txHash = this.hash(false);
+          this._senderPublicKey = (this.signature as TxSingleSignature).publicKey(txHash).pop();
         }
+      }
 
-        return isValid;
+      return isValid;
     }
 
     /**
      * Returns the rlp encoding of the transaction
      */
     serialize(): Buffer {
-        // Note: This never gets executed, defineProperties overwrites it.
-        return rlp.encode(this.raw);
+      // Note: This never gets executed, defineProperties overwrites it.
+      return rlp.encode(this.raw);
     }
 
     /**
@@ -398,24 +398,24 @@ export class Transaction {
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     toJSON(labels = false): { [key: string]: string } | string[] {
-        // Note: This never gets executed, defineProperties overwrites it.
-        return {};
+      // Note: This never gets executed, defineProperties overwrites it.
+      return {};
     }
 
     /**
      *
      */
     isSigned(): boolean {
-        return this.signature instanceof Signature && this.signature.valid();
+      return this.signature instanceof Signature && this.signature.valid();
     }
 
     getSignature(): Signature | undefined {
-        if (!this.isSigned()) {return undefined;}
-        return this.signature;
+      if (!this.isSigned()) {return undefined;}
+      return this.signature;
     }
 
     toString() {
-        return '0x' + this.serialize().toString('hex');
+      return '0x' + this.serialize().toString('hex');
     }
 }
 
@@ -427,19 +427,19 @@ export class SignedTransaction extends Assignable {
     signature: TransactionSignature;
 
     static decode(bytes: Buffer): SignedTransaction {
-        const tx = new Transaction(bytes);
-        return new SignedTransaction({
-            transaction: tx,
-            signature  : tx.getSignature(),
-        });
+      const tx = new Transaction(bytes);
+      return new SignedTransaction({
+        transaction: tx,
+        signature  : tx.getSignature(),
+      });
     }
 
     serialize(): Buffer {
-        return this.transaction.serialize();
+      return this.transaction.serialize();
     }
 
     toString() {
-        return this.transaction.toString();
+      return this.transaction.toString();
     }
 }
 

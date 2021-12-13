@@ -1,51 +1,51 @@
 {
-    "name": "taconet",
-    "chainId": "taconet",
-    "networkId": 2,
-    "initialHeight": 3202609,
-    "totalSlashed": 0,
-    "blockMaxGas": 100000,
-    "blockMaxBytes": 10000000,
-    "gasCoin": 0,
-    "comment": "",
-    "urls": {
-        "www": "https://minter.org",
-        "doc": "https://github.com/klim0v/minter-network-web/blob/patch-4/content/docs/index.md",
-        "console": "https://console.taconet.minter.network",
-        "wallet": "https://console.taconet.minter.network/wallet",
-        "explorer": "https://explorer.taconet.minter.network",
-        "api": {
-            "node": {
-                "http": [
-                    "https://node-api.taconet.minter.network/v2"
-                ],
-                "ws": []
-            },
-            "gate": {
-                "http": [],
-                "ws": []
-            },
-            "explorer": {
-                "http": [
-                    "https://explorer-api.taconet.minter.network/api/v2"
-                ],
-                "ws": []
-            }
-        }
-    },
-    "genesis": {
-        "hash": "",
-        "time": "",
-        "height": "",
-        "proposer": "",
-        "blockReward": ""
-    },
-    "bootstrapNodes": [
-        {
-            "id": "",
-            "ip": "",
-            "port": "26656",
-            "comment": ""
-        }
-    ]
+  "name": "taconet",
+  "chainId": "taconet",
+  "networkId": 2,
+  "initialHeight": 3202609,
+  "totalSlashed": 0,
+  "blockMaxGas": 100000,
+  "blockMaxBytes": 10000000,
+  "gasCoin": 0,
+  "comment": "",
+  "urls": {
+    "www": "https://minter.org",
+    "doc": "https://github.com/klim0v/minter-network-web/blob/patch-4/content/docs/index.md",
+    "console": "https://console.taconet.minter.network",
+    "wallet": "https://console.taconet.minter.network/wallet",
+    "explorer": "https://explorer.taconet.minter.network",
+    "api": {
+      "node": {
+        "http": [
+          "https://node-api.taconet.minter.network/v2"
+        ],
+        "ws": []
+      },
+      "gate": {
+        "http": [],
+        "ws": []
+      },
+      "explorer": {
+        "http": [
+          "https://explorer-api.taconet.minter.network/api/v2"
+        ],
+        "ws": []
+      }
+    }
+  },
+  "genesis": {
+    "hash": "",
+    "time": "",
+    "height": "",
+    "proposer": "",
+    "blockReward": ""
+  },
+  "bootstrapNodes": [
+    {
+      "id": "",
+      "ip": "",
+      "port": "26656",
+      "comment": ""
+    }
+  ]
 }

@@ -23,46 +23,46 @@ export class CreateMultiSigAction extends Action {
     addresses: Buffer[];
 
     constructor(data?: string | Buffer | CreateMultiSigActionParams) {
-        let _data: any = data;
+      let _data: any = data;
 
-        if (typeof data == 'object' && !Buffer.isBuffer(data)) {
-            _data = {
-                threshold: new BN(data?.threshold),// Should be less or equal than Weights Sum
-                weights  : data?.weights.map(w => new BN(w)), // Should be greater or equal than threshold
-                addresses: data?.addresses,
-            };
-        }
-        // TODO: Validation
-        // threshold Should be less or equal than Weights Sum
-        // weights   Should be greater or equal than threshold
+      if (typeof data == 'object' && !Buffer.isBuffer(data)) {
+        _data = {
+          threshold: new BN(data?.threshold),// Should be less or equal than Weights Sum
+          weights  : data?.weights.map(w => new BN(w)), // Should be greater or equal than threshold
+          addresses: data?.addresses,
+        };
+      }
+      // TODO: Validation
+      // threshold Should be less or equal than Weights Sum
+      // weights   Should be greater or equal than threshold
 
-        super(_data);
+      super(_data);
     }
 
     rlpSchema(): RlpSchemaField[] {
-        return [
-            {
-                name     : 'threshold',
-                allowZero: false,
-                // length: 2,
-                // allowLess: true,
-                default  : Buffer.from([]),
-            }, {
-                name               : 'weights',
-                allowZero          : false,
-                allowNonBinaryArray: true,
-                nonBinaryArrayTransform(weight) {
-                    return toBuffer(new BN(weight));
-                },
-                default            : Buffer.from([]),
-            }, {
-                name               : 'addresses',
-                allowZero          : false,
-                allowNonBinaryArray: true,
-                nonBinaryArrayTransform(address) {
-                    return toBuffer(address);
-                },
-                default            : Buffer.from([]),
-            }];
+      return [
+        {
+          name     : 'threshold',
+          allowZero: false,
+          // length: 2,
+          // allowLess: true,
+          default  : Buffer.from([]),
+        }, {
+          name               : 'weights',
+          allowZero          : false,
+          allowNonBinaryArray: true,
+          nonBinaryArrayTransform(weight) {
+            return toBuffer(new BN(weight));
+          },
+          default            : Buffer.from([]),
+        }, {
+          name               : 'addresses',
+          allowZero          : false,
+          allowNonBinaryArray: true,
+          nonBinaryArrayTransform(address) {
+            return toBuffer(address);
+          },
+          default            : Buffer.from([]),
+        }];
     }
 }

@@ -14,7 +14,7 @@ export const BIP_NOMINATION = new BN('10', 10).pow(new BN(BIP_NOMINATION_EXP, 10
 const ROUNDING_OFFSETS: BN[] = [];
 const BN10 = new BN(10);
 for (let i = 0, offset = new BN(5); i < BIP_NOMINATION_EXP; i++, offset = offset.mul(BN10)) {
-    ROUNDING_OFFSETS[i] = offset;
+  ROUNDING_OFFSETS[i] = offset;
 }
 
 /**
@@ -26,22 +26,22 @@ for (let i = 0, offset = new BN(5); i < BIP_NOMINATION_EXP; i++, offset = offset
  * @returns Value in human readable BIP units
  */
 export function formatBipAmount(pipAmt: string | BN, fracDigits: number = BIP_NOMINATION_EXP): string {
-    const amtBN = new BN(pipAmt, 10);
-    if (fracDigits !== BIP_NOMINATION_EXP) {
-        // Adjust balance for rounding at given number of digits
-        const roundingExp = BIP_NOMINATION_EXP - fracDigits - 1;
-        if (roundingExp > 0) {
-            amtBN.iadd(ROUNDING_OFFSETS[roundingExp]);
-        }
+  const amtBN = new BN(pipAmt, 10);
+  if (fracDigits !== BIP_NOMINATION_EXP) {
+    // Adjust balance for rounding at given number of digits
+    const roundingExp = BIP_NOMINATION_EXP - fracDigits - 1;
+    if (roundingExp > 0) {
+      amtBN.iadd(ROUNDING_OFFSETS[roundingExp]);
     }
+  }
 
-    pipAmt = amtBN.toString();
-    const wholeStr = pipAmt.substring(0, pipAmt.length - BIP_NOMINATION_EXP) || '0';
-    const fractionStr = pipAmt.substring(pipAmt.length - BIP_NOMINATION_EXP).
-        padStart(BIP_NOMINATION_EXP, '0').
-        substring(0, fracDigits);
+  pipAmt = amtBN.toString();
+  const wholeStr = pipAmt.substring(0, pipAmt.length - BIP_NOMINATION_EXP) || '0';
+  const fractionStr = pipAmt.substring(pipAmt.length - BIP_NOMINATION_EXP).
+    padStart(BIP_NOMINATION_EXP, '0').
+    substring(0, fracDigits);
 
-    return trimTrailingZeroes(`${wholeStr}.${fractionStr}`);
+  return trimTrailingZeroes(`${wholeStr}.${fractionStr}`);
 }
 
 /**
@@ -51,7 +51,7 @@ export function formatBipAmount(pipAmt: string | BN, fracDigits: number = BIP_NO
  * @param fracDigits
  */
 export function convertPipToBip(pipAmt: string | BN, fracDigits: number = BIP_NOMINATION_EXP): string {
-    return formatBipAmount(pipAmt, fracDigits);
+  return formatBipAmount(pipAmt, fracDigits);
 }
 
 /**
@@ -62,17 +62,17 @@ export function convertPipToBip(pipAmt: string | BN, fracDigits: number = BIP_NO
  * @returns The parsed yoctoⓃ {@link https://en.wikipedia.org/wiki/Yocto-} amount or null if no amount was passed in
  */
 export function parseBipAmount(amt?: string | number): string | null {
-    if (!amt) { return null; }
+  if (!amt) { return null; }
 
-    amt = cleanupAmount(amt.toString());
+  amt = cleanupAmount(amt.toString());
 
-    const split = amt.split('.');
-    const wholePart = split[0];
-    const fracPart = split[1] || '';
-    if (split.length > 2 || fracPart.length > BIP_NOMINATION_EXP) {
-        throw new Error(`Cannot parse '${amt}' as BIP amount`);
-    }
-    return trimLeadingZeroes(wholePart + fracPart.padEnd(BIP_NOMINATION_EXP, '0'));
+  const split = amt.split('.');
+  const wholePart = split[0];
+  const fracPart = split[1] || '';
+  if (split.length > 2 || fracPart.length > BIP_NOMINATION_EXP) {
+    throw new Error(`Cannot parse '${amt}' as BIP amount`);
+  }
+  return trimLeadingZeroes(wholePart + fracPart.padEnd(BIP_NOMINATION_EXP, '0'));
 }
 
 /**
@@ -81,7 +81,7 @@ export function parseBipAmount(amt?: string | number): string | null {
  * @param amt
  */
 export function convertBipToPip(amt?: string | number): string | null {
-    return parseBipAmount(amt);
+  return parseBipAmount(amt);
 }
 
 /**
@@ -90,7 +90,7 @@ export function convertBipToPip(amt?: string | number): string | null {
  * @returns string The cleaned value
  */
 function cleanupAmount(amount: string): string {
-    return amount.replace(/,/g, '').trim();
+  return amount.replace(/,/g, '').trim();
 }
 
 /**
@@ -99,7 +99,7 @@ function cleanupAmount(amount: string): string {
  * @returns string The value without the trailing zeros
  */
 function trimTrailingZeroes(value: string): string {
-    return value.replace(/\.?0*$/, '');
+  return value.replace(/\.?0*$/, '');
 }
 
 /**
@@ -108,11 +108,11 @@ function trimTrailingZeroes(value: string): string {
  * @returns string The value without the leading zeroes
  */
 function trimLeadingZeroes(value: string): string {
-    value = value.replace(/^0+/, '');
-    if (value === '') {
-        return '0';
-    }
-    return value;
+  value = value.replace(/^0+/, '');
+  if (value === '') {
+    return '0';
+  }
+  return value;
 }
 
 /**
@@ -121,9 +121,9 @@ function trimLeadingZeroes(value: string): string {
  * @returns string A value with commas
  */
 export function formatWithCommas(value: string): string {
-    const pattern = /(-?\d+)(\d{3})/;
-    while (pattern.test(value)) {
-        value = value.replace(pattern, '$1,$2');
-    }
-    return value;
+  const pattern = /(-?\d+)(\d{3})/;
+  while (pattern.test(value)) {
+    value = value.replace(pattern, '$1,$2');
+  }
+  return value;
 }

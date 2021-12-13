@@ -27,47 +27,47 @@ export class RemoveLiquidityAction extends Action {
     minimumVolume1: Buffer;
 
     constructor(data?: string | Buffer | RemoveLiquidityActionParams) {
-        let _data: any = data;
+      let _data: any = data;
 
-        if (typeof data == 'object' && !Buffer.isBuffer(data)) {
-            _data = {
-                coin0         : new BN(data?.coin0),
-                coin1         : new BN(data?.coin1),
-                liquidity     : new BN(data?.liquidity),
-                minimumVolume0: new BN(data?.minimumVolume0),
-                minimumVolume1: new BN(data?.minimumVolume1),
-            };
-        }
-        super(_data);
+      if (typeof data == 'object' && !Buffer.isBuffer(data)) {
+        _data = {
+          coin0         : new BN(data?.coin0),
+          coin1         : new BN(data?.coin1),
+          liquidity     : new BN(data?.liquidity),
+          minimumVolume0: new BN(data?.minimumVolume0),
+          minimumVolume1: new BN(data?.minimumVolume1),
+        };
+      }
+      super(_data);
     }
 
     rlpSchema(): RlpSchemaField[] {
-        return [
-            {
-                name     : 'coin0',
-                length   : 4,
-                allowLess: true,
-            },
-            {
-                name     : 'coin1',
-                length   : 4,
-                allowLess: true,
-            },
-            {
-                name     : 'liquidity',
-                length   : 32,
-                allowLess: true,
-            },
-            {
-                name     : 'minimumVolume0',
-                length   : 32,
-                allowLess: true,
-            },
-            {
-                name     : 'minimumVolume1',
-                length   : 32,
-                allowLess: true,
-            },
-        ];
+      return [
+        {
+          name     : 'coin0',
+          length   : 4,
+          allowLess: true,
+        },
+        {
+          name     : 'coin1',
+          length   : 4,
+          allowLess: true,
+        },
+        {
+          name     : 'liquidity',
+          length   : 32,
+          allowLess: true,
+        },
+        {
+          name     : 'minimumVolume0',
+          length   : 32,
+          allowLess: true,
+        },
+        {
+          name     : 'minimumVolume1',
+          length   : 32,
+          allowLess: true,
+        },
+      ];
     }
 }
