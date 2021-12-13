@@ -21,7 +21,7 @@ const uuidv1 = () => {
 /*  ------------------------------------------------------------------------ */
 
 const setTimeout_original = setTimeout;
-const setTimeout_safe = (done, ms, setTimeout = setTimeout_original /* overrideable for mocking purposes */,
+const setTimeout_safe = (done, ms, setTimeoutOrig = setTimeout_original /* overrideable for mocking purposes */,
   targetTime           = now() + ms) => {
 
   /*  The built-in setTimeout function can fire its callback earlier than specified, so we
@@ -30,11 +30,11 @@ const setTimeout_safe = (done, ms, setTimeout = setTimeout_original /* overridea
   let clearInnerTimeout = (): void => {return;};
   let active = true;
 
-  const id = setTimeout(() => {
+  const id = setTimeoutOrig(() => {
     active = true;
     const rest = targetTime - now();
     if (rest > 0) {
-      clearInnerTimeout = setTimeout_safe(done, rest, setTimeout, targetTime); // try sleep more
+      clearInnerTimeout = setTimeout_safe(done, rest, setTimeoutOrig, targetTime); // try sleep more
     } else {
       done();
     }
