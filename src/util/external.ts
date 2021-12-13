@@ -7,7 +7,6 @@ import {sha256} from 'ethereum-cryptography/sha256';
 import assert from 'assert';
 import * as bip39 from 'bip39';
 
-
 export {
     ecrecover
     , ecsign
@@ -41,6 +40,6 @@ export {
     , sha256
     , bip39
     , BN
-    , assert
+    , assert,
 };
 

@@ -56,7 +56,7 @@ export class InMemoryKeyStore extends KeyStore {
         this.storage.clear();
     }
 
-    async  entries(): Promise<IterableIterator<[string, string]>> {
+    async entries(): Promise<IterableIterator<[string, string]>> {
         return this.storage.entries();
     }
 
@@ -99,7 +99,5 @@ export class InMemoryKeyStore extends KeyStore {
     toString(): string {
         return 'InMemoryKeyStore';
     }
-
-
 
 }

@@ -70,6 +70,10 @@ export abstract class KeyPair {
         return this._keyType;
     }
 
+    get address(): Address {
+        return this.publicKey.address;
+    }
+
     /**
      * @param curve Name of elliptical curve, case-insensitive
      * @returns Random KeyPair based on the curve
@@ -137,10 +141,6 @@ export abstract class KeyPair {
 
     toString(): string {
         return `${keyType2Str(this.publicKey.keyType)}:${base_encode(this._secretKey)}`;
-    }
-
-    get address(): Address {
-        return this.publicKey.address;
     }
 }
 
@@ -217,7 +217,6 @@ export class KeyPairSecp256k1 extends KeyPair {
 export class PublicKey extends Assignable {
     keyType: KeyType;
     protected raw: Buffer;
-    protected _address: Address;
 
     constructor(properties: any) {
         super(properties);
@@ -225,6 +224,23 @@ export class PublicKey extends Assignable {
         if (0 < this.raw.length) {
             this._address = Address.fromPublicKey(this);
         }
+    }
+
+    protected _address: Address;
+
+    /**
+     *
+     */
+    get address(): Address {
+        if (this._address instanceof Address) {
+            return this._address;
+        }
+
+        if (0 < this.raw.length) {
+            this._address = Address.fromPublicKey(this);
+        }
+
+        return this._address;
     }
 
     static from(value: string | Buffer | PublicKey): PublicKey {
@@ -318,21 +334,6 @@ export class PublicKey extends Assignable {
      *
      */
     getRaw(): Buffer {return Buffer.from(this.raw);}// Copy of pub key
-
-    /**
-     *
-     */
-    get address(): Address {
-        if (this._address instanceof Address) {
-            return this._address;
-        }
-
-        if (0 < this.raw.length) {
-            this._address = Address.fromPublicKey(this);
-        }
-
-        return this._address;
-    }
 }
 
 /**

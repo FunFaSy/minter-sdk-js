@@ -13,6 +13,7 @@ export declare abstract class KeyPair {
     constructor(secretKey: Buffer, type?: KeyType);
     abstract get publicKey(): PublicKey;
     get type(): KeyType;
+    get address(): Address;
     /**
      * @param curve Name of elliptical curve, case-insensitive
      * @returns Random KeyPair based on the curve
@@ -36,7 +37,6 @@ export declare abstract class KeyPair {
      */
     abstract verify(message: Buffer, signature: Buffer[]): boolean;
     toString(): string;
-    get address(): Address;
 }
 /**
  * This class provides key pair functionality for Secp256k1 curve:
@@ -78,8 +78,12 @@ export declare class KeyPairSecp256k1 extends KeyPair {
 export declare class PublicKey extends Assignable {
     keyType: KeyType;
     protected raw: Buffer;
-    protected _address: Address;
     constructor(properties: any);
+    protected _address: Address;
+    /**
+     *
+     */
+    get address(): Address;
     static from(value: string | Buffer | PublicKey): PublicKey;
     /**
      * It's generally assumed that these are encoded in base58check.
@@ -108,10 +112,6 @@ export declare class PublicKey extends Assignable {
      *
      */
     getRaw(): Buffer;
-    /**
-     *
-     */
-    get address(): Address;
 }
 /**
  *

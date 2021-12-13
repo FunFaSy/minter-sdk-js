@@ -1,6 +1,6 @@
 import Transport from './transport';
 import JsonSerializer from './json-serializer';
-import {deepExtend, isNumber,  isValidUrl, logWarning, TypedError} from '../util';
+import {deepExtend, isNumber, isValidUrl, logWarning, TypedError} from '../util';
 import Serializer from './serializer';
 import axios, {AxiosInstance, AxiosRequestConfig, AxiosResponse} from 'axios';
 import createError from 'http-errors';
@@ -40,14 +40,14 @@ export default class HttpTransport extends Transport {
      * @returns - A Promise that will resolve when the message has been sent.
      * @async
      */
-    public async send(data: any):  Promise<AxiosResponse> {
+    public async send(data: any): Promise<AxiosResponse> {
         return this.axios(data);
     }
 
     public defaultConfig(): HttpTransportConfig {
         return {
             headers         : {
-                'Content-Type': 'application/json; charset=utf-8'
+                'Content-Type': 'application/json; charset=utf-8',
             },
             paramsSerializer: (params) => qs.stringify(params, {arrayFormat: 'repeat'}),
             validateStatus  : function(status) {

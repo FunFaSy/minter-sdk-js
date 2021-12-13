@@ -8,6 +8,14 @@ import HttpTransport, { HttpTransportConfig } from '../transport/http-transport'
 /**
  * Client class to interact with the Minter RPC API.
  * @see {@link https://#}
+ * @example
+ * ```js
+ * import * as minterSdk from 'minter-sdk-js';
+ *
+ * const chain = new minterSdk.Chain(minterSdk.ChainId.TESTNET);
+ * const provider = new minterSdk.JsonRpcProvider(chain.urls?.api?.node?.http[0]);
+ *
+ * ```
  */
 export declare class JsonRpcProvider extends Provider {
     /** @hidden */

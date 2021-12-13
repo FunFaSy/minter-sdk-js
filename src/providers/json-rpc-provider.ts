@@ -43,7 +43,7 @@ const REQUEST_RETRY_WAIT_BACKOFF = 1.5;
  */
 export class JsonRpcProvider extends Provider {
     /** @hidden */
-    protected readonly config: HttpTransportConfig
+    protected readonly config: HttpTransportConfig;
     protected readonly transport: HttpTransport;
 
     /**
@@ -566,7 +566,7 @@ export class JsonRpcProvider extends Provider {
     }
 
     /** @hidden */
-    async send<T>(url: string, params?: object, data?: object , method = 'get'): Promise<T> {
+    async send<T>(url: string, params?: object, data?: object, method = 'get'): Promise<T> {
         return exponentialBackoff(REQUEST_RETRY_WAIT, REQUEST_RETRY_NUMBER, REQUEST_RETRY_WAIT_BACKOFF,
             async () => {
 

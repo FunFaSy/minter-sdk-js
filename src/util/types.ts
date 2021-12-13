@@ -34,7 +34,6 @@ export type IBuilder<T> = {
     [k in keyof T]: (arg: T[k]) => IBuilder<T>
 } & { build(): T }
 
-
 export class PipelineBuilder<Input, Config extends Record<string, any>, Output> {
     private readonly stages: Array<(state: any, config: Config) => any>;
 
@@ -47,7 +46,7 @@ export class PipelineBuilder<Input, Config extends Record<string, any>, Output> 
     }
 
     append<NewConfig extends Record<string, any>, NewOutput>(
-        newStage: (state: Output, config: NewConfig) => NewOutput
+        newStage: (state: Output, config: NewConfig) => NewOutput,
     ): PipelineBuilder<Input, Config & NewConfig, NewOutput> {
         const newStages: Array<(state: any, config: Config & NewConfig) => any> = this.stages.slice();
         newStages.push(newStage);

@@ -1,7 +1,6 @@
 import {uuid} from '../util';
 import Serializer from './serializer';
 
-
 /**
  * Transports facilitate the exchange of messages between Server and Client.
  * The transport can be used either as a server (listening for connections) or as a client (maintaining a single connection to a server).
