@@ -10,27 +10,11 @@ function getProvider(config: { type: string; args: any }): Provider {
   case undefined:
     return undefined;
   case 'JsonRpcProvider':
-    return new JsonRpcProvider(config.args.url);
+    return new JsonRpcProvider(config.args.providerConfig || config.args.url);
   default:
     throw new Error(`Unknown provider type ${config.type}`);
   }
 }
-
-/**
- * @param config Contains connection info details
- * @returns {Signer}
- */
-// function getSigner(config: { type: string; keyStore: KeyStore }): Signer {
-//     switch (config.type) {
-//     case undefined:
-//         return undefined;
-//     case 'InMemorySigner': {
-//         return new InMemorySigner(config.keyStore as InMemoryKeyStore);
-//     }
-//     default:
-//         throw new Error(`Unknown signer type ${config.type}`);
-//     }
-// }
 
 /**
  *
@@ -38,7 +22,6 @@ function getProvider(config: { type: string; args: any }): Provider {
 export interface ConnectionConfig {
     chainId: string | ChainId;
     provider: { type: string; args: any };
-//    signer: { type: string; keyStore: KeyStore };
 }
 
 /**
@@ -58,7 +41,6 @@ export class Connection {
      */
     static fromConfig(config: ConnectionConfig): Connection {
       const provider = getProvider(config.provider);
-      //const signer = getSigner(config.signer);
       return new Connection(config.chainId as ChainId, provider);
     }
 }

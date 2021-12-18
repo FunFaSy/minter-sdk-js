@@ -18,7 +18,7 @@ import {Connection} from './connection';
 
 import {Account} from './account';
 import {Wallet} from './wallet';
-//export {Minter} from './minter';
+import {Minter} from './minter';
 
 export {
   utils
@@ -45,6 +45,8 @@ export {
   , JsonRpcProvider
 
   , Account
-  , Wallet,
+  , Wallet
+
+  , Minter
 
 };
