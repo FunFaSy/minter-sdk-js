@@ -1,7 +1,7 @@
 {
     "name": "@funfasy/minter-sdk-js",
     "description": "JavaScript library to interact with Minter Protocol via RPC API",
-    "version": "0.1.5",
+    "version": "0.1.6",
     "homepage": "https://github.com/FunFaSy/minter-sdk-js#readme",
     "author": "FunFaSy Team (https://github.com/FunFaSy)",
     "keywords": [
