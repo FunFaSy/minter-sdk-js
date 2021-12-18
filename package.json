@@ -19,8 +19,8 @@
     "browser": "lib/browser-index.js",
     "types": "lib/index.d.ts",
     "files": [
-        "/lib/",
-        "/dist/",
+        "lib/",
+        "dist/",
         "browser-exports.js"
     ],
     "dependencies": {
