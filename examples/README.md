@@ -70,7 +70,7 @@ const minterTestnet = new minterSdk.Minter({ chainId: minterSdk.ChainId.TESTNET 
 const MNEMONIC = 'solar ... satoshi .... vocal';
 const wall = await minterMain.walletFrom({ mnemonic: MNEMONIC }); // BIP32 HDWallet
 
-await wall.setConnection(minterTest.connection);
+await wall.setConnection(minterTestnet.connection);
 
 /*OR*/
 
@@ -211,7 +211,7 @@ const txHash = await acc.signAndSendTx(tx);
 ```js
 import * as minterSdk from '@funfasy/minter-sdk-js';
 /*
-* By default miner wallet store keys im memory.
+* By default minter wallet store keys in memory.
 */
 
 const minter = new minterSdk.Minter({ chainId:  minterSdk.ChainId.MAINNET });
@@ -221,6 +221,7 @@ const { wall, mnemonic } = await minter.newWallet(); // BIP32 HDWallet / InMemor
 /*
 * Set up new keyStore.
 * All exists accounts transfer keyPairs to new keyStore
+* 
 */
 await wall.setKeyStore(new minterSdk.keyStores.BrowserLocalStorageKeyStore()); 
 
@@ -250,7 +251,7 @@ console.log(batch);
 import * as minterSdk from '@funfasy/minter-sdk-js';
 
 /*
-* JsonRpcRoveder extends Axios http client. So config same as Axios
+* JsonRpcRovider extends Axios http client. So config same as the Axios
 */
 const chain = new minterSdk.Chain(minterSdk.ChainId.TESTNET);
 const minter = new minterSdk.Minter({ 
@@ -282,7 +283,7 @@ import * as minterSdk from '@funfasy/minter-sdk-js';
 const utils = minterSdk.utils;
 
 utils.convertBipToPip(100); // '100000000000000000000'
-utils.convertBipToPip(new utils.BN(100)); // '100000000000000000000'
+utils.convertBipToPip(new utils.BN('100')); // '100000000000000000000'
 utils.convertBipToPip('10,000.123'); // '10000123000000000000000'
 
 utils.convertPipToBip(new utils.BN('100000000000000000000')); // '100'
