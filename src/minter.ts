@@ -62,8 +62,8 @@ export class Minter {
       provider: {
         type: 'JsonRpcProvider',
         args: {
-          config: config.rpcConfig || undefined,
-          url   : config.nodeUrl || this.chain.urls?.api?.node?.http[0],
+          rpcConfig: config.rpcConfig || undefined,
+          url      : config.nodeUrl || this.chain.urls?.api?.node?.http[0],
         },
       },
     });
@@ -102,5 +102,4 @@ export class Minter {
 
     return {wall, mnemonic};
   }
-
 }

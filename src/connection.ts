@@ -10,7 +10,7 @@ function getProvider(config: { type: string; args: any }): Provider {
   case undefined:
     return undefined;
   case 'JsonRpcProvider':
-    return new JsonRpcProvider(config.args.providerConfig || config.args.url);
+    return new JsonRpcProvider(config.args.rpcConfig || config.args.url);
   default:
     throw new Error(`Unknown provider type ${config.type}`);
   }
