@@ -1,10 +1,6 @@
 import { Provider } from './providers';
 import { ChainId } from './chain/types';
 /**
- * @param config Contains connection info details
- * @returns {Signer}
- */
-/**
  *
  */
 export interface ConnectionConfig {
