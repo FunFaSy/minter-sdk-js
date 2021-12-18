@@ -8,32 +8,37 @@
  * @module minter
  */
 import {deepExtend} from './util';
-import {KeyStore} from './key_stores';
-import {Signer} from './signer';
+import {Connection} from './connection';
+import {HttpTransportConfig} from './transport/http-transport';
+import {ChainId} from './chain/types';
+import {Chain} from './chain/chain';
+import {Wallet} from './wallet';
+import {Provider} from './providers';
 
+/**
+ *
+ */
 export interface MinterConfig {
-    /** Holds {@link KeyPair | KeyPairs} for signing transactions */
-    keyStore?: KeyStore;
+  /**
+   *
+   */
+  chainId: string | ChainId;
 
-    /** @hidden */
-    signer?: Signer;
+  /**
+   * Minter RPC API url. used to make JSON RPC calls to interact with Minter.
+   * @see {@link JsonRpcProvider}
+   */
+  nodeUrl?: string;
+  /**
+   *
+   */
+  rpcConfig?: HttpTransportConfig
 
-    /**
-     * {@link KeyPair | KeyPairs} are stored in a {@link KeyStore} under the `networkId` namespace.
-     */
-    networkId: string;
-
-    /**
-     * Minter RPC API url. used to make JSON RPC calls to interact with Minter.
-     * @see {@link JsonRpcProvider}
-     */
-    nodeUrl: string;
-
-    /**
-     * Minter wallet url used to redirect users to their wallet in browser applications.
-     * @see {@link https://}
-     */
-    walletUrl?: string;
+  /**
+   * Minter wallet url used to redirect users to their wallet in browser applications.
+   * @see {@link https://}
+   */
+  walletUrl?: string;
 }
 
 /**
@@ -43,18 +48,59 @@ export interface MinterConfig {
  * ```
  */
 export class Minter {
-    readonly config: MinterConfig;
+  readonly config: MinterConfig;
+  readonly chain: Chain;
+  readonly connection: Connection;
 
-    //readonly connection: Connection;
+  constructor(config: Partial<MinterConfig>) {
+    this.config = deepExtend({}, config) as MinterConfig;
 
-    constructor(config: Partial<MinterConfig>) {
-      this.config = deepExtend({}, config) as MinterConfig;
+    this.chain = new Chain(config.chainId);
 
-      // this.connection = Connection.fromConfig({
-      //     networkId: config.networkId,
-      //     provider: { type: 'JsonRpcProvider', args: { url: config.nodeUrl } },
-      //     signer: config.signer || { type: 'InMemorySigner', keyStore: config.keyStore || config.deps.keyStore }
-      // });
+    this.connection = Connection.fromConfig({
+      chainId : this.chain.chainId,
+      provider: {
+        type: 'JsonRpcProvider',
+        args: {
+          config: config.rpcConfig || undefined,
+          url   : config.nodeUrl || this.chain.urls?.api?.node?.http[0],
+        },
+      },
+    });
 
+  }
+
+  /**
+   *
+   */
+  get rpc(): Provider {
+    return this.connection.provider;
+  }
+
+  /**
+   *
+   * @param params
+   * @param walletId
+   */
+  async walletFrom(params: { mnemonic?: string, seed?: string }, walletId?: number): Promise<Wallet> {
+
+    if (params?.seed?.length) {
+      return Wallet.fromSeed(params?.seed, walletId).then(wall => wall.setConnection(this.connection));
+    } else if (params?.mnemonic?.length) {
+      return Wallet.fromMnemonic(params?.mnemonic, walletId).then(wall => wall.setConnection(this.connection));
     }
+
+    return Promise.reject(new Error('Invalid parameters'));
+  }
+
+  /**
+   *
+   */
+  async newWallet(): Promise<{ wall: Wallet, mnemonic: string }> {
+    const mnemonic = Wallet.generateMnemonic();
+    const wall = await this.walletFrom({mnemonic});
+
+    return {wall, mnemonic};
+  }
+
 }

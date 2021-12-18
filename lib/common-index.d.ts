@@ -14,4 +14,5 @@ import { Check } from './check/check';
 import { Connection } from './connection';
 import { Account } from './account';
 import { Wallet } from './wallet';
-export { utils, providers, tx_actions, constants, Chain, ChainId, KeyPair, PublicKey, Signature, TxMultiSignature, TxSingleSignature, TxSignatureType, Signer, InMemorySigner, actionsRegistry, Transaction, SignedTransaction, Check, Connection, JsonRpcProvider, Account, Wallet, };
+import { Minter } from './minter';
+export { utils, providers, tx_actions, constants, Chain, ChainId, KeyPair, PublicKey, Signature, TxMultiSignature, TxSingleSignature, TxSignatureType, Signer, InMemorySigner, actionsRegistry, Transaction, SignedTransaction, Check, Connection, JsonRpcProvider, Account, Wallet, Minter };
