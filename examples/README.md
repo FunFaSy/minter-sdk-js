@@ -36,22 +36,44 @@ Browser
 ```js
 import * as minterSdk from '@funfasy/minter-sdk-js';
 
+const minter = new minterSdk.Minter({ chainId:  minterSdk.ChainId.MAINNET });
+
+const { wall, MNEMONIC } = await minter.newWallet(); // BIP32 HDWallet
+
+/*OR*/
+
 const MNEMONIC = minterSdk.Wallet.generateMnemonic();
+
 ```
 
-### Get access wallet by mnemonic
+### Get wallet access by mnemonic
 ```js
 import * as minterSdk from '@funfasy/minter-sdk-js';
 
+const minter = new minterSdk.Minter({ chainId:  minterSdk.ChainId.MAINNET });
+
 const MNEMONIC = 'solar ... satoshi .... vocal';
-const wall = await minterSdk.Wallet.fromMnemonic(MNEMONIC); // BIP44 HDWallet
+const wall = await minter.walletFrom({ mnemonic: MNEMONIC }); // BIP32 HDWallet
+
+/*OR*/
+const wall = await minterSdk.Wallet.fromMnemonic(MNEMONIC);
+
 ```
 
-### Connect to network
+### Switch network connection 
 ```js
 import * as minterSdk from '@funfasy/minter-sdk-js';
 
+const minterMainnet = new minterSdk.Minter({ chainId: minterSdk.ChainId.MAINNET });
+const minterTestnet = new minterSdk.Minter({ chainId: minterSdk.ChainId.TESTNET });
+
 const MNEMONIC = 'solar ... satoshi .... vocal';
+const wall = await minterMain.walletFrom({ mnemonic: MNEMONIC }); // BIP32 HDWallet
+
+await wall.setConnection(minterTest.connection);
+
+/*OR*/
+
 const chain = new minterSdk.Chain(minterSdk.ChainId.TESTNET);// ( 'mainnet' / 'testnet'/ 'taconet')
 /*
 * By default wallet instance connected to MAINNET
@@ -60,12 +82,16 @@ const chain = new minterSdk.Chain(minterSdk.ChainId.TESTNET);// ( 'mainnet' / 't
 const wall = await minterSdk.Wallet.fromMnemonic(MNEMONIC)
              .then(wall=>wall.setConnection(chain.newJsonRpcConnection()));
 ```
+
 ### Get Wallet Account
 ```js
 import * as minterSdk from '@funfasy/minter-sdk-js';
 
+const minter = new minterSdk.Minter({ chainId:  minterSdk.ChainId.MAINNET });
+
 const MNEMONIC = 'solar ... satoshi .... vocal';
-const wall = await minterSdk.Wallet.fromMnemonic(MNEMONIC);
+const wall = await minter.walletFrom({ mnemonic: MNEMONIC }); // BIP32 HDWallet
+
 /*
 * Wallet instance is BIP44 HDWallet. It mean You can derivate from single mnemonic about 2 Billons accounts(aka addresses) 
 */
@@ -87,8 +113,11 @@ const privAcc = await wall.getAccount(0, false);
 
 import * as minterSdk from '@funfasy/minter-sdk-js';
 
+const minter = new minterSdk.Minter({ chainId:  minterSdk.ChainId.MAINNET });
+
 const MNEMONIC = 'solar ... satoshi .... vocal';
-const wall = await minterSdk.Wallet.fromMnemonic(MNEMONIC);
+const wall = await minter.walletFrom({ mnemonic: MNEMONIC }); // BIP32 HDWallet
+
 const acc = await wall.getAccount(); 
 
 //
@@ -107,10 +136,12 @@ const state = await acc.state(); // Agregate balance + waitlist + frozen
 ```js
 import * as minterSdk from '@funfasy/minter-sdk-js';
 
-const MNEMONIC = 'solar ..... zebra .... solution .... vocal';
-const chain = new minterSdk.Chain(minterSdk.ChainId.TESTNET);
-const wall = await minterSdk.Wallet.fromMnemonic(MNEMONIC).then(wall=>wall.setConnection(chain.newJsonRpcConnection()));
+const minter = new minterSdk.Minter({ chainId:  minterSdk.ChainId.MAINNET });
+
+const MNEMONIC = 'solar ... satoshi .... vocal';
+const wall = await minter.walletFrom({ mnemonic: MNEMONIC }); // BIP32 HDWallet
 const acc = await wall.getAccount();
+
 const keyPair = await wall.getAccountKeyPair();
 
 const txAction = new minterSdk.tx_actions.SendAction({
@@ -148,8 +179,10 @@ const address = tx.getSenderAddress().toString(); // > 'Mx0bd4dd45fc7072ce6f1a4b
 ```js
 import * as minterSdk from '@funfasy/minter-sdk-js';
 
-const chain = new minterSdk.Chain(minterSdk.ChainId.TESTNET);
-const wall = await minterSdk.Wallet.fromMnemonic(MNEMONIC).then(wall=>wall.setConnection(chain.newJsonRpcConnection()));
+const minter = new minterSdk.Minter({ chainId:  minterSdk.ChainId.MAINNET });
+
+const MNEMONIC = 'solar ... satoshi .... vocal';
+const wall = await minter.walletFrom({ mnemonic: MNEMONIC }); // BIP32 HDWallet
 const acc = await wall.getAccount();
 
 const txAction = new minterSdk.tx_actions.SendAction({
@@ -177,7 +210,23 @@ const txHash = await acc.signAndSendTx(tx);
 ## Key Store & KeyPairs
 ```js
 import * as minterSdk from '@funfasy/minter-sdk-js';
+/*
+* By default miner wallet store keys im memory.
+*/
 
+const minter = new minterSdk.Minter({ chainId:  minterSdk.ChainId.MAINNET });
+
+const { wall, mnemonic } = await minter.newWallet(); // BIP32 HDWallet / InMemoryKeyStore
+
+/*
+* Set up new keyStore.
+* All exists accounts transfer keyPairs to new keyStore
+*/
+await wall.setKeyStore(new minterSdk.keyStores.BrowserLocalStorageKeyStore()); 
+
+const accKeyPair = await wall.getAccountKeyPair();
+
+console.log(keyP.publicKey.toString());
 ```
 
 ## Fetch data
@@ -185,19 +234,18 @@ import * as minterSdk from '@funfasy/minter-sdk-js';
 ```js
 import * as minterSdk from '@funfasy/minter-sdk-js';
 
-const chain = new minterSdk.Chain(minterSdk.ChainId.TESTNET);
-const provider = new minterSdk.JsonRpcProvider(chain.urls?.api?.node?.http[0]);
-
+const minter = new minterSdk.Minter({ chainId:  minterSdk.ChainId.MAINNET });
 /*
 * All available methods @see https://funfasy.github.io/minter-sdk-js/classes/providers_json_rpc_provider.jsonrpcprovider.html
 */
-const height = await provider.status().then(res=>Number(res.latest_block_height));
+const height = await minter.rpc.status().then(res=>Number(res.latest_block_height));
 
-const batch = await provider.blocks({fromHeight: height - 10, toHeight: height });
+const batch = await minter.rpc.blocks({fromHeight: height - 10, toHeight: height });
+
 console.log(batch);
 ```
 
-### Configure RpcProvider
+### Configured RpcProvider
 ```js
 import * as minterSdk from '@funfasy/minter-sdk-js';
 
@@ -205,21 +253,23 @@ import * as minterSdk from '@funfasy/minter-sdk-js';
 * JsonRpcRoveder extends Axios http client. So config same as Axios
 */
 const chain = new minterSdk.Chain(minterSdk.ChainId.TESTNET);
+const minter = new minterSdk.Minter({ 
+    chainId:  chain.chainId ,
+    rpcConfig:{
+      baseURL: chain.urls?.api?.node?.http[0],
+      headers: {
+          'Content-Type'     : 'application/json; charset=utf-8',
+          'X-Project-Id'     : '<YOUR-FUNFASY-PROJECT-ID>',
+          'X-Project-Secret' : '<YOUR-FUNFASY-PROJECT-SECRET>'
+      },
+    }
+});
 
-const config = {
-    baseURL: chain.urls?.api?.node?.http[0],
-    headers: {
-        'Content-Type'     : 'application/json; charset=utf-8',
-        'X-Project-Id'     : '<YOUR-FUNFASY-PROJECT-ID>',
-        'X-Project-Secret' : '<YOUR-FUNFASY-PROJECT-SECRET>'
-    },
-};
 
-const provider = new minterSdk.JsonRpcProvider(config);
+const height = await minter.rpc.status().then(res=>Number(res.latest_block_height));
 
-const height = await provider.status().then(res=>Number(res.latest_block_height));
+const batch = await minter.rpc.blocks({fromHeight: height - 10, toHeight: height });
 
-const batch = await provider.blocks({fromHeight: height - 10, toHeight: height });
 console.log(batch);
 
 ```
