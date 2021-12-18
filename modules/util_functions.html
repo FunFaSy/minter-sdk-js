@@ -1,0 +1,1648 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>util/functions | @funfasy/minter-sdk-js</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="../assets/css/main.css">
+	<script async src="../assets/js/search.js" id="search-script"></script>
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.json" data-base="..">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<ul class="results-priority" style="display:none">
+					</ul>
+					<a href="../index.html" class="title">@funfasy/minter-sdk-js</a>
+					&emsp;<a href="https://funfasy.dev" class="title">FunFaSy dev suite</a>
+					&emsp;<a href="https://www.minter.network/docs" class="title">Minter Docs</a>
+					&emsp;<a href="https://funfasy.dev/info/docs/#tag/API" class="title">RPC Endpoints</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+							<input type="checkbox" id="tsd-filter-only-exported" />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="util_functions.html">util/functions</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-3 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation outline primary">
+				<a style="margin-left:0em" href="../modules.html">Modules</a>
+				<ul style="display:none">
+					{&quot;Managing Accounts&quot;:{&quot;Wallet&quot;:&quot;classes/wallet.wallet-1&quot;,&quot;Account&quot;:&quot;classes/account.account-1&quot;},&quot;Managing Keys&quot;:{&quot;KeyPair&quot;:&quot;key_pair&quot;,&quot;BrowserLocalStorageKeyStore&quot;:&quot;classes/key_stores_browser_local_storage_key_store.browserlocalstoragekeystore&quot;,&quot;InMemoryKeyStore&quot;:&quot;classes/key_stores_in_memory_key_store.inmemorykeystore&quot;,&quot;UnencryptedFileSystemKeyStore&quot;:&quot;classes/key_stores_unencrypted_file_system_keystore.unencryptedfilesystemkeystore&quot;,&quot;MergeKeyStore&quot;:&quot;classes/key_stores_merge_key_store.mergekeystore&quot;},&quot;RPC&quot;:{&quot;Client (Data Provider)&quot;:&quot;classes/providers_json_rpc_provider.jsonrpcprovider&quot;,&quot;Request and Response Types&quot;:&quot;modules/providers_internal&quot;},&quot;utils&quot;:{&quot;Formatting&quot;:&quot;modules/util_functions_format&quot;}}
+				</ul>
+			</nav>
+		</div>
+		<div class="col-7 offset-3 col-content">
+			<h1>Module util/functions</h1>
+			<section class="tsd-panel-group tsd-index-group">
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>References</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#bip_nomination" class="tsd-kind-icon">BIP_<wbr>NOMINATION</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#bip_nomination_exp" class="tsd-kind-icon">BIP_<wbr>NOMINATION_<wbr>EXP</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#minterprefix" class="tsd-kind-icon">Minter<wbr>Prefix</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#timedout" class="tsd-kind-icon">Timed<wbr>Out</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#addresstostring" class="tsd-kind-icon">address<wbr>ToString</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#arrayconcat" class="tsd-kind-icon">array<wbr>Concat</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#asfloat" class="tsd-kind-icon">as<wbr>Float</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#asinteger" class="tsd-kind-icon">as<wbr>Integer</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#assertisarray" class="tsd-kind-icon">assert<wbr>IsArray</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#assertisbuffer" class="tsd-kind-icon">assert<wbr>IsBuffer</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#assertishexstring" class="tsd-kind-icon">assert<wbr>IsHex<wbr>String</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#assertisint" class="tsd-kind-icon">assert<wbr>IsInt</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#assertismineraddress" class="tsd-kind-icon">assert<wbr>IsMiner<wbr>Address</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#assertisminerpublickey" class="tsd-kind-icon">assert<wbr>IsMiner<wbr>Public<wbr>Key</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#assertisminertransaction" class="tsd-kind-icon">assert<wbr>IsMiner<wbr>Transaction</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#assertismnemonic" class="tsd-kind-icon">assert<wbr>IsMnemonic</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#assertisnumber" class="tsd-kind-icon">assert<wbr>IsNumber</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#assertispositiveint" class="tsd-kind-icon">assert<wbr>IsPositive<wbr>Int</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#assertisstring" class="tsd-kind-icon">assert<wbr>IsString</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#base58tobuffer" class="tsd-kind-icon">base58<wbr>ToBuffer</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#basedecode" class="tsd-kind-icon">base<wbr>Decode</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#baseencode" class="tsd-kind-icon">base<wbr>Encode</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#base_decode" class="tsd-kind-icon">base_<wbr>decode</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#base_encode" class="tsd-kind-icon">base_<wbr>encode</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#binaryconcat" class="tsd-kind-icon">binary<wbr>Concat</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#binaryconcatarray" class="tsd-kind-icon">binary<wbr>Concat<wbr>Array</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#buffertobase58" class="tsd-kind-icon">buffer<wbr>ToBase58</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#capitalize" class="tsd-kind-icon">capitalize</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#checktostring" class="tsd-kind-icon">check<wbr>ToString</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#clone" class="tsd-kind-icon">clone</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#convertbiptopip" class="tsd-kind-icon">convert<wbr>Bip<wbr>ToPip</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#convertpiptobip" class="tsd-kind-icon">convert<wbr>Pip<wbr>ToBip</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#deepextend" class="tsd-kind-icon">deep<wbr>Extend</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#extend" class="tsd-kind-icon">extend</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#filterby" class="tsd-kind-icon">filter<wbr>By</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#flatten" class="tsd-kind-icon">flatten</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#formatbipamount" class="tsd-kind-icon">format<wbr>Bip<wbr>Amount</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#formatwithcommas" class="tsd-kind-icon">format<wbr>With<wbr>Commas</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#groupby" class="tsd-kind-icon">group<wbr>By</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#hasprops" class="tsd-kind-icon">has<wbr>Props</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#inarray" class="tsd-kind-icon">in<wbr>Array</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#index" class="tsd-kind-icon">index</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#indexby" class="tsd-kind-icon">index<wbr>By</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#isarray" class="tsd-kind-icon">is<wbr>Array</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#isbuffer" class="tsd-kind-icon">is<wbr>Buffer</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#isdictionary" class="tsd-kind-icon">is<wbr>Dictionary</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#isempty" class="tsd-kind-icon">is<wbr>Empty</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#ishexstring" class="tsd-kind-icon">is<wbr>Hex<wbr>String</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#isinteger" class="tsd-kind-icon">is<wbr>Integer</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#isjsonencodedobject" class="tsd-kind-icon">is<wbr>Json<wbr>Encoded<wbr>Object</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#isminterprefixed" class="tsd-kind-icon">is<wbr>Minter<wbr>Prefixed</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#isnumber" class="tsd-kind-icon">is<wbr>Number</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#isobject" class="tsd-kind-icon">is<wbr>Object</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#isstring" class="tsd-kind-icon">is<wbr>String</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#isstringcoercible" class="tsd-kind-icon">is<wbr>String<wbr>Coercible</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#isvalidaddress" class="tsd-kind-icon">is<wbr>Valid<wbr>Address</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#isvalidcheck" class="tsd-kind-icon">is<wbr>Valid<wbr>Check</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#isvalidmnemonic" class="tsd-kind-icon">is<wbr>Valid<wbr>Mnemonic</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#isvalidpublickey" class="tsd-kind-icon">is<wbr>Valid<wbr>Public<wbr>Key</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#isvalidtransaction" class="tsd-kind-icon">is<wbr>Valid<wbr>Transaction</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#isvalidurl" class="tsd-kind-icon">is<wbr>Valid<wbr>Url</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#iso8601" class="tsd-kind-icon">iso8601</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#json" class="tsd-kind-icon">json</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#keys" class="tsd-kind-icon">keys</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#keysort" class="tsd-kind-icon">keysort</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#mprefixstrip" class="tsd-kind-icon">m<wbr>Prefix<wbr>Strip</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#mprefixtohex" class="tsd-kind-icon">m<wbr>Prefix<wbr>ToHex</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#mdy" class="tsd-kind-icon">mdy</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#microseconds" class="tsd-kind-icon">microseconds</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#milliseconds" class="tsd-kind-icon">milliseconds</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#now" class="tsd-kind-icon">now</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#omit" class="tsd-kind-icon">omit</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#parse8601" class="tsd-kind-icon">parse8601</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#parsebipamount" class="tsd-kind-icon">parse<wbr>Bip<wbr>Amount</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#parsedate" class="tsd-kind-icon">parse<wbr>Date</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#pluck" class="tsd-kind-icon">pluck</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#privatetoaddressstring" class="tsd-kind-icon">private<wbr>ToAddress<wbr>String</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#prop" class="tsd-kind-icon">prop</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#rfc2616" class="tsd-kind-icon">rfc2616</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#safefloat" class="tsd-kind-icon">safe<wbr>Float</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#safefloat2" class="tsd-kind-icon">safe<wbr>Float2</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#safeinteger" class="tsd-kind-icon">safe<wbr>Integer</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#safeinteger2" class="tsd-kind-icon">safe<wbr>Integer2</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#safeintegerproduct" class="tsd-kind-icon">safe<wbr>Integer<wbr>Product</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#safeintegerproduct2" class="tsd-kind-icon">safe<wbr>Integer<wbr>Product2</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#safestring" class="tsd-kind-icon">safe<wbr>String</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#safestring2" class="tsd-kind-icon">safe<wbr>String2</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#safestringlower" class="tsd-kind-icon">safe<wbr>String<wbr>Lower</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#safestringlower2" class="tsd-kind-icon">safe<wbr>String<wbr>Lower2</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#safestringupper" class="tsd-kind-icon">safe<wbr>String<wbr>Upper</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#safestringupper2" class="tsd-kind-icon">safe<wbr>String<wbr>Upper2</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#safetimestamp" class="tsd-kind-icon">safe<wbr>Timestamp</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#safetimestamp2" class="tsd-kind-icon">safe<wbr>Timestamp2</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#safevalue" class="tsd-kind-icon">safe<wbr>Value</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#safevalue2" class="tsd-kind-icon">safe<wbr>Value2</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#seconds" class="tsd-kind-icon">seconds</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#settimeout_safe" class="tsd-kind-icon">set<wbr>Timeout_<wbr>safe</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#sleep" class="tsd-kind-icon">sleep</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#sortby" class="tsd-kind-icon">sort<wbr>By</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#strip" class="tsd-kind-icon">strip</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#sum" class="tsd-kind-icon">sum</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#timeout" class="tsd-kind-icon">timeout</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#toarray" class="tsd-kind-icon">to<wbr>Array</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#tobuffer" class="tsd-kind-icon">to<wbr>Buffer</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#uncamelcase" class="tsd-kind-icon">un<wbr>Camel<wbr>Case</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#unique" class="tsd-kind-icon">unique</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#urlencodebase64" class="tsd-kind-icon">urlencode<wbr>Base64</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#uuid" class="tsd-kind-icon">uuid</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#uuid16" class="tsd-kind-icon">uuid16</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#uuid22" class="tsd-kind-icon">uuid22</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#uuidv1" class="tsd-kind-icon">uuidv1</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#values" class="tsd-kind-icon">values</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#ymd" class="tsd-kind-icon">ymd</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="util_functions.html#ymdhms" class="tsd-kind-icon">ymdhms</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>References</h2>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="bip_nomination" class="tsd-anchor"></a>
+					<h3>BIP_<wbr>NOMINATION</h3>
+					<div class="tsd-signature tsd-kind-icon">BIP_<wbr>NOMINATION<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="bip_nomination_exp" class="tsd-anchor"></a>
+					<h3>BIP_<wbr>NOMINATION_<wbr>EXP</h3>
+					<div class="tsd-signature tsd-kind-icon">BIP_<wbr>NOMINATION_<wbr>EXP<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="minterprefix" class="tsd-anchor"></a>
+					<h3>Minter<wbr>Prefix</h3>
+					<div class="tsd-signature tsd-kind-icon">Minter<wbr>Prefix<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="timedout" class="tsd-anchor"></a>
+					<h3>Timed<wbr>Out</h3>
+					<div class="tsd-signature tsd-kind-icon">Timed<wbr>Out<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/time.ts:208</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="addresstostring" class="tsd-anchor"></a>
+					<h3>address<wbr>ToString</h3>
+					<div class="tsd-signature tsd-kind-icon">address<wbr>ToString<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="arrayconcat" class="tsd-anchor"></a>
+					<h3>array<wbr>Concat</h3>
+					<div class="tsd-signature tsd-kind-icon">array<wbr>Concat<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/generic.ts:180</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="asfloat" class="tsd-anchor"></a>
+					<h3>as<wbr>Float</h3>
+					<div class="tsd-signature tsd-kind-icon">as<wbr>Float<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/type.ts:92</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="asinteger" class="tsd-anchor"></a>
+					<h3>as<wbr>Integer</h3>
+					<div class="tsd-signature tsd-kind-icon">as<wbr>Integer<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/type.ts:93</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="assertisarray" class="tsd-anchor"></a>
+					<h3>assert<wbr>IsArray</h3>
+					<div class="tsd-signature tsd-kind-icon">assert<wbr>IsArray<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/assert.ts:34</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="assertisbuffer" class="tsd-anchor"></a>
+					<h3>assert<wbr>IsBuffer</h3>
+					<div class="tsd-signature tsd-kind-icon">assert<wbr>IsBuffer<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/assert.ts:29</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="assertishexstring" class="tsd-anchor"></a>
+					<h3>assert<wbr>IsHex<wbr>String</h3>
+					<div class="tsd-signature tsd-kind-icon">assert<wbr>IsHex<wbr>String<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/assert.ts:35</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="assertisint" class="tsd-anchor"></a>
+					<h3>assert<wbr>IsInt</h3>
+					<div class="tsd-signature tsd-kind-icon">assert<wbr>IsInt<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/assert.ts:32</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="assertismineraddress" class="tsd-anchor"></a>
+					<h3>assert<wbr>IsMiner<wbr>Address</h3>
+					<div class="tsd-signature tsd-kind-icon">assert<wbr>IsMiner<wbr>Address<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/assert.ts:36</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="assertisminerpublickey" class="tsd-anchor"></a>
+					<h3>assert<wbr>IsMiner<wbr>Public<wbr>Key</h3>
+					<div class="tsd-signature tsd-kind-icon">assert<wbr>IsMiner<wbr>Public<wbr>Key<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/assert.ts:37</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="assertisminertransaction" class="tsd-anchor"></a>
+					<h3>assert<wbr>IsMiner<wbr>Transaction</h3>
+					<div class="tsd-signature tsd-kind-icon">assert<wbr>IsMiner<wbr>Transaction<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/assert.ts:38</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="assertismnemonic" class="tsd-anchor"></a>
+					<h3>assert<wbr>IsMnemonic</h3>
+					<div class="tsd-signature tsd-kind-icon">assert<wbr>IsMnemonic<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/assert.ts:39</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="assertisnumber" class="tsd-anchor"></a>
+					<h3>assert<wbr>IsNumber</h3>
+					<div class="tsd-signature tsd-kind-icon">assert<wbr>IsNumber<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/assert.ts:31</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="assertispositiveint" class="tsd-anchor"></a>
+					<h3>assert<wbr>IsPositive<wbr>Int</h3>
+					<div class="tsd-signature tsd-kind-icon">assert<wbr>IsPositive<wbr>Int<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/assert.ts:33</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="assertisstring" class="tsd-anchor"></a>
+					<h3>assert<wbr>IsString</h3>
+					<div class="tsd-signature tsd-kind-icon">assert<wbr>IsString<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/assert.ts:30</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="base58tobuffer" class="tsd-anchor"></a>
+					<h3>base58<wbr>ToBuffer</h3>
+					<div class="tsd-signature tsd-kind-icon">base58<wbr>ToBuffer<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/encode.ts:113</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="basedecode" class="tsd-anchor"></a>
+					<h3>base<wbr>Decode</h3>
+					<div class="tsd-signature tsd-kind-icon">base<wbr>Decode<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="baseencode" class="tsd-anchor"></a>
+					<h3>base<wbr>Encode</h3>
+					<div class="tsd-signature tsd-kind-icon">base<wbr>Encode<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="base_decode" class="tsd-anchor"></a>
+					<h3>base_<wbr>decode</h3>
+					<div class="tsd-signature tsd-kind-icon">base_<wbr>decode<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/serialize.ts:16</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="base_encode" class="tsd-anchor"></a>
+					<h3>base_<wbr>encode</h3>
+					<div class="tsd-signature tsd-kind-icon">base_<wbr>encode<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/serialize.ts:17</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="binaryconcat" class="tsd-anchor"></a>
+					<h3>binary<wbr>Concat</h3>
+					<div class="tsd-signature tsd-kind-icon">binary<wbr>Concat<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/encode.ts:102</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="binaryconcatarray" class="tsd-anchor"></a>
+					<h3>binary<wbr>Concat<wbr>Array</h3>
+					<div class="tsd-signature tsd-kind-icon">binary<wbr>Concat<wbr>Array<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/encode.ts:103</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="buffertobase58" class="tsd-anchor"></a>
+					<h3>buffer<wbr>ToBase58</h3>
+					<div class="tsd-signature tsd-kind-icon">buffer<wbr>ToBase58<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/encode.ts:114</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="capitalize" class="tsd-anchor"></a>
+					<h3>capitalize</h3>
+					<div class="tsd-signature tsd-kind-icon">capitalize<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/string.ts:30</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="checktostring" class="tsd-anchor"></a>
+					<h3>check<wbr>ToString</h3>
+					<div class="tsd-signature tsd-kind-icon">check<wbr>ToString<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="clone" class="tsd-anchor"></a>
+					<h3>clone</h3>
+					<div class="tsd-signature tsd-kind-icon">clone<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/generic.ts:177</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="convertbiptopip" class="tsd-anchor"></a>
+					<h3>convert<wbr>Bip<wbr>ToPip</h3>
+					<div class="tsd-signature tsd-kind-icon">convert<wbr>Bip<wbr>ToPip<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="convertpiptobip" class="tsd-anchor"></a>
+					<h3>convert<wbr>Pip<wbr>ToBip</h3>
+					<div class="tsd-signature tsd-kind-icon">convert<wbr>Pip<wbr>ToBip<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="deepextend" class="tsd-anchor"></a>
+					<h3>deep<wbr>Extend</h3>
+					<div class="tsd-signature tsd-kind-icon">deep<wbr>Extend<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/generic.ts:199</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="extend" class="tsd-anchor"></a>
+					<h3>extend</h3>
+					<div class="tsd-signature tsd-kind-icon">extend<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/generic.ts:176</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="filterby" class="tsd-anchor"></a>
+					<h3>filter<wbr>By</h3>
+					<div class="tsd-signature tsd-kind-icon">filter<wbr>By<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/generic.ts:189</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="flatten" class="tsd-anchor"></a>
+					<h3>flatten</h3>
+					<div class="tsd-signature tsd-kind-icon">flatten<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/generic.ts:192</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="formatbipamount" class="tsd-anchor"></a>
+					<h3>format<wbr>Bip<wbr>Amount</h3>
+					<div class="tsd-signature tsd-kind-icon">format<wbr>Bip<wbr>Amount<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="formatwithcommas" class="tsd-anchor"></a>
+					<h3>format<wbr>With<wbr>Commas</h3>
+					<div class="tsd-signature tsd-kind-icon">format<wbr>With<wbr>Commas<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="groupby" class="tsd-anchor"></a>
+					<h3>group<wbr>By</h3>
+					<div class="tsd-signature tsd-kind-icon">group<wbr>By<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/generic.ts:188</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="hasprops" class="tsd-anchor"></a>
+					<h3>has<wbr>Props</h3>
+					<div class="tsd-signature tsd-kind-icon">has<wbr>Props<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/type.ts:89</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="inarray" class="tsd-anchor"></a>
+					<h3>in<wbr>Array</h3>
+					<div class="tsd-signature tsd-kind-icon">in<wbr>Array<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/generic.ts:182</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="index" class="tsd-anchor"></a>
+					<h3>index</h3>
+					<div class="tsd-signature tsd-kind-icon">index<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/generic.ts:178</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="indexby" class="tsd-anchor"></a>
+					<h3>index<wbr>By</h3>
+					<div class="tsd-signature tsd-kind-icon">index<wbr>By<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/generic.ts:187</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="isarray" class="tsd-anchor"></a>
+					<h3>is<wbr>Array</h3>
+					<div class="tsd-signature tsd-kind-icon">is<wbr>Array<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/type.ts:79</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="isbuffer" class="tsd-anchor"></a>
+					<h3>is<wbr>Buffer</h3>
+					<div class="tsd-signature tsd-kind-icon">is<wbr>Buffer<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/type.ts:80</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="isdictionary" class="tsd-anchor"></a>
+					<h3>is<wbr>Dictionary</h3>
+					<div class="tsd-signature tsd-kind-icon">is<wbr>Dictionary<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/type.ts:85</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="isempty" class="tsd-anchor"></a>
+					<h3>is<wbr>Empty</h3>
+					<div class="tsd-signature tsd-kind-icon">is<wbr>Empty<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/generic.ts:184</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="ishexstring" class="tsd-anchor"></a>
+					<h3>is<wbr>Hex<wbr>String</h3>
+					<div class="tsd-signature tsd-kind-icon">is<wbr>Hex<wbr>String<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/type.ts:84</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="isinteger" class="tsd-anchor"></a>
+					<h3>is<wbr>Integer</h3>
+					<div class="tsd-signature tsd-kind-icon">is<wbr>Integer<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/type.ts:78</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="isjsonencodedobject" class="tsd-anchor"></a>
+					<h3>is<wbr>Json<wbr>Encoded<wbr>Object</h3>
+					<div class="tsd-signature tsd-kind-icon">is<wbr>Json<wbr>Encoded<wbr>Object<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/encode.ts:94</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="isminterprefixed" class="tsd-anchor"></a>
+					<h3>is<wbr>Minter<wbr>Prefixed</h3>
+					<div class="tsd-signature tsd-kind-icon">is<wbr>Minter<wbr>Prefixed<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="isnumber" class="tsd-anchor"></a>
+					<h3>is<wbr>Number</h3>
+					<div class="tsd-signature tsd-kind-icon">is<wbr>Number<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/type.ts:77</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="isobject" class="tsd-anchor"></a>
+					<h3>is<wbr>Object</h3>
+					<div class="tsd-signature tsd-kind-icon">is<wbr>Object<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/type.ts:81</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="isstring" class="tsd-anchor"></a>
+					<h3>is<wbr>String</h3>
+					<div class="tsd-signature tsd-kind-icon">is<wbr>String<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/type.ts:82</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="isstringcoercible" class="tsd-anchor"></a>
+					<h3>is<wbr>String<wbr>Coercible</h3>
+					<div class="tsd-signature tsd-kind-icon">is<wbr>String<wbr>Coercible<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/type.ts:83</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="isvalidaddress" class="tsd-anchor"></a>
+					<h3>is<wbr>Valid<wbr>Address</h3>
+					<div class="tsd-signature tsd-kind-icon">is<wbr>Valid<wbr>Address<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="isvalidcheck" class="tsd-anchor"></a>
+					<h3>is<wbr>Valid<wbr>Check</h3>
+					<div class="tsd-signature tsd-kind-icon">is<wbr>Valid<wbr>Check<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="isvalidmnemonic" class="tsd-anchor"></a>
+					<h3>is<wbr>Valid<wbr>Mnemonic</h3>
+					<div class="tsd-signature tsd-kind-icon">is<wbr>Valid<wbr>Mnemonic<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/type.ts:86</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="isvalidpublickey" class="tsd-anchor"></a>
+					<h3>is<wbr>Valid<wbr>Public<wbr>Key</h3>
+					<div class="tsd-signature tsd-kind-icon">is<wbr>Valid<wbr>Public<wbr>Key<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="isvalidtransaction" class="tsd-anchor"></a>
+					<h3>is<wbr>Valid<wbr>Transaction</h3>
+					<div class="tsd-signature tsd-kind-icon">is<wbr>Valid<wbr>Transaction<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="isvalidurl" class="tsd-anchor"></a>
+					<h3>is<wbr>Valid<wbr>Url</h3>
+					<div class="tsd-signature tsd-kind-icon">is<wbr>Valid<wbr>Url<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/type.ts:87</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="iso8601" class="tsd-anchor"></a>
+					<h3>iso8601</h3>
+					<div class="tsd-signature tsd-kind-icon">iso8601<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/time.ts:198</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="json" class="tsd-anchor"></a>
+					<h3>json</h3>
+					<div class="tsd-signature tsd-kind-icon">json<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/encode.ts:93</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="keys" class="tsd-anchor"></a>
+					<h3>keys</h3>
+					<div class="tsd-signature tsd-kind-icon">keys<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/generic.ts:174</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="keysort" class="tsd-anchor"></a>
+					<h3>keysort</h3>
+					<div class="tsd-signature tsd-kind-icon">keysort<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/generic.ts:186</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="mprefixstrip" class="tsd-anchor"></a>
+					<h3>m<wbr>Prefix<wbr>Strip</h3>
+					<div class="tsd-signature tsd-kind-icon">m<wbr>Prefix<wbr>Strip<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="mprefixtohex" class="tsd-anchor"></a>
+					<h3>m<wbr>Prefix<wbr>ToHex</h3>
+					<div class="tsd-signature tsd-kind-icon">m<wbr>Prefix<wbr>ToHex<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="mdy" class="tsd-anchor"></a>
+					<h3>mdy</h3>
+					<div class="tsd-signature tsd-kind-icon">mdy<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/time.ts:203</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="microseconds" class="tsd-anchor"></a>
+					<h3>microseconds</h3>
+					<div class="tsd-signature tsd-kind-icon">microseconds<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/time.ts:195</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="milliseconds" class="tsd-anchor"></a>
+					<h3>milliseconds</h3>
+					<div class="tsd-signature tsd-kind-icon">milliseconds<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/time.ts:196</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="now" class="tsd-anchor"></a>
+					<h3>now</h3>
+					<div class="tsd-signature tsd-kind-icon">now<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/time.ts:194</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="omit" class="tsd-anchor"></a>
+					<h3>omit</h3>
+					<div class="tsd-signature tsd-kind-icon">omit<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/generic.ts:195</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="parse8601" class="tsd-anchor"></a>
+					<h3>parse8601</h3>
+					<div class="tsd-signature tsd-kind-icon">parse8601<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/time.ts:199</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="parsebipamount" class="tsd-anchor"></a>
+					<h3>parse<wbr>Bip<wbr>Amount</h3>
+					<div class="tsd-signature tsd-kind-icon">parse<wbr>Bip<wbr>Amount<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="parsedate" class="tsd-anchor"></a>
+					<h3>parse<wbr>Date</h3>
+					<div class="tsd-signature tsd-kind-icon">parse<wbr>Date<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/time.ts:202</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="pluck" class="tsd-anchor"></a>
+					<h3>pluck</h3>
+					<div class="tsd-signature tsd-kind-icon">pluck<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/generic.ts:194</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="privatetoaddressstring" class="tsd-anchor"></a>
+					<h3>private<wbr>ToAddress<wbr>String</h3>
+					<div class="tsd-signature tsd-kind-icon">private<wbr>ToAddress<wbr>String<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="prop" class="tsd-anchor"></a>
+					<h3>prop</h3>
+					<div class="tsd-signature tsd-kind-icon">prop<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/type.ts:90</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="rfc2616" class="tsd-anchor"></a>
+					<h3>rfc2616</h3>
+					<div class="tsd-signature tsd-kind-icon">rfc2616<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/time.ts:200</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="safefloat" class="tsd-anchor"></a>
+					<h3>safe<wbr>Float</h3>
+					<div class="tsd-signature tsd-kind-icon">safe<wbr>Float<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/type.ts:95</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="safefloat2" class="tsd-anchor"></a>
+					<h3>safe<wbr>Float2</h3>
+					<div class="tsd-signature tsd-kind-icon">safe<wbr>Float2<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/type.ts:104</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="safeinteger" class="tsd-anchor"></a>
+					<h3>safe<wbr>Integer</h3>
+					<div class="tsd-signature tsd-kind-icon">safe<wbr>Integer<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/type.ts:96</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="safeinteger2" class="tsd-anchor"></a>
+					<h3>safe<wbr>Integer2</h3>
+					<div class="tsd-signature tsd-kind-icon">safe<wbr>Integer2<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/type.ts:105</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="safeintegerproduct" class="tsd-anchor"></a>
+					<h3>safe<wbr>Integer<wbr>Product</h3>
+					<div class="tsd-signature tsd-kind-icon">safe<wbr>Integer<wbr>Product<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/type.ts:97</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="safeintegerproduct2" class="tsd-anchor"></a>
+					<h3>safe<wbr>Integer<wbr>Product2</h3>
+					<div class="tsd-signature tsd-kind-icon">safe<wbr>Integer<wbr>Product2<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/type.ts:106</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="safestring" class="tsd-anchor"></a>
+					<h3>safe<wbr>String</h3>
+					<div class="tsd-signature tsd-kind-icon">safe<wbr>String<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/type.ts:100</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="safestring2" class="tsd-anchor"></a>
+					<h3>safe<wbr>String2</h3>
+					<div class="tsd-signature tsd-kind-icon">safe<wbr>String2<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/type.ts:109</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="safestringlower" class="tsd-anchor"></a>
+					<h3>safe<wbr>String<wbr>Lower</h3>
+					<div class="tsd-signature tsd-kind-icon">safe<wbr>String<wbr>Lower<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/type.ts:101</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="safestringlower2" class="tsd-anchor"></a>
+					<h3>safe<wbr>String<wbr>Lower2</h3>
+					<div class="tsd-signature tsd-kind-icon">safe<wbr>String<wbr>Lower2<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/type.ts:110</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="safestringupper" class="tsd-anchor"></a>
+					<h3>safe<wbr>String<wbr>Upper</h3>
+					<div class="tsd-signature tsd-kind-icon">safe<wbr>String<wbr>Upper<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/type.ts:102</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="safestringupper2" class="tsd-anchor"></a>
+					<h3>safe<wbr>String<wbr>Upper2</h3>
+					<div class="tsd-signature tsd-kind-icon">safe<wbr>String<wbr>Upper2<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/type.ts:111</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="safetimestamp" class="tsd-anchor"></a>
+					<h3>safe<wbr>Timestamp</h3>
+					<div class="tsd-signature tsd-kind-icon">safe<wbr>Timestamp<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/type.ts:98</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="safetimestamp2" class="tsd-anchor"></a>
+					<h3>safe<wbr>Timestamp2</h3>
+					<div class="tsd-signature tsd-kind-icon">safe<wbr>Timestamp2<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/type.ts:107</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="safevalue" class="tsd-anchor"></a>
+					<h3>safe<wbr>Value</h3>
+					<div class="tsd-signature tsd-kind-icon">safe<wbr>Value<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/type.ts:99</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="safevalue2" class="tsd-anchor"></a>
+					<h3>safe<wbr>Value2</h3>
+					<div class="tsd-signature tsd-kind-icon">safe<wbr>Value2<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/type.ts:108</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="seconds" class="tsd-anchor"></a>
+					<h3>seconds</h3>
+					<div class="tsd-signature tsd-kind-icon">seconds<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/time.ts:197</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="settimeout_safe" class="tsd-anchor"></a>
+					<h3>set<wbr>Timeout_<wbr>safe</h3>
+					<div class="tsd-signature tsd-kind-icon">set<wbr>Timeout_<wbr>safe<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/time.ts:206</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="sleep" class="tsd-anchor"></a>
+					<h3>sleep</h3>
+					<div class="tsd-signature tsd-kind-icon">sleep<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/time.ts:207</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="sortby" class="tsd-anchor"></a>
+					<h3>sort<wbr>By</h3>
+					<div class="tsd-signature tsd-kind-icon">sort<wbr>By<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/generic.ts:191</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="strip" class="tsd-anchor"></a>
+					<h3>strip</h3>
+					<div class="tsd-signature tsd-kind-icon">strip<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/string.ts:31</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="sum" class="tsd-anchor"></a>
+					<h3>sum</h3>
+					<div class="tsd-signature tsd-kind-icon">sum<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/generic.ts:197</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="timeout" class="tsd-anchor"></a>
+					<h3>timeout</h3>
+					<div class="tsd-signature tsd-kind-icon">timeout<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/time.ts:209</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="toarray" class="tsd-anchor"></a>
+					<h3>to<wbr>Array</h3>
+					<div class="tsd-signature tsd-kind-icon">to<wbr>Array<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/generic.ts:183</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="tobuffer" class="tsd-anchor"></a>
+					<h3>to<wbr>Buffer</h3>
+					<div class="tsd-signature tsd-kind-icon">to<wbr>Buffer<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/encode.ts:116</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="uncamelcase" class="tsd-anchor"></a>
+					<h3>un<wbr>Camel<wbr>Case</h3>
+					<div class="tsd-signature tsd-kind-icon">un<wbr>Camel<wbr>Case<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/string.ts:29</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="unique" class="tsd-anchor"></a>
+					<h3>unique</h3>
+					<div class="tsd-signature tsd-kind-icon">unique<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/generic.ts:179</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="urlencodebase64" class="tsd-anchor"></a>
+					<h3>urlencode<wbr>Base64</h3>
+					<div class="tsd-signature tsd-kind-icon">urlencode<wbr>Base64<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/encode.ts:109</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="uuid" class="tsd-anchor"></a>
+					<h3>uuid</h3>
+					<div class="tsd-signature tsd-kind-icon">uuid<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/string.ts:26</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="uuid16" class="tsd-anchor"></a>
+					<h3>uuid16</h3>
+					<div class="tsd-signature tsd-kind-icon">uuid16<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/string.ts:27</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="uuid22" class="tsd-anchor"></a>
+					<h3>uuid22</h3>
+					<div class="tsd-signature tsd-kind-icon">uuid22<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/string.ts:28</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="uuidv1" class="tsd-anchor"></a>
+					<h3>uuidv1</h3>
+					<div class="tsd-signature tsd-kind-icon">uuidv1<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/time.ts:201</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="values" class="tsd-anchor"></a>
+					<h3>values</h3>
+					<div class="tsd-signature tsd-kind-icon">values<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/generic.ts:175</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="ymd" class="tsd-anchor"></a>
+					<h3>ymd</h3>
+					<div class="tsd-signature tsd-kind-icon">ymd<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/time.ts:204</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="ymdhms" class="tsd-anchor"></a>
+					<h3>ymdhms</h3>
+					<div class="tsd-signature tsd-kind-icon">ymdhms<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/util/functions/time.ts:205</li>
+						</ul>
+					</aside>
+				</section>
+			</section>
+			<!--{&quot;options&quot;:&quot;/home/runner/work/minter-sdk-js/minter-sdk-js&quot;,&quot;tsconfig&quot;:&quot;/home/runner/work/minter-sdk-js/minter-sdk-js&quot;,&quot;entryPoints&quot;:[&quot;src&quot;],&quot;exclude&quot;:[&quot;**/*index.ts&quot;],&quot;externalPattern&quot;:[&quot;**/node_modules/**&quot;],&quot;excludeExternals&quot;:false,&quot;excludeNotDocumented&quot;:false,&quot;excludeInternal&quot;:false,&quot;excludePrivate&quot;:false,&quot;excludeProtected&quot;:false,&quot;disableSources&quot;:false,&quot;disableAliases&quot;:false,&quot;includes&quot;:&quot;&quot;,&quot;media&quot;:&quot;&quot;,&quot;watch&quot;:false,&quot;preserveWatchOutput&quot;:false,&quot;emit&quot;:false,&quot;out&quot;:&quot;&quot;,&quot;json&quot;:&quot;&quot;,&quot;pretty&quot;:true,&quot;theme&quot;:&quot;./node_modules/typedoc-neo-theme/bin/default&quot;,&quot;highlightTheme&quot;:&quot;light-plus&quot;,&quot;name&quot;:&quot;&quot;,&quot;includeVersion&quot;:false,&quot;excludeTags&quot;:[],&quot;readme&quot;:&quot;&quot;,&quot;defaultCategory&quot;:&quot;Other&quot;,&quot;categoryOrder&quot;:[],&quot;categorizeByGroup&quot;:true,&quot;gitRevision&quot;:&quot;&quot;,&quot;gitRemote&quot;:&quot;origin&quot;,&quot;gaID&quot;:&quot;&quot;,&quot;gaSite&quot;:&quot;auto&quot;,&quot;hideGenerator&quot;:false,&quot;toc&quot;:[],&quot;disableOutputCheck&quot;:false,&quot;help&quot;:false,&quot;version&quot;:false,&quot;showConfig&quot;:false,&quot;plugin&quot;:[&quot;./node_modules/typedoc-neo-theme&quot;],&quot;logger&quot;:&quot;console&quot;,&quot;logLevel&quot;:1,&quot;listInvalidSymbolLinks&quot;:false,&quot;links&quot;:[{&quot;label&quot;:&quot;FunFaSy dev suite&quot;,&quot;url&quot;:&quot;https://funfasy.dev&quot;},{&quot;label&quot;:&quot;Minter Docs&quot;,&quot;url&quot;:&quot;https://www.minter.network/docs&quot;},{&quot;label&quot;:&quot;RPC Endpoints&quot;,&quot;url&quot;:&quot;https://funfasy.dev/info/docs/#tag/API&quot;}],&quot;outline&quot;:[{&quot;Managing Accounts&quot;:{&quot;Wallet&quot;:&quot;classes/wallet.wallet-1&quot;,&quot;Account&quot;:&quot;classes/account.account-1&quot;},&quot;Managing Keys&quot;:{&quot;KeyPair&quot;:&quot;key_pair&quot;,&quot;BrowserLocalStorageKeyStore&quot;:&quot;classes/key_stores_browser_local_storage_key_store.browserlocalstoragekeystore&quot;,&quot;InMemoryKeyStore&quot;:&quot;classes/key_stores_in_memory_key_store.inmemorykeystore&quot;,&quot;UnencryptedFileSystemKeyStore&quot;:&quot;classes/key_stores_unencrypted_file_system_keystore.unencryptedfilesystemkeystore&quot;,&quot;MergeKeyStore&quot;:&quot;classes/key_stores_merge_key_store.mergekeystore&quot;},&quot;RPC&quot;:{&quot;Client (Data Provider)&quot;:&quot;classes/providers_json_rpc_provider.jsonrpcprovider&quot;,&quot;Request and Response Types&quot;:&quot;modules/providers_internal&quot;},&quot;utils&quot;:{&quot;Formatting&quot;:&quot;modules/util_functions_format&quot;}}]}-->
+		</div>
+		<div class="col-2 col-menu secondary-menu">
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#bip_nomination" class="tsd-kind-icon">BIP_<wbr>NOMINATION</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#bip_nomination_exp" class="tsd-kind-icon">BIP_<wbr>NOMINATION_<wbr>EXP</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#minterprefix" class="tsd-kind-icon">Minter<wbr>Prefix</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#timedout" class="tsd-kind-icon">Timed<wbr>Out</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#addresstostring" class="tsd-kind-icon">address<wbr>ToString</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#arrayconcat" class="tsd-kind-icon">array<wbr>Concat</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#asfloat" class="tsd-kind-icon">as<wbr>Float</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#asinteger" class="tsd-kind-icon">as<wbr>Integer</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#assertisarray" class="tsd-kind-icon">assert<wbr>IsArray</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#assertisbuffer" class="tsd-kind-icon">assert<wbr>IsBuffer</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#assertishexstring" class="tsd-kind-icon">assert<wbr>IsHex<wbr>String</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#assertisint" class="tsd-kind-icon">assert<wbr>IsInt</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#assertismineraddress" class="tsd-kind-icon">assert<wbr>IsMiner<wbr>Address</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#assertisminerpublickey" class="tsd-kind-icon">assert<wbr>IsMiner<wbr>Public<wbr>Key</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#assertisminertransaction" class="tsd-kind-icon">assert<wbr>IsMiner<wbr>Transaction</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#assertismnemonic" class="tsd-kind-icon">assert<wbr>IsMnemonic</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#assertisnumber" class="tsd-kind-icon">assert<wbr>IsNumber</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#assertispositiveint" class="tsd-kind-icon">assert<wbr>IsPositive<wbr>Int</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#assertisstring" class="tsd-kind-icon">assert<wbr>IsString</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#base58tobuffer" class="tsd-kind-icon">base58<wbr>ToBuffer</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#basedecode" class="tsd-kind-icon">base<wbr>Decode</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#baseencode" class="tsd-kind-icon">base<wbr>Encode</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#base_decode" class="tsd-kind-icon">base_<wbr>decode</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#base_encode" class="tsd-kind-icon">base_<wbr>encode</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#binaryconcat" class="tsd-kind-icon">binary<wbr>Concat</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#binaryconcatarray" class="tsd-kind-icon">binary<wbr>Concat<wbr>Array</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#buffertobase58" class="tsd-kind-icon">buffer<wbr>ToBase58</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#capitalize" class="tsd-kind-icon">capitalize</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#checktostring" class="tsd-kind-icon">check<wbr>ToString</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#clone" class="tsd-kind-icon">clone</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#convertbiptopip" class="tsd-kind-icon">convert<wbr>Bip<wbr>ToPip</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#convertpiptobip" class="tsd-kind-icon">convert<wbr>Pip<wbr>ToBip</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#deepextend" class="tsd-kind-icon">deep<wbr>Extend</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#extend" class="tsd-kind-icon">extend</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#filterby" class="tsd-kind-icon">filter<wbr>By</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#flatten" class="tsd-kind-icon">flatten</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#formatbipamount" class="tsd-kind-icon">format<wbr>Bip<wbr>Amount</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#formatwithcommas" class="tsd-kind-icon">format<wbr>With<wbr>Commas</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#groupby" class="tsd-kind-icon">group<wbr>By</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#hasprops" class="tsd-kind-icon">has<wbr>Props</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#inarray" class="tsd-kind-icon">in<wbr>Array</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#index" class="tsd-kind-icon">index</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#indexby" class="tsd-kind-icon">index<wbr>By</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#isarray" class="tsd-kind-icon">is<wbr>Array</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#isbuffer" class="tsd-kind-icon">is<wbr>Buffer</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#isdictionary" class="tsd-kind-icon">is<wbr>Dictionary</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#isempty" class="tsd-kind-icon">is<wbr>Empty</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#ishexstring" class="tsd-kind-icon">is<wbr>Hex<wbr>String</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#isinteger" class="tsd-kind-icon">is<wbr>Integer</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#isjsonencodedobject" class="tsd-kind-icon">is<wbr>Json<wbr>Encoded<wbr>Object</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#isminterprefixed" class="tsd-kind-icon">is<wbr>Minter<wbr>Prefixed</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#isnumber" class="tsd-kind-icon">is<wbr>Number</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#isobject" class="tsd-kind-icon">is<wbr>Object</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#isstring" class="tsd-kind-icon">is<wbr>String</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#isstringcoercible" class="tsd-kind-icon">is<wbr>String<wbr>Coercible</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#isvalidaddress" class="tsd-kind-icon">is<wbr>Valid<wbr>Address</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#isvalidcheck" class="tsd-kind-icon">is<wbr>Valid<wbr>Check</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#isvalidmnemonic" class="tsd-kind-icon">is<wbr>Valid<wbr>Mnemonic</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#isvalidpublickey" class="tsd-kind-icon">is<wbr>Valid<wbr>Public<wbr>Key</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#isvalidtransaction" class="tsd-kind-icon">is<wbr>Valid<wbr>Transaction</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#isvalidurl" class="tsd-kind-icon">is<wbr>Valid<wbr>Url</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#iso8601" class="tsd-kind-icon">iso8601</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#json" class="tsd-kind-icon">json</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#keys" class="tsd-kind-icon">keys</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#keysort" class="tsd-kind-icon">keysort</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#mprefixstrip" class="tsd-kind-icon">m<wbr>Prefix<wbr>Strip</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#mprefixtohex" class="tsd-kind-icon">m<wbr>Prefix<wbr>ToHex</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#mdy" class="tsd-kind-icon">mdy</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#microseconds" class="tsd-kind-icon">microseconds</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#milliseconds" class="tsd-kind-icon">milliseconds</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#now" class="tsd-kind-icon">now</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#omit" class="tsd-kind-icon">omit</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#parse8601" class="tsd-kind-icon">parse8601</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#parsebipamount" class="tsd-kind-icon">parse<wbr>Bip<wbr>Amount</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#parsedate" class="tsd-kind-icon">parse<wbr>Date</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#pluck" class="tsd-kind-icon">pluck</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#privatetoaddressstring" class="tsd-kind-icon">private<wbr>ToAddress<wbr>String</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#prop" class="tsd-kind-icon">prop</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#rfc2616" class="tsd-kind-icon">rfc2616</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#safefloat" class="tsd-kind-icon">safe<wbr>Float</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#safefloat2" class="tsd-kind-icon">safe<wbr>Float2</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#safeinteger" class="tsd-kind-icon">safe<wbr>Integer</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#safeinteger2" class="tsd-kind-icon">safe<wbr>Integer2</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#safeintegerproduct" class="tsd-kind-icon">safe<wbr>Integer<wbr>Product</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#safeintegerproduct2" class="tsd-kind-icon">safe<wbr>Integer<wbr>Product2</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#safestring" class="tsd-kind-icon">safe<wbr>String</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#safestring2" class="tsd-kind-icon">safe<wbr>String2</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#safestringlower" class="tsd-kind-icon">safe<wbr>String<wbr>Lower</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#safestringlower2" class="tsd-kind-icon">safe<wbr>String<wbr>Lower2</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#safestringupper" class="tsd-kind-icon">safe<wbr>String<wbr>Upper</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#safestringupper2" class="tsd-kind-icon">safe<wbr>String<wbr>Upper2</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#safetimestamp" class="tsd-kind-icon">safe<wbr>Timestamp</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#safetimestamp2" class="tsd-kind-icon">safe<wbr>Timestamp2</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#safevalue" class="tsd-kind-icon">safe<wbr>Value</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#safevalue2" class="tsd-kind-icon">safe<wbr>Value2</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#seconds" class="tsd-kind-icon">seconds</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#settimeout_safe" class="tsd-kind-icon">set<wbr>Timeout_<wbr>safe</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#sleep" class="tsd-kind-icon">sleep</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#sortby" class="tsd-kind-icon">sort<wbr>By</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#strip" class="tsd-kind-icon">strip</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#sum" class="tsd-kind-icon">sum</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#timeout" class="tsd-kind-icon">timeout</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#toarray" class="tsd-kind-icon">to<wbr>Array</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#tobuffer" class="tsd-kind-icon">to<wbr>Buffer</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#uncamelcase" class="tsd-kind-icon">un<wbr>Camel<wbr>Case</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#unique" class="tsd-kind-icon">unique</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#urlencodebase64" class="tsd-kind-icon">urlencode<wbr>Base64</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#uuid" class="tsd-kind-icon">uuid</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#uuid16" class="tsd-kind-icon">uuid16</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#uuid22" class="tsd-kind-icon">uuid22</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#uuidv1" class="tsd-kind-icon">uuidv1</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#values" class="tsd-kind-icon">values</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#ymd" class="tsd-kind-icon">ymd</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module root">
+						<a href="util_functions.html#ymdhms" class="tsd-kind-icon">ymdhms</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="http://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>
