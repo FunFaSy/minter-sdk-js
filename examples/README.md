@@ -38,7 +38,7 @@ import * as minterSdk from '@funfasy/minter-sdk-js';
 
 const minter = new minterSdk.Minter({ chainId:  minterSdk.ChainId.MAINNET });
 
-const { wall, MNEMONIC } = await minter.newWallet(); // BIP32 HDWallet
+const { wall, mnemonic } = await minter.newWallet(); // BIP32 HDWallet
 
 /*OR*/
 
@@ -136,13 +136,12 @@ const state = await acc.state(); // Agregate balance + waitlist + frozen
 ```js
 import * as minterSdk from '@funfasy/minter-sdk-js';
 
-const minter = new minterSdk.Minter({ chainId:  minterSdk.ChainId.MAINNET });
+const chain = new minterSdk.Chain(minterSdk.ChainId.MAINNET);// ( 'mainnet' / 'testnet'/ 'taconet')
+const minter = new minterSdk.Minter({ chainId:  chain.networkId });
 
 const MNEMONIC = 'solar ... satoshi .... vocal';
 const wall = await minter.walletFrom({ mnemonic: MNEMONIC }); // BIP32 HDWallet
 const acc = await wall.getAccount();
-
-const keyPair = await wall.getAccountKeyPair();
 
 const txAction = new minterSdk.tx_actions.SendAction({
     to   : 'Mxeb92ae39b84012968f63b2dd260a94d791fe79bd',
@@ -179,7 +178,8 @@ const address = tx.getSenderAddress().toString(); // > 'Mx0bd4dd45fc7072ce6f1a4b
 ```js
 import * as minterSdk from '@funfasy/minter-sdk-js';
 
-const minter = new minterSdk.Minter({ chainId:  minterSdk.ChainId.MAINNET });
+const chain = new minterSdk.Chain(minterSdk.ChainId.MAINNET);// ( 'mainnet' / 'testnet'/ 'taconet')
+const minter = new minterSdk.Minter({ chainId:  chain.networkId });
 
 const MNEMONIC = 'solar ... satoshi .... vocal';
 const wall = await minter.walletFrom({ mnemonic: MNEMONIC }); // BIP32 HDWallet
@@ -227,7 +227,7 @@ await wall.setKeyStore(new minterSdk.keyStores.BrowserLocalStorageKeyStore());
 
 const accKeyPair = await wall.getAccountKeyPair();
 
-console.log(keyP.publicKey.toString());
+console.log(accKeyPair.publicKey.toString());
 ```
 
 ## Fetch data
@@ -260,8 +260,7 @@ const minter = new minterSdk.Minter({
       baseURL: chain.urls?.api?.node?.http[0],
       headers: {
           'Content-Type'     : 'application/json; charset=utf-8',
-          'X-Project-Id'     : '<YOUR-FUNFASY-PROJECT-ID>',
-          'X-Project-Secret' : '<YOUR-FUNFASY-PROJECT-SECRET>'
+          'X-Custom-Header-Id'     : '<SOME VALUE>',
       },
     }
 });
